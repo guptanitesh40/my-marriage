@@ -19,7 +19,8 @@ in `docs/reference/` are the source of truth:
 Where the architecture document and the later schema/API documents disagree on
 a name or path, the schema and API documents win. `docs/design/` holds the
 approved visual design. `docs/decisions/` records why the repository is set up
-the way it is.
+the way it is. `docs/PROJECT_STATUS.md` records what has been built so far —
+read it to see where the project stands.
 
 Do not invent requirements. If the documents do not answer a question, ask.
 
@@ -49,12 +50,14 @@ Run from the repository root with Node 24 (`nvm use`) and pnpm.
 | `pnpm lint`               | ESLint across the workspace                       |
 | `pnpm test`               | Unit tests (no services needed)                   |
 | `pnpm test:e2e`           | API integration tests (needs `services:up`)       |
+| `pnpm test:browser`       | Public pages in a real browser: axe, layout, keys |
 | `pnpm build`              | Production builds                                 |
 | `pnpm contracts:generate` | Regenerate `packages/contracts` from the API code |
 | `pnpm format`             | Prettier                                          |
 
 Before reporting work as done, run typecheck, lint, test and — if the API
-changed — `test:e2e` and `contracts:generate`. CI runs all of them and fails
+changed — `test:e2e` and `contracts:generate`; if a public page changed —
+`test:browser`. CI runs all of them and fails
 if the committed contract is stale.
 
 ## Approved technology — do not replace without asking
@@ -169,3 +172,9 @@ requestId }` — throw a Nest `HttpException` (with a `code` for domain errors
 - Never commit secrets. Only `*.example` env files are tracked.
 - Do not commit, push, or provision cloud resources unless asked.
 - Keep changes scoped to the task; do not start the next milestone unprompted.
+- **Keep `docs/PROJECT_STATUS.md` current.** When a major feature or milestone
+  is built (a new product area, page or user-facing capability — not a bug
+  fix, refactor or review fix), add an entry at the top of its log in the
+  same change: date, what was built, and what is still missing. Update the
+  "Where things stand" table as well. If later work changes an existing
+  feature substantially, update its entry instead of adding a new one.
