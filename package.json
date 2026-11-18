@@ -23,7 +23,8 @@
     "test:e2e": "pnpm --filter @my-marriage/api test:e2e",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "contracts:generate": "pnpm --filter @my-marriage/api openapi:export && pnpm --filter @my-marriage/contracts generate"
+    "contracts:generate": "pnpm --filter @my-marriage/api openapi:export && pnpm --filter @my-marriage/contracts generate",
+    "test:browser": "pnpm --filter @my-marriage/web test:browser"
   },
   "devDependencies": {
     "prettier": "catalog:"

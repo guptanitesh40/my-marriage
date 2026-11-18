@@ -53,6 +53,23 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # Accessibility (axe), layout at 360/768/1280px, keyboard use and link
+      # checks for the public pages, in a real browser.
+      - name: Install Playwright browser
+        run: pnpm --filter @my-marriage/web exec playwright install --with-deps chromium
+
+      # Serves the production build from the Build step (see playwright.config.ts).
+      - name: Browser tests
+        run: pnpm test:browser
+
+      - name: Upload browser test report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report
+          retention-days: 7
+
       # The committed contract must match what the API code generates.
       - name: OpenAPI contract is up to date
         run: |

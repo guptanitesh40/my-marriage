@@ -4,8 +4,8 @@ A wedding planning and management platform, built first for Indian weddings:
 a private workspace for the couple and their managers, and a public wedding
 website for guests — who never need an account.
 
-**Status:** repository foundation only. The apps start and are wired together,
-but no product features exist yet.
+**Status:** the repository foundation and the public homepage are built.
+See [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md) for progress.
 
 ## What is in here
 
@@ -80,9 +80,13 @@ pnpm typecheck      # TypeScript
 pnpm lint           # ESLint
 pnpm test           # unit tests — no services needed
 pnpm test:e2e       # API integration tests — needs `pnpm services:up`
+pnpm test:browser   # public pages in Chromium: accessibility, layout, keyboard, links
 pnpm build          # production builds
 pnpm format         # apply Prettier (format:check to verify only)
 ```
+
+Before the first `pnpm test:browser`, download the test browser once:
+`pnpm --filter @my-marriage/web exec playwright install chromium`.
 
 CI (`.github/workflows/ci.yml`) runs all of these on every pull request.
 

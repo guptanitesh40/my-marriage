@@ -10,6 +10,9 @@ next-env.d.ts
 
 # tests
 coverage/
+test-results/
+playwright-report/
+blob-report/
 
 # environment files — only the *.example files are committed
 .env
@@ -33,3 +36,6 @@ Thumbs.db
 # secrets that must never be committed
 *.pem
 *.key
+
+# MCP server config holds personal API keys
+.mcp.json

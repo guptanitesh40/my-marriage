@@ -2,9 +2,13 @@
 
 /*
  * Design tokens from docs/design (the "Warm Editorial Wedding SaaS" system).
- * Canonical values are the DESIGN.md front matter, which the exported screens
- * use. Use these utilities (bg-surface, text-primary, font-serif …) rather
- * than raw hex values in components.
+ * Canonical values are the DESIGN.md front matter, which the Stitch project
+ * also uses. Use these utilities (bg-surface, text-primary, text-headline-lg,
+ * rounded-lg …) rather than raw values in components.
+ *
+ * Text colour rule: `outline` is for borders and icons only. It is below the
+ * WCAG AA 4.5:1 contrast ratio for small text on every warm surface, so
+ * secondary text uses `on-surface-variant`.
  */
 @theme inline {
   --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
@@ -14,6 +18,7 @@
 @theme {
   --color-surface: #fdf9f0;
   --color-surface-dim: #dddad1;
+  --color-surface-variant: #e6e2d9;
   --color-surface-container-lowest: #ffffff;
   --color-surface-container-low: #f7f3ea;
   --color-surface-container: #f2ede4;
@@ -28,24 +33,106 @@
   --color-on-primary: #ffffff;
   --color-primary-container: #315d50;
   --color-on-primary-container: #a5d4c3;
+  --color-primary-fixed: #bdeddb;
+  --color-primary-fixed-dim: #a2d0c0;
+  --color-on-primary-fixed: #002018;
 
   --color-secondary: #735a35;
   --color-on-secondary: #ffffff;
   --color-secondary-container: #fddaac;
   --color-on-secondary-container: #785e39;
+  --color-secondary-fixed: #ffddb0;
+  --color-secondary-fixed-dim: #e2c195;
+  --color-on-secondary-fixed: #281800;
+
+  /* The second ring of the logo (docs/design/brand/logo.svg). Logo only. */
+  --color-brand-gold: #b89a70;
 
   --color-error: #ba1a1a;
   --color-on-error: #ffffff;
   --color-error-container: #ffdad6;
   --color-on-error-container: #93000a;
 
+  /* Type scale. Headings use font-serif; everything else font-sans. */
+  --text-display-lg: 3.5rem;
+  --text-display-lg--line-height: 4rem;
+  --text-display-lg--letter-spacing: -0.025em;
+  --text-display-lg-mobile: 2.25rem;
+  --text-display-lg-mobile--line-height: 2.75rem;
+  --text-display-lg-mobile--letter-spacing: -0.015em;
+  --text-headline-lg: 2.5rem;
+  --text-headline-lg--line-height: 3rem;
+  --text-headline-lg--letter-spacing: -0.02em;
+  --text-headline-lg-mobile: 1.75rem;
+  --text-headline-lg-mobile--line-height: 2.25rem;
+  --text-headline-lg-mobile--letter-spacing: -0.01em;
+  --text-headline-md: 1.75rem;
+  --text-headline-md--line-height: 2.25rem;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-sm: 1.25rem;
+  --text-headline-sm--line-height: 1.75rem;
+  --text-title-md: 1.125rem;
+  --text-title-md--line-height: 1.625rem;
+  --text-title-md--letter-spacing: -0.01em;
+  --text-title-sm: 0.9375rem;
+  --text-title-sm--line-height: 1.375rem;
+  --text-body-lg: 1.0625rem;
+  --text-body-lg--line-height: 1.65rem;
+  --text-body-md: 0.9375rem;
+  --text-body-md--line-height: 1.5rem;
+  --text-body-sm: 0.8125rem;
+  --text-body-sm--line-height: 1.25rem;
+  --text-label-md: 0.8125rem;
+  --text-label-md--line-height: 1rem;
+  --text-label-md--letter-spacing: 0.02em;
+  --text-label-sm: 0.6875rem;
+  --text-label-sm--line-height: 0.875rem;
+  --text-label-sm--letter-spacing: 0.04em;
+
+  /*
+   * Radius scale from DESIGN.md. Controls (buttons, inputs, chips) use
+   * rounded-md, cards rounded-lg, large banners rounded-xl.
+   */
   --radius-sm: 0.25rem;
+  --radius-base: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
 }
 
-body {
-  background: var(--color-surface);
-  color: var(--color-on-surface);
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keeps in-page targets clear of the sticky header (h-20). */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: var(--color-surface);
+    color: var(--color-on-surface);
+  }
+
+  ::selection {
+    background: var(--color-secondary-container);
+    color: var(--color-on-secondary-container);
+  }
+
+  /* One consistent, visible keyboard focus ring (the export removed it). */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-container);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
 }
