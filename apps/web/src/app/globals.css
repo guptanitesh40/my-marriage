@@ -1,0 +1,51 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens from docs/design (the "Warm Editorial Wedding SaaS" system).
+ * Canonical values are the DESIGN.md front matter, which the exported screens
+ * use. Use these utilities (bg-surface, text-primary, font-serif …) rather
+ * than raw hex values in components.
+ */
+@theme inline {
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme {
+  --color-surface: #fdf9f0;
+  --color-surface-dim: #dddad1;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f7f3ea;
+  --color-surface-container: #f2ede4;
+  --color-surface-container-high: #ece8df;
+  --color-surface-container-highest: #e6e2d9;
+  --color-on-surface: #1c1c16;
+  --color-on-surface-variant: #404845;
+  --color-outline: #717975;
+  --color-outline-variant: #c0c8c4;
+
+  --color-primary: #184539;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #315d50;
+  --color-on-primary-container: #a5d4c3;
+
+  --color-secondary: #735a35;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #fddaac;
+  --color-on-secondary-container: #785e39;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+}

@@ -1,0 +1,14 @@
+node_modules
+dist
+.next
+coverage
+pnpm-lock.yaml
+next-env.d.ts
+
+# Generated from the API; regenerate with `pnpm contracts:generate`.
+packages/contracts/openapi.json
+packages/contracts/src/schema.d.ts
+
+# Source documents and design exports are kept exactly as delivered.
+docs/reference
+docs/design

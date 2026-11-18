@@ -1,0 +1,38 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Fail, rather than warn, when Node does not satisfy "engines" in package.json.
+engineStrict: true
+
+# Single source of truth for versions shared by more than one workspace package.
+catalog:
+  # TypeScript 7 is not yet supported by @nestjs/cli, @nestjs/swagger or
+  # typescript-eslint (requires <6.1.0). Stay on 6.0.x until they are.
+  typescript: ~6.0.3
+  '@types/node': ^24.19.2
+  eslint: ^10.15.0
+  '@eslint/js': ^10.0.1
+  typescript-eslint: ^8.72.2
+  eslint-config-prettier: ^10.1.8
+  prettier: ^3.10.1
+  vitest: ^5.1.0
+  vite: ^8.3.8
+
+# pnpm refuses to run dependency install scripts unless they are listed here.
+# Approve a package only after checking what its script does.
+allowBuilds:
+  # Install-time analytics pulled in by swagger-ui-dist; not needed.
+  '@scarf/scarf': false
+
+# Peer ranges that lag behind releases we have verified to work (lint and
+# contract generation both run in CI). Remove each entry once upstream
+# widens its range.
+peerDependencyRules:
+  allowedVersions:
+    # ESLint 9 is end-of-life; these plugins inside eslint-config-next still
+    # declare a maximum of 9 but run correctly on 10.
+    'eslint-plugin-import>eslint': '10'
+    'eslint-plugin-jsx-a11y>eslint': '10'
+    'eslint-plugin-react>eslint': '10'
+    'openapi-typescript>typescript': '6'

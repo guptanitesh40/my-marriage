@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — My Marriage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              ivory: '#F7F5F0',
+              charcoal: '#24302D',
+              green: '#315D50',
+              'green-hover': '#264a40',
+              gold: '#B89A70',
+              stone: '#E9E5DC',
+              'stone-light': '#F2EFE9',
+              white: '#FFFFFF',
+              error: '#A33B31',
+              'error-bg': '#FAF0EF',
+              'error-border': '#E8BBB7'
+            }
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'serif'],
+            sans: ['Manrope', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F7F5F0;
+      color: #24302D;
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .serif-display {
+      font-family: 'Fraunces', serif;
+    }
+    /* Subtle transitions */
+    .field-transition {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#315D50] selection:text-white">
+
+  <!-- Interactive Demo State Switcher (Bar for design review) -->
+  <aside aria-label="Interactive design state switcher" class="bg-[#24302D] text-[#F7F5F0] text-xs py-2 px-4 border-b border-[#315D50]/40 flex flex-wrap items-center justify-between gap-3 relative z-50">
+    <div class="flex items-center gap-2">
+      <span class="inline-block w-2 h-2 rounded-full bg-[#B89A70] animate-pulse"></span>
+      <span class="font-medium text-stone-300">Form States & Validations Preview:</span>
+    </div>
+    <div class="flex flex-wrap items-center gap-1.5" role="group" aria-label="Validation States">
+      <button onclick="setState('default')" id="btn-default" class="px-2.5 py-1 rounded bg-[#315D50] text-white font-medium hover:bg-[#3d7062] transition-colors">1. Default State</button>
+      <button onclick="setState('invalid-email')" id="btn-invalid-email" class="px-2.5 py-1 rounded bg-white/10 text-white hover:bg-white/20 transition-colors">2. Invalid Email Format</button>
+      <button onclick="setState('short-password')" id="btn-short-password" class="px-2.5 py-1 rounded bg-white/10 text-white hover:bg-white/20 transition-colors">3. Short Password (&lt; 8 chars)</button>
+      <button onclick="setState('auth-error')" id="btn-auth-error" class="px-2.5 py-1 rounded bg-white/10 text-white hover:bg-white/20 transition-colors">4. Login Failure Alert</button>
+      <button onclick="setState('submitting')" id="btn-submitting" class="px-2.5 py-1 rounded bg-white/10 text-white hover:bg-white/20 transition-colors">5. Loading / Submitting</button>
+    </div>
+  </aside>
+
+  <!-- Minimal Header -->
+  <header class="w-full max-w-7xl mx-auto px-6 sm:px-8 py-5 sm:py-6 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2.5 group">
+      <!-- Monogram Mark -->
+      <span class="w-7 h-7 rounded-lg bg-[#315D50] flex items-center justify-center text-white text-xs font-semibold tracking-wider">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" class="w-4 h-4" fill="none">
+          <circle cx="16" cy="20" r="8" stroke="#FDF9F0" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+          <circle cx="24" cy="20" r="8" stroke="#B89A70" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+          <path d="M20 14.5V25.5" stroke="#FDF9F0" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+      </span>
+      <span class="text-[17px] font-semibold tracking-tight text-[#24302D] group-hover:text-[#315D50] transition-colors">
+        My Marriage<span class="text-[#B89A70] text-sm ml-0.5">•</span>
+      </span>
+    </a>
+
+    <a href="#" class="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-medium text-[#24302D]/70 hover:text-[#315D50] transition-colors group py-1.5 px-3 rounded-full hover:bg-white/60">
+      <svg class="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5 text-[#315D50]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      <span>Back to home</span>
+    </a>
+  </header>
+
+  <!-- Main Content Centered Form -->
+  <main class="flex-grow flex items-center justify-center px-4 sm:px-6 py-6 sm:py-8">
+    <div class="w-full max-w-[400px]">
+
+      <!-- Top Credential Failure Banner (Dismissible & Accessible) -->
+      <div id="credential-error-alert" class="hidden mb-5 bg-[#FAF0EF] border border-[#E8BBB7] rounded-xl p-3.5 flex items-start gap-3 shadow-sm transition-all animate-fadeIn" role="alert" aria-live="assertive">
+        <svg class="w-4 h-4 text-[#A33B31] mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="12" cy="12" r="9" stroke-width="2"/>
+          <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="16" r="1" fill="currentColor"/>
+        </svg>
+        <div class="flex-1 text-xs">
+          <p class="font-semibold text-[#A33B31] leading-tight mb-0.5">Unable to sign in</p>
+          <p class="text-[#24302D]/80 leading-relaxed">Incorrect email or password. Please verify your details or reset your password.</p>
+        </div>
+        <button onclick="dismissAuthError()" type="button" class="text-[#A33B31]/70 hover:text-[#A33B31] p-0.5 rounded transition-colors" aria-label="Close error notice">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Form Card Container -->
+      <div class="bg-white rounded-2xl border border-[#E9E5DC] p-7 sm:p-9 shadow-[0_4px_24px_-4px_rgba(36,48,45,0.04)]">
+        
+        <!-- Header -->
+        <div class="text-center mb-7">
+          <h1 class="serif-display text-2xl sm:text-[28px] font-normal tracking-tight text-[#24302D] mb-2">
+            Welcome back
+          </h1>
+          <p class="text-xs sm:text-[13px] text-[#24302D]/70 font-normal leading-relaxed">
+            Sign in to continue planning your celebration.
+          </p>
+        </div>
+
+        <!-- Form Elements -->
+        <form id="signin-form" onsubmit="handleFormSubmit(event)" novalidate class="space-y-4">
+          
+          <!-- Email Field Group -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label for="email" class="block text-xs font-semibold text-[#24302D] tracking-wide">
+                Email address
+              </label>
+              <span id="email-counter" class="text-[11px] text-[#24302D]/50 hidden">Required</span>
+            </div>
+            
+            <div class="relative">
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                autocomplete="email"
+                placeholder="you@example.com"
+                value=""
+                oninput="validateEmailField(this.value)"
+                class="field-transition w-full text-xs sm:text-[13px] px-3.5 py-2.5 bg-white border border-[#E9E5DC] rounded-lg text-[#24302D] placeholder-[#24302D]/35 focus:outline-none focus:border-[#315D50] focus:ring-1 focus:ring-[#315D50] hover:border-[#24302D]/30"
+              />
+              <!-- Email Validation Status Icon -->
+              <div id="email-status-icon" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none hidden">
+                <svg class="h-4 w-4 text-[#A33B31]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Email Inline Error Feedback -->
+            <div id="email-error-msg" class="hidden flex items-center gap-1.5 text-[11px] font-medium text-[#A33B31] mt-1 pt-0.5">
+              <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <circle cx="12" cy="12" r="9" stroke-width="2"/>
+                <line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/>
+                <circle cx="12" cy="16" r="0.8" fill="currentColor"/>
+              </svg>
+              <span>Please enter a valid email address (e.g., name@domain.com)</span>
+            </div>
+          </div>
+
+          <!-- Password Field Group -->
+          <div class="space-y-1.5 pt-1">
+            <div class="flex items-center justify-between">
+              <label for="password" class="block text-xs font-semibold text-[#24302D] tracking-wide">
+                Password
+              </label>
+              <a href="#" class="text-[11px] font-medium text-[#315D50] hover:text-[#264a40] hover:underline focus:outline-none focus:ring-1 focus:ring-[#315D50] rounded">
+                Forgot password?
+              </a>
+            </div>
+
+            <div class="relative">
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                value=""
+                oninput="validatePasswordField(this.value)"
+                class="field-transition w-full text-xs sm:text-[13px] px-3.5 py-2.5 pr-10 bg-white border border-[#E9E5DC] rounded-lg text-[#24302D] placeholder-[#24302D]/35 focus:outline-none focus:border-[#315D50] focus:ring-1 focus:ring-[#315D50] hover:border-[#24302D]/30"
+              />
+              <!-- Password Toggle Visibility Button -->
+              <button 
+                type="button" 
+                id="toggle-password-btn"
+                onclick="togglePasswordVisibility()" 
+                class="absolute inset-y-0 right-0 pr-3 flex items-center text-[#24302D]/40 hover:text-[#24302D] focus:outline-none"
+                aria-label="Toggle password visibility"
+              >
+                <!-- Eye outline icon -->
+                <svg id="eye-icon" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <!-- Eye-slash icon (hidden initially) -->
+                <svg id="eye-slash-icon" class="h-4 w-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Password Inline Error Feedback -->
+            <div id="password-error-msg" class="hidden flex items-center gap-1.5 text-[11px] font-medium text-[#A33B31] mt-1 pt-0.5">
+              <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <circle cx="12" cy="12" r="9" stroke-width="2"/>
+                <line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/>
+                <circle cx="12" cy="16" r="0.8" fill="currentColor"/>
+              </svg>
+              <span id="password-error-text">Password must be at least 8 characters.</span>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              id="submit-btn"
+              class="w-full py-2.5 px-4 rounded-lg bg-[#315D50] hover:bg-[#264a40] active:scale-[0.99] text-white text-xs sm:text-[13px] font-semibold tracking-wide shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#315D50]"
+            >
+              <span id="btn-text">Sign in</span>
+              
+              <!-- Spinner Icon (hidden by default) -->
+              <svg id="btn-spinner" class="animate-spin h-3.5 w-3.5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </button>
+          </div>
+        </form>
+
+        <!-- Divider & Signup link -->
+        <div class="mt-6 pt-5 border-t border-[#E9E5DC]/80 text-center">
+          <p class="text-xs text-[#24302D]/75">
+            New to My Marriage? 
+            <a href="#" class="font-semibold text-[#315D50] hover:text-[#264a40] hover:underline ml-1">
+              Create an account
+            </a>
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Trust note underneath -->
+      <div class="mt-5 text-center flex items-center justify-center gap-1.5 text-[11px] text-[#24302D]/55">
+        <svg class="w-3.5 h-3.5 text-[#B89A70]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+        <span>Encrypted 256-bit secure wedding portal session</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Minimal Footer -->
+  <footer class="w-full max-w-7xl mx-auto px-6 sm:px-8 py-5 flex items-center justify-between text-xs text-[#24302D]/60 border-t border-[#E9E5DC]/60">
+    <div class="text-[11px]">
+      © 2025 My Marriage. All rights reserved.
+    </div>
+    <div class="flex items-center gap-4 text-[11px]">
+      <a href="#" class="hover:text-[#315D50] transition-colors">Privacy Policy</a>
+      <span class="text-[#E9E5DC]">•</span>
+      <a href="#" class="hover:text-[#315D50] transition-colors">Terms of Service</a>
+      <span class="text-[#E9E5DC]">•</span>
+      <a href="#" class="hover:text-[#315D50] transition-colors">Security</a>
+    </div>
+  </footer>
+
+  <!-- State Management JavaScript for Live Visual Demonstrations -->
+  <script>
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailErrorMsg = document.getElementById('email-error-msg');
+    const passwordErrorMsg = document.getElementById('password-error-msg');
+    const emailStatusIcon = document.getElementById('email-status-icon');
+    const credentialAlert = document.getElementById('credential-error-alert');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnSpinner = document.getElementById('btn-spinner');
+
+    const stateButtons = {
+      'default': document.getElementById('btn-default'),
+      'invalid-email': document.getElementById('btn-invalid-email'),
+      'short-password': document.getElementById('btn-short-password'),
+      'auth-error': document.getElementById('btn-auth-error'),
+      'submitting': document.getElementById('btn-submitting')
+    };
+
+    function updateActiveStateButton(activeKey) {
+      Object.keys(stateButtons).forEach(key => {
+        const btn = stateButtons[key];
+        if (key === activeKey) {
+          btn.className = "px-2.5 py-1 rounded bg-[#315D50] text-white font-medium transition-colors shadow-sm";
+        } else {
+          btn.className = "px-2.5 py-1 rounded bg-white/10 text-white/80 hover:bg-white/20 transition-colors";
+        }
+      });
+    }
+
+    function resetFormVisuals() {
+      // Clear errors
+      emailErrorMsg.classList.add('hidden');
+      passwordErrorMsg.classList.add('hidden');
+      emailStatusIcon.classList.add('hidden');
+      credentialAlert.classList.add('hidden');
+
+      // Reset border styles
+      emailInput.classList.remove('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]', 'bg-[#FAF0EF]/30');
+      emailInput.classList.add('border-[#E9E5DC]', 'focus:border-[#315D50]', 'focus:ring-[#315D50]');
+      
+      passwordInput.classList.remove('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]', 'bg-[#FAF0EF]/30');
+      passwordInput.classList.add('border-[#E9E5DC]', 'focus:border-[#315D50]', 'focus:ring-[#315D50]');
+
+      // Reset button
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+      btnText.textContent = "Sign in";
+      btnSpinner.classList.add('hidden');
+    }
+
+    function setState(state) {
+      resetFormVisuals();
+      updateActiveStateButton(state);
+
+      if (state === 'default') {
+        emailInput.value = "";
+        passwordInput.value = "";
+        emailInput.focus();
+      } 
+      else if (state === 'invalid-email') {
+        emailInput.value = "ananya.sharma@invalid";
+        passwordInput.value = "PalaceWedding2027!";
+        applyEmailError("Please enter a valid email address (e.g., name@domain.com)");
+        emailInput.focus();
+      } 
+      else if (state === 'short-password') {
+        emailInput.value = "ananya@mymarriage.in";
+        passwordInput.value = "short";
+        applyPasswordError("Password must be at least 8 characters.");
+        passwordInput.focus();
+      } 
+      else if (state === 'auth-error') {
+        emailInput.value = "ananya.sharma@jaipurwedding.com";
+        passwordInput.value = "IncorrectPassword123";
+        credentialAlert.classList.remove('hidden');
+        passwordInput.classList.add('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]');
+        credentialAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } 
+      else if (state === 'submitting') {
+        emailInput.value = "ananya.sharma@jaipurwedding.com";
+        passwordInput.value = "RambaghPalace2027#";
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+        btnText.textContent = "Signing in...";
+        btnSpinner.classList.remove('hidden');
+      }
+    }
+
+    function applyEmailError(msg) {
+      emailInput.classList.remove('border-[#E9E5DC]', 'focus:border-[#315D50]', 'focus:ring-[#315D50]');
+      emailInput.classList.add('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]', 'bg-[#FAF0EF]/30');
+      emailErrorMsg.querySelector('span').textContent = msg;
+      emailErrorMsg.classList.remove('hidden');
+      emailStatusIcon.classList.remove('hidden');
+    }
+
+    function applyPasswordError(msg) {
+      passwordInput.classList.remove('border-[#E9E5DC]', 'focus:border-[#315D50]', 'focus:ring-[#315D50]');
+      passwordInput.classList.add('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]', 'bg-[#FAF0EF]/30');
+      document.getElementById('password-error-text').textContent = msg;
+      passwordErrorMsg.classList.remove('hidden');
+    }
+
+    function validateEmailField(val) {
+      if (!val) {
+        emailErrorMsg.classList.add('hidden');
+        emailStatusIcon.classList.add('hidden');
+        emailInput.classList.remove('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]');
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(val)) {
+        applyEmailError("Please enter a valid email address (e.g., name@domain.com)");
+      } else {
+        emailErrorMsg.classList.add('hidden');
+        emailStatusIcon.classList.add('hidden');
+        emailInput.classList.remove('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]');
+      }
+    }
+
+    function validatePasswordField(val) {
+      if (!val) {
+        passwordErrorMsg.classList.add('hidden');
+        passwordInput.classList.remove('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]');
+        return;
+      }
+      if (val.length < 8) {
+        applyPasswordError("Password must be at least 8 characters.");
+      } else {
+        passwordErrorMsg.classList.add('hidden');
+        passwordInput.classList.remove('border-[#A33B31]', 'focus:border-[#A33B31]', 'focus:ring-[#A33B31]');
+      }
+    }
+
+    function dismissAuthError() {
+      credentialAlert.classList.add('hidden');
+    }
+
+    function togglePasswordVisibility() {
+      const eyeIcon = document.getElementById('eye-icon');
+      const eyeSlashIcon = document.getElementById('eye-slash-icon');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.add('hidden');
+        eyeSlashIcon.classList.remove('hidden');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('hidden');
+        eyeSlashIcon.classList.add('hidden');
+      }
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const emailVal = emailInput.value.trim();
+      const passVal = passwordInput.value;
+
+      let hasError = false;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailVal || !emailRegex.test(emailVal)) {
+        applyEmailError("Please enter a valid email address.");
+        hasError = true;
+      }
+      if (!passVal || passVal.length < 8) {
+        applyPasswordError("Password must be at least 8 characters.");
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      // Simulate Authentication API Call
+      setState('submitting');
+      setTimeout(() => {
+        // Trigger simulated credential mismatch for demonstration
+        setState('auth-error');
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

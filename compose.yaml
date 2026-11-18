@@ -1,0 +1,46 @@
+# Local development and CI services only. Production uses MongoDB Atlas and
+# AWS ElastiCache; nothing here is deployed.
+name: my-marriage
+
+services:
+  mongo:
+    image: mongo:8.0
+    # A single-node replica set: multi-document transactions (ownership,
+    # RSVP/archive fence, quota) do not work on a standalone mongod.
+    command: ['--replSet', 'rs0', '--bind_ip_all']
+    # Loopback only: these services have no authentication and must not be
+    # reachable from the network. Set MONGO_PORT / REDIS_PORT (shell or a root
+    # .env file) when the default port is taken, and match apps/api/.env.
+    ports:
+      - '127.0.0.1:${MONGO_PORT:-27017}:27017'
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      # Initiates the replica set on first start, then reports healthy once
+      # this node is primary.
+      test:
+        - CMD-SHELL
+        - >-
+          mongosh --quiet --eval "try { rs.status().ok } catch (e) {
+          rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'localhost:27017' }] }).ok }"
+          && mongosh --quiet --eval "db.hello().isWritablePrimary" | grep -q true
+      interval: 5s
+      timeout: 10s
+      retries: 12
+      start_period: 5s
+
+  redis:
+    # Stay on the 7.x line to match the ElastiCache Redis OSS engine.
+    image: redis:7.4-alpine
+    # BullMQ requires noeviction so queued jobs are never dropped.
+    command: ['redis-server', '--maxmemory-policy', 'noeviction']
+    ports:
+      - '127.0.0.1:${REDIS_PORT:-6379}:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  mongo-data:

@@ -1,0 +1,931 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-background": "#1c1c16", "surface-variant": "#e6e2d9", "on-secondary-fixed-variant": "#594320", "secondary-fixed": "#ffddb0", "tertiary-fixed-dim": "#bcc9c5", "secondary-fixed-dim": "#e2c195", "error-container": "#ffdad6", "tertiary": "#34413d", "background": "#fdf9f0", "on-error-container": "#93000a", "inverse-primary": "#a2d0c0", "primary-fixed-dim": "#a2d0c0", "inverse-surface": "#32302b", "on-tertiary-fixed-variant": "#3d4946", "inverse-on-surface": "#f5f0e7", "on-secondary": "#ffffff", "surface-bright": "#fdf9f0", "on-tertiary": "#ffffff", "surface": "#fdf9f0", "primary-fixed": "#bdeddb", "on-surface": "#1c1c16", "surface-container": "#f2ede4", "on-tertiary-fixed": "#121e1b", "surface-dim": "#dddad1", "on-primary": "#ffffff", "tertiary-fixed": "#d8e5e1", "surface-tint": "#3b6759", "surface-container-lowest": "#ffffff", "on-primary-fixed": "#002018", "tertiary-container": "#4b5854", "surface-container-low": "#f7f3ea", "on-tertiary-container": "#c0cdc9", "on-primary-fixed-variant": "#224e42", "on-secondary-fixed": "#281800", "outline": "#717975", "primary-container": "#315d50", "surface-container-highest": "#e6e2d9", "on-surface-variant": "#404845", "secondary": "#735a35", "on-error": "#ffffff", "on-secondary-container": "#785e39", "secondary-container": "#fddaac", "error": "#ba1a1a", "primary": "#184539", "outline-variant": "#c0c8c4", "surface-container-high": "#ece8df", "on-primary-container": "#a5d4c3" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "2.25rem", "margin": "2.5rem", "margin-mobile": "1.25rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "1rem", "gutter": "1.5rem", "space-lg": "1.5rem" }, "fontFamily": { "body-md": ["Manrope"], "label-md": ["Manrope"], "display-lg": ["Newsreader"], "title-sm": ["Manrope"], "headline-lg-mobile": ["Newsreader"], "headline-md": ["Newsreader"], "headline-lg": ["Newsreader"], "body-sm": ["Manrope"], "display-lg-mobile": ["Newsreader"], "headline-sm": ["Newsreader"], "body-lg": ["Manrope"], "label-sm": ["Manrope"], "title-md": ["Manrope"] }, "fontSize": { "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" }], "label-md": ["0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" }], "display-lg": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.025em", "fontWeight": "400" }], "title-sm": ["0.9375rem", { "lineHeight": "1.375rem", "fontWeight": "600" }], "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "500" }], "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "400" }], "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" }], "display-lg-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.015em", "fontWeight": "400" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "fontWeight": "500" }], "body-lg": ["1.0625rem", { "lineHeight": "1.65rem", "fontWeight": "400" }], "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }], "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-full selection:bg-secondary-container selection:text-on-secondary-container"><header class="sticky top-0 z-50 w-full bg-surface/90 backdrop-blur-xl border-b border-surface-container-highest transition-colors"><div class="h-20 max-w-[1240px] mx-auto px-margin-mobile md:px-margin flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-sm"><a class="flex items-center gap-1.5 group" data-path="home" href="#"><img src="https://lh3.googleusercontent.com/aida/ALJJyrDZAMgw4EeVM4S_gIHQ33YBI69YidCt6L7aHXhSECK1I7nbbKwuy2kShM05OXT6yzWFjSV15gVSPsvekeidxei0dT3KiNEG3oezYKCqrWZFWfnlXCt5rAjDtc9X3CXFHg-8dV3_d8Xo5pzvZWiuczzrsxBQSwa4mdUZxaudV3REQG4kvEMtQYEQCCu_fgKfCsyPWZRGqFmlxoCKBWJbhMO5SpXskA37c3iBEj58AwpM" alt="My Marriage Logo" class="w-8 h-8 rounded-lg"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface transition-colors group-hover:text-primary-container font-serif italic">My Marriage</span><span class="w-1.5 h-1.5 rounded-full bg-secondary transition-transform group-hover:scale-125 mb-1"></span></a></div><nav class="hidden md:flex items-center gap-space-xl" data-active-classes="text-on-surface font-title-sm font-semibold"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="features" href="#">Features</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="how-it-works" href="#">How It Works</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="wedding-websites" href="#">Wedding Websites</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="faq" href="#">FAQ</a></nav><div class="flex items-center gap-space-md"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface px-space-xs py-space-sm transition-colors" data-path="login" href="#">Log in</a><a class="hidden sm:inline-flex items-center justify-center bg-primary-container text-on-primary font-label-md text-label-md px-space-lg py-2.5 rounded-xl hover:bg-primary transition-all duration-200 shadow-sm" data-path="onboarding" href="#">Start planning free</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full flex-1 bg-surface"><div class="flex flex-col w-full">
+<!-- ==================== HERO SECTION ==================== -->
+<section class="relative w-full max-w-[1240px] mx-auto px-margin-mobile md:px-margin pt-10 pb-20 md:pt-16 md:pb-28">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+<!-- Left Column: Value Prop -->
+<div class="lg:col-span-5 flex flex-col items-start">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/40 text-secondary mb-6">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest font-semibold">The Modern Indian Wedding Planner</span>
+</div>
+<h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface tracking-tight leading-none mb-6">
+          Every celebration.<br>
+<span class="italic font-serif text-primary">One beautiful plan.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mb-8 leading-relaxed">
+          From Haldi to Reception, plan every detail in one place. Manage multi-day ceremonies, guest sequencing, tasks, and budgets — and curate a wedding website that feels uniquely yours.
+        </p>
+<div class="flex flex-wrap items-center gap-4 mb-5">
+<a class="inline-flex items-center justify-center bg-primary text-on-primary font-label-md text-label-md px-7 py-3.5 rounded-xl shadow-sm hover:bg-primary-container transition-all" href="#">
+            Start planning free
+          </a>
+<a class="inline-flex items-center justify-center bg-surface-container text-on-surface font-label-md text-label-md px-6 py-3.5 rounded-xl hover:bg-surface-container-high transition-all" href="#how-it-works">
+            See how it works
+          </a>
+</div>
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined text-[18px] text-secondary">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Free to start. Invite your partner and plan together.</span>
+</div>
+</div>
+<!-- Right Column: High-Fidelity App UI Mockup -->
+<div class="lg:col-span-7 relative">
+<!-- Ambient decorative backdrop diffusion -->
+<div class="absolute -top-10 -right-10 w-96 h-96 rounded-full bg-secondary-container/30 blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute -bottom-8 -left-8 w-80 h-80 rounded-full bg-primary-fixed/20 blur-3xl pointer-events-none -z-10"></div>
+<!-- Main Workspace Shell Card -->
+<div class="w-full bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden">
+<!-- Mockup App Header -->
+<div class="bg-surface-container-low px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-on-primary font-headline-sm font-serif italic text-sm">
+                A&amp;A
+              </div>
+<div>
+<div class="font-title-sm text-title-sm text-on-surface font-semibold flex items-center gap-1.5">
+                  Ananya &amp; Arjun
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</div>
+<div class="font-body-sm text-body-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">pin_drop</span>
+                  Jaipur · Dec 10–14, 2027
+                </div>
+</div>
+</div>
+<!-- Countdown pill -->
+<div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-highest text-secondary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+<span>218 Days to go</span>
+</div>
+</div>
+<!-- Mockup Navigation / Sub-bar -->
+<div class="px-6 py-3 bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-2 overflow-x-auto py-0.5 no-scrollbar">
+<span class="px-3 py-1 rounded-md bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-semibold shadow-xs">Timeline</span>
+<span class="px-3 py-1 rounded-md text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface">Guests &amp; RSVP</span>
+<span class="px-3 py-1 rounded-md text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface">Budget Tracker</span>
+<span class="px-3 py-1 rounded-md text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface">Website</span>
+</div>
+<div class="hidden sm:flex items-center gap-1.5 text-secondary">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Live Sync</span>
+</div>
+</div>
+<!-- Mockup Interior Content -->
+<div class="p-6 flex flex-col gap-6">
+<!-- Key Metrics Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Ceremony Tasks</span>
+<div class="mt-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">18</span>
+<span class="font-body-sm text-body-sm text-outline"> of 24 done</span>
+</div>
+<!-- Mini Progress Bar -->
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full mt-2.5 overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 75%;"></div>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">RSVP Attendance</span>
+<div class="mt-2 flex items-baseline gap-1.5">
+<span class="font-headline-sm text-headline-sm text-primary">342</span>
+<span class="font-label-sm text-label-sm text-outline">/ 370</span>
+</div>
+<div class="flex items-center gap-1 mt-2 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">done_all</span>
+<span>92% response rate</span>
+</div>
+</div>
+<div class="col-span-2 sm:col-span-1 p-4 rounded-xl bg-surface-container-low flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Committed Budget</span>
+<div class="mt-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">₹48.2L</span>
+</div>
+<span class="font-body-sm text-body-sm text-secondary mt-1">₹4.8L buffer remaining</span>
+</div>
+</div>
+<!-- Ceremonies Horizontal Track -->
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Scheduled Celebrations</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">5 Events locked</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+<div class="p-3 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Haldi</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline block text-[11px]">Dec 10 · Poolside</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim"></span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Mehendi</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline block text-[11px]">Dec 11 · Lawns</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Sangeet</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline block text-[11px]">Dec 12 · Ballroom</span>
+</div>
+<div class="p-3 rounded-lg bg-primary-container text-on-primary">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed"></span>
+<span class="font-label-sm text-label-sm font-semibold text-on-primary">Wedding</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-primary-container block text-[11px]">Dec 13 · Mandap</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors col-span-2 sm:col-span-1">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Reception</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline block text-[11px]">Dec 14 · Palace</span>
+</div>
+</div>
+</div>
+<!-- Realistic Guest RSVP Activity item inside mockup -->
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-sm">
+                  AS
+                </div>
+<div>
+<div class="font-title-sm text-title-sm text-on-surface font-semibold">Aarav Sharma &amp; Family</div>
+<div class="font-body-sm text-body-sm text-outline">4 Attending · Sangeet, Wedding &amp; Reception</div>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm font-semibold self-start sm:self-auto">
+<span class="material-symbols-outlined text-[14px]">check</span> RSVP Confirmed
+              </span>
+</div>
+</div>
+</div>
+<!-- Overlapping floating widget: Mini Website card -->
+<div class="hidden sm:flex absolute -bottom-6 -left-6 p-4 rounded-xl bg-surface-container-lowest shadow-lg max-w-xs items-center gap-3 z-20">
+<div class="w-11 h-11 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">language</span>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Live Wedding Site</div>
+<div class="font-title-sm text-title-sm text-primary font-semibold truncate">mymarriage.com/ananya-arjun</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION 2: MULTI-CEREMONY TIMELINE ==================== -->
+<section class="w-full bg-surface-container-low py-20 md:py-28">
+<div class="max-w-[1240px] mx-auto px-margin-mobile md:px-margin">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-semibold block mb-3">Multi-Day Architecture</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface leading-tight">
+            One wedding. <span class="italic font-serif text-primary">So many beautiful moments.</span>
+</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+          Every celebration deserves its own dedicated plan, guest sequencing, and attire guidelines without losing track of the larger roadmap.
+        </p>
+</div>
+<!-- Ceremony Grid / Sequence -->
+<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+<!-- Ceremony 1: Haldi -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-3 h-3 rounded-full bg-secondary-fixed ring-4 ring-secondary-fixed/30"></span>
+<span class="font-label-sm text-label-sm text-outline font-semibold">Day 01</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1">Haldi</h3>
+<span class="font-body-sm text-body-sm text-secondary block mb-4">Morning, Dec 10</span>
+<div class="space-y-2 mb-6 text-on-surface-variant">
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+<span>Poolside Courtyard</span>
+</div>
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">groups</span>
+<span>140 Guests invited</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-container flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm font-semibold text-primary">Schedule locked</span>
+<span class="font-body-sm text-body-sm text-outline text-[12px]">Managed by Arjun · Groom</span>
+</div>
+</div>
+<!-- Ceremony 2: Mehendi -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-3 h-3 rounded-full bg-primary-fixed ring-4 ring-primary-fixed/30"></span>
+<span class="font-label-sm text-label-sm text-outline font-semibold">Day 02</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1">Mehendi</h3>
+<span class="font-body-sm text-body-sm text-secondary block mb-4">Afternoon, Dec 11</span>
+<div class="space-y-2 mb-6 text-on-surface-variant">
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+<span>The Haveli Lawns</span>
+</div>
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">groups</span>
+<span>180 Guests invited</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-container flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm font-semibold text-primary">Artists confirmed</span>
+<span class="font-body-sm text-body-sm text-outline text-[12px]">Managed by Ritu · Sister</span>
+</div>
+</div>
+<!-- Ceremony 3: Sangeet -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-3 h-3 rounded-full bg-secondary ring-4 ring-secondary/30"></span>
+<span class="font-label-sm text-label-sm text-outline font-semibold">Day 03</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1">Sangeet</h3>
+<span class="font-body-sm text-body-sm text-secondary block mb-4">Evening, Dec 12</span>
+<div class="space-y-2 mb-6 text-on-surface-variant">
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+<span>Grand Ballroom</span>
+</div>
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">groups</span>
+<span>350 Guests invited</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-container flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm font-semibold text-secondary">14 Performances set</span>
+<span class="font-body-sm text-body-sm text-outline text-[12px]">Managed by Ananya · Bride</span>
+</div>
+</div>
+<!-- Ceremony 4: Wedding (Highlighted Muhurat) -->
+<div class="bg-primary text-on-primary p-6 rounded-2xl flex flex-col justify-between shadow-lg relative overflow-hidden group">
+<div class="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-primary-container/40 pointer-events-none"></div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-3 h-3 rounded-full bg-secondary-fixed ring-4 ring-secondary-fixed/40"></span>
+<span class="font-label-sm text-label-sm text-on-primary-container font-semibold">Day 04 · Muhurat</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-primary mb-1">Wedding</h3>
+<span class="font-body-sm text-body-sm text-secondary-fixed block mb-4">Sunset, Dec 13</span>
+<div class="space-y-2 mb-6 text-on-primary-container">
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span class="text-on-primary">The Mandapam</span>
+</div>
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">groups</span>
+<span class="text-on-primary">400 Guests invited</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-primary-container flex flex-col gap-1.5 relative z-10">
+<span class="font-label-sm text-label-sm font-semibold text-secondary-fixed">Priest &amp; Vidhi locked</span>
+<span class="font-body-sm text-body-sm text-on-primary-container text-[12px]">Managed by Uncle Rajesh</span>
+</div>
+</div>
+<!-- Ceremony 5: Reception -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-3 h-3 rounded-full bg-outline-variant ring-4 ring-surface-variant"></span>
+<span class="font-label-sm text-label-sm text-outline font-semibold">Day 05</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-1">Reception</h3>
+<span class="font-body-sm text-body-sm text-secondary block mb-4">Night, Dec 14</span>
+<div class="space-y-2 mb-6 text-on-surface-variant">
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+<span>Palace Gardens</span>
+</div>
+<div class="flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">groups</span>
+<span>450 Guests invited</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-container flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm font-semibold text-primary">Catering menu approved</span>
+<span class="font-body-sm text-body-sm text-outline text-[12px]">Managed by Arjun &amp; Ananya</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION 3: FEATURE SHOWCASE (LINEAR STYLE) ==================== -->
+<section class="w-full max-w-[1240px] mx-auto px-margin-mobile md:px-margin py-20 md:py-28">
+<div class="text-center max-w-2xl mx-auto mb-12">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-semibold block mb-3">Modern Software Discipline</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">
+        All the details. <span class="italic font-serif text-primary">None of the chaos.</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+        Collaborative planning structured around Indian celebration realities — co-owners, extended families, choreographers, and multiple venues.
+      </p>
+</div>
+<!-- Feature Workspace Container -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-lg overflow-hidden">
+<!-- Interactive Sub-Tabs -->
+<div class="px-6 pt-5 pb-0 bg-surface-container-low flex items-center justify-between border-b border-surface-container flex-wrap gap-4">
+<div class="flex items-center gap-3">
+<button class="px-4 py-2.5 font-label-md text-label-md text-primary font-semibold border-b-2 border-primary bg-surface-container-lowest rounded-t-lg">
+            Plan together &amp; tasks
+          </button>
+<button class="px-4 py-2.5 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+            Budget &amp; Vendor payouts
+          </button>
+<button class="px-4 py-2.5 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+            Ceremony-wise Guest Lists
+          </button>
+</div>
+<div class="hidden lg:flex items-center gap-2 pb-2">
+<span class="px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Ctrl + K Quick Search</span>
+<span class="px-2.5 py-1 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">2 Co-Owners Active</span>
+</div>
+</div>
+<!-- Tab Content Area: SaaS Task Kanban / Matrix -->
+<div class="p-6 md:p-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Column 1: Haldi & Mehendi Sprint -->
+<div class="flex flex-col gap-3.5">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                In Progress (4)
+              </span>
+<span class="text-outline text-body-sm font-label-sm">High Priority</span>
+</div>
+<!-- Card 1 -->
+<div class="p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors shadow-xs">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-container-highest text-secondary">Mehendi</span>
+<span class="material-symbols-outlined text-[16px] text-outline">flag</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold mb-1.5">Approve Mehendi favor packaging</h4>
+<p class="font-body-sm text-body-sm text-outline mb-3">Review sample potli bags with Jaipur block print supplier.</p>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-primary font-semibold">Due Dec 01</span>
+<div class="flex items-center gap-1">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center">AN</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ananya</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors shadow-xs">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-container-highest text-secondary">Sangeet</span>
+<span class="material-symbols-outlined text-[16px] text-primary">sync</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold mb-1.5">Finalize Sangeet track edits</h4>
+<p class="font-body-sm text-body-sm text-outline mb-3">6 family medleys + couple entry music mixdown.</p>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-primary font-semibold">Due Dec 04</span>
+<div class="flex items-center gap-1">
+<span class="w-6 h-6 rounded-full bg-secondary text-on-secondary text-[10px] font-bold flex items-center justify-center">AR</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Arjun</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 2: Logistics & Bookings -->
+<div class="flex flex-col gap-3.5">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                Vendor Coordination (3)
+              </span>
+<span class="text-outline text-body-sm font-label-sm">Dec 10–13</span>
+</div>
+<!-- Card 3 -->
+<div class="p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors shadow-xs">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-container-highest text-secondary">Wedding</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">payments</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold mb-1.5">Book Jaipur folk troupe &amp; Dholaks</h4>
+<p class="font-body-sm text-body-sm text-outline mb-3">Baraat procession sequence: 4 Dholis + 2 Shehnai masters.</p>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">₹35,000 Advance</span>
+<div class="flex items-center gap-1">
+<span class="w-6 h-6 rounded-full bg-surface-variant text-on-surface-variant text-[10px] font-bold flex items-center justify-center">UR</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Uncle Rajesh</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors shadow-xs">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-container-highest text-secondary">Hospitality</span>
+<span class="material-symbols-outlined text-[16px] text-outline">flight_land</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold mb-1.5">Airport transfers dispatch list</h4>
+<p class="font-body-sm text-body-sm text-outline mb-3">Group flight arrivals into 4 coach runs from Jaipur Airport.</p>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-label-sm text-primary font-semibold">14 Cars booked</span>
+<div class="flex items-center gap-1">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center">AR</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Arjun</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 3: Done & Verified -->
+<div class="flex flex-col gap-3.5">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+                Done &amp; Confirmed (18)
+              </span>
+<span class="text-outline text-body-sm font-label-sm">Archived</span>
+</div>
+<!-- Card 5 -->
+<div class="p-4 rounded-xl bg-surface-container-low opacity-75">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-container-highest text-outline">All Events</span>
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold line-through mb-1.5">Hotel room block contract signed</h4>
+<p class="font-body-sm text-body-sm text-outline">75 rooms confirmed at Rambagh Palace &amp; Haveli annex.</p>
+</div>
+<!-- Card 6 -->
+<div class="p-4 rounded-xl bg-surface-container-low opacity-75">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-container-highest text-outline">Haldi</span>
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold line-through mb-1.5">Yellow marigold floral specs signed</h4>
+<p class="font-body-sm text-body-sm text-outline">Curated brass urli decor + flower petals confirmed.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Feature Pill Footer -->
+<div class="px-6 py-4 bg-surface-container-low border-t border-surface-container flex flex-wrap items-center justify-around gap-4 text-on-surface-variant font-label-md text-label-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">group_add</span>
+<span>Equal Partner Ownership</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">lock_clock</span>
+<span>Role-Based Family Access</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">currency_rupee</span>
+<span>Advance &amp; Vendor Ledger</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION 4: HOW IT WORKS ==================== -->
+<section class="w-full bg-surface-container py-20 md:py-28" id="how-it-works">
+<div class="max-w-[1240px] mx-auto px-margin-mobile md:px-margin">
+<div class="max-w-xl mb-16">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-semibold block mb-3">Structured Simplicity</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-3">
+          From “we’re getting married” to <span class="italic font-serif text-primary">beautifully organized.</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Three uncomplicated steps engineered to remove anxiety from month one.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Step 01 -->
+<div class="bg-surface-container-lowest p-8 rounded-2xl flex flex-col justify-between">
+<div>
+<span class="font-headline-lg text-headline-lg font-serif italic text-secondary/40 block mb-6">01</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Create your workspace</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Enter your dates and wedding destination. The platform automatically sets up templates for all 5 traditional celebration ceremonies.
+            </p>
+</div>
+<!-- Mini UI snippet -->
+<div class="p-3.5 rounded-xl bg-surface-container-low flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2.5">
+<span class="w-7 h-7 rounded-full bg-primary-fixed text-on-primary-fixed font-bold flex items-center justify-center text-xs">A</span>
+<span class="font-title-sm text-title-sm text-on-surface">Ananya &amp; Arjun</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Initialized</span>
+</div>
+</div>
+<!-- Step 02 -->
+<div class="bg-surface-container-lowest p-8 rounded-2xl flex flex-col justify-between">
+<div>
+<span class="font-headline-lg text-headline-lg font-serif italic text-secondary/40 block mb-6">02</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Plan together with family</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Invite your partner as a co-creator. Delegate specific celebrations to trusted family managers with role-based view and edit controls.
+            </p>
+</div>
+<!-- Mini UI snippet -->
+<div class="p-3.5 rounded-xl bg-surface-container-low flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold flex items-center justify-center text-xs">R</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">Ritu (Sister)</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-secondary font-label-sm text-label-sm">Mehendi Lead</span>
+</div>
+</div>
+<!-- Step 03 -->
+<div class="bg-surface-container-lowest p-8 rounded-2xl flex flex-col justify-between">
+<div>
+<span class="font-headline-lg text-headline-lg font-serif italic text-secondary/40 block mb-6">03</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Celebrate and share</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Publish your personalized wedding website, collect RSVPs for each ceremony individually, and preserve full-resolution guest memories.
+            </p>
+</div>
+<!-- Mini UI snippet -->
+<div class="p-3.5 rounded-xl bg-surface-container-low flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-[16px] text-primary">link</span>
+<span class="font-body-sm text-body-sm text-primary font-semibold truncate">mymarriage.com/ananya-arjun</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION 5: WEDDING WEBSITES SHOWCASE ==================== -->
+<section class="w-full max-w-[1240px] mx-auto px-margin-mobile md:px-margin py-20 md:py-28">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-semibold block mb-3">Editorial Aesthetics</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+          Your story deserves a <span class="italic font-serif text-primary">beautiful home.</span>
+</h2>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-title-sm text-title-sm font-semibold hover:text-primary-container transition-colors" href="#">
+        Explore all website designs <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+<!-- 3 Distinct Editorial Templates -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Template 1: Traditional Editorial -->
+<div class="group flex flex-col">
+<div class="w-full h-80 rounded-2xl bg-surface-container-low p-6 flex flex-col justify-between overflow-hidden shadow-sm group-hover:shadow-md transition-shadow relative">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-secondary uppercase tracking-widest">Heritage &amp; Warm Terracotta</span>
+<span class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+</span>
+</div>
+<div class="my-auto text-center py-6">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-widest block mb-2">Together with their families</span>
+<div class="font-headline-md text-headline-md text-on-surface font-serif italic mb-2">Ananya &amp; Arjun</div>
+<div class="font-body-sm text-body-sm text-secondary">The Rambagh Palace · Jaipur</div>
+</div>
+<div class="flex items-center justify-center gap-4 text-outline font-label-sm text-label-sm">
+<span>Schedule</span>
+<span>·</span>
+<span>Stay Guide</span>
+<span>·</span>
+<span>RSVP</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div>
+<h4 class="font-title-sm text-title-sm font-semibold text-on-surface">The Heritage Edition</h4>
+<p class="font-body-sm text-body-sm text-outline">Warm sandstone, bespoke serif type, and floral botanical framing.</p>
+</div>
+</div>
+</div>
+<!-- Template 2: Modernist Clean -->
+<div class="group flex flex-col">
+<div class="w-full h-80 rounded-2xl bg-surface-container-lowest p-6 flex flex-col justify-between overflow-hidden shadow-sm group-hover:shadow-md transition-shadow relative">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-primary uppercase tracking-widest">Minimalist Monochrome</span>
+<span class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[14px]">design_services</span>
+</span>
+</div>
+<div class="my-auto text-center py-6">
+<div class="w-12 h-12 mx-auto mb-3 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface font-serif italic text-lg font-bold">
+              A+A
+            </div>
+<div class="font-headline-md text-headline-md text-on-surface tracking-tight uppercase font-medium mb-1">ANANYA &amp; ARJUN</div>
+<div class="font-label-sm text-label-sm text-outline tracking-wider">JAIPUR · DECEMBER 2027</div>
+</div>
+<div class="flex items-center justify-between px-3 py-2 bg-surface-container rounded-lg text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface">Countdown: 218 Days</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">RSVP Online</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div>
+<h4 class="font-title-sm text-title-sm font-semibold text-on-surface">Modern Architecture</h4>
+<p class="font-body-sm text-body-sm text-outline">High-contrast, contemporary typography with crisp geometric balance.</p>
+</div>
+</div>
+</div>
+<!-- Template 3: Royal Forest & Gold -->
+<div class="group flex flex-col">
+<div class="w-full h-80 rounded-2xl bg-primary text-on-primary p-6 flex flex-col justify-between overflow-hidden shadow-md group-hover:shadow-lg transition-shadow relative">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-secondary-fixed uppercase tracking-widest">Palace Noir</span>
+<span class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-secondary-fixed">
+<span class="material-symbols-outlined text-[14px]">stars</span>
+</span>
+</div>
+<div class="my-auto text-center py-6">
+<span class="font-label-sm text-label-sm text-primary-fixed block uppercase tracking-widest mb-1.5">Celebrate the union of</span>
+<div class="font-headline-md text-headline-md text-on-primary font-serif italic mb-2">Ananya &amp; Arjun</div>
+<div class="font-body-sm text-body-sm text-secondary-fixed">December 10 to 14 · Jaipur</div>
+</div>
+<div class="p-2.5 rounded-lg bg-primary-container text-center">
+<span class="font-label-sm text-label-sm text-secondary-fixed font-semibold">Multi-Ceremony Attendance Tracker</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div>
+<h4 class="font-title-sm text-title-sm font-semibold text-on-surface">Royal Court</h4>
+<p class="font-body-sm text-body-sm text-outline">Deep forest green with muted champagne accents and regal poise.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION 6: GUESTS, RSVPS & MEMORIES ==================== -->
+<section class="w-full bg-surface-container-low py-20 md:py-28">
+<div class="max-w-[1240px] mx-auto px-margin-mobile md:px-margin">
+<div class="max-w-2xl mb-16">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-semibold block mb-3">Effortless Guest Experience</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">
+          Bring everyone together. <span class="italic font-serif text-primary">Beautifully.</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          No cumbersome app downloads or forgotten passwords. Zero friction for elders and out-of-town guests alike.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1: Household Invitations -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-xs flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[24px]">forward_to_inbox</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Thoughtful Household Links</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Generate private invitation URLs grouped by family. Send over WhatsApp or SMS without guests ever needing an account.
+            </p>
+</div>
+<!-- UI Mockup Snippet -->
+<div class="p-4 rounded-xl bg-surface-container-low">
+<div class="flex items-center justify-between text-body-sm mb-2">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Verma Household (4)</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Active link</span>
+</div>
+<div class="p-2 bg-surface-container-lowest rounded text-outline font-body-sm text-[12px] truncate">
+              mymarriage.com/i/verma-family-jpr
+            </div>
+</div>
+</div>
+<!-- Feature 2: Ceremony-by-Ceremony RSVP -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-xs flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary mb-6">
+<span class="material-symbols-outlined text-[24px]">fact_check</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Ceremony-Wise RSVPs</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Invite intimate guests to Haldi and Mehendi, while extending Sangeet and Reception invites to the broader circle with custom dietary notes.
+            </p>
+</div>
+<!-- UI Mockup Snippet -->
+<div class="p-4 rounded-xl bg-surface-container-low space-y-2">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-body-sm text-body-sm text-on-surface">Mehendi (Afternoon)</span>
+<span class="material-symbols-outlined text-[18px] text-primary">check_box</span>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-body-sm text-body-sm text-on-surface">Sangeet (Evening)</span>
+<span class="material-symbols-outlined text-[18px] text-primary">check_box</span>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-body-sm text-body-sm text-outline">Haldi (Private)</span>
+<span class="material-symbols-outlined text-[18px] text-outline-variant">check_box_outline_blank</span>
+</div>
+</div>
+</div>
+<!-- Feature 3: Curated Memory Vault -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-xs flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary-fixed/30 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[24px]">photo_library</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Moderated Memories</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Place QR codes on guest dining tables. Guests upload raw candids in full resolution; you review and curate before public gallery display.
+            </p>
+</div>
+<!-- UI Mockup Snippet -->
+<div class="p-4 rounded-xl bg-surface-container-low">
+<div class="flex items-center justify-between mb-3">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">142 Uploads Today</span>
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">Review 12</span>
+</div>
+<div class="grid grid-cols-4 gap-1.5">
+<div class="h-10 bg-surface-container-highest rounded flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[16px]">image</span>
+</div>
+<div class="h-10 bg-surface-container-highest rounded flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[16px]">image</span>
+</div>
+<div class="h-10 bg-surface-container-highest rounded flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[16px]">image</span>
+</div>
+<div class="h-10 bg-primary-container text-on-primary rounded flex items-center justify-center font-label-sm text-label-sm font-bold">
+                +139
+              </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION 7: TRUST & INTEGRITY ==================== -->
+<section class="w-full max-w-[1240px] mx-auto px-margin-mobile md:px-margin py-20 md:py-28">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-semibold block mb-3">Honest Foundations</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">
+        Everything you need to begin. <span class="italic font-serif text-primary">Nothing you don’t.</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+        Built with the focus of modern software. No intrusive vendor ad popups, no hidden commissions, and no fake countdown timers.
+      </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="p-6 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold">100% Free During Early Release</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Full multi-ceremony features, RSVP tools, and wedding websites available with zero credit card required to start.
+        </p>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">supervisor_account</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold">Two Equal Wedding Co-Owners</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Both partners have parity control over every workspace, budget item, guest list, and publishing decision.
+        </p>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold">Role-Based Family Delegation</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Grant aunts, uncles, or event planners access solely to the Haldi catering or Sangeet rehearsals without exposing your entire budget.
+        </p>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">no_accounts</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold">Zero Guest Account Barrier</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Your guests tap their unique link, check ceremonies, specify dietary constraints, and confirm attendance in under 30 seconds.
+        </p>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">cloud_done</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold">5 GB High-Res Memory Storage</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Complimentary cloud storage preserving raw uncompressed photos uploaded directly by friends and family via venue QR codes.
+        </p>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">security</span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-semibold">Organizer-Moderated Publishing</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Nothing goes live on your public gallery until approved by you or your designated bridal party manager.
+        </p>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION 8: FINAL CTA BANNER & ACCORDION FAQ ==================== -->
+<section class="w-full bg-surface-container py-20 md:py-28">
+<div class="max-w-[1240px] mx-auto px-margin-mobile md:px-margin flex flex-col gap-20">
+<!-- Charcoal/Forest CTA Container -->
+<div class="w-full bg-primary text-on-primary rounded-3xl p-8 md:p-14 relative overflow-hidden shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+<div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-secondary-fixed/10 pointer-events-none"></div>
+<div class="max-w-xl relative z-10">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary-fixed font-semibold block mb-3">Begin Your Roadmap</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-primary mb-4 leading-tight">
+            Your celebration starts with a <span class="italic font-serif text-secondary-fixed">beautiful plan.</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-primary-container">
+            Less time juggling disparate spreadsheets and WhatsApp groups. More time being present for every ritual.
+          </p>
+</div>
+<div class="relative z-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full md:w-auto">
+<a class="inline-flex items-center justify-center bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md px-8 py-4 rounded-xl shadow-md hover:bg-secondary-fixed-dim transition-all" href="#">
+            Start planning free
+          </a>
+</div>
+</div>
+<!-- FAQ Section -->
+<div class="max-w-3xl mx-auto w-full">
+<div class="text-center mb-12">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-semibold block mb-2">Clarity &amp; Questions</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Frequently Asked Questions</h3>
+</div>
+<div class="space-y-4" id="faq-accordion">
+<!-- Item 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs">
+<button class="w-full px-6 py-4 text-left flex items-center justify-between font-title-sm text-title-sm text-on-surface font-semibold focus:outline-hidden" onclick="toggleFaq(this)">
+<span>Is My Marriage free to use?</span>
+<span class="material-symbols-outlined text-[20px] text-outline transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-6 pb-4 pt-1 font-body-md text-body-md text-on-surface-variant hidden">
+              Yes. Early release users enjoy full access to all workspace features—including multi-day event timelines, ceremony-by-ceremony RSVP tracking, wedding website publishing, and 5 GB of raw photo storage—at zero cost.
+            </div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs">
+<button class="w-full px-6 py-4 text-left flex items-center justify-between font-title-sm text-title-sm text-on-surface font-semibold focus:outline-hidden" onclick="toggleFaq(this)">
+<span>Can my partner and family members help plan?</span>
+<span class="material-symbols-outlined text-[20px] text-outline transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-6 pb-4 pt-1 font-body-md text-body-md text-on-surface-variant hidden">
+              Absolutely. Couples hold equal co-owner rights, meaning both brides and grooms have identical managerial privileges. Furthermore, you can assign discrete permissions to siblings, parents, or planners (e.g., granting Haldi coordination while restricting access to your financial budget).
+            </div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs">
+<button class="w-full px-6 py-4 text-left flex items-center justify-between font-title-sm text-title-sm text-on-surface font-semibold focus:outline-hidden" onclick="toggleFaq(this)">
+<span>Do guests need an account or app to RSVP?</span>
+<span class="material-symbols-outlined text-[20px] text-outline transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-6 pb-4 pt-1 font-body-md text-body-md text-on-surface-variant hidden">
+              No. Guests receive a personalized, private URL link via WhatsApp or email. Clicking the link takes them directly to their household attendance page where they can confirm attendance for each specific event in seconds.
+            </div>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs">
+<button class="w-full px-6 py-4 text-left flex items-center justify-between font-title-sm text-title-sm text-on-surface font-semibold focus:outline-hidden" onclick="toggleFaq(this)">
+<span>Can we manage multiple separate celebrations?</span>
+<span class="material-symbols-outlined text-[20px] text-outline transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-6 pb-4 pt-1 font-body-md text-body-md text-on-surface-variant hidden">
+              Yes. The architecture was specifically developed around Indian weddings. Haldi, Mehendi, Sangeet, Wedding, and Reception each retain independent dates, locations, dress codes, guest lists, and budgets.
+            </div>
+</div>
+<!-- Item 5 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-xs">
+<button class="w-full px-6 py-4 text-left flex items-center justify-between font-title-sm text-title-sm text-on-surface font-semibold focus:outline-hidden" onclick="toggleFaq(this)">
+<span>How do guests upload ceremony photos?</span>
+<span class="material-symbols-outlined text-[20px] text-outline transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-6 pb-4 pt-1 font-body-md text-body-md text-on-surface-variant hidden">
+              Every ceremony generates a unique QR code you can print for guest tables or display at welcome kiosks. Guests scan and upload pictures without downloading any software. All photos queue into an organizer approval inbox before becoming visible.
+            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Accordion Micro-Script -->
+<script>
+    function toggleFaq(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('.material-symbols-outlined');
+      const isHidden = content.classList.contains('hidden');
+
+      // Close other accordion items
+      document.querySelectorAll('#faq-accordion > div').forEach(card => {
+        card.querySelector('div').classList.add('hidden');
+        card.querySelector('.material-symbols-outlined').classList.remove('rotate-180');
+      });
+
+      if (isHidden) {
+        content.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+      }
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-low border-t border-surface-container-highest mt-auto"><div class="max-w-[1240px] mx-auto px-margin-mobile md:px-margin py-space-xl"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-lg mb-space-xl"><div class="max-w-md"><div class="flex items-center gap-1.5 mb-space-xs"><img src="https://lh3.googleusercontent.com/aida/ALJJyrDZAMgw4EeVM4S_gIHQ33YBI69YidCt6L7aHXhSECK1I7nbbKwuy2kShM05OXT6yzWFjSV15gVSPsvekeidxei0dT3KiNEG3oezYKCqrWZFWfnlXCt5rAjDtc9X3CXFHg-8dV3_d8Xo5pzvZWiuczzrsxBQSwa4mdUZxaudV3REQG4kvEMtQYEQCCu_fgKfCsyPWZRGqFmlxoCKBWJbhMO5SpXskA37c3iBEj58AwpM" alt="My Marriage Logo" class="w-8 h-8 rounded-lg"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-serif italic">My Marriage</span><span class="w-1.5 h-1.5 rounded-full bg-secondary mb-1"></span></div><p class="font-body-md text-body-md text-on-surface-variant">Wedding planning &amp; websites for modern Indian celebrations.</p></div><nav class="flex flex-wrap items-center gap-x-space-lg gap-y-space-sm" data-active-classes="text-on-surface font-semibold"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="features" href="#">Features</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="wedding-websites" href="#">Wedding Websites</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="how-it-works" href="#">How It Works</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacy" href="#">Privacy</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="terms" href="#">Terms</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="contact" href="#">Contact</a></nav></div><div class="pt-space-md border-t border-surface-container-highest/60 flex flex-col sm:flex-row items-center justify-between gap-space-sm"><span class="font-body-sm text-body-sm text-outline">© 2025 My Marriage. All rights reserved.</span><span class="font-body-sm text-body-sm text-outline">Designed for serene multi-day celebrations.</span></div></div></footer>
+
+</body></html>
