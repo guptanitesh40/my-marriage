@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pending Co-owner Invitation — My Marriage</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream: '#FDF9F0',
+          'cream-note': '#F7F3EA',
+          'near-black': '#1C1C16',
+          'dark-slate': '#404845',
+          'deep-green': '#184539',
+          'deep-green-hover': '#13382E',
+          'forest-accent': '#315D50',
+          'champagne-gold': '#B89A70',
+          'gold-dark': '#735A35',
+          stone: '#E9E5DC',
+          'coral-error': '#FFDAD6',
+          'coral-text': '#741A14'
+        },
+        fontFamily: {
+          serif: ['Newsreader', 'Georgia', 'serif'],
+          sans: ['Manrope', 'system-ui', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body {
+    background-color: #FDF9F0;
+    color: #1C1C16;
+    font-family: 'Manrope', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .newsreader {
+    font-family: 'Newsreader', Georgia, serif;
+  }
+  .state-pill.active {
+    background-color: #184539;
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+  .state-pill {
+    background-color: #FFFFFF;
+    color: #404845;
+    border: 1px solid #E9E5DC;
+  }
+</style>
+</head>
+<body class="min-h-screen bg-cream text-near-black flex flex-col selection:bg-champagne-gold/20">
+
+  <!-- TOP PROTOTYPE INTERACTIVE SWITCHER BAR -->
+  <aside aria-label="Interactive Prototype States" class="bg-near-black text-stone text-xs py-2.5 px-4 sticky top-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-semibold tracking-wider uppercase text-[11px] text-stone">State Switcher (v1.0)</span>
+      </div>
+      <div class="flex items-center flex-wrap gap-1.5" role="tablist">
+        <button onclick="setState('single')" id="btn-single" class="state-pill active px-3 py-1 rounded-full transition-all text-xs">Screen A: 1 Invitation</button>
+        <button onclick="setState('dialog')" id="btn-dialog" class="state-pill px-3 py-1 rounded-full transition-all text-xs">Screen B: Confirm Separate</button>
+        <button onclick="setState('loading')" id="btn-loading" class="state-pill px-3 py-1 rounded-full transition-all text-xs">Screen C: Joining…</button>
+        <button onclick="setState('error_invalid')" id="btn-error_invalid" class="state-pill px-3 py-1 rounded-full transition-all text-xs">Screen D1: Invalid/Expired</button>
+        <button onclick="setState('error_capacity')" id="btn-error_capacity" class="state-pill px-3 py-1 rounded-full transition-all text-xs">Screen D2: Max Owners</button>
+        <button onclick="setState('error_network')" id="btn-error_network" class="state-pill px-3 py-1 rounded-full transition-all text-xs">Screen D3: Network Error</button>
+        <button onclick="setState('multiple')" id="btn-multiple" class="state-pill px-3 py-1 rounded-full transition-all text-xs">Screen E: 2 Invitations</button>
+        <button onclick="toggleMobileView()" id="btn-mobile" class="px-3 py-1 rounded-full border border-champagne-gold/60 text-champagne-gold hover:bg-champagne-gold/10 transition-all text-xs font-semibold ml-2">📱 Toggle 360px Mobile</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- SHARED ONBOARDING MINIMAL HEADER (Matches Stitch Steps 1, 2 & 3) -->
+  <header class="w-full bg-cream border-b border-stone/70">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <!-- Left: Logo + Wordmark + Workspace Setup -->
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-forest-accent flex items-center justify-center shadow-xs overflow-hidden" aria-hidden="true">
+          <!-- Monogram interlocked rings -->
+          <svg viewBox="0 0 40 40" class="w-7 h-7" fill="none">
+            <circle cx="16" cy="20" r="7.5" stroke="#FDF9F0" stroke-width="2.2" />
+            <circle cx="24" cy="20" r="7.5" stroke="#B89A70" stroke-width="2.2" />
+            <path d="M20 14.5V25.5" stroke="#FDF9F0" stroke-width="1.8" stroke-linecap="round" opacity="0.8"/>
+            <circle cx="20" cy="12" r="1.5" fill="#B89A70"/>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif text-lg font-semibold tracking-tight text-near-black leading-none">My Marriage</span>
+          <span class="text-[10px] tracking-widest font-semibold text-dark-slate uppercase mt-0.5">Workspace Setup</span>
+        </div>
+      </div>
+
+      <!-- Right: User Email Chip + Sign Out -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        <div class="flex items-center gap-2 bg-white border border-stone px-3 py-1.5 rounded-full shadow-2xs max-w-[200px] sm:max-w-none">
+          <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
+          <span class="text-xs font-medium text-dark-slate truncate" title="priya@example.com">priya@example.com</span>
+        </div>
+        <button class="text-xs font-semibold text-dark-slate hover:text-near-black transition-colors underline-offset-4 hover:underline">
+          Sign out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN VIEWPORT CONTAINER -->
+  <main class="flex-1 flex flex-col justify-center items-center px-4 py-8 sm:py-12">
+    
+    <!-- WRAPPER (Switches between Desktop 720px max and Mobile 360px viewport simulation) -->
+    <div id="content-container" class="w-full max-w-[720px] transition-all duration-300">
+      
+      <!-- ======================================================== -->
+      <!-- VIEW: SINGLE INVITATION (Primary Screen A, C, D1, D2, D3) -->
+      <!-- ======================================================== -->
+      <div id="view-single" class="space-y-6">
+
+        <!-- Top Header Group (Strictly NO progress bar / step indicator) -->
+        <div class="text-center space-y-2">
+          <div class="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.18em] text-champagne-gold uppercase">
+            <span class="w-1.5 h-1.5 rounded-full bg-forest-accent"></span>
+            <span>You're Invited</span>
+          </div>
+          <h1 class="newsreader text-3xl sm:text-4xl font-normal text-near-black tracking-tight">
+            Join your wedding.
+          </h1>
+          <p class="text-sm sm:text-base text-dark-slate max-w-lg mx-auto leading-relaxed">
+            <strong class="font-semibold text-near-black">Arjun Mehta</strong> has already set up your wedding on My Marriage and invited you to plan it together.
+          </p>
+        </div>
+
+        <!-- The White Invitation Card -->
+        <section aria-label="Wedding Invitation Details" class="bg-white rounded-2xl border border-stone shadow-sm p-6 sm:p-8 space-y-6 relative overflow-hidden">
+          
+          <!-- Subtle decorative corner accent matching Step 1 -->
+          <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-cream-note to-transparent pointer-events-none rounded-tr-2xl"></div>
+
+          <!-- Header within card -->
+          <div class="border-b border-stone/60 pb-5">
+            <span class="text-[10px] font-bold tracking-widest text-dark-slate uppercase block mb-1">Wedding</span>
+            <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+              <h2 class="newsreader text-2xl sm:text-3xl font-medium text-near-black">
+                Ananya &amp; Arjun
+              </h2>
+              <span class="inline-flex items-center gap-1.5 text-xs text-forest-accent font-semibold bg-forest-accent/5 px-2.5 py-1 rounded-full self-start sm:self-auto border border-forest-accent/15">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                Co-owner invitation
+              </span>
+            </div>
+          </div>
+
+          <!-- Location and Date Rows -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <!-- Location -->
+            <div class="flex items-start gap-3 p-3 rounded-xl bg-cream/60 border border-stone/50">
+              <div class="w-8 h-8 rounded-lg bg-white border border-stone flex items-center justify-center text-forest-accent shrink-0 mt-0.5">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <div>
+                <span class="text-xs text-dark-slate block font-medium">Primary location</span>
+                <span class="font-semibold text-near-black">Jaipur, Rajasthan</span>
+              </div>
+            </div>
+
+            <!-- Date -->
+            <div class="flex items-start gap-3 p-3 rounded-xl bg-cream/60 border border-stone/50">
+              <div class="w-8 h-8 rounded-lg bg-white border border-stone flex items-center justify-center text-forest-accent shrink-0 mt-0.5">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <span class="text-xs text-dark-slate block font-medium">Celebration date</span>
+                <span class="font-semibold text-near-black">Sunday, 14 February 2027</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="h-px bg-stone/70"></div>
+
+          <!-- Inviter Row -->
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center gap-3">
+              <!-- Initials Avatar AM -->
+              <div class="w-9 h-9 rounded-full bg-forest-accent text-cream font-semibold text-xs flex items-center justify-center border border-forest-accent/30 shadow-2xs">
+                AM
+              </div>
+              <div>
+                <span class="text-xs text-dark-slate block leading-none mb-1">Invited by</span>
+                <span class="font-medium text-near-black">Arjun Mehta</span>
+              </div>
+            </div>
+            <span class="text-xs text-dark-slate/80">Pending your response</span>
+          </div>
+
+          <!-- Soft Cream Reassurance Note -->
+          <div class="bg-cream-note rounded-xl p-4 border border-champagne-gold/25 flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-champagne-gold/15 flex items-center justify-center text-gold-dark shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+            </div>
+            <p class="text-xs sm:text-sm text-dark-slate leading-relaxed">
+              You'll join as an <strong class="font-semibold text-near-black">equal owner</strong>, with the exact same access as Arjun. You can configure ceremonies, assign tasks, manage expenses, and publish your wedding website together.
+            </p>
+          </div>
+
+          <!-- ============================================== -->
+          <!-- DYNAMIC ACTION AREA (Replaced based on state) -->
+          <!-- ============================================== -->
+          <div id="action-container" class="space-y-4 pt-2">
+            
+            <!-- DEFAULT / ACCEPT BUTTON -->
+            <button id="btn-accept-main" onclick="simulateAccept()" class="w-full h-12 bg-deep-green hover:bg-deep-green-hover text-white font-medium rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-150 focus:ring-2 focus:ring-forest-accent focus:ring-offset-2">
+              <span>Accept and join</span>
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </button>
+
+            <!-- LOADING STATE (Screen C) -->
+            <button id="btn-accept-loading" class="hidden w-full h-12 bg-deep-green/80 text-white font-medium rounded-xl flex items-center justify-center gap-3 cursor-not-allowed opacity-90 shadow-sm" disabled aria-busy="true">
+              <svg class="animate-spin h-5 w-5 text-cream" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Joining workspace…</span>
+            </button>
+
+            <!-- ERROR STATE 1: Expired / Withdrawn (Screen D1) -->
+            <div id="error-box-invalid" class="hidden p-4 rounded-xl bg-coral-error border border-coral-text/20 text-coral-text space-y-2" role="alert">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <div class="text-xs sm:text-sm font-medium">
+                  This invitation is no longer valid. Ask Arjun to send a new one.
+                </div>
+              </div>
+              <div class="pt-1 text-center">
+                <button onclick="openConfirmDialog()" class="text-xs sm:text-sm font-semibold underline text-coral-text hover:text-near-black">
+                  Start my own wedding instead
+                </button>
+              </div>
+            </div>
+
+            <!-- ERROR STATE 2: Max 2 Owners (Screen D2) -->
+            <div id="error-box-capacity" class="hidden p-4 rounded-xl bg-coral-error border border-coral-text/20 text-coral-text space-y-2" role="alert">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="text-xs sm:text-sm font-medium">
+                  Ananya &amp; Arjun's wedding already has two active owners.
+                </div>
+              </div>
+              <div class="pt-1 text-center">
+                <button onclick="openConfirmDialog()" class="text-xs sm:text-sm font-semibold underline text-coral-text hover:text-near-black">
+                  Start my own wedding instead
+                </button>
+              </div>
+            </div>
+
+            <!-- ERROR STATE 3: Network Failure (Screen D3) -->
+            <div id="error-box-network" class="hidden p-4 rounded-xl bg-coral-error border border-coral-text/20 text-coral-text space-y-3" role="alert">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="text-xs sm:text-sm font-medium">
+                  We couldn't join the wedding just now. Please try again.
+                </div>
+              </div>
+              <button onclick="simulateAccept()" class="w-full py-2.5 bg-deep-green text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-deep-green-hover transition-colors">
+                Try again
+              </button>
+            </div>
+
+            <!-- Secondary Text Link -->
+            <div id="secondary-link-container" class="text-center pt-1">
+              <button onclick="openConfirmDialog()" class="text-xs sm:text-sm text-dark-slate hover:text-near-black font-semibold underline underline-offset-4 decoration-stone hover:decoration-near-black transition-colors focus:ring-2 focus:ring-forest-accent p-1 rounded">
+                Start my own wedding instead
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Small Lock Icon + Privacy Supporting Footer -->
+          <div class="border-t border-stone/60 pt-4 flex items-center justify-center gap-2 text-center text-xs text-dark-slate/80">
+            <svg class="w-3.5 h-3.5 text-champagne-gold shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <span>Invitations are private. Only you can accept one sent to <strong class="text-near-black font-semibold">priya@example.com</strong>.</span>
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- VIEW: MULTIPLE INVITATIONS (Screen E)                     -->
+      <!-- ======================================================== -->
+      <div id="view-multiple" class="hidden space-y-6">
+        
+        <!-- Header for Multiple Invitations -->
+        <div class="text-center space-y-2">
+          <div class="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.18em] text-champagne-gold uppercase">
+            <span class="w-1.5 h-1.5 rounded-full bg-forest-accent"></span>
+            <span>2 Pending Invitations</span>
+          </div>
+          <h1 class="newsreader text-3xl sm:text-4xl font-normal text-near-black tracking-tight">
+            You have 2 invitations.
+          </h1>
+          <p class="text-sm sm:text-base text-dark-slate max-w-lg mx-auto leading-relaxed">
+            Choose the wedding you'd like to join. You can own only one active wedding at a time.
+          </p>
+        </div>
+
+        <!-- Vertical List of Compact Invitation Cards -->
+        <div class="space-y-4">
+          
+          <!-- Card 1: Ananya & Arjun (Jaipur) -->
+          <article class="bg-white rounded-2xl border border-stone p-5 sm:p-6 shadow-2xs hover:border-forest-accent/50 transition-all space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-stone/50 pb-4">
+              <div>
+                <span class="text-[10px] font-bold tracking-widest text-dark-slate uppercase block">Wedding 1</span>
+                <h2 class="newsreader text-2xl font-medium text-near-black">Ananya &amp; Arjun</h2>
+              </div>
+              <div class="text-xs text-dark-slate flex items-center gap-2">
+                <span class="w-7 h-7 rounded-full bg-forest-accent text-cream text-[11px] font-semibold flex items-center justify-center">AM</span>
+                <span>Invited by <strong class="text-near-black">Arjun Mehta</strong></span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 text-xs text-dark-slate">
+              <span class="inline-flex items-center gap-1.5 bg-cream px-3 py-1.5 rounded-lg border border-stone/50">
+                <svg class="w-3.5 h-3.5 text-forest-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                Jaipur, Rajasthan
+              </span>
+              <span class="inline-flex items-center gap-1.5 bg-cream px-3 py-1.5 rounded-lg border border-stone/50">
+                <svg class="w-3.5 h-3.5 text-forest-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                Sunday, 14 February 2027
+              </span>
+              <span class="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md text-[11px] font-semibold">Equal Co-owner</span>
+            </div>
+
+            <button onclick="simulateMultipleAccept(1)" id="btn-multi-1" class="w-full h-11 bg-deep-green hover:bg-deep-green-hover text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-all">
+              <span>Accept and join this wedding</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </article>
+
+          <!-- Card 2: Riya & Kabir (Udaipur) -->
+          <article class="bg-white rounded-2xl border border-stone p-5 sm:p-6 shadow-2xs hover:border-forest-accent/50 transition-all space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-stone/50 pb-4">
+              <div>
+                <span class="text-[10px] font-bold tracking-widest text-dark-slate uppercase block">Wedding 2</span>
+                <h2 class="newsreader text-2xl font-medium text-near-black">Riya &amp; Kabir</h2>
+              </div>
+              <div class="text-xs text-dark-slate flex items-center gap-2">
+                <span class="w-7 h-7 rounded-full bg-champagne-gold text-white text-[11px] font-semibold flex items-center justify-center">KS</span>
+                <span>Invited by <strong class="text-near-black">Kabir Sharma</strong></span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 text-xs text-dark-slate">
+              <span class="inline-flex items-center gap-1.5 bg-cream px-3 py-1.5 rounded-lg border border-stone/50">
+                <svg class="w-3.5 h-3.5 text-forest-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                Udaipur, Rajasthan
+              </span>
+              <span class="inline-flex items-center gap-1.5 bg-cream px-3 py-1.5 rounded-lg border border-stone/50 text-dark-slate">
+                <svg class="w-3.5 h-3.5 text-forest-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                Date not set yet
+              </span>
+              <span class="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md text-[11px] font-semibold">Equal Co-owner</span>
+            </div>
+
+            <button onclick="simulateMultipleAccept(2)" id="btn-multi-2" class="w-full h-11 bg-deep-green hover:bg-deep-green-hover text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-all">
+              <span>Accept and join this wedding</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </article>
+
+        </div>
+
+        <!-- Secondary Option for Multiple -->
+        <div class="text-center pt-2 space-y-4">
+          <button onclick="openConfirmDialog(true)" class="text-xs sm:text-sm text-dark-slate hover:text-near-black font-semibold underline underline-offset-4 decoration-stone hover:decoration-near-black transition-colors focus:ring-2 focus:ring-forest-accent p-1 rounded">
+            Start my own wedding instead
+          </button>
+
+          <div class="flex items-center justify-center gap-2 text-center text-xs text-dark-slate/80">
+            <svg class="w-3.5 h-3.5 text-champagne-gold shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <span>Invitations are private to <strong class="text-near-black font-semibold">priya@example.com</strong>.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- SCREEN B: CONFIRMATION DIALOG / MOBILE BOTTOM SHEET       -->
+  <!-- ======================================================== -->
+  <div id="modal-confirm" class="hidden fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+    
+    <!-- Dim Backdrop -->
+    <div class="fixed inset-0 bg-near-black/60 backdrop-blur-xs transition-opacity" onclick="closeConfirmDialog()"></div>
+
+    <!-- Centered Dialog (Desktop) / Bottom Sheet (Mobile) -->
+    <div class="min-h-full flex items-end sm:items-center justify-center p-0 sm:p-4 text-center">
+      
+      <div class="relative bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl p-6 sm:p-7 text-left shadow-2xl border border-stone transform transition-all space-y-5 animate-in fade-in zoom-in-95 duration-200">
+        
+        <!-- Mobile drag indicator -->
+        <div class="w-12 h-1 bg-stone rounded-full mx-auto sm:hidden mb-2"></div>
+
+        <!-- Dialog Header -->
+        <div class="space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-coral-error/60 flex items-center justify-center text-coral-text mb-3">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          <h2 id="dialog-title" class="newsreader text-2xl font-medium text-near-black tracking-tight">
+            Start a separate wedding?
+          </h2>
+          <p id="dialog-body" class="text-sm text-dark-slate leading-relaxed">
+            You can own only one active wedding. If you start your own, you won't be able to join <strong class="text-near-black font-semibold">Ananya &amp; Arjun's</strong> wedding as a co-owner until that workspace is resolved.
+          </p>
+        </div>
+
+        <!-- Information Callout Box -->
+        <div class="bg-cream-note p-3.5 rounded-xl border border-stone text-xs text-dark-slate space-y-1">
+          <span class="font-semibold text-near-black block">What happens to your invitation?</span>
+          <span>Your invitation remains pending and will not be revoked, but you will not be able to accept it while owning another active wedding.</span>
+        </div>
+
+        <!-- Dialog Actions -->
+        <div class="space-y-2 pt-2">
+          <!-- Preferred Primary Button: Go back -->
+          <button onclick="closeConfirmDialog()" class="w-full h-11 bg-deep-green hover:bg-deep-green-hover text-white text-sm font-semibold rounded-xl transition-colors shadow-xs">
+            Go back to invitation
+          </button>
+
+          <!-- Secondary Outlined Button: Proceed to Step 1 -->
+          <button onclick="proceedToStep1()" class="w-full h-11 bg-white hover:bg-cream border border-stone text-dark-slate hover:text-near-black text-sm font-semibold rounded-xl transition-colors">
+            Start my own wedding
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT STATE CONTROLLER -->
+  <script>
+    let isMobile = false;
+
+    function resetStates() {
+      // Hide all specific error boxes & loading
+      document.getElementById('btn-accept-main').classList.remove('hidden');
+      document.getElementById('btn-accept-loading').classList.add('hidden');
+      document.getElementById('error-box-invalid').classList.add('hidden');
+      document.getElementById('error-box-capacity').classList.add('hidden');
+      document.getElementById('error-box-network').classList.add('hidden');
+      document.getElementById('secondary-link-container').classList.remove('hidden');
+      
+      // Views
+      document.getElementById('view-single').classList.remove('hidden');
+      document.getElementById('view-multiple').classList.add('hidden');
+      document.getElementById('modal-confirm').classList.add('hidden');
+
+      // State pill styles
+      document.querySelectorAll('.state-pill').forEach(btn => {
+        btn.classList.remove('active');
+      });
+    }
+
+    function setState(state) {
+      resetStates();
+      const targetBtn = document.getElementById('btn-' + state);
+      if (targetBtn) targetBtn.classList.add('active');
+
+      if (state === 'single') {
+        // Default clean state
+      } else if (state === 'dialog') {
+        openConfirmDialog();
+      } else if (state === 'loading') {
+        document.getElementById('btn-accept-main').classList.add('hidden');
+        document.getElementById('btn-accept-loading').classList.remove('hidden');
+        document.getElementById('secondary-link-container').classList.add('hidden');
+      } else if (state === 'error_invalid') {
+        document.getElementById('btn-accept-main').classList.add('hidden');
+        document.getElementById('error-box-invalid').classList.remove('hidden');
+      } else if (state === 'error_capacity') {
+        document.getElementById('btn-accept-main').classList.add('hidden');
+        document.getElementById('error-box-capacity').classList.remove('hidden');
+      } else if (state === 'error_network') {
+        document.getElementById('btn-accept-main').classList.add('hidden');
+        document.getElementById('error-box-network').classList.remove('hidden');
+      } else if (state === 'multiple') {
+        document.getElementById('view-single').classList.add('hidden');
+        document.getElementById('view-multiple').classList.remove('hidden');
+      }
+    }
+
+    function openConfirmDialog(isMultiple = false) {
+      const dialog = document.getElementById('modal-confirm');
+      const dialogBody = document.getElementById('dialog-body');
+      
+      if (isMultiple) {
+        dialogBody.innerHTML = "You can own only one active wedding. If you start your own, you won't be able to accept these invitations while you own it.";
+      } else {
+        dialogBody.innerHTML = "You can own only one wedding. If you start your own, you won't be able to join <strong class='text-near-black font-semibold'>Ananya & Arjun's</strong> wedding.";
+      }
+      
+      dialog.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeConfirmDialog() {
+      document.getElementById('modal-confirm').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+      if (document.getElementById('btn-dialog').classList.contains('active')) {
+        setState('single');
+      }
+    }
+
+    function proceedToStep1() {
+      closeConfirmDialog();
+      alert("Transitioning to Step 1: Create your wedding form (/onboarding/step-1)...");
+    }
+
+    function simulateAccept() {
+      setState('loading');
+      setTimeout(() => {
+        alert("🎉 Successfully accepted invitation! Navigating directly to Ananya & Arjun's Wedding Overview Dashboard...");
+        setState('single');
+      }, 1500);
+    }
+
+    function simulateMultipleAccept(id) {
+      const btn = document.getElementById('btn-multi-' + id);
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<svg class="animate-spin h-4 w-4 text-cream" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Joining…</span>`;
+      btn.disabled = true;
+      btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+      // Disable other button
+      const otherId = id === 1 ? 2 : 1;
+      const otherBtn = document.getElementById('btn-multi-' + otherId);
+      otherBtn.disabled = true;
+      otherBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+      setTimeout(() => {
+        alert("🎉 Successfully accepted wedding " + id + "! Navigating to your invited workspace...");
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        otherBtn.disabled = false;
+        btn.classList.remove('opacity-80', 'cursor-not-allowed');
+        otherBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }, 1500);
+    }
+
+    function toggleMobileView() {
+      isMobile = !isMobile;
+      const container = document.getElementById('content-container');
+      const mobileBtn = document.getElementById('btn-mobile');
+
+      if (isMobile) {
+        container.style.maxWidth = '360px';
+        container.classList.add('border-x', 'border-stone/80', 'px-3', 'shadow-xl', 'bg-cream');
+        mobileBtn.classList.add('bg-champagne-gold', 'text-white');
+        mobileBtn.innerHTML = '🖥️ Return to Desktop (720px)';
+      } else {
+        container.style.maxWidth = '720px';
+        container.classList.remove('border-x', 'border-stone/80', 'px-3', 'shadow-xl');
+        mobileBtn.classList.remove('bg-champagne-gold', 'text-white');
+        mobileBtn.innerHTML = '📱 Toggle 360px Mobile';
+      }
+    }
+  </script>
+
+</body>
+</html>

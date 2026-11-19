@@ -193,6 +193,123 @@ test('the partner is invited, signs up from the email, accepts and becomes an ow
   await partnerContext.close();
 });
 
+test('a partner who signs up without the link sees the invitation and joins in one click', async ({
+  browser,
+}) => {
+  const ownerEmail = uniqueEmail('owner');
+  const partnerEmail = uniqueEmail('partner');
+
+  const ownerContext = await newVisitor(browser);
+  const owner = await ownerContext.newPage();
+  await signUpVerified(owner, ownerEmail, 'Arjun Mehta');
+  await owner.goto('/onboarding');
+  await createWedding(owner, {
+    bride: 'Ananya',
+    groom: 'Arjun',
+    city: 'Jaipur',
+    state: 'Rajasthan',
+    date: '2031-02-14',
+  });
+  await owner.getByLabel('Partner’s email address').fill(partnerEmail);
+  await owner.getByRole('button', { name: 'Send invitation' }).click();
+  await waitForEmail(partnerEmail, /invited you/);
+
+  // The partner never opens the invitation link: they sign up directly.
+  const partnerContext = await newVisitor(browser, {
+    viewport: { width: PHONE.width, height: PHONE.height },
+  });
+  const partner = await partnerContext.newPage();
+  const errors = collectErrors(partner);
+  await signUpVerified(partner, partnerEmail, 'Ananya Rao');
+  await partner.getByRole('link', { name: 'See your invitation' }).click();
+
+  await expect(partner).toHaveURL('/onboarding');
+  await expect(
+    partner.getByRole('heading', { level: 1, name: 'Join your wedding.' }),
+  ).toBeVisible();
+  const card = partner.getByRole('region', { name: 'Invitation to Ananya & Arjun’s wedding' });
+  await expect(card).toContainText('Jaipur, Rajasthan');
+  await expect(card).toContainText('Friday, 14 February 2031');
+  await expect(card).toContainText('Arjun Mehta');
+  await expect(card).toContainText(`Only you can accept one sent to ${partnerEmail}`);
+  await expectNoSeriousA11yIssues(partner);
+  await expectNoHorizontalScroll(partner);
+
+  // Changing their mind about starting their own: asked first, then back.
+  await partner.getByRole('button', { name: 'Start my own wedding instead' }).click();
+  const dialog = partner.getByRole('dialog', { name: 'Start a separate wedding?' });
+  await expect(dialog).toBeVisible();
+  await expectNoSeriousA11yIssues(partner);
+  await dialog.getByRole('button', { name: 'Go back to invitation' }).click();
+  await expect(dialog).toBeHidden();
+
+  await partner.getByRole('button', { name: 'Accept and join' }).click();
+  await expect(partner).toHaveURL('/dashboard');
+  await expect(partner.getByRole('main')).toContainText('Ananya & Arjun, Jaipur, Rajasthan');
+
+  await owner.goto('/onboarding/partner');
+  await expect(owner.getByText('Your partner has joined')).toBeVisible();
+
+  expect(errors).toEqual([]);
+  await ownerContext.close();
+  await partnerContext.close();
+});
+
+test('an invitee may start their own wedding instead, and is asked again until they do', async ({
+  browser,
+}) => {
+  const ownerContext = await newVisitor(browser);
+  const owner = await ownerContext.newPage();
+  await signUpVerified(owner, uniqueEmail('owner'), 'Kabir Sharma');
+  await owner.goto('/onboarding');
+  await createWedding(owner, {
+    bride: 'Riya',
+    groom: 'Kabir',
+    city: 'Udaipur',
+    state: 'Rajasthan',
+  });
+  const inviteeEmail = uniqueEmail('invitee');
+  await owner.getByLabel('Partner’s email address').fill(inviteeEmail);
+  await owner.getByRole('button', { name: 'Send invitation' }).click();
+  await waitForEmail(inviteeEmail, /invited you/);
+
+  const inviteeContext = await newVisitor(browser);
+  const invitee = await inviteeContext.newPage();
+  await signUpVerified(invitee, inviteeEmail);
+  await invitee.goto('/onboarding');
+  await invitee.getByRole('button', { name: 'Start my own wedding instead' }).click();
+  await invitee
+    .getByRole('dialog', { name: 'Start a separate wedding?' })
+    .getByRole('link', { name: 'Start my own wedding' })
+    .click();
+  await expect(invitee).toHaveURL('/onboarding?start=own');
+  await expect(
+    invitee.getByRole('heading', { level: 1, name: 'Let’s start your wedding' }),
+  ).toBeVisible();
+
+  // Left without creating one: the invitation is still offered next time.
+  await invitee.goto('/onboarding');
+  await expect(
+    invitee.getByRole('heading', { level: 1, name: 'Join your wedding.' }),
+  ).toBeVisible();
+
+  // Once they own a wedding, the invitation is not offered again.
+  await invitee.goto('/onboarding?start=own');
+  await createWedding(invitee, {
+    bride: 'Meera',
+    groom: 'Dev',
+    city: 'Pune',
+    state: 'Maharashtra',
+  });
+  await invitee.goto('/onboarding');
+  await expect(
+    invitee.getByRole('heading', { level: 1, name: 'Your wedding details' }),
+  ).toBeVisible();
+
+  await ownerContext.close();
+  await inviteeContext.close();
+});
+
 test('an invitation for someone else is not accepted by whoever is signed in', async ({
   browser,
 }) => {

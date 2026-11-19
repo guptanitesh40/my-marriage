@@ -38,7 +38,9 @@ Steps 1, 2 & 3" (states "Step 2: Partner" and "Step 2: Sent State").
 - **Resend only, no "Copy link"** (the owner chose this). The worker creates
   the secret as it sends the email, as for verification emails (decision
   0003), so the server never holds a link it could show.
-- **The invitee needs the link and the matching account.** The account alone
+- **The invitee needs the link and the matching account.** _Changed by
+  [0008](0008-invitations-without-the-link.md): a verified matching
+  account is now enough, from the invitation shown on `/onboarding`._ The account alone
   would not be enough: someone could create an account with another person's
   address, which that person might verify by clicking an email they did not
   ask for (the risk noted in the M2 security review). The link is only in

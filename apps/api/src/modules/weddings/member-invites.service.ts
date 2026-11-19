@@ -13,6 +13,7 @@ import { NotificationsService } from '../notifications/notifications.service.js'
 import type { CreateMemberInviteDto } from './dto/create-member-invite.dto.js';
 import type { InvitePreviewDto } from './dto/invite-preview.dto.js';
 import type { MemberInviteDto } from './dto/member-invite.dto.js';
+import type { MyInviteDto } from './dto/my-invite.dto.js';
 import type { WeddingDto } from './dto/wedding.dto.js';
 import { MembershipInvite } from './schemas/membership-invite.schema.js';
 import { WeddingMembership } from './schemas/wedding-membership.schema.js';
@@ -240,22 +241,88 @@ export class MemberInvitesService {
   }
 
   /**
-   * Accepts an invitation as the signed-in, verified account it was sent to.
-   * One transaction adds the owner membership, marks the invitation accepted
-   * and raises the wedding's write fence. Two owners at most is counted
-   * inside it, and the fence write makes simultaneous acceptances for one
-   * wedding conflict, so MongoDB retries the later one, which then sees the
-   * first. One active owned wedding per user is the membership index's job,
-   * as at creation. Accepting the same link again succeeds.
+   * The pending invitations sent to the signed-in account's own (verified)
+   * address, newest first, for weddings that are still active. Lets an
+   * invitee who arrives without the link see what is waiting for them.
+   */
+  async listMine(user: AuthenticatedUser): Promise<MyInviteDto[]> {
+    const invites = await this.invites
+      .find({
+        emailNormalized: normalizeEmail(user.email),
+        status: 'pending',
+        expiresAt: { $gt: new Date() },
+      })
+      .sort({ createdAt: -1 })
+      .lean();
+    if (invites.length === 0) return [];
+    const weddings = await this.weddings
+      .find({ _id: { $in: invites.map((invite) => invite.weddingId) }, status: 'active' })
+      .lean();
+    const byId = new Map(weddings.map((wedding) => [wedding._id.toHexString(), wedding]));
+    const result: MyInviteDto[] = [];
+    for (const invite of invites) {
+      const wedding = byId.get(invite.weddingId.toHexString());
+      if (!wedding) continue;
+      const invitedByName = await this.accounts.displayName(invite.invitedBy);
+      result.push({
+        id: invite._id.toHexString(),
+        brideName: wedding.brideName,
+        groomName: wedding.groomName,
+        city: wedding.city,
+        state: wedding.state,
+        ...(wedding.weddingDate
+          ? { weddingDate: wedding.weddingDate.toISOString().slice(0, 10) }
+          : {}),
+        ...(invitedByName ? { invitedByName } : {}),
+        role: invite.role,
+        expiresAt: invite.expiresAt,
+      });
+    }
+    return result;
+  }
+
+  /**
+   * Accepts an invitation as the signed-in, verified account it was sent to,
+   * from the link in the email. See `join`.
    */
   async accept(user: AuthenticatedUser, token: string, client: ClientContext): Promise<WeddingDto> {
     await this.limiter.consume(WEDDING_RATE_LIMITS.inviteTokenPerIp, client.ip);
     const invite = await this.findByToken(token);
     if (!invite) throw inviteInvalid();
+    // The link must still be the current one when the acceptance is written.
+    return this.join(user, invite, { tokenHashes: sha256(token) });
+  }
+
+  /**
+   * Accepts an invitation without the link: the signed-in account's
+   * verified address is the one it was sent to (decision 0008). Anyone else
+   * gets 404, the same as for an invitation that does not exist.
+   */
+  async acceptById(user: AuthenticatedUser, inviteId: string): Promise<WeddingDto> {
+    const id = parseObjectId(inviteId);
+    const invite = id ? await this.invites.findById(id).lean() : null;
+    if (!invite || invite.emailNormalized !== normalizeEmail(user.email)) throw inviteNotFound();
+    return this.join(user, invite, {});
+  }
+
+  /**
+   * Makes the account an owner of the invitation's wedding.
+   * One transaction adds the owner membership, marks the invitation accepted
+   * and raises the wedding's write fence. Two owners at most is counted
+   * inside it, and the fence write makes simultaneous acceptances for one
+   * wedding conflict, so MongoDB retries the later one, which then sees the
+   * first. One active owned wedding per user is the membership index's job,
+   * as at creation. Accepting the same invitation again succeeds.
+   */
+  private async join(
+    user: AuthenticatedUser,
+    invite: StoredInvite,
+    stillValid: { tokenHashes?: string },
+  ): Promise<WeddingDto> {
     const userId = new Types.ObjectId(user.id);
 
     if (invite.status === 'accepted' && invite.acceptedBy?.equals(userId)) {
-      // A spent link proves nothing on its own: answer only while the
+      // A spent invitation proves nothing on its own: answer only while the
       // account is still an active member of a wedding that is still active.
       const [membership, wedding] = await Promise.all([
         this.memberships
@@ -301,15 +368,10 @@ export class MemberInvitesService {
           { $set: { role: 'owner', status: 'active', activeOwned: true, joinedAt: now } },
           { upsert: true, session },
         );
-        // The link must still be valid now, not only when it was looked up:
-        // a resend in between replaces it, and the invitation may expire.
+        // The invitation must still be valid now, not only when it was looked
+        // up: it may expire, be replaced, or (for a link) be resent meanwhile.
         const accepted = await this.invites.updateOne(
-          {
-            _id: invite._id,
-            status: 'pending',
-            tokenHashes: sha256(token),
-            expiresAt: { $gt: now },
-          },
+          { _id: invite._id, status: 'pending', expiresAt: { $gt: now }, ...stillValid },
           { $set: { status: 'accepted', acceptedBy: userId, acceptedAt: now } },
           { session },
         );

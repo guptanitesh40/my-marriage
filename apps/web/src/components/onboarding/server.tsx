@@ -8,11 +8,13 @@ import { loginThenReturnTo, routes } from '@/lib/routes';
 import { coupleName, whereAndWhen } from '@/lib/weddings/format';
 import {
   getInvites,
+  getMyInvites,
   getMyWeddings,
   ownedActiveWedding,
   type Wedding,
 } from '@/lib/weddings/my-weddings';
 import { PartnerInvite } from './partner-invite';
+import { PendingInvitations } from './pending-invitations';
 import { StepHeading, StepProgress, stepCardClass } from './step-progress';
 import { WeddingDetailsForm } from './wedding-details-form';
 
@@ -36,10 +38,22 @@ async function onboardingVisitor(path: string): Promise<{
  * one (coming back from step 2, or refreshing), the same form showing that
  * wedding, to change its details. A second wedding cannot be created (PRD
  * WED-03), so creating is not offered then.
+ *
+ * Someone who owns no wedding but has been invited to one sees their
+ * invitations first (decision 0008), on every visit until they accept one
+ * or create a wedding, unless they just chose to start their own
+ * (`startOwn`, from "Start my own wedding instead").
  */
-export async function WeddingStep() {
-  const { weddings } = await onboardingVisitor(routes.onboarding);
+export async function WeddingStep({ startOwn = false }: { startOwn?: boolean }) {
+  const { user, weddings } = await onboardingVisitor(routes.onboarding);
   const owned = weddings ? ownedActiveWedding(weddings) : undefined;
+
+  if (!owned && !startOwn) {
+    const invites = await getMyInvites();
+    if (invites && invites.length > 0) {
+      return <PendingInvitations invites={invites} email={user.email} />;
+    }
+  }
 
   return (
     <>
