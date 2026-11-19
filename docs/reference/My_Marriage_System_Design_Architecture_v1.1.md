@@ -9,7 +9,7 @@ VERSION: 1.1
 RELATED DOCUMENT: My Marriage - Product Requirements Document (PRD) v1.0  
 SCOPE: MVP web platform for Indian weddings, private organizing, public wedding sites, invitations/RSVP, notifications and moderated photo galleries.
 
-Confirmed choices: Next.js + TypeScript (frontend), NestJS + TypeScript (backend), MongoDB Atlas, AWS application hosting, AWS S3, Redis + BullMQ, Resend email and in-house NestJS email/password authentication.
+Confirmed choices: Next.js + TypeScript (frontend), NestJS + TypeScript (backend), MongoDB Atlas, AWS application hosting, AWS S3, Redis + BullMQ, Gmail SMTP email and in-house NestJS email/password authentication.
 
 Recommended technical selections: Mongoose, REST/OpenAPI, AWS ECS Fargate for web/API/worker, AWS ElastiCache node-based Redis, AWS CloudFront and Mumbai region. Exact deployment shape, Atlas tier, CDN and budget still require sign-off.
 
@@ -17,7 +17,7 @@ Recommended technical selections: Mongoose, REST/OpenAPI, AWS ECS Fargate for we
 
 My Marriage is a multi-tenant web application for organizing Indian weddings. Each wedding has a private workspace for one or two owners and additional managers, plus a public wedding website. The product handles events, hour-by-hour schedules, tasks, vendor contacts, expenses and payments, invited guest contacts, per-event RSVPs, email reminders, event galleries and YouTube livestream embeds. Guests do not need accounts to respond to a personalized invitation or upload photographs.
 
-This design uses Next.js for responsive frontend and public server-rendered pages; NestJS as business API and in-house authentication authority; MongoDB Atlas as application system of record; and AWS S3 for media. AWS hosts application processes and supporting infrastructure, while Atlas and Resend remain external managed services. One NestJS modular monolith enforces wedding authorization and business consistency. Redis/BullMQ workers send Resend emails and process photos. Only approved media is delivered publicly; originals and pending uploads remain private.
+This design uses Next.js for responsive frontend and public server-rendered pages; NestJS as business API and in-house authentication authority; MongoDB Atlas as application system of record; and AWS S3 for media. AWS hosts application processes and supporting infrastructure, while Atlas and Gmail remain external managed services. One NestJS modular monolith enforces wedding authorization and business consistency. Redis/BullMQ workers send emails over Gmail SMTP and process photos. Only approved media is delivered publicly; originals and pending uploads remain private.
 
 Key guarantees are wedding-by-wedding data isolation; one active **owned** wedding per account; manager membership in other weddings; one invited party-size value applied to each selected event; independently editable RSVPs by event; bearer-token invitation access; and a 5 GB per-wedding storage limit. Archived weddings are read-only for planning and RSVP/upload activities, with restricted owner-only privacy/deletion controls.
 
@@ -34,7 +34,7 @@ Key guarantees are wedding-by-wedding data isolation; one active **owned** weddi
 | Server-side modeling | Recommended | Mongoose via @nestjs/mongoose |
 | API style | Recommended | REST under /api/v1, OpenAPI specification |
 | Jobs | Confirmed | Redis + BullMQ workers; durable MongoDB outbox recommended |
-| Email | Confirmed | Resend (verification, password resets, invitations, reminders) |
+| Email | Confirmed | Gmail SMTP (verification, password resets, invitations, reminders) |
 | Hosting | Confirmed: AWS | AWS hosts web/API/workers; ECS Fargate is recommended, not selected |
 | Photo delivery | Recommended | Private S3, approved-only CDN media path |
 | Authentication | Confirmed | In-house NestJS email/password + secure server sessions; no Cognito |
@@ -81,14 +81,14 @@ An owner may own exactly one active wedding at any time but can be a manager in 
 | Worker processes (NestJS) | Dispatch email; verify/process images; export ZIP; outbox relay | MongoDB, S3, email provider | Retry with backoff; dead-letter and alert after terminal failures |
 | AWS S3 | Original images, quarantine uploads, derivative media, generated exports | IAM, optional CDN | Retry or surface failure; never publish pending images |
 | CDN (proposal) | Serve **approved** photo derivatives only | S3 private origin | Short cache lifetime + invalidation when content hidden |
-| Resend (confirmed) | Verification, invitations, reminders and notifications | Resend API/webhooks; authenticated sender domain | Persist attempt and status, retry safely |
+| Gmail SMTP (confirmed) | Verification, invitations, reminders and notifications | SMTP with a Google App Password; sender is the Gmail account or its alias | Persist attempt and status, retry safely |
 | Observability | Logs, traces, metrics, audit/alerts | Hosted monitoring stack | Alert on critical loss of visibility or processing |
 
 ## 4.3 Backend module layout (NestJS)
 
 A **modular monolith** runs as a deployable API and a separate worker process from the same codebase. Define domain modules with explicit exported services rather than direct cross-module collection access.
 
-- AuthModule: first-party signup/login, Argon2id password hashing, verification/reset tokens, session creation/revocation, email change, throttle/lockout controls; Resend sends transactional identity emails.
+- AuthModule: first-party signup/login, Argon2id password hashing, verification/reset tokens, session creation/revocation, email change, throttle/lockout controls; Gmail SMTP sends transactional identity emails.
 - **WeddingsModule:** wedding setup, active owner constraints, lifecycle, archiving, website publication state.
 - **MembershipsModule:** owner/manager invitations, acceptance, authorization membership queries and revocations.
 - **EventsModule:** ceremonies, venues, day-of timeline entries and public event projection.
@@ -96,7 +96,7 @@ A **modular monolith** runs as a deployable API and a separate worker process fr
 - **GuestsModule / InvitationsModule / RsvpModule:** household-style contact, selected-event invitation, token exchange, RSVP and headcount aggregates.
 - **WebsitesModule:** slug reservation, template/content, preview and publication; public view DTO projections.
 - **MediaModule:** albums, upload intents, quota, S3 signing, moderation, approval and export.
-- NotificationsModule: Resend email templates and provider adapter, verified sending domain, webhook signatures, delivery events; reminder schedule reconciliation, outbox and worker dispatch.
+- NotificationsModule: email templates and the SMTP adapter; reminder schedule reconciliation, outbox and worker dispatch.
 - **AuditModule / PlatformModule:** audit events, request IDs, health checks, config, reusable authorization guards.
 
 Recommended folders: apps/web for Next.js; apps/api for NestJS API; apps/worker for NestJS worker; packages/contracts for versioned DTO/shared types; packages/ui for reusable components if useful. A monorepo may simplify shared types but is not required.
@@ -111,7 +111,7 @@ For public sites, cache only **sanitized published** payloads. Preview/draft con
 
 Confirmed hosting policy: run the application on AWS. Recommended first production topology is Next.js SSR container, NestJS API container and a separate NestJS/BullMQ worker on Amazon ECS Fargate; container images in ECR; HTTPS ingress via Application Load Balancer, ACM and Route 53. Public approved media uses CloudFront with a private S3 origin. These AWS products are implementation recommendations until capacity and cost are reviewed.
 
-AWS ElastiCache node-based Redis OSS is the recommended BullMQ connection (use a compatible engine/version and noeviction policy); validate in staging before launch. Keep MongoDB Atlas on AWS in a region aligned with the application where available. Atlas private endpoints require a qualifying dedicated tier; if a lower tier is used, connect over TLS through restricted egress/IP allowlists, never an unrestricted public database. External Resend API calls require managed outbound network access.
+AWS ElastiCache node-based Redis OSS is the recommended BullMQ connection (use a compatible engine/version and noeviction policy); validate in staging before launch. Keep MongoDB Atlas on AWS in a region aligned with the application where available. Atlas private endpoints require a qualifying dedicated tier; if a lower tier is used, connect over TLS through restricted egress/IP allowlists, never an unrestricted public database. Outbound SMTP to Gmail (port 465 or 587) requires managed outbound network access.
 
 A lower-operations AWS alternative is Amplify Hosting for the Next.js app, with NestJS API/worker on ECS; validate the selected Next.js major version and required SSR features against Amplify support before choosing it. Keep all business logic and session authority in NestJS; do not introduce Amplify Auth or Cognito merely because of frontend hosting.
 
@@ -284,7 +284,7 @@ A presigned URL is a capability; never log or save its full query string. No S3 
 
 ## 8.1 Identity, access and isolation
 
-- Use in-house NestJS email/password authentication with Argon2id hashes and opaque random session tokens; store only hashed session secrets in MongoDB, and set HttpOnly, Secure, SameSite cookies with intentional CSRF protections. Email verification and password resets use random, hashed, single-use, short-lived tokens sent through Resend. Rotate/revoke sessions after sensitive account actions; rate-limit by IP and normalized account key, slow down credential stuffing, and avoid email enumeration in recovery responses.
+- Use in-house NestJS email/password authentication with Argon2id hashes and opaque random session tokens; store only hashed session secrets in MongoDB, and set HttpOnly, Secure, SameSite cookies with intentional CSRF protections. Email verification and password resets use random, hashed, single-use, short-lived tokens sent through Gmail SMTP. Rotate/revoke sessions after sensitive account actions; rate-limit by IP and normalized account key, slow down credential stuffing, and avoid email enumeration in recovery responses.
 - Validate request body through DTOs and route resource access through server-side guards checking (current user, weddingId, role, wedding status); **all Mongo queries must be wedding-scoped**, not just findById.
 - All public responses are allowlisted DTOs. Never expose organizer email lists, vendor private contacts, guest PII, tokens, private S3 keys or expenses in published Next.js payloads, HTML, caches or page metadata.
 - Guest invitation and photo-upload tokens are independent, random, revocable capabilities. Apply short sessions, rate limits, security headers, no-referrer for invitation pages, noindex and no third-party trackers on private invitation pages.
@@ -292,11 +292,11 @@ A presigned URL is a capability; never log or save its full query string. No S3 
 
 ## 8.1.1 In-house authentication responsibilities (v1.1)
 
-NestJS owns email/password signup, verification, login/logout, forgotten-password flows, session inventory/revocation, password change, account recovery and access checks. Resend is only the email delivery service: it never becomes the source of user identity. Database users.passwordHash and hashed sessions/recovery/verification tokens are canonical; raw passwords and raw secrets are never logged or returned.
+NestJS owns email/password signup, verification, login/logout, forgotten-password flows, session inventory/revocation, password change, account recovery and access checks. Gmail is only the email delivery service: it never becomes the source of user identity. Database users.passwordHash and hashed sessions/recovery/verification tokens are canonical; raw passwords and raw secrets are never logged or returned.
 
-Required auth security tests: credential stuffing/rate limits, sign-in after verification, expired/reused reset tokens, account enumeration resistance, session fixation, CSRF, logout/revocation, access from another wedding, email changes requiring re-verification and auth when Resend is unavailable. Support manual recovery procedure for an inaccessible sole owner; do not automatically grant owner privileges to a manager.
+Required auth security tests: credential stuffing/rate limits, sign-in after verification, expired/reused reset tokens, account enumeration resistance, session fixation, CSRF, logout/revocation, access from another wedding, email changes requiring re-verification and auth when Gmail SMTP is unavailable. Support manual recovery procedure for an inaccessible sole owner; do not automatically grant owner privileges to a manager.
 
-Resend integration: verify the sender domain (DNS records), store the API key in AWS Secrets Manager, use an adapter within NotificationsModule, verify webhook signatures when processing delivery events, deduplicate provider callbacks, and respect provider throughput/plan limits. Login should not depend on Resend availability; only email-triggered verification/reset/invite flows are delayed during provider outages.
+Gmail SMTP integration: send from the Gmail account (or an alias added to it) with a Google App Password, store the App Password in AWS Secrets Manager, use an adapter within NotificationsModule, and respect Gmail's sending limits (about 500 emails a day). Gmail reports no delivery events, so "sent" means the server accepted the email. Login should not depend on Gmail availability; only email-triggered verification/reset/invite flows are delayed during provider outages.
 
 ## 8.2 AWS S3 and photo safety
 
@@ -317,9 +317,9 @@ Resend integration: verify the sender domain (DNS records), store the API key in
 
 ## 9.1 Proposed deployment topology
 
-Confirmed deployment boundary: AWS hosts Next.js, NestJS API and worker, network, S3, media delivery and supporting Redis infrastructure. Recommended first option: ECS Fargate for three container services, ECR, ALB/ACM, Route 53 and CloudFront, plus ElastiCache node-based Redis. MongoDB Atlas is the managed external database; Resend is the external transactional mail provider. Use TLS for all traffic, private subnets for stateful backends and least-privilege IAM. Select production region and Atlas tier after an AWS/Atlas cost and networking review.
+Confirmed deployment boundary: AWS hosts Next.js, NestJS API and worker, network, S3, media delivery and supporting Redis infrastructure. Recommended first option: ECS Fargate for three container services, ECR, ALB/ACM, Route 53 and CloudFront, plus ElastiCache node-based Redis. MongoDB Atlas is the managed external database; Gmail (SMTP) is the external transactional mail provider. Use TLS for all traffic, private subnets for stateful backends and least-privilege IAM. Select production region and Atlas tier after an AWS/Atlas cost and networking review.
 
-AWS-only application-hosting alternative: Amplify Hosting for Next.js SSR (only if compatible with the selected Next.js version and features), with API and worker on ECS. A single ECS deployment for all three applications is operationally consistent but can have higher always-on compute, load balancer and networking costs. Atlas and Resend remain separately billed third-party services. Obtain a monthly cost estimate before creating a production VPC/NAT/ALB or dedicated Atlas tier.
+AWS-only application-hosting alternative: Amplify Hosting for Next.js SSR (only if compatible with the selected Next.js version and features), with API and worker on ECS. A single ECS deployment for all three applications is operationally consistent but can have higher always-on compute, load balancer and networking costs. Atlas remains a separately billed third-party service, and Gmail a separate Google account. Obtain a monthly cost estimate before creating a production VPC/NAT/ALB or dedicated Atlas tier.
 
 ## 9.2 Environment and CI/CD plan
 
@@ -348,15 +348,15 @@ Logs should include request IDs, error codes, wedding IDs where safe, and worker
 
 ## 9.4 Failure modes and graceful degradation
 
-If MongoDB Atlas fails, in-house auth session validation, private reads and writes fail closed; never accept authorization from a stale local cache. If Resend fails, verification, reset, invitation and reminder mail tasks remain queued/visible and are retried, without claiming delivery. Redis/BullMQ outage retains durable intent in MongoDB outbox and replays on restoration. S3 upload failure supports retry and quota reconciliation; CloudFront failure degrades approved photo display without taking down wedding schedules. Archiving confirms only after database commit.
+If MongoDB Atlas fails, in-house auth session validation, private reads and writes fail closed; never accept authorization from a stale local cache. If Gmail SMTP fails, verification, reset, invitation and reminder mail tasks remain queued/visible and are retried, without claiming delivery. Redis/BullMQ outage retains durable intent in MongoDB outbox and replays on restoration. S3 upload failure supports retry and quota reconciliation; CloudFront failure degrades approved photo display without taking down wedding schedules. Archiving confirms only after database commit.
 
 ## 9.5 Confirmed selections: costs and operational trade-offs
 
-In-house NestJS authentication avoids a managed identity subscription and provider coupling but makes the team accountable for password policy, session security, resets, breach response and recovery support. Implement secure defaults and security tests before pilot users join. Resend simplifies templates and transactional delivery but requires domain validation, quota handling and an external API dependency.
+In-house NestJS authentication avoids a managed identity subscription and provider coupling but makes the team accountable for password policy, session security, resets, breach response and recovery support. Implement secure defaults and security tests before pilot users join. Gmail SMTP needs no domain setup or paid plan, but has a daily sending limit, no delivery events and sends from a Gmail address.
 
-AWS Fargate, ALB, NAT/egress, CloudFront, ElastiCache, S3 requests/transfer and monitoring can create material fixed costs even with low traffic. MongoDB Atlas and Resend are billed separately. Atlas PrivateLink is only available on qualifying dedicated tiers, potentially increasing pilot cost. A 5 GB-per-wedding quota limits individual storage but does not cap aggregate cost as the number of weddings grows.
+AWS Fargate, ALB, NAT/egress, CloudFront, ElastiCache, S3 requests/transfer and monitoring can create material fixed costs even with low traffic. MongoDB Atlas is billed separately. Atlas PrivateLink is only available on qualifying dedicated tiers, potentially increasing pilot cost. A 5 GB-per-wedding quota limits individual storage but does not cap aggregate cost as the number of weddings grows.
 
-Implementation sign-off checklist: (1) create AWS cost budget and billing alerts, (2) choose deployment topology and region, (3) choose Atlas tier/network path, (4) verify Resend sending domain and webhook signing, (5) configure node-based ElastiCache Redis with BullMQ-compatible eviction policy, and (6) document backup/restore, incident ownership and data deletion procedures. Do not provision costly always-on infrastructure before comparing realistic pilot options.
+Implementation sign-off checklist: (1) create AWS cost budget and billing alerts, (2) choose deployment topology and region, (3) choose Atlas tier/network path, (4) set up the Gmail sending account and its App Password, (5) configure node-based ElastiCache Redis with BullMQ-compatible eviction policy, and (6) document backup/restore, incident ownership and data deletion procedures. Do not provision costly always-on infrastructure before comparing realistic pilot options.
 
 # 10. Alternatives Considered
 
@@ -380,16 +380,16 @@ The product requirements and technology selections are approved. Remaining quest
 1. AWS resources and region: select ECS Fargate versus AWS Amplify+ECS; choose Mumbai or another AWS region; assess CloudFront, ALB, NAT and outbound connectivity costs; set initial load target and cost alert thresholds.
 2. MongoDB Atlas tier/networking: Atlas is confirmed; choose transactional replica-set tier and AWS region, backups/PITR and connectivity path (private endpoint on eligible dedicated tiers or restricted TLS egress).
 3. Redis + BullMQ setup: confirmed; select ElastiCache node-based Redis OSS topology and compatible version; test noeviction policy, persistence/recovery and worker retry behavior.
-4. Resend configuration: confirmed; verify sending domain, choose sender addresses and account tier, set webhook signature validation, throughput and bounce/complaint policy. Resend also delivers verification and password-reset emails.
+4. Gmail SMTP configuration: confirmed; choose the sending Gmail account and sender alias, create its App Password, and plan for the daily sending limit. Gmail also delivers verification and password-reset emails.
 5. **Media quotas:** define whether 5 GB counts originals and derivatives (recommended: count all retained bytes), per-image cap, allowed formats, export retention and actual S3 billing monitoring.
 6. **Photo privacy:** approve CDN cache TTL/purge strategy for emergency hides/unpublishing, retention and abuse review processes.
 7. **Operations:** choose observability, backup recovery objective, deletion grace period, and provider-account ownership.
 
-Proposed engineering defaults: first-party NestJS authentication (Argon2id + MongoDB opaque sessions); MongoDB Atlas/Mongoose; REST/OpenAPI; Redis/BullMQ with MongoDB transactional outbox and ElastiCache node-based Redis; private S3 with CloudFront approved-media delivery; Resend; AWS ECS Fargate for web/API/worker. Provider versions and region should be pinned only after a cost and compatibility check.
+Proposed engineering defaults: first-party NestJS authentication (Argon2id + MongoDB opaque sessions); MongoDB Atlas/Mongoose; REST/OpenAPI; Redis/BullMQ with MongoDB transactional outbox and ElastiCache node-based Redis; private S3 with CloudFront approved-media delivery; Gmail SMTP; AWS ECS Fargate for web/API/worker. Provider versions and region should be pinned only after a cost and compatibility check.
 
 # 12. Decision and Delivery Sequence
 
-Recommendation: Proceed with Next.js + NestJS modular monolith, MongoDB Atlas, Redis/BullMQ, Resend and private AWS S3, hosting the application on AWS. Authentication is owned by our NestJS AuthModule: no Cognito or hosted identity dependency. Begin with the secure identity/tenancy foundation, then planning, guests/public site and media. Confirm AWS resource shape, Atlas tier and monthly spend alerts before production rollout.
+Recommendation: Proceed with Next.js + NestJS modular monolith, MongoDB Atlas, Redis/BullMQ, Gmail SMTP and private AWS S3, hosting the application on AWS. Authentication is owned by our NestJS AuthModule: no Cognito or hosted identity dependency. Begin with the secure identity/tenancy foundation, then planning, guests/public site and media. Confirm AWS resource shape, Atlas tier and monthly spend alerts before production rollout.
 
 | **Milestone** | **Deliverable** | **Exit criteria** |
 |---|---|---|
@@ -445,4 +445,4 @@ Recommendation: Proceed with Next.js + NestJS modular monolith, MongoDB Atlas, R
 - [AWS-2] S3 presigned URL behavior — official guidance
 - [BULL-1] BullMQ — idempotent jobs and job schedulers
 
-Document status: v1.1 proposed for engineering implementation review. Confirmed: Next.js, NestJS, MongoDB Atlas, AWS hosting/S3, Redis + BullMQ, Resend and in-house NestJS authentication. Implementation choices such as AWS ECS versus Amplify hosting, ElastiCache sizing, CDN, region and budget remain to be approved.
+Document status: v1.1 proposed for engineering implementation review. Confirmed: Next.js, NestJS, MongoDB Atlas, AWS hosting/S3, Redis + BullMQ, Gmail SMTP and in-house NestJS authentication. Implementation choices such as AWS ECS versus Amplify hosting, ElastiCache sizing, CDN, region and budget remain to be approved.

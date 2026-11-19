@@ -4,7 +4,7 @@ MongoDB Schema & Data Model
 
 Engineering design specification  |  Version 1.0  |  13 November 2026
 
-Implementation baseline for the approved PRD v1.0 and System Design & Architecture v1.1. Technology choices: NestJS, MongoDB Atlas, Mongoose (recommended), AWS S3, Redis/BullMQ, Resend and in-house authentication.
+Implementation baseline for the approved PRD v1.0 and System Design & Architecture v1.1. Technology choices: NestJS, MongoDB Atlas, Mongoose (recommended), AWS S3, Redis/BullMQ, Gmail SMTP and in-house authentication.
 
 | **DESIGN STATUS** | **DATABASE** | **SOURCE OF TRUTH** |
 |---|---|---|
@@ -49,7 +49,7 @@ Important: MongoDB TTL cleanup is not an access-control mechanism. The API must 
 | Guests | weddings -> guest_contacts -> event_invitations -> events; invitation_tokens -> guest_sessions |
 | Website | weddings -> website_configs; website public DTOs are read projections |
 | Media | weddings -> albums -> photos; upload_capabilities -> upload_intents; S3 holds object bytes |
-| Background | notifications + outbox_events -> Redis/BullMQ worker -> Resend; audit_events record changes |
+| Background | notifications + outbox_events -> Redis/BullMQ worker -> Gmail SMTP; audit_events record changes |
 
 # 2. Types, naming and common validation
 
@@ -60,7 +60,7 @@ Important: MongoDB TTL cleanup is not an access-control mechanism. The API must 
 - Money is modeled in integer paise. If using JS Number, enforce Number.isSafeInteger, nonnegative bounds and max safe integer. No fractional paise; Decimal128/BSON Long may replace Number if higher-range needs emerge.
 - Enums are wire-contract literals, not human UI labels; changes require migrations and API compatibility review.
 - Normalize user and invitation email strings consistently. Guest email is optional and nonunique within the wedding; never create a global guest email uniqueness index.
-- Store secrets as hashes (session, reset, invite and QR). Never store complete URL tokens, S3 presigned URLs, password plaintext or Resend API secrets.
+- Store secrets as hashes (session, reset, invite and QR). Never store complete URL tokens, S3 presigned URLs, password plaintext or SMTP passwords.
 - Use bounded embedded objects for venues, site content and current RSVP; use separate collections for unbounded member lists, payments, guests, comments, photos or audit history.
 - For nullable optional IDs, omit missing fields rather than relying on mixed null/missing behavior in unique indexes.
 
@@ -80,7 +80,7 @@ Important: MongoDB TTL cleanup is not an access-control mechanism. The API must 
 
 # 3. Complete collection catalog
 
-The following collections cover both user-facing features and minimal operational reliability. Collections marked by support workflows (e.g. webhook receipts and deletion jobs) are implementation enablers, not new product features.
+The following collections cover both user-facing features and minimal operational reliability. Collections marked by support workflows (e.g. outbox events and deletion jobs) are implementation enablers, not new product features.
 
 ## Identity & access
 
@@ -135,7 +135,6 @@ The following collections cover both user-facing features and minimal operationa
 | **COLLECTION** | **PURPOSE** |
 |---|---|
 | notifications | Outbound email intention and provider delivery state. |
-| resend_webhook_events | Deduplicate signed Resend webhook callbacks before updating notifications. |
 | outbox_events | Transactional durable side-effect intentions for BullMQ workers. |
 | audit_events | Append-only access-safe audit log for sensitive changes. |
 | idempotency_keys | Prevent duplicated effects for retried client mutation requests. |
@@ -569,27 +568,15 @@ Outbound email intention and provider delivery state.
 | dueAt, scheduleVersion | date,int? | Reminder schedule and revision. |
 | idempotencyKey | string / required | Stable unique key for logical delivery. |
 | state | enum / required | queued \| processing \| sent \| delivered \| bounced \| failed \| suppressed. |
-| providerMessageId | string? | Resend identifier, unique when present. |
+| providerMessageId | string? | Message-ID of the accepted email, unique when present. |
 | attempts, lastErrorCode | int,string? | Retry observation; redact provider error PII. |
 | createdAt, updatedAt | date / required | Timestamps. |
 
 Indexes: UNIQUE(idempotencyKey); UNIQUE(providerMessageId) PARTIAL(string exists); INDEX(state,dueAt).
 
-### 4.25  resend_webhook_events
+### 4.25  (removed)
 
-Deduplicate signed Resend webhook callbacks before updating notifications.
-
-| **FIELD** | **BSON / RULE** | **MEANING / VALIDATION** |
-|---|---|---|
-| providerEventId | string / required | Unique provider event identifier. |
-| providerMessageId | string? | Links to notification. |
-| eventType | string / required | delivered, bounced, complained, etc. |
-| occurredAt | date / required | Provider time. |
-| processedAt | date? | Application processing completion. |
-| expiresAt | date? | Optional retention after audit window. |
-| createdAt | date / required | Receipt time. |
-
-Indexes: UNIQUE(providerEventId); INDEX(providerMessageId,occurredAt); optional TTL after retention policy.
+Formerly the email provider's webhook receipts. Email is sent over Gmail SMTP, which reports no delivery events, so there are no callbacks to deduplicate (decision 0007).
 
 ### 4.26  outbox_events
 
@@ -878,7 +865,7 @@ db.runCommand({ collMod: "guest_contacts", validator: {
 - Only transient authentication/guest sessions and short-lived action tokens use TTL. Wedding, guest, RSVP, payment, photo, and audit records are not erased by TTL.
 - Archiving preserves published pages and approved photos; owners retain narrowly scoped unpublish/remove/delete safety actions despite ordinary planning being read-only.
 - Account/wedding deletion is an explicit asynchronous process spanning MongoDB, S3, CDN and queue remnants. Track it with deletion_jobs and reconcile failures.
-- Backups, retention and encryption must be configured at Atlas/AWS level. Never put database passwords or Resend secrets into source control.
+- Backups, retention and encryption must be configured at Atlas/AWS level. Never put database passwords or SMTP passwords into source control.
 
 ## 9.1 Suggested object-key boundaries
 
@@ -901,7 +888,7 @@ db.runCommand({ collMod: "guest_contacts", validator: {
 - Backfill new required fields safely and increment schemaVersion when serialized data changes meaning.
 - For changes affecting emails/RSVP state, deploy backwards-compatible API readers before writing new shapes.
 - Use Atlas-managed backups and test a restoration of wedding, membership, RSVP, payments and media pointers.
-- Validate S3/Mongo quota reconciliation, invitations revocation, webhook de-duplication and archive fence under concurrency.
+- Validate S3/Mongo quota reconciliation, invitations revocation and archive fence under concurrency.
 
 ## 10.2 Critical integration tests
 
@@ -931,7 +918,7 @@ db.runCommand({ collMod: "guest_contacts", validator: {
 | Auth/session policy | Approve session absolute/idle expiry, password requirements, lockout policy and account recovery support. |
 | Reminder send time | Proposed 09:00 Asia/Kolkata local; confirm date changes/dedup behavior. |
 | Public media cache invalidation | Approve CloudFront TTL/purge strategy and owner safety responsiveness expectations. |
-| Data retention | Define audit/webhook/outbox history retention and photo retention when users delete accounts. |
+| Data retention | Define audit/outbox history retention and photo retention when users delete accounts. |
 | Search/performance thresholds | Measure guest search and RSVP aggregation at pilot envelope before new projections/indexes. |
 
 # 12. Build sequence and handoff

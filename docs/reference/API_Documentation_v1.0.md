@@ -4,7 +4,7 @@ Status: Proposed (not deployed). Base path: `/api/v1`.
 
 ## 1. Overview
 
-Next.js calls NestJS over REST. Organizer, guest and upload capability sessions have separate cookies. MongoDB Atlas persists all metadata; AWS S3 holds media bytes; Resend sends emails; BullMQ runs jobs.
+Next.js calls NestJS over REST. Organizer, guest and upload capability sessions have separate cookies. MongoDB Atlas persists all metadata; AWS S3 holds media bytes; Gmail SMTP sends emails; BullMQ runs jobs.
 
 ## 2. Conventions
 
@@ -19,7 +19,6 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 - Organizer: `mm_session` HttpOnly cookie, first-party NestJS auth.
 - Guest: `mm_guest_session`, scoped to one private invitation contact.
 - Upload: `mm_upload_session`, scoped to one album.
-- Resend callback: signed raw-body verification via svix headers.
 - Public API: only published allowlisted wedding fields and approved photos.
 
 ## 4. Endpoint catalog
@@ -136,7 +135,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | PUT | `/weddings/{weddingId}/guests/{guestId}/invitations` | Set selected events for guest | Organizer |
 | POST | `/weddings/{weddingId}/guests/{guestId}/invitation-links` | Generate/reissue private guest link | Organizer |
 | POST | `/weddings/{weddingId}/guests/{guestId}/invitation-links/revoke` | Revoke all active guest invitation links/sessions | Organizer |
-| POST | `/weddings/{weddingId}/guests/{guestId}/invitation-email` | Queue Resend guest invitation email | Organizer |
+| POST | `/weddings/{weddingId}/guests/{guestId}/invitation-email` | Queue guest invitation email | Organizer |
 
 ### Guest RSVP
 
@@ -202,7 +201,6 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | GET | `/weddings/{weddingId}/notifications` | List email/reminder send statuses | Organizer |
 | GET | `/weddings/{weddingId}/reminder-settings` | Read reminder scheduling settings | Organizer |
 | PUT | `/weddings/{weddingId}/reminder-settings` | Configure reminder offsets (30/7/3) | Organizer |
-| POST | `/webhooks/resend` | Process signed Resend email status event | Signed webhook |
 
 ### Operations
 
@@ -414,7 +412,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 }
 ```
 
-**Rule:** Emails are dispatched by BullMQ workers using Resend. Jobs recheck event status, opt-outs, wedding state and scheduleVersion just before sending.
+**Rule:** Emails are dispatched by BullMQ workers over Gmail SMTP. Jobs recheck event status, opt-outs, wedding state and scheduleVersion just before sending.
 
 
 #### SignupRequest
@@ -583,7 +581,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | `remindersEnabled` | boolean | Yes |
 ## 5. Async workflows
 
-Guest invitation links are bearer credentials, stored hashed; for queued Resend delivery a new token needs short-lived KMS-encrypted outbox material. S3 uploads require atomic quota reservation, private staging, verification, moderation and public derivative delivery only after approval. RSVP state updates use version checks plus an archive write fence.
+Guest invitation links are bearer credentials, stored hashed; for queued email delivery a new token needs short-lived KMS-encrypted outbox material. S3 uploads require atomic quota reservation, private staging, verification, moderation and public derivative delivery only after approval. RSVP state updates use version checks plus an archive write fence.
 
 ## 6. Error handling
 
@@ -613,7 +611,7 @@ Guest invitation links are bearer credentials, stored hashed; for queued Resend 
 - **T11** Payment ledger: Payment + reversal maintains correct total, no direct payment record mutation.
 - **T12** Photo moderation: Pending photo inaccessible publicly; approved derivative visible after publish.
 - **T13** 5 GB quota race: Two simultaneous upload reservations cannot exceed used+reserved allowance.
-- **T14** Resend retries: Provider failures keep queued state; webhook event deduplicated.
+- **T14** Email retries: SMTP failures keep queued state; a retried email reuses its Message-ID.
 - **T15** Photo/object reconciliation: Orphan staged object/expired intent cleans up quota and S3.
 - **T16** Import preview/commit: CSV/XLSX client parsing, per-row errors and server revalidation.
 - **T17** Unpublish/hide after archive: Owner safety action succeeds, manager cannot edit other archived content.
@@ -627,4 +625,5 @@ Confirm short-lived encrypted invitation delivery payload, importer transport, C
 
 - PRD v1.0, Architecture v1.1, MongoDB Schema v1.0
 - https://docs.nestjs.com/openapi/introduction
-- https://resend.com/changelog/managing-webhooks-via-api
+- https://nodemailer.com/smtp/ (SMTP transport)
+- https://support.google.com/accounts/answer/185833 (Google App Passwords)

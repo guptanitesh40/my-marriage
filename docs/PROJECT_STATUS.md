@@ -103,7 +103,7 @@ requires. Policy and mechanisms in
   queued.
 - **Email delivery:** emails are queued in the same transaction as the change
   that causes them, relayed by the worker through BullMQ, and sent through
-  Resend with retries. Locally they are written to `apps/api/.mail/`.
+  Gmail (SMTP) with retries. Locally they are written to `apps/api/.mail/`.
 - **Pages:** `/login` (matching the approved Stitch design), `/signup`,
   `/verify-email`, `/forgot-password`, `/reset-password`, and a signed-in
   welcome page at `/dashboard`. Signed-in visitors skip the sign-in page.
@@ -116,9 +116,9 @@ requires. Policy and mechanisms in
   - profile editing, password change while signed in, the list of signed-in
     devices, and email change (planned as their own milestone)
   - the wedding switcher
-  - audit events and email delivery webhooks
-  - real email delivery, which needs a verified sending domain and a Resend
-    API key
+  - audit events
+  - delivery reports: Gmail SMTP says only that an email was accepted, not
+    whether it arrived or bounced
   - final wording of the signup consent notice, which waits on the legal
     review
 

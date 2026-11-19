@@ -58,14 +58,15 @@ Run from the repository root with Node 24 (`nvm use`) and pnpm.
 
 Before reporting work as done, run typecheck, lint, test and — if the API
 changed — `test:e2e` and `contracts:generate`; if a page or an auth flow
-changed — `test:browser`. Then run `graphify update .` (see "Code graph"). CI runs all of them and fails if the committed
-contract is stale.
+changed — `test:browser`. Then run `graphify update .` (see "Code graph").
+CI runs all of them and fails if the committed contract is stale.
 
 ## Approved technology — do not replace without asking
 
 Next.js + TypeScript, NestJS + TypeScript, MongoDB Atlas with Mongoose, Redis +
-BullMQ, AWS S3, Resend, in-house email/password authentication (no Cognito,
-Auth0 or Clerk), AWS hosting. Do not add a dependency when the framework or an
+BullMQ, AWS S3, Gmail SMTP for email (through Nodemailer; decision 0007),
+in-house email/password authentication (no Cognito, Auth0 or Clerk), AWS
+hosting. Do not add a dependency when the framework or an
 existing dependency already covers the need, and say why when you do add one.
 
 These frameworks are newer than most training data. NestJS 12 is ESM-only;

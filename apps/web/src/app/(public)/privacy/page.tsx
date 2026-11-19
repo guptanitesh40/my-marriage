@@ -89,9 +89,9 @@ export default function PrivacyPage() {
       <h2>Service providers</h2>
       <p>
         We use trusted providers to run the service, under contracts that limit their use of your
-        data: Amazon Web Services (hosting and photo storage), MongoDB Atlas (database) and Resend
-        (email delivery). We aim to store data in India where these providers allow it [to be
-        confirmed with the final hosting region].
+        data: Amazon Web Services (hosting and photo storage), MongoDB Atlas (database) and Google
+        (Gmail, for email delivery). We aim to store data in India where these providers allow it
+        [to be confirmed with the final hosting region].
       </p>
 
       <h2>How long we keep data</h2>

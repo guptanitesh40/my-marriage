@@ -155,28 +155,28 @@ describe('Outbox and email delivery (integration)', () => {
   });
 
   it('retries after a temporary provider failure', async () => {
-    worker.mail.failNext(new TransientMailError('RESEND_INTERNAL_SERVER_ERROR'));
+    worker.mail.failNext(new TransientMailError('SMTP_421'));
     const id = await requestEmail();
     const notification = await finalState(id);
 
     expect(worker.mail.sent).toHaveLength(1);
     expect(notification).toMatchObject({
       attempts: 2,
-      lastErrorCode: 'RESEND_INTERNAL_SERVER_ERROR',
+      lastErrorCode: 'SMTP_421',
     });
   });
 
   it('gives up after the last retry and records why', async () => {
     worker.mail.failNext(
-      new TransientMailError('RESEND_UNREACHABLE'),
-      new TransientMailError('RESEND_UNREACHABLE'),
-      new TransientMailError('RESEND_UNREACHABLE'),
+      new TransientMailError('SMTP_UNREACHABLE'),
+      new TransientMailError('SMTP_UNREACHABLE'),
+      new TransientMailError('SMTP_UNREACHABLE'),
     );
     const id = await requestEmail();
     const notification = await finalState(id, 'failed');
 
     expect(worker.mail.sent).toHaveLength(0);
-    expect(notification).toMatchObject({ attempts: 3, lastErrorCode: 'RESEND_UNREACHABLE' });
+    expect(notification).toMatchObject({ attempts: 3, lastErrorCode: 'SMTP_UNREACHABLE' });
   });
 
   it('records a failure while writing the email, and gives up after the last retry', async () => {
@@ -188,11 +188,11 @@ describe('Outbox and email delivery (integration)', () => {
   });
 
   it('does not retry an email the provider rejected outright', async () => {
-    worker.mail.failNext(new PermanentMailError('RESEND_VALIDATION_ERROR'));
+    worker.mail.failNext(new PermanentMailError('SMTP_550'));
     const id = await requestEmail();
     const notification = await finalState(id, 'failed');
 
-    expect(notification).toMatchObject({ attempts: 1, lastErrorCode: 'RESEND_VALIDATION_ERROR' });
+    expect(notification).toMatchObject({ attempts: 1, lastErrorCode: 'SMTP_550' });
     // Give a wrongly scheduled retry the time to happen.
     await new Promise((resolve) => setTimeout(resolve, 200));
     expect(worker.mail.sent).toHaveLength(0);

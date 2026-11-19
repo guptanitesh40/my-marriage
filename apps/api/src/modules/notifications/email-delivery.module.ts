@@ -11,7 +11,7 @@ import { EMAIL_COMPOSERS, type EmailComposer } from './email-composer.js';
 import { EmailDeliveryHandler } from './email-delivery.handler.js';
 import { FileMailTransport, MemoryMailTransport } from './mail/local.transports.js';
 import { MailTransport } from './mail/mail-transport.js';
-import { ResendTransport } from './mail/resend.transport.js';
+import { SmtpTransport } from './mail/smtp.transport.js';
 import { NotificationsModule } from './notifications.module.js';
 
 const mailTransportProvider: Provider = {
@@ -19,11 +19,18 @@ const mailTransportProvider: Provider = {
   inject: [ConfigService],
   useFactory: (config: ConfigService<Env, true>): MailTransport => {
     switch (config.get('MAIL_TRANSPORT', { infer: true })) {
-      case 'resend': {
-        // validateEnv requires the key whenever this transport is selected.
-        const apiKey = config.get('RESEND_API_KEY', { infer: true });
-        if (!apiKey) throw new Error('RESEND_API_KEY is not set');
-        return new ResendTransport(apiKey);
+      case 'smtp': {
+        // validateEnv requires both whenever this transport is selected.
+        const user = config.get('SMTP_USER', { infer: true });
+        const password = config.get('SMTP_PASSWORD', { infer: true });
+        if (!user || !password) throw new Error('SMTP_USER and SMTP_PASSWORD are not set');
+        return new SmtpTransport({
+          host: config.get('SMTP_HOST', { infer: true }),
+          port: config.get('SMTP_PORT', { infer: true }),
+          user,
+          // Google shows App Passwords in groups of four; the spaces are not part of it.
+          password: password.replace(/\s+/g, ''),
+        });
       }
       case 'file':
         return new FileMailTransport(config.get('MAIL_FILE_DIR', { infer: true }));
