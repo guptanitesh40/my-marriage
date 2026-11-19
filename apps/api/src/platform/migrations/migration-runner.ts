@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import type { Connection, mongo } from 'mongoose';
+import { duplicateKey } from '../mongo.js';
 import { MIGRATIONS, type Migration } from './migrations.js';
 
 export const MIGRATIONS_COLLECTION = 'schema_migrations';
@@ -64,7 +65,7 @@ export class MigrationRunner {
         { upsert: true },
       );
     } catch (error) {
-      if (isDuplicateKeyError(error)) {
+      if (duplicateKey(error)) {
         throw new Error('Another migration run is in progress; try again when it has finished', {
           cause: error,
         });
@@ -83,8 +84,4 @@ function assertOrdered(migrations: readonly Migration[]): void {
       );
     }
   }
-}
-
-function isDuplicateKeyError(error: unknown): boolean {
-  return typeof error === 'object' && error !== null && 'code' in error && error.code === 11000;
 }

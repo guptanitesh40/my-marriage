@@ -38,8 +38,9 @@ export class ResponseEnvelopeInterceptor implements NestInterceptor {
  */
 export function ApiDataResponse(
   dto: Type<unknown>,
-  options: { status?: number; description?: string } = {},
+  options: { status?: number; description?: string; isArray?: boolean } = {},
 ): MethodDecorator {
+  const item = { $ref: getSchemaPath(dto) };
   return applyDecorators(
     ApiExtraModels(dto),
     ApiResponse({
@@ -49,7 +50,7 @@ export function ApiDataResponse(
         type: 'object',
         required: ['data', 'requestId'],
         properties: {
-          data: { $ref: getSchemaPath(dto) },
+          data: options.isArray ? { type: 'array', items: item } : item,
           requestId: { type: 'string' },
         },
       },

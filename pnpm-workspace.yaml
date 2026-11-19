@@ -24,6 +24,9 @@ catalog:
 allowBuilds:
   # Install-time analytics pulled in by swagger-ui-dist; not needed.
   '@scarf/scarf': false
+  # Optional native speed-up for msgpackr (pulled in by bullmq); its pure
+  # JavaScript fallback is used instead, so no native build is needed.
+  'msgpackr-extract': false
 
 # Peer ranges that lag behind releases we have verified to work (lint and
 # contract generation both run in CI). Remove each entry once upstream

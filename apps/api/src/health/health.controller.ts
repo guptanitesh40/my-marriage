@@ -6,6 +6,7 @@ import {
   MongooseHealthIndicator,
   type HealthCheckResult,
 } from '@nestjs/terminus';
+import { Public } from '../modules/auth/auth.decorators.js';
 import { ApiDataResponse } from '../platform/response-envelope.js';
 import { HealthDto } from './health.dto.js';
 import { RedisHealthIndicator } from './redis.health.js';
@@ -18,7 +19,9 @@ function toDto(result: HealthCheckResult): HealthDto {
   return { status: 'ok', checks: Object.keys(result.details) };
 }
 
+// Probes come from the load balancer, which has no session.
 @ApiTags('Operations')
+@Public()
 @Controller('health')
 export class HealthController {
   constructor(

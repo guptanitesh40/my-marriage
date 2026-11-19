@@ -32,7 +32,15 @@ const nextConfig: NextConfig = {
     },
   },
   async headers() {
-    return [{ source: '/:path*', headers: securityHeaders }];
+    return [
+      { source: '/:path*', headers: securityHeaders },
+      // Pages opened from emailed links. The secret is in the URL fragment,
+      // which browsers never send, but send no referrer from them at all.
+      ...['/verify-email', '/reset-password', '/invitations/accept'].map((source) => ({
+        source,
+        headers: [{ key: 'Referrer-Policy', value: 'no-referrer' }],
+      })),
+    ];
   },
   async rewrites() {
     return [{ source: '/api/v1/:path*', destination: `${apiOrigin}/api/v1/:path*` }];

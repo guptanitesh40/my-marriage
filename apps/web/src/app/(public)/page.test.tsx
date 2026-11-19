@@ -1,8 +1,19 @@
 import { cleanup, render, screen, within } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
+import type { ComponentProps } from 'react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SiteHeader } from '@/components/home/site-header';
 import { homeSections, routes } from '@/lib/routes';
 import HomePage from './page';
+
+// The real button looks up the visitor on the server; here, nobody is signed in.
+vi.mock('@/components/home/start-planning-link', async () => {
+  const { ButtonLink } = await import('@/components/ui/button-link');
+  return {
+    StartPlanningLink: (props: Omit<ComponentProps<typeof ButtonLink>, 'href'>) => (
+      <ButtonLink {...props} href={routes.login} />
+    ),
+  };
+});
 
 afterEach(cleanup);
 

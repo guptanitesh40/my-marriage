@@ -4,8 +4,9 @@ import { Icon } from '@/components/ui/icon';
 import { container } from '@/components/ui/layout';
 import { hero } from '@/content/home/copy';
 import { ceremonies, couple, dashboard, recentReply } from '@/content/home/sample-wedding';
-import { homeSection, homeSections, publicWeddingUrl, routes } from '@/lib/routes';
+import { homeSection, homeSections, publicWeddingUrl } from '@/lib/routes';
 import { CEREMONY_TONE } from './ceremony-tone';
+import { StartPlanningLink } from './start-planning-link';
 
 export function Hero() {
   return (
@@ -26,7 +27,7 @@ export function Hero() {
           </h1>
           <p className="mb-8 max-w-lg text-body-lg text-on-surface-variant">{hero.intro}</p>
           <div className="mb-5 flex flex-wrap items-center gap-4">
-            <ButtonLink href={routes.login}>{hero.primaryCta}</ButtonLink>
+            <StartPlanningLink>{hero.primaryCta}</StartPlanningLink>
             <ButtonLink href={homeSection(homeSections.howItWorks)} variant="secondary">
               {hero.secondaryCta}
             </ButtonLink>

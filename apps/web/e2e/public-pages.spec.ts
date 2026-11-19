@@ -1,38 +1,14 @@
-import AxeBuilder from '@axe-core/playwright';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import {
+  collectErrors,
+  DESKTOP,
+  expectNoHorizontalScroll,
+  expectNoSeriousA11yIssues,
+  PHONE,
+  VIEWPORTS,
+} from './support/checks';
 
 const PAGES = ['/', '/privacy', '/terms'];
-
-const PHONE = { name: 'phone', width: 360, height: 800 };
-const TABLET = { name: 'tablet', width: 768, height: 1024 };
-const DESKTOP = { name: 'desktop', width: 1280, height: 900 };
-const VIEWPORTS = [PHONE, TABLET, DESKTOP];
-
-/**
- * Routes the public pages link to that a later milestone builds. Each must
- * be removed from this list by the milestone that creates it.
- *   /login — authentication milestone.
- */
-const PENDING_ROUTES = new Set(['/login']);
-
-async function expectNoHorizontalScroll(page: Page) {
-  const overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-  );
-  expect(overflow, 'page is wider than the viewport').toBeLessThanOrEqual(0);
-}
-
-async function expectNoSeriousA11yIssues(page: Page) {
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
-    .analyze();
-  const serious = results.violations.filter(
-    (v) => v.impact === 'serious' || v.impact === 'critical',
-  );
-  expect(
-    serious.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
-  ).toEqual([]);
-}
 
 for (const viewport of VIEWPORTS) {
   test.describe(`${viewport.name} (${viewport.width}px)`, () => {
@@ -40,28 +16,7 @@ for (const viewport of VIEWPORTS) {
 
     for (const path of PAGES) {
       test(`${path} is accessible and fits the screen`, async ({ page }, testInfo) => {
-        const errors: string[] = [];
-        page.on('pageerror', (error) => errors.push(error.message));
-        page.on('console', (message) => {
-          // Failed requests are reported below, with their URL.
-          if (message.type() === 'error' && !message.text().startsWith('Failed to load resource')) {
-            errors.push(message.text());
-          }
-        });
-        // Next.js prefetches linked pages, so a pending route shows up here
-        // as a 404 until its milestone builds it. Nothing else may fail.
-        page.on('response', (response) => {
-          const url = new URL(response.url());
-          if (response.status() >= 400 && !PENDING_ROUTES.has(url.pathname)) {
-            errors.push(`${response.status()} ${url.pathname}`);
-          }
-        });
-        // Requests that fail without a response (net::ERR_*, blocked,
-        // aborted) never reach the listener above.
-        page.on('requestfailed', (request) => {
-          const url = new URL(request.url());
-          errors.push(`${request.failure()?.errorText ?? 'failed'} ${url.pathname}`);
-        });
+        const errors = collectErrors(page);
 
         await page.goto(path);
         await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
@@ -164,16 +119,11 @@ test('every link on the public pages resolves', async ({ page, request }) => {
         if (onPage) await expect(page.locator(`#${hash}`)).toHaveCount(1);
       }
       const route = target || path;
-      if (checked.has(route) || PENDING_ROUTES.has(route)) continue;
+      if (checked.has(route)) continue;
       checked.add(route);
       const response = await request.get(route);
       expect(response.status(), `${route} (linked from ${path})`).toBe(200);
     }
-  }
-  // Fail loudly once a pending route exists, so it is removed from the list.
-  for (const route of PENDING_ROUTES) {
-    const response = await request.get(route);
-    expect(response.status(), `${route} now exists: remove it from PENDING_ROUTES`).toBe(404);
   }
 });
 

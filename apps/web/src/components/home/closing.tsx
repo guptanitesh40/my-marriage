@@ -1,8 +1,8 @@
-import { ButtonLink } from '@/components/ui/button-link';
 import { Icon } from '@/components/ui/icon';
 import { container } from '@/components/ui/layout';
 import { faq, finalCta } from '@/content/home/copy';
-import { homeSections, routes } from '@/lib/routes';
+import { homeSections } from '@/lib/routes';
+import { StartPlanningLink } from './start-planning-link';
 
 /** Final call to action and the FAQ, which share one band in the design. */
 export function Closing() {
@@ -25,9 +25,9 @@ export function Closing() {
             <p className="text-body-lg text-on-primary-container">{finalCta.intro}</p>
           </div>
           <div className="relative z-10 w-full sm:w-auto">
-            <ButtonLink href={routes.login} variant="gold" size="xl" className="w-full sm:w-auto">
+            <StartPlanningLink variant="gold" size="xl" className="w-full sm:w-auto">
               {finalCta.cta}
-            </ButtonLink>
+            </StartPlanningLink>
           </div>
         </div>
 

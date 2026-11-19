@@ -1,6 +1,9 @@
 import { ConsoleLogger } from '@nestjs/common';
 import { currentRequestId } from './request-context.js';
 
+/** JSON lines in production, for the log service; readable text elsewhere. */
+export const JSON_LOGS = process.env.NODE_ENV === 'production';
+
 /**
  * The one logger for the API, the worker and the migration runner: JSON lines
  * in production, readable text otherwise. Pass structured fields as a second
@@ -11,7 +14,7 @@ export class AppLogger extends ConsoleLogger {
   constructor() {
     super({
       // Read directly: the logger has to exist before the config module loads.
-      json: process.env.NODE_ENV === 'production',
+      json: JSON_LOGS,
       flattenParams: true,
       // A safety net, not the control: never pass a secret to the logger at all.
       redact: [

@@ -8,6 +8,7 @@ import {
 import type { Response } from 'express';
 import type { ApiErrorDto } from './api-error.dto.js';
 import { getRequestId } from './request-context.js';
+import { recordResponse } from './tracing.js';
 
 /** Default code per status; see Appendix A of the architecture document. */
 const CODE_BY_STATUS: Record<number, string> = {
@@ -38,10 +39,10 @@ export class ApiExceptionFilter implements ExceptionFilter {
 
     if (!(exception instanceof HttpException)) {
       this.logger.error('Unhandled exception', exception, { requestId });
-      res.status(500).json({
+      this.send(res, 500, {
         error: { code: 'INTERNAL_ERROR', message: 'Internal server error' },
         requestId,
-      } satisfies ApiErrorDto);
+      });
       return;
     }
 
@@ -57,13 +58,23 @@ export class ApiExceptionFilter implements ExceptionFilter {
         : (CODE_BY_STATUS[status] ?? (status >= 500 ? 'INTERNAL_ERROR' : 'REQUEST_ERROR'));
     const message = typeof fields.message === 'string' ? fields.message : exception.message;
 
-    res.status(status).json({
+    // A rate limit (RateLimitedException) says when the client may retry.
+    if (typeof fields.retryAfterSeconds === 'number') {
+      res.setHeader('Retry-After', String(Math.max(1, Math.ceil(fields.retryAfterSeconds))));
+    }
+
+    this.send(res, status, {
       error: {
         code,
         message,
         ...(fields.details === undefined ? {} : { details: fields.details }),
       },
       requestId,
-    } satisfies ApiErrorDto);
+    });
+  }
+
+  private send(res: Response, status: number, body: ApiErrorDto): void {
+    recordResponse(body);
+    res.status(status).json(body);
   }
 }

@@ -42,6 +42,16 @@ function createRedis(url: string): Redis {
   return redis;
 }
 
+/**
+ * A connection for BullMQ only, never shared with request handling. A worker
+ * blocks on Redis while it waits for jobs and must ride out a Redis restart
+ * rather than fail, so retries are unlimited — the opposite of `REDIS`. The
+ * caller closes it after closing the queues and workers that use it.
+ */
+export function createQueueConnection(url: string): Redis {
+  return new Redis(url, { maxRetriesPerRequest: null });
+}
+
 export const redisProviders: Provider[] = [
   {
     provide: REDIS,

@@ -1,14 +1,23 @@
 /**
- * Every destination the public pages link to, in one place.
+ * Every destination the pages link to, in one place.
  *
- * `login` is the target of "Log in" and every "Start planning free" button.
- * The authentication milestone builds that page; it is responsible for
- * sending visitors who are already signed in straight to their dashboard.
- * Until then the link resolves to a 404 in development.
+ * `login` is the target of "Log in" and every "Start planning free" button
+ * for visitors who are not signed in; it links new visitors to signup.
  */
 export const routes = {
   home: '/',
   login: '/login',
+  signup: '/signup',
+  verifyEmail: '/verify-email',
+  forgotPassword: '/forgot-password',
+  resetPassword: '/reset-password',
+  dashboard: '/dashboard',
+  /** Wedding onboarding, step 1: create the wedding. */
+  onboarding: '/onboarding',
+  /** Step 2: invite your partner (optional). */
+  onboardingPartner: '/onboarding/partner',
+  /** Where a partner invitation email leads. */
+  acceptInvitation: '/invitations/accept',
   privacy: '/privacy',
   terms: '/terms',
 } as const;
@@ -23,6 +32,11 @@ export const homeSections = {
 
 export function homeSection(id: (typeof homeSections)[keyof typeof homeSections]): string {
   return `${routes.home}#${id}`;
+}
+
+/** `/login?next=<path>`: sign in, then come back to `path`. */
+export function loginThenReturnTo(path: string): string {
+  return `${routes.login}?${new URLSearchParams({ next: path }).toString()}`;
 }
 
 /**

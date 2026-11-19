@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+import { HeaderAccount, HeaderAccountPlaceholder } from '@/components/home/header-account';
 import { SiteFooter } from '@/components/home/site-footer';
 import { SiteHeader } from '@/components/home/site-header';
 
@@ -11,7 +13,13 @@ export default function PublicLayout({ children }: LayoutProps<'/'>) {
       >
         Skip to content
       </a>
-      <SiteHeader />
+      <SiteHeader
+        actions={
+          <Suspense fallback={<HeaderAccountPlaceholder />}>
+            <HeaderAccount />
+          </Suspense>
+        }
+      />
       {/* Clip (not hide) sideways overflow from decorative shapes: no horizontal
           scroll at 360px, and sticky positioning keeps working. */}
       <main id="main" className="w-full flex-1 overflow-x-clip">
