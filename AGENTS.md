@@ -50,15 +50,16 @@ Run from the repository root with Node 24 (`nvm use`) and pnpm.
 | `pnpm lint`               | ESLint across the workspace                       |
 | `pnpm test`               | Unit tests (no services needed)                   |
 | `pnpm test:e2e`           | API integration tests (needs `services:up`)       |
-| `pnpm test:browser`       | Public pages in a real browser: axe, layout, keys |
+| `pnpm test:browser`       | Web app in a real browser (needs `services:up`)   |
 | `pnpm build`              | Production builds                                 |
 | `pnpm contracts:generate` | Regenerate `packages/contracts` from the API code |
 | `pnpm format`             | Prettier                                          |
+| `graphify update .`       | Refresh the code graph after changing code        |
 
 Before reporting work as done, run typecheck, lint, test and — if the API
-changed — `test:e2e` and `contracts:generate`; if a public page changed —
-`test:browser`. CI runs all of them and fails
-if the committed contract is stale.
+changed — `test:e2e` and `contracts:generate`; if a page or an auth flow
+changed — `test:browser`. Then run `graphify update .` (see "Code graph"). CI runs all of them and fails if the committed
+contract is stale.
 
 ## Approved technology — do not replace without asking
 
@@ -101,10 +102,63 @@ writing our own, and raise the choice with the owner — none is adopted yet.
    Declare an index on the schema _and_ add a migration in
    `src/platform/migrations/migrations.ts`; the API and worker refuse to start
    if the database lacks a declared index. Never edit a deployed migration.
-8. **The web app has two API clients.** Client Components use `api` from
-   `lib/api/browser`; Server Components use `serverApi()` from
-   `lib/api/server`, which forwards the visitor's cookie. Anything that sets or
-   clears a cookie goes through the browser client.
+8. **Every API route needs a signed-in, verified user by default.** The
+   global `SessionAuthGuard` enforces it; opt out per route with `@Public()`
+   or `@AllowUnverified()` from `modules/auth/auth.decorators.ts`, and read the
+   user with `@CurrentUser()`. Never take a user ID from the request body.
+9. **Emails are requested, never sent, by domain code.** Call
+   `NotificationsService.requestEmail(session, …)` inside the transaction of
+   the change that causes the email; the worker sends it. An email that needs
+   a secret link gets it from an `EmailComposer`, which creates the link at
+   send time, so no secret is stored or queued.
+10. **Every route under `/weddings/{weddingId}` starts with
+    `WeddingAccessService.require(user, weddingId, roles)`** from
+    `modules/weddings`. It answers 404 to anyone who is not an active member
+    (never revealing whether the wedding exists) and 403 to a member without
+    the role; every query after it filters on that wedding's ID.
+11. **The web app has two API clients.** Client Components use `api` from
+    `lib/api/browser`; Server Components use `serverApi()` from
+    `lib/api/server`, which forwards the visitor's cookie. Anything that sets or
+    clears a cookie goes through the browser client.
+
+## Logging and request tracing
+
+Every change must keep each request and worker job traceable from end to
+end: anyone reading the logs should see which functions it went through, in
+order, what each was given and returned, where it failed, and the response
+it got. See `docs/decisions/0006-request-tracing.md`.
+
+- **Put `@Traced()`** (from `src/platform/tracing.ts`) on every new service,
+  guard, email composer, mail transport or other provider class. Its calls
+  then appear in the trace. Controllers need nothing: `TraceInterceptor`
+  records them, with the request and the response. Database queries are
+  recorded automatically.
+- **Put logic in methods of traced classes**, not in module-level functions
+  or arrow-function properties, which the trace cannot see. A small pure
+  helper (formatting, validation) may stay a plain function.
+- **Fail with a Nest `HttpException` carrying a `code`** (for example
+  `OWNER_LIMIT`), so the trace shows the status and code where the request
+  stopped. Never swallow an error silently; if you catch one on purpose, log
+  why with `Logger.warn`.
+- **Log through Nest's `Logger`**, never `console.log`, with a fixed message
+  and structured fields as the second argument
+  (`logger.log('Invitation sent', { weddingId })`). The request ID is added
+  automatically. Services read it with `currentRequestId()` for audit events.
+- **Never let a secret reach a log.** The tracer masks values under keys
+  containing `password`, `token`, `secret`, `cookie`, `authorization`,
+  `apikey` or `hash`, as well as the email bodies `html` and `text`. It shows
+  strings passed on their own only by length. Keep secrets under those key
+  names and never interpolate one into a log message, an error message or
+  a key with another name. Never log a raw token, session cookie, presigned
+  URL or password.
+- **`LOG_TRACE`** sets how much is logged: `full` (development default: every
+  request, with values), `errors` (production default: failed requests,
+  without values) or `off` (tests). Never default to `full` in production,
+  because it logs names and email addresses.
+- **After changing an API flow, check its trace.** Run the flow under
+  `pnpm dev` and read the request's trace in the API's output. It should
+  show every step you added, and nothing secret. For a new domain service,
+  add a check to `apps/api/test/tracing.e2e-spec.ts` when it handles secrets.
 
 ## Business invariants every change must preserve
 
@@ -151,9 +205,7 @@ requestId }` — throw a Nest `HttpException` (with a `code` for domain errors
   `{ data, requestId }`. Document the response with `@ApiDataResponse(Dto)`,
   not `@ApiOkResponse`, so the generated contract describes the envelope. Name
   DTO files `*.dto.ts`: the Swagger plugin only reads those.
-- Log through Nest's `Logger`, with structured fields as a second argument
-  (`logger.log('message', { weddingId })`). The request ID is added
-  automatically; services read it with `currentRequestId()` for audit events.
+- Logging follows "Logging and request tracing" below.
 - Mongoose runs with `strict` and `strictQuery` set to `'throw'`: a field that
   is not in the schema is an error, in writes and in filters.
 - Unit tests sit beside the code as `*.spec.ts` (API) or `*.test.tsx` (web).
@@ -166,6 +218,30 @@ requestId }` — throw a Nest `HttpException` (with a `code` for domain errors
 - Comments explain why, not what.
 - Do not create empty modules, placeholder files or abstractions for features
   that are not being built yet.
+
+## Code graph (graphify)
+
+`graphify-out/` holds a knowledge graph of the codebase (`graph.json`), which
+lets an agent find files, symbols and how they relate without reading the
+whole repository. Use it to orient yourself before searching. It must match
+the code:
+
+- **After every code change, run `graphify update .`** from the repository
+  root, before reporting the work as done. It re-reads only the files that
+  changed (tracked in `graphify-out/manifest.json`), calls no LLM and needs
+  no API key.
+- **If you deleted or merged a lot of code**, `update` refuses to save a
+  graph with fewer nodes than the old one, to guard against a broken run.
+  When the drop is expected (a large refactor), run
+  `graphify update . --force`.
+- **If you changed only documentation** (`docs/`, such as the PRD or API
+  document), `update` does not re-read it: it covers code only. The graph is
+  code-only today. If documents are added to it later, refreshing them takes
+  `graphify extract .`, which calls an LLM, so ask the owner before running
+  it.
+- Optional: `graphify hook install` adds git hooks that update the graph
+  after each commit, merge or branch switch. They do not cover uncommitted
+  edits, so still run `graphify update .` yourself.
 
 ## Working agreements
 

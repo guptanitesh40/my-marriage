@@ -1,11 +1,13 @@
 import { BadRequestException, ConflictException, type ArgumentsHost } from '@nestjs/common';
 import { describe, expect, it, vi } from 'vitest';
 import { ApiExceptionFilter } from './api-exception.filter.js';
+import { RateLimitedException } from './rate-limit.js';
 import { createValidationPipe } from './validation.js';
 
 function run(exception: unknown) {
   const res = {
     getHeader: () => 'req_test',
+    setHeader: vi.fn<(name: string, value: string) => void>(),
     status: vi.fn<(code: number) => unknown>().mockReturnThis(),
     json: vi.fn<(body: unknown) => void>(),
   };
@@ -18,10 +20,25 @@ function run(exception: unknown) {
     status: res.status.mock.calls[0]?.[0],
     body: res.json.mock.calls[0]?.[0],
     logged: logged.mock.calls,
+    headers: Object.fromEntries(res.setHeader.mock.calls),
   };
 }
 
 describe('ApiExceptionFilter', () => {
+  it('tells a rate-limited client when to retry, in the header and the body', () => {
+    const { status, body, headers } = run(new RateLimitedException(90));
+    expect(status).toBe(429);
+    expect(headers).toEqual({ 'Retry-After': '90' });
+    expect(body).toEqual({
+      error: {
+        code: 'RATE_LIMITED',
+        message: 'Too many attempts. Please wait and try again.',
+        details: { retryAfterSeconds: 90 },
+      },
+      requestId: 'req_test',
+    });
+  });
+
   it('passes through the per-field details built by the validation pipe', async () => {
     class Dto {}
     const rejection: unknown = await createValidationPipe()

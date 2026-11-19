@@ -18,6 +18,7 @@ export default defineConfig({
         process.env.MONGODB_URI ??
         'mongodb://localhost:27017/my_marriage_test?directConnection=true',
       REDIS_URL: process.env.REDIS_URL ?? 'redis://localhost:6379/1',
+      MAIL_TRANSPORT: 'memory',
     },
   },
 });

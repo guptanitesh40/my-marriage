@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { ButtonLink } from '@/components/ui/button-link';
 import { container } from '@/components/ui/layout';
 import { Wordmark } from '@/components/ui/wordmark';
@@ -11,7 +12,36 @@ const NAV = [
   { label: 'FAQ', href: homeSection(homeSections.faq) },
 ];
 
-export function SiteHeader() {
+/**
+ * "Log in" and "Start planning free", for visitors who are not signed in.
+ * `prefetch={false}` while it is only a placeholder: the sign-in page would
+ * redirect a visitor who turns out to be signed in.
+ */
+export function SignedOutActions({ prefetch }: { prefetch?: false }) {
+  return (
+    <>
+      <Link
+        href={routes.login}
+        prefetch={prefetch}
+        className="rounded-sm px-1 py-2 text-label-md font-semibold text-on-surface-variant transition-colors hover:text-on-surface"
+      >
+        Log in
+      </Link>
+      {/* Wrapped: the button's own display class would override `hidden`. */}
+      <div className="hidden sm:block">
+        <ButtonLink href={routes.login} size="md" prefetch={prefetch}>
+          Start planning free
+        </ButtonLink>
+      </div>
+    </>
+  );
+}
+
+/**
+ * `actions` is the account area at the right; the public layout passes one
+ * that depends on who is visiting.
+ */
+export function SiteHeader({ actions = <SignedOutActions /> }: { actions?: ReactNode }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-surface-container-highest bg-surface/90 backdrop-blur-xl">
       <div className={`${container} flex h-20 items-center justify-between gap-6`}>
@@ -29,20 +59,7 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-4">
-          <Link
-            href={routes.login}
-            className="rounded-sm px-1 py-2 text-label-md font-semibold text-on-surface-variant transition-colors hover:text-on-surface"
-          >
-            Log in
-          </Link>
-          {/* Wrapped: the button's own display class would override `hidden`. */}
-          <div className="hidden sm:block">
-            <ButtonLink href={routes.login} size="md">
-              Start planning free
-            </ButtonLink>
-          </div>
-        </div>
+        <div className="flex items-center gap-4">{actions}</div>
       </div>
     </header>
   );

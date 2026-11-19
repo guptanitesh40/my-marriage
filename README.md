@@ -4,7 +4,8 @@ A wedding planning and management platform, built first for Indian weddings:
 a private workspace for the couple and their managers, and a public wedding
 website for guests — who never need an account.
 
-**Status:** the repository foundation and the public homepage are built.
+**Status:** the repository foundation, the public homepage and accounts
+(sign-up, email verification, sign-in, password reset) are built.
 See [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md) for progress.
 
 ## What is in here
@@ -59,6 +60,19 @@ to the API. To run one process at a time use `pnpm dev:web`, `pnpm dev:api` or
 `pnpm dev:worker`. Stop the services with `pnpm services:down` (data is kept
 in a Docker volume).
 
+**Emails in development** are not sent anywhere. The worker writes each one
+to `apps/api/.mail/` as an HTML file (open it in a browser and click its link)
+and a JSON file. The log line `Email written to …` names the file. Staging and
+production send through Resend instead (`MAIL_TRANSPORT=resend`).
+
+**Following a request through the code.** In development the API and the
+worker log every request (and every job) as a tree: the guard, controller,
+services and database queries it went through, in order, with their
+arguments, results, timings and any error, then the response. Find a request
+by the `req_…` ID that each response carries. Set `LOG_TRACE` in
+`apps/api/.env` to `errors` (only failed requests, without values) or `off`
+for quieter logs.
+
 **Port already in use?** MongoDB and Redis are published on the default ports,
 on this machine only. If another project holds them, pick others and use the
 same numbers in `apps/api/.env`:
@@ -80,13 +94,17 @@ pnpm typecheck      # TypeScript
 pnpm lint           # ESLint
 pnpm test           # unit tests — no services needed
 pnpm test:e2e       # API integration tests — needs `pnpm services:up`
-pnpm test:browser   # public pages in Chromium: accessibility, layout, keyboard, links
+pnpm test:browser   # web app in Chromium: accessibility, layout, keyboard, links and the
+                    # account journeys — needs `pnpm services:up`
 pnpm build          # production builds
 pnpm format         # apply Prettier (format:check to verify only)
 ```
 
 Before the first `pnpm test:browser`, download the test browser once:
-`pnpm --filter @my-marriage/web exec playwright install chromium`.
+`pnpm --filter @my-marriage/web exec playwright install chromium`. The browser
+tests build and start their own web app (port 3200), API and worker (port
+4200), on a separate database (`my_marriage_browser_test`) that every run
+resets; they never touch your development data.
 
 CI (`.github/workflows/ci.yml`) runs all of these on every pull request.
 
@@ -117,6 +135,11 @@ on the schema; `pnpm db:migrate` applies it. Deployments run the same step
 | `MONGODB_URI`      | API     | MongoDB connection string (must be a replica set)                                                        |
 | `REDIS_URL`        | API     | Redis connection string                                                                                  |
 | `TRUST_PROXY_HOPS` | API     | Proxies trusted for the client address: 0 locally, 1 behind one load balancer                            |
+| `WEB_ORIGIN`       | API     | The web app's public origin: links in emails, and the one origin the CSRF check trusts                   |
+| `MAIL_TRANSPORT`   | API     | `resend` (required in production), `file` (local development) or `memory` (integration tests)            |
+| `MAIL_FILE_DIR`    | API     | Folder for `MAIL_TRANSPORT=file` (default `.mail`)                                                       |
+| `RESEND_API_KEY`   | API     | Resend API key, for `MAIL_TRANSPORT=resend` — a secret, from AWS Secrets Manager                         |
+| `MAIL_FROM`        | API     | Sender, e.g. `My Marriage <hello@example.com>`, on a domain verified in Resend                           |
 | `API_ORIGIN`       | Web     | The API's origin: `/api/v1/*` is forwarded there (fixed at build) and server rendering calls it directly |
 
 The API validates its variables at startup and refuses to start if one is

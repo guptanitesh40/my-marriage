@@ -39,3 +39,13 @@ Thumbs.db
 
 # MCP server config holds personal API keys
 .mcp.json
+
+# Emails written by the local file mail transport (they contain live links)
+.mail/
+
+# Emails written by the API during browser tests
+.e2e-mail/
+
+# graphify: the graph is shared; its local cache is not.
+graphify-out/cache/
+graphify-out/.cloud-cta-shown

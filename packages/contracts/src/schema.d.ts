@@ -38,6 +38,246 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/signup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register an account with email and password */
+        post: operations["AuthController_signup"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/verify-email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify an email address with a one-time token */
+        post: operations["AuthController_verifyEmail"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/verification/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request another verification email */
+        post: operations["AuthController_resendVerification"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sign in and create a session cookie */
+        post: operations["AuthController_login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sign out: revoke the session and clear the cookie */
+        post: operations["AuthController_logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/forgot": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request a password reset email (non-enumerating) */
+        post: operations["AuthController_forgotPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reset the password with a single-use token */
+        post: operations["AuthController_resetPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get the current account */
+        get: operations["AuthController_me"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List weddings visible to the account */
+        get: operations["WeddingsController_list"];
+        put?: never;
+        /** Create active wedding with first owner */
+        post: operations["WeddingsController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update active wedding details */
+        patch: operations["WeddingsController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/member-invites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List pending/consumed membership invites */
+        get: operations["MemberInvitesController_list"];
+        put?: never;
+        /** Invite a manager or second co-owner */
+        post: operations["MemberInvitesController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/member-invites/{inviteId}/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resend a pending member invitation */
+        post: operations["MemberInvitesController_resend"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/member-invites/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Read an invitation from its link */
+        post: operations["MemberInvitesController_preview"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/member-invites/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Accept invite as signed-in matching email */
+        post: operations["MemberInvitesController_accept"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -77,6 +317,187 @@ export interface components {
              *     ]
              */
             checks: string[];
+        };
+        MeDto: {
+            /** @description Account ID. */
+            id: string;
+            /** @description Sign-in email address. */
+            email: string;
+            displayName: string;
+            /** @description False until the link in the verification email is used; most features wait for it. */
+            emailVerified: boolean;
+        };
+        SignupDto: {
+            /**
+             * Format: email
+             * @description Sign-in address. A verification email is sent here.
+             * @example priya@example.com
+             */
+            email: string;
+            /**
+             * Format: password
+             * @description At least 10 characters. Common and easily guessed passwords are refused.
+             */
+            password: string;
+            /**
+             * @description The name your partner and family see.
+             * @example Priya Sharma
+             */
+            displayName: string;
+        };
+        VerifyEmailDto: {
+            /** @description The secret from the verification link (the part after `#token=`). */
+            token: string;
+        };
+        ResendVerificationDto: {
+            /**
+             * Format: email
+             * @description The address to send a new verification link to, if it has an unverified account.
+             * @example priya@example.com
+             */
+            email: string;
+        };
+        LoginDto: {
+            /**
+             * Format: email
+             * @example priya@example.com
+             */
+            email: string;
+            /** Format: password */
+            password: string;
+        };
+        ForgotPasswordDto: {
+            /**
+             * Format: email
+             * @description Where to send the reset link, if the address has an account.
+             * @example priya@example.com
+             */
+            email: string;
+        };
+        ResetPasswordDto: {
+            /** @description The secret from the reset link (the part after `#token=`). */
+            token: string;
+            /**
+             * Format: password
+             * @description The new password: at least 10 characters, not easily guessed.
+             */
+            password: string;
+        };
+        WeddingDto: {
+            /**
+             * Format: date
+             * @description The wedding day (`YYYY-MM-DD`); missing until known.
+             * @example 2027-12-10
+             */
+            weddingDate?: string;
+            /** @enum {string} */
+            status: "active" | "archived" | "deletion_pending";
+            /**
+             * @description The signed-in user's role in this wedding.
+             * @enum {string}
+             */
+            role: "owner" | "manager";
+            /** @description Wedding ID. */
+            id: string;
+            /** @description Address of the public website, once published. Chosen by the server. */
+            slug: string;
+            brideName: string;
+            groomName: string;
+            city: string;
+            state: string;
+        };
+        CreateWeddingDto: {
+            /** @example Ananya */
+            brideName: string;
+            /** @example Arjun */
+            groomName: string;
+            /** @example Jaipur */
+            city: string;
+            /**
+             * @description An Indian state or union territory, or "Outside India".
+             * @example Rajasthan
+             */
+            state: string;
+            /**
+             * Format: date
+             * @description The wedding day, if already known.
+             * @example 2027-12-10
+             */
+            weddingDate?: string;
+        };
+        UpdateWeddingDto: {
+            /** @example Ananya */
+            brideName?: string;
+            /** @example Arjun */
+            groomName?: string;
+            /** @example Jaipur */
+            city?: string;
+            /** @example Rajasthan */
+            state?: string;
+            /**
+             * Format: date
+             * @description The wedding day; `null` removes it. A new date must not be in the past.
+             * @example 2027-12-10
+             */
+            weddingDate?: string | null;
+        };
+        MemberInviteDto: {
+            /** @enum {string} */
+            role: "owner" | "manager";
+            /**
+             * @description `expired` once a pending invitation passes `expiresAt`.
+             * @enum {string}
+             */
+            status: "pending" | "accepted" | "revoked" | "expired";
+            /**
+             * @description Whether the latest email went out: `sent` means the provider accepted
+             *     it, never that it arrived. `failed` means it could not be sent; resend it.
+             * @enum {string}
+             */
+            emailStatus: "sending" | "sent" | "failed";
+            /** @description Invitation ID. */
+            id: string;
+            /** @description The address it was sent to. */
+            email: string;
+            /**
+             * Format: date-time
+             * @description When the link stops working.
+             */
+            expiresAt: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        CreateMemberInviteDto: {
+            /**
+             * Format: email
+             * @description Where the invitation is sent; only the account with this address can accept it.
+             * @example priya@example.com
+             */
+            email: string;
+            /**
+             * @description `owner`: your partner, with the same rights as you.
+             * @enum {string}
+             */
+            role: "owner";
+        };
+        InvitePreviewDto: {
+            /** @enum {string} */
+            role: "owner" | "manager";
+            /** @enum {string} */
+            status: "pending" | "accepted";
+            brideName: string;
+            groomName: string;
+            city: string;
+            state: string;
+            /** @description The name of the owner who sent it, if their account still exists. */
+            invitedByName?: string;
+            /** @description Only the account with this address can accept. */
+            email: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        InviteTokenDto: {
+            token: string;
         };
         FieldErrorDto: {
             /**
@@ -147,6 +568,556 @@ export interface operations {
                 content: {
                     "application/json": {
                         data: components["schemas"]["HealthDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AuthController_signup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignupDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MeDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AuthController_verifyEmail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyEmailDto"];
+            };
+        };
+        responses: {
+            /** @description The address is verified. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AuthController_resendVerification: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResendVerificationDto"];
+            };
+        };
+        responses: {
+            /** @description If the address needs one, an email is on its way. */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AuthController_login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MeDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AuthController_logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Signed out. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AuthController_forgotPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ForgotPasswordDto"];
+            };
+        };
+        responses: {
+            /** @description If the address has an account, an email is on its way. */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AuthController_resetPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResetPasswordDto"];
+            };
+        };
+        responses: {
+            /** @description The password is changed. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AuthController_me: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MeDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WeddingsController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingDto"][];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WeddingsController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateWeddingDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description OWNER_ACTIVE_LIMIT: you already own an active wedding. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WeddingsController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateWeddingDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MemberInvitesController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MemberInviteDto"][];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MemberInvitesController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateMemberInviteDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MemberInviteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MemberInvitesController_resend: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                inviteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MemberInviteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MemberInvitesController_preview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InviteTokenDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["InvitePreviewDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description INVITE_INVALID: expired, replaced or withdrawn. */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MemberInvitesController_accept: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InviteTokenDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingDto"];
                         requestId: string;
                     };
                 };

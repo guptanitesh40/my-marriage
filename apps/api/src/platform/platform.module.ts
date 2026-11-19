@@ -3,7 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { validateEnv, type Env } from '../config/env.js';
+import { BackgroundTasks } from './background-tasks.js';
 import { MigrationRunner } from './migrations/migration-runner.js';
+import { RateLimiter } from './rate-limit.js';
 import { REDIS, redisProviders } from './redis.js';
 
 // Defaults for every schema. A misspelt field must fail loudly: with the
@@ -14,8 +16,9 @@ mongoose.set('strictQuery', 'throw');
 
 /**
  * Cross-cutting infrastructure shared by the HTTP API, the worker and the
- * migration runner: validated config, the MongoDB connection and the Redis
- * connection. Domain modules must not open their own connections.
+ * migration runner: validated config, the MongoDB connection, the Redis
+ * connection, the rate limiter built on it, and background tasks. Domain
+ * modules must not open their own connections.
  */
 @Global()
 @Module({
@@ -33,7 +36,7 @@ mongoose.set('strictQuery', 'throw');
       }),
     }),
   ],
-  providers: [...redisProviders, MigrationRunner],
-  exports: [REDIS, MigrationRunner],
+  providers: [...redisProviders, MigrationRunner, RateLimiter, BackgroundTasks],
+  exports: [REDIS, MigrationRunner, RateLimiter, BackgroundTasks],
 })
 export class PlatformModule {}

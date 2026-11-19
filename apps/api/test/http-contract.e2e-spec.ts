@@ -4,6 +4,7 @@ import { Type } from 'class-transformer';
 import { IsEmail, IsString, MinLength, ValidateNested } from 'class-validator';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { Public } from '../src/modules/auth/auth.decorators.js';
 import { currentRequestId } from '../src/platform/request-context.js';
 import { createTestApp } from './support/app.js';
 
@@ -25,6 +26,7 @@ class ProbeDto {
   venue: VenueDto;
 }
 
+@Public()
 @Controller('probe')
 class ProbeController {
   @Post()
@@ -113,6 +115,52 @@ describe('HTTP contract (integration)', () => {
       .set('X-Forwarded-For', '203.0.113.9')
       .expect(200);
     expect((res.body as { data: { ip: string } }).data.ip).not.toBe('203.0.113.9');
+  });
+
+  describe('cross-site request forgery', () => {
+    const body = { email: 'priya@example.com', venue: { name: 'Farmhouse' } };
+
+    it('refuses a state-changing request that the browser marks as cross-site', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/probe')
+        .set('Sec-Fetch-Site', 'cross-site')
+        .send(body)
+        .expect(403);
+      expect(res.body).toMatchObject({
+        error: { code: 'FORBIDDEN' },
+        requestId: res.headers['x-request-id'],
+      });
+    });
+
+    it('refuses a request from another origin when the browser sends no Fetch Metadata', async () => {
+      await request(app.getHttpServer())
+        .post('/api/v1/probe')
+        .set('Origin', 'https://evil.example')
+        .send(body)
+        .expect(403);
+    });
+
+    it('accepts same-origin requests, the web origin, and clients that are not browsers', async () => {
+      await request(app.getHttpServer())
+        .post('/api/v1/probe')
+        .set('Sec-Fetch-Site', 'same-origin')
+        .send(body)
+        .expect(201);
+      // WEB_ORIGIN, for a proxy that rewrites Host and a browser without Fetch Metadata.
+      await request(app.getHttpServer())
+        .post('/api/v1/probe')
+        .set('Origin', 'http://localhost:3000')
+        .send(body)
+        .expect(201);
+      await request(app.getHttpServer()).post('/api/v1/probe').send(body).expect(201);
+    });
+
+    it('never checks reads, which must therefore never change anything', async () => {
+      await request(app.getHttpServer())
+        .get('/api/v1/probe/ip')
+        .set('Sec-Fetch-Site', 'cross-site')
+        .expect(200);
+    });
   });
 
   it('hides the cause of an unexpected error', async () => {

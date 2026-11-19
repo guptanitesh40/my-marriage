@@ -88,6 +88,830 @@
           "Operations"
         ]
       }
+    },
+    "/api/v1/auth/signup": {
+      "post": {
+        "operationId": "AuthController_signup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MeDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Register an account with email and password",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/verify-email": {
+      "post": {
+        "operationId": "AuthController_verifyEmail",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyEmailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The address is verified."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Verify an email address with a one-time token",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/verification/resend": {
+      "post": {
+        "operationId": "AuthController_resendVerification",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResendVerificationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "If the address needs one, an email is on its way."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Request another verification email",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MeDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Sign in and create a session cookie",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Signed out."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "Sign out: revoke the session and clear the cookie",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/password/forgot": {
+      "post": {
+        "operationId": "AuthController_forgotPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "If the address has an account, an email is on its way."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Request a password reset email (non-enumerating)",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/password/reset": {
+      "post": {
+        "operationId": "AuthController_resetPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The password is changed."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Reset the password with a single-use token",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MeDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "Get the current account",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/weddings": {
+      "get": {
+        "operationId": "WeddingsController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WeddingDto"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List weddings visible to the account",
+        "tags": [
+          "Weddings"
+        ]
+      },
+      "post": {
+        "operationId": "WeddingsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWeddingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "OWNER_ACTIVE_LIMIT: you already own an active wedding."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Create active wedding with first owner",
+        "tags": [
+          "Weddings"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}": {
+      "patch": {
+        "operationId": "WeddingsController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWeddingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Update active wedding details",
+        "tags": [
+          "Weddings"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/member-invites": {
+      "post": {
+        "operationId": "MemberInvitesController_create",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMemberInviteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MemberInviteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Invite a manager or second co-owner",
+        "tags": [
+          "Team"
+        ]
+      },
+      "get": {
+        "operationId": "MemberInvitesController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MemberInviteDto"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List pending/consumed membership invites",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/member-invites/{inviteId}/resend": {
+      "post": {
+        "operationId": "MemberInvitesController_resend",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inviteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MemberInviteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Resend a pending member invitation",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
+    "/api/v1/member-invites/preview": {
+      "post": {
+        "operationId": "MemberInvitesController_preview",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/InvitePreviewDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "INVITE_INVALID: expired, replaced or withdrawn."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read an invitation from its link",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
+    "/api/v1/member-invites/accept": {
+      "post": {
+        "operationId": "MemberInvitesController_accept",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Accept invite as signed-in matching email",
+        "tags": [
+          "Team"
+        ]
+      }
     }
   },
   "info": {
@@ -99,6 +923,13 @@
   "tags": [],
   "servers": [],
   "components": {
+    "securitySchemes": {
+      "cookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "mm_session"
+      }
+    },
     "schemas": {
       "ApiErrorDetailDto": {
         "type": "object",
@@ -175,6 +1006,428 @@
         "required": [
           "status",
           "checks"
+        ]
+      },
+      "MeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Account ID."
+          },
+          "email": {
+            "type": "string",
+            "description": "Sign-in email address."
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean",
+            "description": "False until the link in the verification email is used; most features wait for it."
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "displayName",
+          "emailVerified"
+        ]
+      },
+      "SignupDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Sign-in address. A verification email is sent here.",
+            "format": "email",
+            "maxLength": 254,
+            "example": "priya@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "At least 10 characters. Common and easily guessed passwords are refused.",
+            "format": "password",
+            "minLength": 10,
+            "maxLength": 128
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The name your partner and family see.",
+            "minLength": 1,
+            "maxLength": 80,
+            "example": "Priya Sharma"
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "displayName"
+        ]
+      },
+      "VerifyEmailDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "The secret from the verification link (the part after `#token=`).",
+            "pattern": "^[A-Za-z0-9_-]{20,100}$"
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "ResendVerificationDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The address to send a new verification link to, if it has an unverified account.",
+            "format": "email",
+            "maxLength": 254,
+            "example": "priya@example.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254,
+            "example": "priya@example.com"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "ForgotPasswordDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Where to send the reset link, if the address has an account.",
+            "format": "email",
+            "maxLength": 254,
+            "example": "priya@example.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "ResetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "The secret from the reset link (the part after `#token=`).",
+            "pattern": "^[A-Za-z0-9_-]{20,100}$"
+          },
+          "password": {
+            "type": "string",
+            "description": "The new password: at least 10 characters, not easily guessed.",
+            "format": "password",
+            "minLength": 10,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "token",
+          "password"
+        ]
+      },
+      "WeddingDto": {
+        "type": "object",
+        "properties": {
+          "weddingDate": {
+            "type": "string",
+            "description": "The wedding day (`YYYY-MM-DD`); missing until known.",
+            "format": "date",
+            "example": "2027-12-10"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "archived",
+              "deletion_pending"
+            ],
+            "type": "string"
+          },
+          "role": {
+            "description": "The signed-in user's role in this wedding.",
+            "enum": [
+              "owner",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Wedding ID."
+          },
+          "slug": {
+            "type": "string",
+            "description": "Address of the public website, once published. Chosen by the server."
+          },
+          "brideName": {
+            "type": "string"
+          },
+          "groomName": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "role",
+          "id",
+          "slug",
+          "brideName",
+          "groomName",
+          "city",
+          "state"
+        ]
+      },
+      "CreateWeddingDto": {
+        "type": "object",
+        "properties": {
+          "brideName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Ananya"
+          },
+          "groomName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Arjun"
+          },
+          "city": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "example": "Jaipur"
+          },
+          "state": {
+            "type": "string",
+            "description": "An Indian state or union territory, or \"Outside India\".",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Rajasthan"
+          },
+          "weddingDate": {
+            "type": "string",
+            "description": "The wedding day, if already known.",
+            "format": "date",
+            "example": "2027-12-10"
+          }
+        },
+        "required": [
+          "brideName",
+          "groomName",
+          "city",
+          "state"
+        ]
+      },
+      "UpdateWeddingDto": {
+        "type": "object",
+        "properties": {
+          "brideName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Ananya"
+          },
+          "groomName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Arjun"
+          },
+          "city": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "example": "Jaipur"
+          },
+          "state": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Rajasthan"
+          },
+          "weddingDate": {
+            "type": "string",
+            "nullable": true,
+            "description": "The wedding day; `null` removes it. A new date must not be in the past.",
+            "format": "date",
+            "example": "2027-12-10"
+          }
+        }
+      },
+      "MemberInviteDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "owner",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "description": "`expired` once a pending invitation passes `expiresAt`.",
+            "enum": [
+              "pending",
+              "accepted",
+              "revoked",
+              "expired"
+            ],
+            "type": "string"
+          },
+          "emailStatus": {
+            "description": "Whether the latest email went out: `sent` means the provider accepted\nit, never that it arrived. `failed` means it could not be sent; resend it.",
+            "enum": [
+              "sending",
+              "sent",
+              "failed"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Invitation ID."
+          },
+          "email": {
+            "type": "string",
+            "description": "The address it was sent to."
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the link stops working."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "status",
+          "emailStatus",
+          "id",
+          "email",
+          "expiresAt",
+          "createdAt"
+        ]
+      },
+      "CreateMemberInviteDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Where the invitation is sent; only the account with this address can accept it.",
+            "format": "email",
+            "maxLength": 254,
+            "example": "priya@example.com"
+          },
+          "role": {
+            "description": "`owner`: your partner, with the same rights as you.",
+            "enum": [
+              "owner"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "role"
+        ]
+      },
+      "InvitePreviewDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "owner",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "accepted"
+            ],
+            "type": "string"
+          },
+          "brideName": {
+            "type": "string"
+          },
+          "groomName": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "invitedByName": {
+            "type": "string",
+            "description": "The name of the owner who sent it, if their account still exists."
+          },
+          "email": {
+            "type": "string",
+            "description": "Only the account with this address can accept."
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "status",
+          "brideName",
+          "groomName",
+          "city",
+          "state",
+          "email",
+          "expiresAt"
+        ]
+      },
+      "InviteTokenDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{20,100}$"
+          }
+        },
+        "required": [
+          "token"
         ]
       },
       "FieldErrorDto": {

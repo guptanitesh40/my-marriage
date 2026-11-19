@@ -101,7 +101,9 @@ runner and the success-response envelope.
 
 ## Still open — needs the owner
 
-None of these was guessed at.
+None of these was guessed at. Items 1 and 2 were settled in
+[0003](0003-authentication.md), and so was item 4's email change (deferred to
+a profile milestone).
 
 1. **Email pipeline.** Verification, password-reset and co-owner invitation
    emails make the outbox, BullMQ, the relay and the Resend adapter part of

@@ -52,13 +52,19 @@ jobs:
 
       - name: Build
         run: pnpm build
+        env:
+          # The web app's /api/v1 rewrite is fixed at build time. The browser
+          # tests below run the API on this port (apps/web/playwright.config.ts).
+          API_ORIGIN: http://localhost:4200
 
-      # Accessibility (axe), layout at 360/768/1280px, keyboard use and link
-      # checks for the public pages, in a real browser.
+      # Accessibility (axe), layout at 360/768/1280px, keyboard use, link
+      # checks and the sign-up, verification, sign-in and password reset
+      # journeys, in a real browser against the built web app, API and worker.
       - name: Install Playwright browser
         run: pnpm --filter @my-marriage/web exec playwright install --with-deps chromium
 
-      # Serves the production build from the Build step (see playwright.config.ts).
+      # Serves the production builds from the Build step, with MongoDB and
+      # Redis from the step above (see playwright.config.ts).
       - name: Browser tests
         run: pnpm test:browser
 

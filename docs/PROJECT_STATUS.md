@@ -11,8 +11,8 @@ belong in `docs/decisions/`; requirements stay in `docs/reference/`.
 | ---------------------- | --------------------------------------------------------- |
 | Repository foundation  | Done                                                      |
 | Public homepage        | Done (privacy and terms are drafts, pending legal review) |
-| Authentication         | Not started; `/login` is linked but returns 404           |
-| Wedding management     | Not started                                               |
+| Authentication         | Done (profile editing and session management not started) |
+| Wedding management     | Onboarding steps 1–2 done (ceremony, handoff next)        |
 | Guests, RSVPs, website | Not started                                               |
 | Photos                 | Not started                                               |
 
@@ -20,6 +20,107 @@ Open questions waiting on the owner are listed in
 [0002 — Foundation for Phase 1](decisions/0002-phase-1-foundation.md#still-open--needs-the-owner).
 
 ## Log
+
+### Partner invitation (onboarding step 2) — 2026-11-19
+
+Inviting your partner as the wedding's second owner, from the approved
+Stitch design. Decisions in [0005](decisions/0005-partner-invitation.md).
+
+- **Invite** from `/onboarding/partner` by email. The partner gets an email
+  with a link that works for 7 days; the page then shows the invitation as
+  pending, with **Resend** (a new link; the old one stops working) and
+  **Edit invitation** (another address, which replaces it). An email that
+  fails shows as not sent, and the wedding is unaffected.
+- **Accept** at `/invitations/accept`: shows what the invitation is for, then
+  asks the partner to sign in with the invited address (or sign up and
+  verify), and accepts. The partner becomes an equal owner. A wedding never
+  gets a third owner, and someone who already owns an active wedding is
+  refused.
+- **Edit the wedding's details:** "Back to wedding details" from step 2
+  opens step 1 with the wedding filled in. Dates before today are refused.
+- **API:** `PATCH /weddings/{id}`; `POST`/`GET
+/weddings/{id}/member-invites`, `…/{inviteId}/resend`;
+  `POST /member-invites/preview` and `/member-invites/accept`. Every route
+  under one wedding checks membership first and answers 404 to anyone else.
+- **Tests:** API integration tests for every rule above, including
+  simultaneous acceptance, the two-owner limit, the one-owned-wedding rule
+  and a failed email; web unit tests for each state; browser tests for the
+  whole journey across two browsers with the real emails.
+- **Not done yet:** revoking an invitation without replacing it, the member
+  list, manager invitations (PRD TEAM-01/02), step 3 (M3.3).
+
+### Wedding creation (onboarding step 1) — 2026-11-18
+
+The first step of wedding onboarding, from the approved Stitch design.
+Decisions in [0004](decisions/0004-wedding-creation.md).
+
+- **Create a wedding** at `/onboarding` with the bride's and groom's names,
+  city, state and an optional date. It starts active, with its website
+  unpublished, a 5 GB photo quota and the creator as its first owner, all in
+  one transaction.
+- **One active owned wedding per user**, enforced by the database's partial
+  unique index, so simultaneous or repeated submissions cannot create a
+  second. Managing other weddings is still allowed, and archived weddings do
+  not count.
+- **Every way in leads there:** a verified user without a wedding goes from
+  the homepage, the dashboard, sign-in or email verification straight to
+  `/onboarding`, and on to step 2 after creating it. Coming back to step 1
+  shows the existing wedding instead of the form.
+- **API:** `POST /api/v1/weddings` and `GET /api/v1/weddings` (the weddings
+  you own or manage, with your role). The server chooses the web address
+  (slug) from the names.
+- **Tests:** API integration tests for creation, validation, the ownership
+  rule under concurrency, rollback, managers and archived weddings; web unit
+  tests for the form; browser tests for both steps at three widths (axe),
+  keyboard use, refresh and back, and every redirect.
+- **Not done yet:**
+  - step 3, the first ceremony (M3.3); step 2 was added in M3.2, below
+  - the workspace handoff page and dashboard (M3.4); `/dashboard` is still
+    the welcome page, now naming the wedding
+
+### Authentication and accounts — 2026-11-18
+
+Accounts for couples and their families, built in-house as the architecture
+requires. Policy and mechanisms in
+[0003](decisions/0003-authentication.md).
+
+- **Sign-up** with name, email and password. Weak and common passwords are
+  refused, and an email can have only one account. Sign-up signs the person
+  in and sends the verification email.
+- **Email verification** by a single-use link that works for 24 hours, with
+  a resend that replaces the old link. Unverified accounts can sign in, but
+  everything except their own account details waits for verification.
+- **Sign-in and sign-out** with server-side sessions in an HttpOnly cookie:
+  30 days at most, 7 days without use. Failed sign-ins pause after five
+  attempts for one email, and the answer never reveals whether an account
+  exists.
+- **Forgotten password:** a reset link that works for 1 hour and once. The
+  reset signs the account out everywhere and sends a "password changed"
+  email.
+- **Protection everywhere:** every API route needs a signed-in, verified user
+  unless marked otherwise. Cross-site requests are refused, and rate limits
+  apply per address and per account. Link secrets are never stored, logged or
+  queued.
+- **Email delivery:** emails are queued in the same transaction as the change
+  that causes them, relayed by the worker through BullMQ, and sent through
+  Resend with retries. Locally they are written to `apps/api/.mail/`.
+- **Pages:** `/login` (matching the approved Stitch design), `/signup`,
+  `/verify-email`, `/forgot-password`, `/reset-password`, and a signed-in
+  welcome page at `/dashboard`. Signed-in visitors skip the sign-in page.
+- **Tests:** API integration tests for every rule above, including
+  concurrency, expiry and log hygiene. Browser tests now run the real web
+  app, API and worker on a separate database: every account page at three
+  widths (axe), plus the sign-up → verify → dashboard → sign-out → sign-in
+  and forgot → reset journeys, reading the real emails.
+- **Not done yet:**
+  - profile editing, password change while signed in, the list of signed-in
+    devices, and email change (planned as their own milestone)
+  - the wedding switcher
+  - audit events and email delivery webhooks
+  - real email delivery, which needs a verified sending domain and a Resend
+    API key
+  - final wording of the signup consent notice, which waits on the legal
+    review
 
 ### Public homepage — 2026-11-18
 
