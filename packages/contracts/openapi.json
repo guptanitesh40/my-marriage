@@ -912,6 +912,122 @@
           "Team"
         ]
       }
+    },
+    "/api/v1/member-invites/mine": {
+      "get": {
+        "operationId": "MemberInvitesController_mine",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MyInviteDto"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List invitations sent to my email address",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
+    "/api/v1/member-invites/{inviteId}/accept": {
+      "post": {
+        "operationId": "MemberInvitesController_acceptById",
+        "parameters": [
+          {
+            "name": "inviteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "INVITE_NOT_FOUND: no such invitation for this account."
+          },
+          "410": {
+            "description": "INVITE_INVALID: expired, replaced or withdrawn."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Accept an invitation sent to my email address",
+        "tags": [
+          "Team"
+        ]
+      }
     }
   },
   "info": {
@@ -1428,6 +1544,54 @@
         },
         "required": [
           "token"
+        ]
+      },
+      "MyInviteDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "owner",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "brideName": {
+            "type": "string"
+          },
+          "groomName": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "weddingDate": {
+            "type": "string",
+            "description": "The wedding day (YYYY-MM-DD), when set."
+          },
+          "invitedByName": {
+            "type": "string",
+            "description": "The name of the owner who sent it, if their account still exists."
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "id",
+          "brideName",
+          "groomName",
+          "city",
+          "state",
+          "expiresAt"
         ]
       },
       "FieldErrorDto": {

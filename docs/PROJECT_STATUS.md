@@ -24,7 +24,8 @@ Open questions waiting on the owner are listed in
 ### Partner invitation (onboarding step 2) — 2026-11-19
 
 Inviting your partner as the wedding's second owner, from the approved
-Stitch design. Decisions in [0005](decisions/0005-partner-invitation.md).
+Stitch design. Decisions in [0005](decisions/0005-partner-invitation.md)
+and [0008](decisions/0008-invitations-without-the-link.md).
 
 - **Invite** from `/onboarding/partner` by email. The partner gets an email
   with a link that works for 7 days; the page then shows the invitation as
@@ -36,11 +37,18 @@ Stitch design. Decisions in [0005](decisions/0005-partner-invitation.md).
   verify), and accepts. The partner becomes an equal owner. A wedding never
   gets a third owner, and someone who already owns an active wedding is
   refused.
+- **Invitation waiting, no link needed:** a verified account that owns no
+  wedding sees the invitations sent to its address on `/onboarding` before
+  the form to create one (Stitch "Pending Co-owner Invitation"). "Accept and
+  join" makes it an owner in one click. "Start my own wedding instead" asks
+  first, and the invitation is offered again on the next visit until they
+  accept one or own a wedding.
 - **Edit the wedding's details:** "Back to wedding details" from step 2
   opens step 1 with the wedding filled in. Dates before today are refused.
 - **API:** `PATCH /weddings/{id}`; `POST`/`GET
 /weddings/{id}/member-invites`, `…/{inviteId}/resend`;
-  `POST /member-invites/preview` and `/member-invites/accept`. Every route
+  `POST /member-invites/preview` and `/member-invites/accept`;
+  `GET /member-invites/mine` and `POST /member-invites/{inviteId}/accept`. Every route
   under one wedding checks membership first and answers 404 to anyone else.
 - **Tests:** API integration tests for every rule above, including
   simultaneous acceptance, the two-owner limit, the one-owned-wedding rule

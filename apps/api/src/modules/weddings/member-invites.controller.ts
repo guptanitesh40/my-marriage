@@ -1,5 +1,11 @@
 import { Body, Controller, Get, HttpCode, Ip, Param, Post } from '@nestjs/common';
-import { ApiCookieAuth, ApiGoneResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCookieAuth,
+  ApiGoneResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ApiDataResponse } from '../../platform/response-envelope.js';
 import { CurrentUser, Public } from '../auth/auth.decorators.js';
 import type { AuthenticatedUser } from '../auth/sessions.service.js';
@@ -7,6 +13,7 @@ import { CreateMemberInviteDto } from './dto/create-member-invite.dto.js';
 import { InvitePreviewDto } from './dto/invite-preview.dto.js';
 import { InviteTokenDto } from './dto/invite-token.dto.js';
 import { MemberInviteDto } from './dto/member-invite.dto.js';
+import { MyInviteDto } from './dto/my-invite.dto.js';
 import { WeddingDto } from './dto/wedding.dto.js';
 import { MemberInvitesService } from './member-invites.service.js';
 
@@ -86,5 +93,36 @@ export class MemberInvitesController {
     @Ip() ip: string,
   ): Promise<WeddingDto> {
     return this.invites.accept(user, body.token, { ip });
+  }
+
+  /**
+   * Pending invitations sent to the signed-in account's own verified
+   * address, newest first. Lets an invitee who signed in without the link
+   * see what is waiting for them.
+   */
+  @Get('member-invites/mine')
+  @ApiOperation({ summary: 'List invitations sent to my email address' })
+  @ApiDataResponse(MyInviteDto, { isArray: true })
+  mine(@CurrentUser() user: AuthenticatedUser): Promise<MyInviteDto[]> {
+    return this.invites.listMine(user);
+  }
+
+  /**
+   * Accepts one of those invitations without the link: the account's
+   * verified address must be the one it was sent to. Returns the wedding.
+   * 404 INVITE_NOT_FOUND for anyone else; 409 OWNER_LIMIT or
+   * OWNER_ACTIVE_LIMIT; 410 INVITE_INVALID once expired or replaced.
+   */
+  @Post('member-invites/:inviteId/accept')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Accept an invitation sent to my email address' })
+  @ApiDataResponse(WeddingDto)
+  @ApiNotFoundResponse({ description: 'INVITE_NOT_FOUND: no such invitation for this account.' })
+  @ApiGoneResponse({ description: 'INVITE_INVALID: expired, replaced or withdrawn.' })
+  acceptById(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('inviteId') inviteId: string,
+  ): Promise<WeddingDto> {
+    return this.invites.acceptById(user, inviteId);
   }
 }

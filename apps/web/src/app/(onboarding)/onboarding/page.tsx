@@ -5,11 +5,19 @@ import { StepLoading } from '@/components/onboarding/step-progress';
 
 export const metadata: Metadata = { title: 'Create your wedding' };
 
-/** Onboarding step 1: create the wedding. */
-export default function CreateWeddingPage() {
+/**
+ * Onboarding step 1: create the wedding, or first join one you were invited
+ * to. `?start=own` skips the invitations ("Start my own wedding instead").
+ */
+export default function CreateWeddingPage({ searchParams }: PageProps<'/onboarding'>) {
   return (
     <Suspense fallback={<StepLoading />}>
-      <WeddingStep />
+      <Step searchParams={searchParams} />
     </Suspense>
   );
+}
+
+async function Step({ searchParams }: Pick<PageProps<'/onboarding'>, 'searchParams'>) {
+  const { start } = await searchParams;
+  return <WeddingStep startOwn={start === 'own'} />;
 }

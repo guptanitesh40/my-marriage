@@ -516,4 +516,156 @@ describe('Partner invitations (integration)', () => {
     await limiter.reset(daily, owner.weddingId);
     expect((await resend(current ?? '')).status).toBe(200);
   });
+
+  describe('without the link (signed in as the invited address)', () => {
+    function mine(cookie: string | undefined) {
+      const req = http().get('/api/v1/member-invites/mine');
+      return cookie ? req.set('Cookie', cookie) : req;
+    }
+
+    function acceptById(cookie: string | undefined, inviteId: string) {
+      const req = http().post(`/api/v1/member-invites/${inviteId}/accept`);
+      return (cookie ? req.set('Cookie', cookie) : req).send();
+    }
+
+    /** An owner's wedding with a pending invitation (its email sent) to a new address. */
+    async function invited() {
+      const owner = await ownerWithWedding();
+      const email = uniqueEmail('partner');
+      const created = await invite(owner.cookie, owner.weddingId, email);
+      await invitationEmail(email);
+      return { owner, email, inviteId: (created.body as { data: { id: string } }).data.id };
+    }
+
+    it('lists the invitation and accepts it by its ID, once', async () => {
+      const { owner, email, inviteId } = await invited();
+      await weddings.updateOne(
+        { _id: owner.weddingId },
+        { $set: { weddingDate: new Date('2027-02-14T00:00:00Z') } },
+      );
+      // Signs up with the address in other capitals: still the invited address.
+      const partner = await signupVerified(app, { email: email.toUpperCase() });
+
+      const listed = await mine(partner.cookie);
+      expect(listed.status).toBe(200);
+      expect((listed.body as { data: unknown[] }).data).toEqual([
+        {
+          id: inviteId,
+          brideName: owner.brideName,
+          groomName: 'Arjun',
+          city: 'Jaipur',
+          state: 'Rajasthan',
+          weddingDate: '2027-02-14',
+          invitedByName: 'Priya Sharma',
+          role: 'owner',
+          expiresAt: expect.any(String) as string,
+        },
+      ]);
+
+      const res = await acceptById(partner.cookie, inviteId);
+      expect(res.status).toBe(200);
+      expect((res.body as { data: unknown }).data).toMatchObject({
+        id: owner.weddingId,
+        role: 'owner',
+      });
+      const stored = await invites.findById(inviteId).lean();
+      expect(stored).toMatchObject({ status: 'accepted' });
+      expect(stored?.acceptedBy?.toHexString()).toBe(partner.userId);
+      expect(
+        await memberships.countDocuments({
+          weddingId: new Types.ObjectId(owner.weddingId),
+          role: 'owner',
+          status: 'active',
+        }),
+      ).toBe(2);
+
+      // Nothing left waiting; accepting again changes nothing.
+      expect((await mine(partner.cookie)).body).toMatchObject({ data: [] });
+      expect((await acceptById(partner.cookie, inviteId)).status).toBe(200);
+      expect(
+        await memberships.countDocuments({ weddingId: new Types.ObjectId(owner.weddingId) }),
+      ).toBe(2);
+    });
+
+    it('shows and accepts nothing for another address, an unverified one or a bad ID', async () => {
+      const { email, inviteId } = await invited();
+
+      expect((await mine(undefined)).status).toBe(401);
+      expect((await acceptById(undefined, inviteId)).status).toBe(401);
+
+      // Another account cannot tell the invitation exists.
+      const someoneElse = await signupVerified(app);
+      expect((await mine(someoneElse.cookie)).body).toMatchObject({ data: [] });
+      const refused = await acceptById(someoneElse.cookie, inviteId);
+      expect(refused.status).toBe(404);
+      expect(codeOf(refused)).toBe('INVITE_NOT_FOUND');
+      expect(codeOf(await acceptById(someoneElse.cookie, 'not-an-id'))).toBe('INVITE_NOT_FOUND');
+      expect(codeOf(await acceptById(someoneElse.cookie, new Types.ObjectId().toHexString()))).toBe(
+        'INVITE_NOT_FOUND',
+      );
+
+      // The right address, not yet verified: the verified address is the proof.
+      const unverified = await signup(app, { email });
+      expect(codeOf(await mine(unverified.cookie))).toBe('EMAIL_NOT_VERIFIED');
+      expect(codeOf(await acceptById(unverified.cookie, inviteId))).toBe('EMAIL_NOT_VERIFIED');
+      expect((await invites.findById(inviteId).lean())?.status).toBe('pending');
+    });
+
+    it('drops an invitation once expired, replaced or its wedding archived', async () => {
+      const { owner, email, inviteId } = await invited();
+      const partner = await signupVerified(app, { email });
+
+      // Replaced: the owner invited the same address again.
+      const again = await invite(owner.cookie, owner.weddingId, email);
+      const newId = (again.body as { data: { id: string } }).data.id;
+      await invitationEmail(email, 2);
+      expect(codeOf(await acceptById(partner.cookie, inviteId))).toBe('INVITE_INVALID');
+      expect(
+        ((await mine(partner.cookie)).body as { data: { id: string }[] }).data.map((i) => i.id),
+      ).toEqual([newId]);
+
+      // Expired.
+      await invites.updateOne({ _id: newId }, { $set: { expiresAt: new Date(Date.now() - 1) } });
+      expect((await mine(partner.cookie)).body).toMatchObject({ data: [] });
+      const expired = await acceptById(partner.cookie, newId);
+      expect(expired.status).toBe(410);
+      expect(codeOf(expired)).toBe('INVITE_INVALID');
+
+      // Archived wedding: not listed, even while the invitation is in date.
+      const other = await invited();
+      const invitee = await signupVerified(app, { email: other.email });
+      await weddings.updateOne({ _id: other.owner.weddingId }, { $set: { status: 'archived' } });
+      expect((await mine(invitee.cookie)).body).toMatchObject({ data: [] });
+      expect(codeOf(await acceptById(invitee.cookie, other.inviteId))).toBe('WEDDING_ARCHIVED');
+    });
+
+    it('keeps the owner rules: two owners at most, one owned wedding each', async () => {
+      const full = await invited();
+      const partner = await signupVerified(app, { email: full.email });
+      await memberships.create({
+        weddingId: new Types.ObjectId(full.owner.weddingId),
+        userId: new Types.ObjectId(),
+        role: 'owner',
+        status: 'active',
+        activeOwned: true,
+        joinedAt: new Date(),
+      });
+      expect(codeOf(await acceptById(partner.cookie, full.inviteId))).toBe('OWNER_LIMIT');
+
+      const { email, inviteId } = await invited();
+      const busy = await signupVerified(app, { email });
+      const created = await http()
+        .post('/api/v1/weddings')
+        .set('Cookie', busy.cookie)
+        .send({
+          brideName: `Riya ${tag()}`,
+          groomName: 'Kabir',
+          city: 'Pune',
+          state: 'Maharashtra',
+        });
+      expect(created.status).toBe(201);
+      expect(codeOf(await acceptById(busy.cookie, inviteId))).toBe('OWNER_ACTIVE_LIMIT');
+      expect((await invites.findById(inviteId).lean())?.status).toBe('pending');
+    });
+  });
 });

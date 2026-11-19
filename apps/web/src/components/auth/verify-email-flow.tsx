@@ -24,8 +24,9 @@ function hasKeptInvitation(): boolean {
 
 /**
  * Where to go once verified: sign in if this browser is not signed in;
- * otherwise straight to creating the wedding if there is none yet, so the
- * dashboard does not have to redirect.
+ * otherwise straight to creating the wedding (or to the invitation waiting
+ * for this address) if there is none yet, so the dashboard does not have to
+ * redirect.
  */
 async function nextStep(): Promise<{ href: string; label: string }> {
   const me = await api.GET('/api/v1/auth/me');
@@ -35,7 +36,11 @@ async function nextStep(): Promise<{ href: string; label: string }> {
   }
   const weddings = await api.GET('/api/v1/weddings');
   if (weddings.data?.data.length === 0) {
-    return { href: routes.onboarding, label: 'Create your wedding' };
+    // /onboarding shows invitations waiting for this address before the form.
+    const invites = await api.GET('/api/v1/member-invites/mine');
+    return invites.data?.data.length
+      ? { href: routes.onboarding, label: 'See your invitation' }
+      : { href: routes.onboarding, label: 'Create your wedding' };
   }
   return { href: routes.dashboard, label: 'Continue to your dashboard' };
 }

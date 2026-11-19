@@ -39,3 +39,20 @@ export async function getInvites(weddingId: string): Promise<MemberInvite[] | nu
     return null;
   }
 }
+
+export type MyInvite = components['schemas']['MyInviteDto'];
+
+/**
+ * Pending invitations sent to the visitor's own verified address, newest
+ * first; null if the API cannot answer. Reads the request: call it inside
+ * <Suspense>.
+ */
+export const getMyInvites = cache(async (): Promise<MyInvite[] | null> => {
+  try {
+    const api = await serverApi();
+    const { data } = await api.GET('/api/v1/member-invites/mine');
+    return data?.data ?? null;
+  } catch {
+    return null;
+  }
+});

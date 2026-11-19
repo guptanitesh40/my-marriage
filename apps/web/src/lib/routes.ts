@@ -12,8 +12,13 @@ export const routes = {
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
   dashboard: '/dashboard',
-  /** Wedding onboarding, step 1: create the wedding. */
+  /**
+   * Wedding onboarding, step 1: create the wedding. Shows the invitations
+   * waiting for the visitor first, if any.
+   */
   onboarding: '/onboarding',
+  /** Step 1's form even when invitations are waiting ("Start my own wedding instead"). */
+  onboardingStartOwn: '/onboarding?start=own',
   /** Step 2: invite your partner (optional). */
   onboardingPartner: '/onboarding/partner',
   /** Where a partner invitation email leads. */
