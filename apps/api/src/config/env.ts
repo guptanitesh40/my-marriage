@@ -15,7 +15,7 @@ import {
 } from 'class-validator';
 import { TRACE_MODES, type TraceMode } from '../platform/tracing.js';
 
-export const MAIL_TRANSPORTS = ['resend', 'file', 'memory'] as const;
+export const MAIL_TRANSPORTS = ['smtp', 'file', 'memory'] as const;
 export type MailTransportName = (typeof MAIL_TRANSPORTS)[number];
 
 /**
@@ -59,7 +59,8 @@ export class Env {
   WEB_ORIGIN: string = 'http://localhost:3000';
 
   /**
-   * How email leaves the worker: `resend` in production and staging; `file`
+   * How email leaves the worker: `smtp` (Gmail) in production and staging,
+   * and locally to send real email; `file`
    * writes each email to MAIL_FILE_DIR for local development; `memory` keeps
    * them in the process for integration tests.
    */
@@ -71,17 +72,41 @@ export class Env {
   @IsNotEmpty()
   MAIL_FILE_DIR: string = '.mail';
 
-  /** Resend API key. Required, and only read, when MAIL_TRANSPORT=resend. */
-  @ValidateIf((env: Env) => env.MAIL_TRANSPORT === 'resend')
+  /** SMTP server for MAIL_TRANSPORT=smtp. Gmail's by default. */
   @IsString()
-  @IsNotEmpty({ message: 'RESEND_API_KEY is required when MAIL_TRANSPORT is resend' })
-  RESEND_API_KEY?: string;
+  @IsNotEmpty()
+  SMTP_HOST: string = 'smtp.gmail.com';
+
+  /** 465 (TLS from the start, the default) or 587 (STARTTLS). */
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(65535)
+  SMTP_PORT: number = 465;
+
+  /** The account that sends, e.g. the Gmail address. Required for smtp. */
+  @ValidateIf((env: Env) => env.MAIL_TRANSPORT === 'smtp')
+  @Matches(/^[^<>\s@]+@[^<>\s@]+$/, {
+    message: 'SMTP_USER is required when MAIL_TRANSPORT is smtp, as an email address',
+  })
+  SMTP_USER?: string;
 
   /**
-   * Sender, e.g. `My Marriage <hello@example.com>`. With Resend it must be on
-   * a verified sending domain, so there is no default for that transport.
+   * Required for smtp. For Gmail, an App Password (Google Account → Security
+   * → 2-Step Verification → App passwords), never the account password. A
+   * secret: from AWS Secrets Manager outside local development.
    */
-  @ValidateIf((env: Env) => env.MAIL_TRANSPORT === 'resend' || env.MAIL_FROM !== undefined)
+  @ValidateIf((env: Env) => env.MAIL_TRANSPORT === 'smtp')
+  @IsString()
+  @IsNotEmpty({ message: 'SMTP_PASSWORD is required when MAIL_TRANSPORT is smtp' })
+  SMTP_PASSWORD?: string;
+
+  /**
+   * Sender, e.g. `My Marriage <hello@gmail.com>`. With smtp it defaults to
+   * `My Marriage <SMTP_USER>`; Gmail sends only from the account's own
+   * address or an alias added to it ("Send mail as").
+   */
+  @ValidateIf((env: Env) => env.MAIL_FROM !== undefined)
   @Matches(/^([^<>]+<[^<>\s@]+@[^<>\s@]+>|[^<>\s@]+@[^<>\s@]+)$/, {
     message: 'MAIL_FROM must be an address or "Name <address>"',
   })
@@ -113,7 +138,10 @@ const ENV_KEYS = [
   'WEB_ORIGIN',
   'MAIL_TRANSPORT',
   'MAIL_FILE_DIR',
-  'RESEND_API_KEY',
+  'SMTP_HOST',
+  'SMTP_PORT',
+  'SMTP_USER',
+  'SMTP_PASSWORD',
   'MAIL_FROM',
   'LOG_TRACE',
 ] as const satisfies (keyof Env)[];
@@ -123,8 +151,8 @@ function crossFieldProblems(env: Env): string[] {
   const problems: string[] = [];
   // Production and staging both run as NODE_ENV=production; neither may
   // silently drop or locally store the emails people are waiting for.
-  if (env.NODE_ENV === 'production' && env.MAIL_TRANSPORT !== 'resend') {
-    problems.push('MAIL_TRANSPORT must be resend when NODE_ENV is production');
+  if (env.NODE_ENV === 'production' && env.MAIL_TRANSPORT !== 'smtp') {
+    problems.push('MAIL_TRANSPORT must be smtp when NODE_ENV is production');
   }
   return problems;
 }
@@ -153,6 +181,9 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   ];
   if (problems.length > 0) {
     throw new Error(`Invalid environment configuration: ${problems.join('; ')}`);
+  }
+  if (env.MAIL_TRANSPORT === 'smtp' && env.MAIL_FROM === undefined) {
+    env.MAIL_FROM = `My Marriage <${env.SMTP_USER}>`;
   }
   return env;
 }

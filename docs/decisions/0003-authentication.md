@@ -93,6 +93,10 @@ invalid_idempotent_request`, which is recorded as sent.
 
 ## Email pipeline
 
+> **Superseded in part by [0007](0007-gmail-smtp.md):** email is now sent
+> through Gmail over SMTP. Resend, its adapter and its idempotency key are
+> gone; what this section says about them is history.
+
 `notifications` + `outbox_events` written in the transaction of the change →
 the worker's relay claims due events atomically (a 30-second claim, so several
 workers never publish one twice) and adds a BullMQ job whose ID is the event

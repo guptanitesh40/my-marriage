@@ -60,10 +60,23 @@ to the API. To run one process at a time use `pnpm dev:web`, `pnpm dev:api` or
 `pnpm dev:worker`. Stop the services with `pnpm services:down` (data is kept
 in a Docker volume).
 
-**Emails in development** are not sent anywhere. The worker writes each one
-to `apps/api/.mail/` as an HTML file (open it in a browser and click its link)
-and a JSON file. The log line `Email written to …` names the file. Staging and
-production send through Resend instead (`MAIL_TRANSPORT=resend`).
+**Emails in development** are not sent anywhere by default. The worker
+writes each one to `apps/api/.mail/` as an HTML file (open it in a browser
+and click its link) and a JSON file. The log line `Email written to …` names
+the file. Staging and production send through Gmail over SMTP
+(`MAIL_TRANSPORT=smtp`).
+
+**Sending real email from your machine** (for example to invite someone on
+another device) uses Gmail too:
+
+1. Turn on 2-Step Verification for the Gmail account that will send, then
+   create an App Password (Google Account → Security → App passwords).
+2. In `apps/api/.env`, set `MAIL_TRANSPORT=smtp`, `SMTP_USER` to that Gmail
+   address and `SMTP_PASSWORD` to the App Password, then restart `pnpm dev`.
+
+Emails then come from `My Marriage <your Gmail address>`, to any address.
+Gmail allows about 500 a day. Links in them point to `WEB_ORIGIN`
+(`localhost:3000` by default), which works only on this computer.
 
 **Following a request through the code.** In development the API and the
 worker log every request (and every job) as a tree: the guard, controller,
@@ -136,10 +149,13 @@ on the schema; `pnpm db:migrate` applies it. Deployments run the same step
 | `REDIS_URL`        | API     | Redis connection string                                                                                  |
 | `TRUST_PROXY_HOPS` | API     | Proxies trusted for the client address: 0 locally, 1 behind one load balancer                            |
 | `WEB_ORIGIN`       | API     | The web app's public origin: links in emails, and the one origin the CSRF check trusts                   |
-| `MAIL_TRANSPORT`   | API     | `resend` (required in production), `file` (local development) or `memory` (integration tests)            |
+| `MAIL_TRANSPORT`   | API     | `smtp` (Gmail; required in production), `file` (local development) or `memory` (integration tests)       |
 | `MAIL_FILE_DIR`    | API     | Folder for `MAIL_TRANSPORT=file` (default `.mail`)                                                       |
-| `RESEND_API_KEY`   | API     | Resend API key, for `MAIL_TRANSPORT=resend` — a secret, from AWS Secrets Manager                         |
-| `MAIL_FROM`        | API     | Sender, e.g. `My Marriage <hello@example.com>`, on a domain verified in Resend                           |
+| `SMTP_USER`        | API     | The Gmail address that sends, for `MAIL_TRANSPORT=smtp`                                                  |
+| `SMTP_PASSWORD`    | API     | A Google App Password for `SMTP_USER` — a secret, from AWS Secrets Manager                               |
+| `SMTP_HOST`        | API     | SMTP server (default `smtp.gmail.com`)                                                                   |
+| `SMTP_PORT`        | API     | 465 (default, TLS) or 587 (STARTTLS)                                                                     |
+| `MAIL_FROM`        | API     | Sender; defaults to `My Marriage <SMTP_USER>`. Gmail allows only the account's own address or an alias   |
 | `API_ORIGIN`       | Web     | The API's origin: `/api/v1/*` is forwarded there (fixed at build) and server rendering calls it directly |
 
 The API validates its variables at startup and refuses to start if one is

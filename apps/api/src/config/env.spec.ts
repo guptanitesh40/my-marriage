@@ -37,9 +37,9 @@ describe('validateEnv', () => {
   it('traces every request in development, failures in production, nothing in tests', () => {
     expect(validateEnv(valid).LOG_TRACE).toBe('full');
     expect(validateEnv({ ...valid, NODE_ENV: 'test' }).LOG_TRACE).toBe('off');
-    const production = { ...valid, NODE_ENV: 'production', MAIL_TRANSPORT: 'resend' };
-    const resend = { RESEND_API_KEY: 're_test', MAIL_FROM: 'a@example.com' };
-    expect(validateEnv({ ...production, ...resend }).LOG_TRACE).toBe('errors');
+    const production = { ...valid, NODE_ENV: 'production', MAIL_TRANSPORT: 'smtp' };
+    const smtp = { SMTP_USER: 'hello@gmail.com', SMTP_PASSWORD: 'x' };
+    expect(validateEnv({ ...production, ...smtp }).LOG_TRACE).toBe('errors');
     expect(validateEnv({ ...valid, LOG_TRACE: 'off' }).LOG_TRACE).toBe('off');
     expect(() => validateEnv({ ...valid, LOG_TRACE: 'verbose' })).toThrow(/LOG_TRACE/);
   });
@@ -65,28 +65,44 @@ describe('validateEnv', () => {
     expect(() => validateEnv({ ...valid, WEB_ORIGIN: 'app.example.com' })).toThrow(/WEB_ORIGIN/);
   });
 
-  it('requires a key and a sender for Resend, without echoing the key', () => {
-    expect(() => validateEnv({ ...valid, MAIL_TRANSPORT: 'resend' })).toThrow(/RESEND_API_KEY/);
+  it('requires an account and an App Password for SMTP, without echoing the password', () => {
+    expect(() => validateEnv({ ...valid, MAIL_TRANSPORT: 'smtp' })).toThrow(/SMTP_USER/);
     expect(() =>
-      validateEnv({ ...valid, MAIL_TRANSPORT: 'resend', RESEND_API_KEY: 're_secret123' }),
-    ).toThrow(/MAIL_FROM/);
+      validateEnv({ ...valid, MAIL_TRANSPORT: 'smtp', SMTP_USER: 'hello@gmail.com' }),
+    ).toThrow(/SMTP_PASSWORD/);
+    expect(() =>
+      validateEnv({ ...valid, MAIL_TRANSPORT: 'smtp', SMTP_USER: 'abcd efgh', SMTP_PASSWORD: 'x' }),
+    ).toThrow(/SMTP_USER/);
     try {
-      validateEnv({ ...valid, MAIL_TRANSPORT: 'resend', RESEND_API_KEY: 're_secret123' });
+      validateEnv({ ...valid, MAIL_TRANSPORT: 'smtp', SMTP_PASSWORD: 'app-secret-123' });
     } catch (error) {
-      expect((error as Error).message).not.toContain('re_secret123');
+      expect((error as Error).message).not.toContain('app-secret-123');
     }
-    const env = validateEnv({
+  });
+
+  it('sends through Gmail by default, as the account itself unless MAIL_FROM says otherwise', () => {
+    const smtp = {
       ...valid,
-      MAIL_TRANSPORT: 'resend',
-      RESEND_API_KEY: 're_secret123',
-      MAIL_FROM: 'My Marriage <hello@example.com>',
+      MAIL_TRANSPORT: 'smtp',
+      SMTP_USER: 'hello@gmail.com',
+      SMTP_PASSWORD: 'x',
+    };
+    const env = validateEnv(smtp);
+    expect(env).toMatchObject({
+      SMTP_HOST: 'smtp.gmail.com',
+      SMTP_PORT: 465,
+      MAIL_FROM: 'My Marriage <hello@gmail.com>',
     });
-    expect(env.MAIL_FROM).toBe('My Marriage <hello@example.com>');
+    expect(validateEnv({ ...smtp, SMTP_PORT: '587' }).SMTP_PORT).toBe(587);
+    expect(validateEnv({ ...smtp, MAIL_FROM: 'Wedding <alias@example.com>' }).MAIL_FROM).toBe(
+      'Wedding <alias@example.com>',
+    );
+    expect(() => validateEnv({ ...smtp, MAIL_FROM: 'not an address' })).toThrow(/MAIL_FROM/);
   });
 
   it('refuses to run production without real email delivery', () => {
     expect(() => validateEnv({ ...valid, NODE_ENV: 'production' })).toThrow(
-      /MAIL_TRANSPORT must be resend/,
+      /MAIL_TRANSPORT must be smtp/,
     );
   });
 });

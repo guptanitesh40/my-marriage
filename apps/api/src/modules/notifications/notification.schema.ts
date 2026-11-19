@@ -56,8 +56,8 @@ export class Notification {
   recipientEmailNormalized: string;
 
   /**
-   * One logical email. Sent to the provider as its idempotency key, so a
-   * retry after a crash does not send a second copy.
+   * One logical email. It becomes the email's Message-ID, the same on every
+   * attempt, so a copy sent again after a crash is marked as a duplicate.
    */
   @Prop({ type: String, required: true })
   idempotencyKey: string;
@@ -65,7 +65,7 @@ export class Notification {
   @Prop({ type: String, enum: NOTIFICATION_STATES, required: true, default: 'queued' })
   state: NotificationState;
 
-  /** Resend's ID for the accepted email. */
+  /** The Message-ID of the accepted email (SMTP), or the local transport's ID. */
   @Prop({ type: String })
   providerMessageId?: string;
 

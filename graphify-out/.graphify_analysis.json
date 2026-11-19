@@ -1716,15 +1716,9 @@
       "apps_web_next_config_nextconfig",
       "apps_web_next_config_securityheaders"
     ],
-    "64": [
-      "apps_api_src_modules_auth_auth_controller_ts_currentuser"
-    ],
-    "65": [
-      "apps_api_src_modules_weddings_member_invites_controller_ts_currentuser"
-    ],
-    "66": [
-      "apps_api_src_modules_weddings_weddings_controller_ts_currentuser"
-    ]
+    "64": ["apps_api_src_modules_auth_auth_controller_ts_currentuser"],
+    "65": ["apps_api_src_modules_weddings_member_invites_controller_ts_currentuser"],
+    "66": ["apps_api_src_modules_weddings_weddings_controller_ts_currentuser"]
   },
   "cohesion": {
     "0": 0.05343320848938826,
@@ -1851,10 +1845,7 @@
     {
       "source": "typescript@catalog:",
       "target": "typescript",
-      "source_files": [
-        "packages/contracts/package.json",
-        "apps/api/package.json"
-      ],
+      "source_files": ["packages/contracts/package.json", "apps/api/package.json"],
       "confidence": "EXTRACTED",
       "relation": "declares",
       "why": "connects across different repos/directories; peripheral node `typescript@catalog:` unexpectedly reaches hub `typescript`"
@@ -1862,10 +1853,7 @@
     {
       "source": "configureApp()",
       "target": "accessLog()",
-      "source_files": [
-        "apps/api/src/configure-app.ts",
-        "apps/api/src/platform/http-middleware.ts"
-      ],
+      "source_files": ["apps/api/src/configure-app.ts", "apps/api/src/platform/http-middleware.ts"],
       "confidence": "INFERRED",
       "relation": "indirect_call",
       "why": "inferred connection - not explicitly stated in source; bridges separate communities"
@@ -1895,10 +1883,7 @@
     {
       "source": "typescript@catalog:",
       "target": "typescript",
-      "source_files": [
-        "apps/web/package.json",
-        "apps/api/package.json"
-      ],
+      "source_files": ["apps/web/package.json", "apps/api/package.json"],
       "confidence": "EXTRACTED",
       "relation": "declares",
       "why": "peripheral node `typescript@catalog:` unexpectedly reaches hub `typescript`"
