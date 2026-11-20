@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100..900&amp;family=Newsreader:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-surface":"#1c1c16","on-tertiary-fixed-variant":"#3d4946","secondary-container":"#fddaac","surface-container-highest":"#e6e2d9","tertiary-fixed-dim":"#bcc9c5","surface-variant":"#e6e2d9","outline-variant":"#c0c8c4","error-container":"#ffdad6","on-background":"#1c1c16","surface-container-low":"#f7f3ea","background":"#fdf9f0","on-tertiary":"#ffffff","on-primary-fixed-variant":"#224e42","primary-fixed":"#bdeddb","tertiary-container":"#4b5854","error":"#ba1a1a","on-secondary":"#ffffff","surface-container-lowest":"#ffffff","outline":"#717975","on-primary-container":"#a5d4c3","on-secondary-container":"#785e39","surface":"#fdf9f0","on-tertiary-fixed":"#121e1b","tertiary-fixed":"#d8e5e1","on-primary":"#ffffff","on-secondary-fixed-variant":"#594320","surface-bright":"#fdf9f0","secondary":"#735a35","tertiary":"#34413d","primary-container":"#315d50","inverse-on-surface":"#f5f0e7","on-secondary-fixed":"#281800","primary":"#184539","on-error":"#ffffff","secondary-fixed":"#ffddb0","on-primary-fixed":"#002018","surface-container-high":"#ece8df","on-error-container":"#93000a","inverse-surface":"#32302b","surface-container":"#f2ede4","on-surface-variant":"#404845","secondary-fixed-dim":"#e2c195","surface-dim":"#dddad1","on-tertiary-container":"#c0cdc9","primary-fixed-dim":"#a2d0c0","inverse-primary":"#a2d0c0","surface-tint":"#3b6759"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"margin":"2.5rem","space-sm":"0.5rem","space-xl":"2.25rem","margin-mobile":"1.25rem","gutter-mobile":"1rem","space-lg":"1.5rem","space-md":"1rem","gutter":"1.5rem","space-xs":"0.25rem"},fontFamily:{"display-lg":["Newsreader"],"headline-lg":["Newsreader"],"label-md":["Manrope"],"display-lg-mobile":["Newsreader"],"body-md":["Manrope"],"body-lg":["Manrope"],"headline-lg-mobile":["Newsreader"],"title-sm":["Manrope"],"headline-md":["Newsreader"],"body-sm":["Manrope"],"headline-sm":["Newsreader"],"label-sm":["Manrope"],"title-md":["Manrope"]},fontSize:{"display-lg":["3.5rem",{lineHeight:"4rem",letterSpacing:"-0.025em",fontWeight:"400"}],"headline-lg":["2.5rem",{lineHeight:"3rem",letterSpacing:"-0.02em",fontWeight:"400"}],"label-md":["0.8125rem",{lineHeight:"1rem",letterSpacing:"0.02em",fontWeight:"600"}],"display-lg-mobile":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.015em",fontWeight:"400"}],"body-md":["0.9375rem",{lineHeight:"1.5rem",fontWeight:"400"}],"body-lg":["1.0625rem",{lineHeight:"1.65rem",fontWeight:"400"}],"headline-lg-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.01em",fontWeight:"400"}],"title-sm":["0.9375rem",{lineHeight:"1.375rem",fontWeight:"600"}],"headline-md":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.01em",fontWeight:"500"}],"body-sm":["0.8125rem",{lineHeight:"1.25rem",fontWeight:"400"}],"headline-sm":["1.25rem",{lineHeight:"1.75rem",fontWeight:"500"}],"label-sm":["0.6875rem",{lineHeight:"0.875rem",letterSpacing:"0.04em",fontWeight:"600"}],"title-md":["1.125rem",{lineHeight:"1.625rem",letterSpacing:"-0.01em",fontWeight:"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-60 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)] overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center gap-space-sm"><img alt="Modern editorial brand mark for My Marriage wedding planning SaaS: interlocking minimalist gold/forest green arch and rings geometric monogram mark.. Brand logo. - Primary color: #315d50\n- Font: newsreader\n- Mode: light\n- Roundness: rounded-md\n" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrB1p5bbW_ia-0CcvelP6FsrLa5Tb_VT2766jhd1rqFDUWLmHjC8r6BoWHy50idVcSUyQIGdYrSGppxXQWzTAXtXDYMUbBlzxx5UnBbkPnvmfhzHwCYtpf31zIUBcHhFV3DUZxk1g3gDcSgaJIp0H8cIFqXHtTraYbnOQFn-oxrmBoYAJ2eSg5Ubx24qm6u5a7FEP3i409reDexOtA5yJkz3ayvXO6OE5GKALi39zCZo"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-none tracking-tight">My Marriage</span><span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary mt-0.5">Workspace</span></div></div><nav class="px-space-xs mt-space-sm flex flex-col gap-0.5" data-active-classes="bg-primary-container text-on-primary font-bold shadow-sm"><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="overview" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">grid_view</span><span class="font-body-sm text-body-sm">Overview</span></div></a><div class="flex flex-col"><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="events" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">calendar_month</span><span class="font-body-sm text-body-sm">Events</span></div><span class="material-symbols-outlined text-[16px] text-outline">expand_more</span></a><div class="ml-6 pl-2.5 flex flex-col gap-0.5"><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-haldi" href="#">Haldi</a><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-mehendi" href="#">Mehendi</a><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-sangeet" href="#">Sangeet</a><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-wedding" href="#">Wedding</a><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-reception" href="#">Reception</a></div></div><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="tasks" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">check_circle</span><span class="font-body-sm text-body-sm">Tasks</span></div><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">3 due</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="guests-and-rsvp" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">group</span><span class="font-body-sm text-body-sm">Guests &amp; RSVP</span></div><span class="px-1.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm">126</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="expenses-and-budget" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">account_balance_wallet</span><span class="font-body-sm text-body-sm">Expenses &amp; Budget</span></div><span class="px-1.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm">₹2.1L due</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="vendors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">storefront</span><span class="font-body-sm text-body-sm">Vendors</span></div></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="wedding-website" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">language</span><span class="font-body-sm text-body-sm">Wedding Website</span></div><span class="w-2 h-2 rounded-full bg-primary"></span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="photos-and-qr-drive" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">photo_library</span><span class="font-body-sm text-body-sm">Photos &amp; QR Drive</span></div></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="team-and-family" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">diversity_1</span><span class="font-body-sm text-body-sm">Team &amp; Family</span></div><span class="font-label-sm text-label-sm text-outline">6</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">tune</span><span class="font-body-sm text-body-sm">Settings</span></div></a></nav></div><div class="p-space-sm flex flex-col gap-space-sm bg-surface-container/60 rounded-xl m-space-xs"><div class="flex flex-col gap-1"><div class="flex justify-between items-center"><span class="font-label-sm text-label-sm text-on-surface-variant">Cloud Vault</span><span class="font-label-sm text-label-sm text-primary font-bold">4.2 / 10 GB</span></div><div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden"><div class="h-full bg-primary rounded-full" style="width: 42%"></div></div></div><div class="flex items-center justify-between pt-1"><div class="flex items-center gap-2 overflow-hidden"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="flex flex-col truncate"><span class="font-title-sm text-title-sm truncate text-on-surface leading-tight">Ananya Sharma</span><span class="font-label-sm text-label-sm text-outline truncate">ananya@mymarriage.in</span></div></div><button class="text-outline hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button></div></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-space-sm py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"><span class="material-symbols-outlined text-primary text-[18px]">favorite</span><span class="font-title-sm text-title-sm text-on-surface">Ananya &amp; Arjun — Jaipur 2027</span><span class="material-symbols-outlined text-outline text-[16px]">unfold_more</span></div><a class="hidden xl:flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#"><span class="material-symbols-outlined text-[16px]">link</span><span>my-marriage.com/ananya-arjun</span></a></div><div class="flex items-center gap-space-sm"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm hidden md:inline">Search</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">⌘K</kbd></button><button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-colors shadow-sm font-label-md text-label-md" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>Quick Action</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="w-full pt-16 bg-surface"><div class="flex flex-col w-full">
+<!-- Interactive Prototype State Navigator & Global Bar -->
+<div class="w-full bg-surface-container-high px-space-lg py-2.5 flex items-center justify-between overflow-x-auto shadow-sm">
+<div class="flex items-center gap-2 shrink-0">
+<div class="flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-lowest text-primary shadow-xs">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Prototype States:</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-primary text-on-primary transition-all" id="btn-state-main" onclick="setPrototypeState('main')">Directory</button>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-highest text-on-surface-variant transition-all" id="btn-state-add" onclick="setPrototypeState('add')">+ Add Drawer</button>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-highest text-on-surface-variant transition-all" id="btn-state-details" onclick="setPrototypeState('details')">Details: Marigold</button>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-highest text-on-surface-variant transition-all" id="btn-state-edit" onclick="setPrototypeState('edit')">Edit Drawer</button>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-highest text-on-surface-variant transition-all" id="btn-state-filter-photo" onclick="setPrototypeState('filter-photo')">Filter: Photo &amp; Multi</button>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-highest text-on-surface-variant transition-all" id="btn-state-no-results" onclick="setPrototypeState('no-results')">Search No-Match</button>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-highest text-on-surface-variant transition-all" id="btn-state-empty" onclick="setPrototypeState('empty')">Empty Workspace</button>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-highest text-on-surface-variant transition-all" id="btn-state-archived" onclick="setPrototypeState('archived')">Archived View</button>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 ml-4">
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container-lowest text-on-surface hover:bg-surface transition-all shadow-xs" id="btn-mobile-sim" onclick="toggleMobileSimulator()">
+<span class="material-symbols-outlined text-[15px] text-secondary">phone_iphone</span>
+<span>Mobile 375px Canvas</span>
+</button>
+<span class="font-label-sm text-label-sm text-outline">Sprint M7 — High Fidelity</span>
+</div>
+</div>
+<!-- Archived Mode Alert Banner (Toggled via Archived State) -->
+<div class="hidden w-full bg-secondary-container text-on-secondary-container px-space-lg py-3 flex items-center justify-between" id="archived-banner">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">lock_clock</span>
+<span class="font-body-md text-body-md font-medium">Archived celebration workspace — vendor contacts and contractual alignments are locked in read-only mode.</span>
+</div>
+<button class="font-label-sm text-label-sm underline hover:opacity-80" onclick="setPrototypeState('main')">Exit read-only view</button>
+</div>
+<!-- Main Viewport Canvas (Supports Mobile Simulation Mode) -->
+<div class="w-full flex justify-center transition-all duration-300" id="viewport-canvas-wrapper">
+<div class="w-full max-w-[1440px] px-space-lg lg:px-space-margin py-space-lg flex flex-col gap-space-lg transition-all duration-300" id="viewport-container">
+<!-- Breadcrumbs & Editorial Header Section -->
+<section class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pt-2">
+<div class="flex flex-col gap-1 max-w-2xl">
+<div class="flex items-center gap-2 text-secondary">
+<span class="font-label-sm text-label-sm uppercase tracking-widest font-semibold">Vendor Directory &amp; Contacts</span>
+<span class="text-xs text-outline">•</span>
+<span class="font-label-sm text-label-sm text-outline">Jaipur 2027</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight leading-none mt-1">Vendors</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1.5 leading-relaxed">
+            Keep your wedding vendors, multi-day ceremony allocations, and direct partner contacts organized in one master roster.
+          </p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors shadow-xs font-title-sm text-title-sm" onclick="exportDirectoryCSV()">
+<span class="material-symbols-outlined text-[19px] text-outline">file_download</span>
+<span>Export Directory</span>
+</button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all shadow-md font-title-sm text-title-sm" id="main-cta-add" onclick="openDrawer('add-drawer')">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+<span>+ Add vendor</span>
+</button>
+</div>
+</section>
+<!-- Executive Metric Bento Highlights -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col justify-between shadow-xs">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Vendors</span>
+<span class="material-symbols-outlined text-[20px] text-secondary">storefront</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary font-serif">6</span>
+<span class="font-body-sm text-body-sm text-outline">across 5 disciplines</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col justify-between shadow-xs">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-md text-label-md text-on-surface-variant">Multi-Event Partners</span>
+<span class="material-symbols-outlined text-[20px] text-primary">diversity_3</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary font-serif">4</span>
+<span class="font-body-sm text-body-sm text-outline">spanning 2+ rituals</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 66%"></div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col justify-between shadow-xs">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-md text-label-md text-on-surface-variant">Verified Contacts</span>
+<span class="material-symbols-outlined text-[20px] text-secondary">verified</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary font-serif">5</span>
+<span class="font-body-sm text-body-sm text-outline">with phone &amp; email</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full mt-3 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 83%"></div>
+</div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col justify-between shadow-xs">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-md text-label-md text-on-surface-variant">Unlinked to Events</span>
+<span class="material-symbols-outlined text-[20px] text-secondary">link_off</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-secondary font-serif">1</span>
+<span class="font-body-sm text-body-sm text-outline">general service logistics</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full mt-3 overflow-hidden">
+<div class="bg-secondary-fixed-dim h-full rounded-full" style="width: 17%"></div>
+</div>
+</div>
+</section>
+<!-- Operational Workspace Container -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-xs overflow-hidden flex flex-col">
+<!-- Search, Filtering, and Quick Tools Ribbon -->
+<div class="p-space-md flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-surface-container-lowest">
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1 max-w-3xl">
+<!-- Search Field -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[19px]">search</span>
+<input class="w-full pl-9 pr-8 py-2 text-body-md font-body-md rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-all" id="vendor-search-input" oninput="handleSearchFilter()" placeholder="Search vendors by business name, category, or contact..." type="text"/>
+<button class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface" id="clear-search-btn" onclick="clearSearch()">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Discipline / Category Filter -->
+<div class="relative min-w-[200px]">
+<select class="w-full appearance-none pl-3 pr-8 py-2 text-body-md font-body-md rounded-lg bg-surface-container-low text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-all cursor-pointer" id="category-filter" onchange="handleSearchFilter()">
+<option value="all">All Categories (6)</option>
+<option value="Photography &amp; Videography">Photography &amp; Videography</option>
+<option value="Decoration">Decoration</option>
+<option value="Catering">Catering</option>
+<option value="Music &amp; DJ">Music &amp; DJ</option>
+<option value="Makeup &amp; Styling">Makeup &amp; Styling</option>
+<option value="Transportation">Transportation</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">unfold_more</span>
+</div>
+<!-- Event Association Filter -->
+<div class="relative min-w-[190px]">
+<select class="w-full appearance-none pl-3 pr-8 py-2 text-body-md font-body-md rounded-lg bg-surface-container-low text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-all cursor-pointer" id="event-filter" onchange="handleSearchFilter()">
+<option value="all">All Events</option>
+<option value="Haldi">Haldi</option>
+<option value="Mehendi">Mehendi</option>
+<option value="Sangeet">Sangeet</option>
+<option value="Wedding">Wedding</option>
+<option value="Reception">Reception</option>
+<option value="unlinked">Not linked to an event</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">unfold_more</span>
+</div>
+</div>
+<!-- Metadata & View Tools -->
+<div class="flex items-center justify-between sm:justify-end gap-3 pt-2 lg:pt-0">
+<span class="font-label-md text-label-md text-outline" id="vendor-count-label">Showing 6 active vendors</span>
+<button class="hidden text-xs text-primary font-semibold hover:underline" id="reset-filters-btn" onclick="resetAllFilters()">Reset filters</button>
+<div class="hidden md:flex items-center gap-1 bg-surface-container-low p-1 rounded-lg">
+<button class="p-1 rounded bg-surface-container-lowest text-primary shadow-xs" title="Table View">
+<span class="material-symbols-outlined text-[18px]">table_rows</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-on-surface" onclick="showNotification('Grid card layout available in upcoming sync.')" title="Card View">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Vendor Directory Master Table -->
+<div class="overflow-x-auto w-full" id="vendor-table-container">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-outline font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-3 px-space-md font-semibold">Vendor &amp; Discipline</th>
+<th class="py-3 px-space-md font-semibold">Contact Partner</th>
+<th class="py-3 px-space-md font-semibold">Communication Channels</th>
+<th class="py-3 px-space-md font-semibold">Linked Ceremonies</th>
+<th class="py-3 px-space-md text-right font-semibold">Action</th>
+</tr>
+</thead>
+<tbody id="vendor-table-body">
+<!-- Row 1: The Marigold Studio -->
+<tr class="vendor-row group hover:bg-surface-container-low/70 transition-colors cursor-pointer" data-category="Photography &amp; Videography" data-events="Haldi Sangeet Wedding" data-id="1" data-name="The Marigold Studio" onclick="openVendorDetails('The Marigold Studio')">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-serif text-lg font-medium shrink-0">
+                      MS
+                    </div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors truncate">The Marigold Studio</span>
+<span class="font-body-sm text-body-sm text-secondary">Photography &amp; Videography</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[17px]">account_circle</span>
+<span class="font-body-md text-body-md text-on-surface">Rohan Shah</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-on-surface text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-outline text-[15px]">call</span>
+<a class="hover:text-primary transition-colors" href="tel:+919820144521" onclick="event.stopPropagation()">+91 98201 44521</a>
+</div>
+<div class="flex items-center gap-1.5 text-outline text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-[15px]">mail</span>
+<a class="hover:text-primary transition-colors truncate max-w-[200px]" href="mailto:rohan@marigoldstudio.in" onclick="event.stopPropagation()">rohan@marigoldstudio.in</a>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-secondary-container/60 text-on-secondary-container">Haldi</span>
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-secondary-container/60 text-on-secondary-container">Sangeet</span>
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary-fixed text-on-primary-fixed">Wedding</span>
+<span class="font-label-sm text-label-sm text-outline ml-1">(3 events)</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5" onclick="event.stopPropagation()">
+<button class="px-3 py-1 rounded-md text-xs font-semibold text-primary hover:bg-primary/10 transition-colors" onclick="openVendorDetails('The Marigold Studio')">
+                      View details
+                    </button>
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="toggleRowMenu(event, 'menu-1')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Royal Bloom Decor -->
+<tr class="vendor-row group hover:bg-surface-container-low/70 transition-colors cursor-pointer" data-category="Decoration" data-events="Haldi Wedding" data-id="2" data-name="Royal Bloom Decor" onclick="openVendorDetails('Royal Bloom Decor')">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed/50 text-secondary flex items-center justify-center font-serif text-lg font-medium shrink-0">
+                      RB
+                    </div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors truncate">Royal Bloom Decor</span>
+<span class="font-body-sm text-body-sm text-secondary">Decoration</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[17px]">account_circle</span>
+<span class="font-body-md text-body-md text-on-surface">Kavya Sharma</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-on-surface text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-outline text-[15px]">call</span>
+<a class="hover:text-primary transition-colors" href="tel:+919811239014" onclick="event.stopPropagation()">+91 98112 39014</a>
+</div>
+<div class="flex items-center gap-1.5 text-outline text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-[15px]">mail</span>
+<a class="hover:text-primary transition-colors truncate max-w-[200px]" href="mailto:kavya@royalbloom.com" onclick="event.stopPropagation()">kavya@royalbloom.com</a>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-secondary-container/60 text-on-secondary-container">Haldi</span>
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary-fixed text-on-primary-fixed">Wedding</span>
+<span class="font-label-sm text-label-sm text-outline ml-1">(2 events)</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5" onclick="event.stopPropagation()">
+<button class="px-3 py-1 rounded-md text-xs font-semibold text-primary hover:bg-primary/10 transition-colors" onclick="openVendorDetails('Royal Bloom Decor')">
+                      View details
+                    </button>
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="toggleRowMenu(event, 'menu-2')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Saffron Table Catering -->
+<tr class="vendor-row group hover:bg-surface-container-low/70 transition-colors cursor-pointer" data-category="Catering" data-events="Wedding Reception" data-id="3" data-name="Saffron Table Catering" onclick="openVendorDetails('Saffron Table Catering')">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center font-serif text-lg font-medium shrink-0">
+                      ST
+                    </div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors truncate">Saffron Table Catering</span>
+<span class="font-body-sm text-body-sm text-secondary">Catering</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[17px]">account_circle</span>
+<span class="font-body-md text-body-md text-on-surface">Amit Mehta</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-on-surface text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-outline text-[15px]">call</span>
+<a class="hover:text-primary transition-colors" href="tel:+919920081290" onclick="event.stopPropagation()">+91 99200 81290</a>
+</div>
+<div class="flex items-center gap-1.5 text-outline text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-[15px]">mail</span>
+<a class="hover:text-primary transition-colors truncate max-w-[200px]" href="mailto:contact@saffrontable.in" onclick="event.stopPropagation()">contact@saffrontable.in</a>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary-fixed text-on-primary-fixed">Wedding</span>
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-secondary-container/60 text-on-secondary-container">Reception</span>
+<span class="font-label-sm text-label-sm text-outline ml-1">(2 events)</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5" onclick="event.stopPropagation()">
+<button class="px-3 py-1 rounded-md text-xs font-semibold text-primary hover:bg-primary/10 transition-colors" onclick="openVendorDetails('Saffron Table Catering')">
+                      View details
+                    </button>
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="toggleRowMenu(event, 'menu-3')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Rhythm Collective -->
+<tr class="vendor-row group hover:bg-surface-container-low/70 transition-colors cursor-pointer" data-category="Music &amp; DJ" data-events="Sangeet" data-id="4" data-name="Rhythm Collective" onclick="openVendorDetails('Rhythm Collective')">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed text-tertiary flex items-center justify-center font-serif text-lg font-medium shrink-0">
+                      RC
+                    </div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors truncate">Rhythm Collective</span>
+<span class="font-body-sm text-body-sm text-secondary">Music &amp; DJ</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[17px]">account_circle</span>
+<span class="font-body-md text-body-md text-on-surface">Neha Kapoor</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-on-surface text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-outline text-[15px]">call</span>
+<a class="hover:text-primary transition-colors" href="tel:+919765520119" onclick="event.stopPropagation()">+91 97655 20119</a>
+</div>
+<div class="flex items-center gap-1.5 text-outline text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-[15px]">mail</span>
+<a class="hover:text-primary transition-colors truncate max-w-[200px]" href="mailto:booking@rhythmcollective.in" onclick="event.stopPropagation()">booking@rhythmcollective.in</a>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-secondary-container/60 text-on-secondary-container">Sangeet</span>
+<span class="font-label-sm text-label-sm text-outline ml-1">(1 event)</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5" onclick="event.stopPropagation()">
+<button class="px-3 py-1 rounded-md text-xs font-semibold text-primary hover:bg-primary/10 transition-colors" onclick="openVendorDetails('Rhythm Collective')">
+                      View details
+                    </button>
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="toggleRowMenu(event, 'menu-4')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Meera Bridal Artistry -->
+<tr class="vendor-row group hover:bg-surface-container-low/70 transition-colors cursor-pointer" data-category="Makeup &amp; Styling" data-events="Mehendi Wedding" data-id="5" data-name="Meera Bridal Artistry" onclick="openVendorDetails('Meera Bridal Artistry')">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center font-serif text-lg font-medium shrink-0">
+                      MB
+                    </div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors truncate">Meera Bridal Artistry</span>
+<span class="font-body-sm text-body-sm text-secondary">Makeup &amp; Styling</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[17px]">account_circle</span>
+<span class="font-body-md text-body-md text-on-surface">Meera Joshi</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-on-surface text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-outline text-[15px]">call</span>
+<a class="hover:text-primary transition-colors" href="tel:+919833411209" onclick="event.stopPropagation()">+91 98334 11209</a>
+</div>
+<div class="flex items-center gap-1.5 text-outline text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-[15px]">mail</span>
+<a class="hover:text-primary transition-colors truncate max-w-[200px]" href="mailto:meera.artistry@example.com" onclick="event.stopPropagation()">meera.artistry@example.com</a>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-secondary-container/60 text-on-secondary-container">Mehendi</span>
+<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary-fixed text-on-primary-fixed">Wedding</span>
+<span class="font-label-sm text-label-sm text-outline ml-1">(2 events)</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5" onclick="event.stopPropagation()">
+<button class="px-3 py-1 rounded-md text-xs font-semibold text-primary hover:bg-primary/10 transition-colors" onclick="openVendorDetails('Meera Bridal Artistry')">
+                      View details
+                    </button>
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="toggleRowMenu(event, 'menu-5')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6: Cityline Guest Travel -->
+<tr class="vendor-row group hover:bg-surface-container-low/70 transition-colors cursor-pointer" data-category="Transportation" data-events="unlinked" data-id="6" data-name="Cityline Guest Travel" onclick="openVendorDetails('Cityline Guest Travel')">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-serif text-lg font-medium shrink-0">
+                      CT
+                    </div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors truncate">Cityline Guest Travel</span>
+<span class="font-body-sm text-body-sm text-secondary">Transportation</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline/60 text-[17px]">account_circle</span>
+<span class="font-body-md text-body-md text-outline italic">Not added</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-on-surface text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-outline text-[15px]">call</span>
+<a class="hover:text-primary transition-colors" href="tel:+919414077123" onclick="event.stopPropagation()">+91 94140 77123</a>
+</div>
+<div class="flex items-center gap-1.5 text-outline/60 text-body-sm font-body-sm italic">
+<span class="material-symbols-outlined text-[15px]">mail</span>
+<span>Not added</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-normal bg-surface-container text-outline">No events linked</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="flex items-center justify-end gap-1.5" onclick="event.stopPropagation()">
+<button class="px-3 py-1 rounded-md text-xs font-semibold text-primary hover:bg-primary/10 transition-colors" onclick="openVendorDetails('Cityline Guest Travel')">
+                      View details
+                    </button>
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="toggleRowMenu(event, 'menu-6')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Filter / Search No Results State (Hidden by Default) -->
+<div class="hidden flex flex-col items-center justify-center p-space-xl text-center" id="no-results-state">
+<div class="w-14 h-14 rounded-full bg-surface-container-high flex items-center justify-center text-outline mb-3">
+<span class="material-symbols-outlined text-[28px]">search_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">No matching vendors found</h3>
+<p class="font-body-md text-body-md text-outline mt-1 max-w-sm">
+            We couldn't find any vendor matching your active filter criteria. Try adjusting your query or resetting filters.
+          </p>
+<button class="mt-4 px-4 py-2 rounded-lg bg-surface-container-highest text-on-surface hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" onclick="resetAllFilters()">
+            Clear all filters
+          </button>
+</div>
+<!-- Empty Directory State (Toggled via prototype state bar) -->
+<div class="hidden flex flex-col items-center justify-center p-16 text-center" id="empty-state">
+<div class="w-20 h-20 rounded-full bg-secondary-container/40 flex items-center justify-center text-secondary mb-4 shadow-sm">
+<span class="material-symbols-outlined text-[36px]">store</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary font-serif">Bring your wedding team together</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-md">
+            Consolidate your caterers, photographers, decorators, stylists, and transport contacts in one synchronized directory.
+          </p>
+<div class="mt-6 flex flex-col sm:flex-row items-center gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all shadow-md font-title-sm text-title-sm" onclick="openDrawer('add-drawer')">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>+ Add your first vendor</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" onclick="importContactsPrompt()">
+<span class="material-symbols-outlined text-[18px]">contacts</span>
+<span>Import contacts</span>
+</button>
+</div>
+</div>
+<!-- Directory Footer Pagination / Sync Status -->
+<div class="px-space-md py-3 bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2 text-outline font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>All contacts synchronized with Cloud Vault</span>
+</div>
+<div class="flex items-center gap-4 text-outline font-body-sm text-body-sm">
+<span>Page 1 of 1</span>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded text-outline/40 cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="p-1 rounded text-outline/40 cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Private Workspace Assurance Note -->
+<div class="flex items-center gap-3 p-4 rounded-xl bg-surface-container-low text-on-surface-variant shadow-xs">
+<span class="material-symbols-outlined text-secondary text-[22px] shrink-0">shield</span>
+<p class="font-body-sm text-body-sm leading-relaxed">
+<span class="font-semibold text-on-surface">Data Confidentiality Assurance:</span> All vendor contracts, fee discussions, and personal notes stored in this directory are restricted to your wedding planning team. They are never displayed publicly on your wedding website (<a class="text-primary underline" href="#">my-marriage.com/ananya-arjun</a>).
+        </p>
+</div>
+</div>
+</div>
+<!-- DRAWER OVERLAYS & MODALS -->
+<!-- Backdrop Scrim -->
+<div class="fixed inset-0 bg-[#24302D]/35 backdrop-blur-[2px] z-50 transition-opacity duration-300 opacity-0 pointer-events-none" id="drawer-scrim" onclick="closeAllDrawers()"></div>
+<!-- 1. ADD VENDOR DRAWER -->
+<aside class="fixed right-0 top-0 bottom-0 w-full sm:w-[480px] bg-surface-container-lowest z-50 shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out" id="add-drawer">
+<!-- Header -->
+<div class="p-space-lg bg-surface-container-lowest flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Vendor Directory</span>
+<h2 class="font-headline-md text-headline-md text-primary font-serif mt-0.5">Add vendor</h2>
+<p class="font-body-sm text-body-sm text-outline mt-1">Keep the details handy. You can update them anytime.</p>
+</div>
+<button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="closeAllDrawers()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Scrollable Form Body -->
+<div class="flex-1 overflow-y-auto p-space-lg flex flex-col gap-6">
+<!-- Group 1: Core Details -->
+<div class="flex flex-col gap-3">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">1. Business Details</span>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">
+            Vendor / business name <span class="text-error">*</span>
+</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs transition-all" id="add-name" placeholder="e.g., The Marigold Studio" type="text"/>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">
+            Service category <span class="text-error">*</span>
+</label>
+<div class="relative">
+<select class="w-full appearance-none px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs transition-all cursor-pointer" id="add-category">
+<option disabled="" selected="" value="">Select service discipline</option>
+<option value="Photography &amp; Videography">Photography &amp; Videography</option>
+<option value="Catering">Catering</option>
+<option value="Decoration">Decoration</option>
+<option value="Makeup &amp; Styling">Makeup &amp; Styling</option>
+<option value="Music &amp; DJ">Music &amp; DJ</option>
+<option value="Venue">Venue</option>
+<option value="Transportation">Transportation</option>
+<option value="Mehendi Artist">Mehendi Artist</option>
+<option value="Event Coordination">Event Coordination</option>
+<option value="Other">Other</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">unfold_more</span>
+</div>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">
+            Contact person <span class="text-outline font-normal text-xs">(Optional)</span>
+</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs transition-all" id="add-person" placeholder="e.g., Rohan Shah" type="text"/>
+</div>
+</div>
+<!-- Group 2: Contact Information -->
+<div class="flex flex-col gap-3">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">2. Contact Information</span>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Phone number</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs transition-all" id="add-phone" placeholder="+91 98200 00000" type="tel"/>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Email address</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs transition-all" id="add-email" placeholder="contact@vendor.in" type="email"/>
+</div>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Studio / Office Address</label>
+<textarea class="w-full px-3.5 py-2 rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs transition-all" id="add-address" placeholder="Suite, locality, city..." rows="2"></textarea>
+</div>
+</div>
+<!-- Group 3: Wedding Association -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">3. Associated Ceremonies</span>
+<span class="text-xs text-secondary font-medium">Select all that apply</span>
+</div>
+<div class="flex flex-wrap gap-2" id="ceremony-pill-selector">
+<button class="ceremony-chip px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-all flex items-center gap-1.5" onclick="toggleCeremonyChip(this)" type="button">
+<span class="material-symbols-outlined text-[15px]">done</span>
+<span>Haldi</span>
+</button>
+<button class="ceremony-chip px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-all flex items-center gap-1.5" onclick="toggleCeremonyChip(this)" type="button">
+<span class="material-symbols-outlined text-[15px]">done</span>
+<span>Mehendi</span>
+</button>
+<button class="ceremony-chip px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-all flex items-center gap-1.5" onclick="toggleCeremonyChip(this)" type="button">
+<span class="material-symbols-outlined text-[15px]">done</span>
+<span>Sangeet</span>
+</button>
+<button class="ceremony-chip px-3 py-1.5 rounded-full text-xs font-semibold bg-primary text-on-primary shadow-xs flex items-center gap-1.5" onclick="toggleCeremonyChip(this)" type="button">
+<span class="material-symbols-outlined text-[15px]">done</span>
+<span>Wedding</span>
+</button>
+<button class="ceremony-chip px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-all flex items-center gap-1.5" onclick="toggleCeremonyChip(this)" type="button">
+<span class="material-symbols-outlined text-[15px]">done</span>
+<span>Reception</span>
+</button>
+</div>
+</div>
+<!-- Group 4: Private Notes -->
+<div class="flex flex-col gap-2">
+<label class="block font-title-sm text-title-sm text-on-surface">Private Organizer Notes</label>
+<textarea class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs transition-all" id="add-notes" placeholder="Packages discussed, advance paid details, dietary accommodations, shoot schedules..." rows="3"></textarea>
+<div class="p-3 rounded-lg bg-surface-container-low flex items-start gap-2 text-outline">
+<span class="material-symbols-outlined text-[17px] text-secondary shrink-0 mt-0.5">lock</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+            Private note: Vendor details and notes are strictly private and never shown on your public wedding website.
+          </span>
+</div>
+</div>
+</div>
+<!-- Drawer Footer -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-end gap-3">
+<button class="px-4 py-2.5 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-title-sm text-title-sm" onclick="closeAllDrawers()">
+        Cancel
+      </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all shadow-md font-title-sm text-title-sm" onclick="submitNewVendor()">
+        Save vendor
+      </button>
+</div>
+</aside>
+<!-- 2. VENDOR DETAILS DRAWER (The Marigold Studio) -->
+<aside class="fixed right-0 top-0 bottom-0 w-full sm:w-[480px] bg-surface-container-lowest z-50 shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out" id="details-drawer">
+<!-- Header -->
+<div class="p-space-lg bg-surface-container-lowest flex items-start justify-between">
+<div class="flex items-center gap-3.5">
+<div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center font-serif text-xl font-medium shadow-sm">
+          MS
+        </div>
+<div class="flex flex-col">
+<span class="px-2 py-0.5 rounded text-xs font-semibold bg-secondary-container/70 text-on-secondary-container w-fit">Photography &amp; Videography</span>
+<h2 class="font-headline-md text-headline-md text-primary font-serif mt-1">The Marigold Studio</h2>
+</div>
+</div>
+<button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="closeAllDrawers()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Scrollable Details Content -->
+<div class="flex-1 overflow-y-auto p-space-lg flex flex-col gap-6">
+<!-- Direct Contact Card with Copy Action -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-3 shadow-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Primary Contact</span>
+<span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest text-primary">Verified</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center text-primary font-semibold text-sm">
+            RS
+          </div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">Rohan Shah</span>
+<span class="font-body-sm text-body-sm text-outline">Lead Wedding Cinematographer &amp; Founder</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+<div class="p-2.5 rounded-lg bg-surface-container-lowest flex items-center justify-between">
+<div class="flex flex-col overflow-hidden">
+<span class="text-xs text-outline font-medium">Phone</span>
+<a class="font-body-md text-body-md text-on-surface font-semibold hover:text-primary transition-colors truncate" href="tel:+919820144521">+91 98201 44521</a>
+</div>
+<button class="p-1 text-outline hover:text-primary" onclick="copyToClipboard('+91 98201 44521')" title="Copy Phone">
+<span class="material-symbols-outlined text-[17px]">content_copy</span>
+</button>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest flex items-center justify-between">
+<div class="flex flex-col overflow-hidden">
+<span class="text-xs text-outline font-medium">Email</span>
+<a class="font-body-md text-body-md text-on-surface font-semibold hover:text-primary transition-colors truncate" href="mailto:rohan@marigoldstudio.in">rohan@marigoldstudio.in</a>
+</div>
+<button class="p-1 text-outline hover:text-primary" onclick="copyToClipboard('rohan@marigoldstudio.in')" title="Copy Email">
+<span class="material-symbols-outlined text-[17px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Linked Events Module -->
+<div class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Assigned Ceremonies (3)</span>
+<span class="font-label-sm text-label-sm text-secondary">Jaipur Palace Venues</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-title-sm text-title-sm text-on-surface">Haldi Ceremony</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Feb 18 • 10:00 AM</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-title-sm text-title-sm text-on-surface">Sangeet &amp; Musical Night</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Feb 19 • 7:30 PM</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Main Wedding &amp; Pheras</span>
+</div>
+<span class="font-body-sm text-body-sm text-primary font-semibold">Feb 20 • 4:00 PM</span>
+</div>
+</div>
+</div>
+<!-- Private Notes & Contract Overview -->
+<div class="flex flex-col gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Private Organizer Notes</span>
+<div class="p-4 rounded-xl bg-surface-container-low text-on-surface-variant font-body-md text-body-md leading-relaxed flex flex-col gap-2">
+<p>
+            Confirmed for 3 drones and 4 ground cinematographers. Advance token 30% released via HDFC transfer on Jan 14. Teaser delivery timeline agreed at 7 business days post-reception.
+          </p>
+<div class="flex items-center gap-2 text-xs text-outline pt-2">
+<span class="material-symbols-outlined text-[15px]">schedule</span>
+<span>Last updated by Ananya Sharma on Jan 15, 2027</span>
+</div>
+</div>
+</div>
+<!-- Studio Address -->
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Studio Location</span>
+<div class="p-3 rounded-lg bg-surface-container-low flex items-start gap-2.5 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-outline mt-0.5">location_on</span>
+<span>402, Heritage Arts Enclave, C-Scheme, Jaipur, Rajasthan 302001</span>
+</div>
+</div>
+</div>
+<!-- Drawer Footer Actions -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-between gap-3">
+<button class="px-3 py-2 rounded-lg text-error hover:bg-error-container/30 transition-colors font-title-sm text-title-sm flex items-center gap-1.5" onclick="deleteVendorPrompt('The Marigold Studio')">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span>Delete</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="px-4 py-2.5 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-title-sm text-title-sm" onclick="closeAllDrawers()">
+          Close
+        </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all shadow-md font-title-sm text-title-sm flex items-center gap-1.5" onclick="switchToEditDrawer()">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+<span>Edit vendor</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- 3. EDIT VENDOR DRAWER -->
+<aside class="fixed right-0 top-0 bottom-0 w-full sm:w-[480px] bg-surface-container-lowest z-50 shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out" id="edit-drawer">
+<!-- Header -->
+<div class="p-space-lg bg-surface-container-lowest flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Modify Partner</span>
+<h2 class="font-headline-md text-headline-md text-primary font-serif mt-0.5">Edit vendor</h2>
+<p class="font-body-sm text-body-sm text-outline mt-1">Updating records for The Marigold Studio.</p>
+</div>
+<button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="closeAllDrawers()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Scrollable Edit Form -->
+<div class="flex-1 overflow-y-auto p-space-lg flex flex-col gap-6">
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Vendor / business name</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs" type="text" value="The Marigold Studio"/>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Service category</label>
+<select class="w-full appearance-none px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs">
+<option selected="">Photography &amp; Videography</option>
+<option>Catering</option>
+<option>Decoration</option>
+</select>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Contact person</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs" type="text" value="Rohan Shah"/>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Phone number</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs" type="tel" value="+91 98201 44521"/>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Email address</label>
+<input class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs" type="email" value="rohan@marigoldstudio.in"/>
+</div>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm text-on-surface mb-1.5">Private Organizer Notes</label>
+<textarea class="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1.5 focus:ring-primary shadow-xs" rows="4">Confirmed for 3 drones and 4 ground cinematographers. Advance token 30% released via HDFC transfer on Jan 14. Teaser delivery timeline agreed at 7 business days post-reception.</textarea>
+</div>
+</div>
+<!-- Drawer Footer -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-end gap-3">
+<button class="px-4 py-2.5 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-title-sm text-title-sm" onclick="closeAllDrawers()">
+        Discard Changes
+      </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all shadow-md font-title-sm text-title-sm" onclick="saveEditChanges()">
+        Update Vendor
+      </button>
+</div>
+</aside>
+<!-- Interactive Row Context Menu Popover -->
+<div class="hidden fixed bg-surface-container-lowest rounded-xl shadow-xl z-50 py-1.5 w-44" id="row-context-menu">
+<button class="w-full px-3.5 py-2 text-left text-body-sm font-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2" onclick="contextAction('view')">
+<span class="material-symbols-outlined text-[17px] text-outline">visibility</span>
+<span>View Details</span>
+</button>
+<button class="w-full px-3.5 py-2 text-left text-body-sm font-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2" onclick="contextAction('edit')">
+<span class="material-symbols-outlined text-[17px] text-outline">edit</span>
+<span>Edit Contact</span>
+</button>
+<button class="w-full px-3.5 py-2 text-left text-body-sm font-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2" onclick="contextAction('share')">
+<span class="material-symbols-outlined text-[17px] text-outline">share</span>
+<span>Share vCard</span>
+</button>
+<div class="h-[1px] bg-surface-container-highest my-1"></div>
+<button class="w-full px-3.5 py-2 text-left text-body-sm font-body-sm text-error hover:bg-error-container/20 flex items-center gap-2" onclick="contextAction('delete')">
+<span class="material-symbols-outlined text-[17px]">delete</span>
+<span>Remove Vendor</span>
+</button>
+</div>
+<!-- Toast Notification Snack -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none" id="toast-notification">
+<div class="px-4 py-3 rounded-xl bg-inverse-surface text-inverse-on-surface shadow-lg flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed" id="toast-icon">check_circle</span>
+<span class="font-body-sm text-body-sm" id="toast-message">Directory updated successfully</span>
+</div>
+</div>
+</div>
+<!-- Client-Side State Controller & Interactive Script -->
+<script>
+  // Ensure the left sidebar 'Vendors' nav item is highlighted
+  (function initActiveSidebar() {
+    const navItems = document.querySelectorAll('aside nav a');
+    navItems.forEach(item => {
+      if (item.getAttribute('data-path') === 'vendors') {
+        item.classList.add('bg-primary-container', 'text-on-primary', 'font-bold', 'shadow-sm');
+        item.classList.remove('text-on-surface-variant');
+        const icon = item.querySelector('.material-symbols-outlined');
+        if (icon) {
+          icon.classList.remove('text-outline');
+          icon.classList.add('text-on-primary');
+        }
+      }
+    });
+  })();
+
+  // Prototype State Controller
+  function setPrototypeState(state) {
+    // Reset State Buttons
+    const buttons = ['main', 'add', 'details', 'edit', 'filter-photo', 'no-results', 'empty', 'archived'];
+    buttons.forEach(b => {
+      const btn = document.getElementById('btn-state-' + b);
+      if (btn) {
+        btn.classList.remove('bg-primary', 'text-on-primary');
+        btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+      }
+    });
+
+    const activeBtn = document.getElementById('btn-state-' + state);
+    if (activeBtn) {
+      activeBtn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+      activeBtn.classList.add('bg-primary', 'text-on-primary');
+    }
+
+    // Reset Elements
+    closeAllDrawers();
+    document.getElementById('archived-banner').classList.add('hidden');
+    document.getElementById('empty-state').classList.add('hidden');
+    document.getElementById('no-results-state').classList.add('hidden');
+    document.getElementById('vendor-table-container').classList.remove('hidden');
+
+    const searchInput = document.getElementById('vendor-search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    const eventFilter = document.getElementById('event-filter');
+    const addCTA = document.getElementById('main-cta-add');
+
+    // State Execution
+    if (state === 'main') {
+      resetAllFilters();
+    } else if (state === 'add') {
+      openDrawer('add-drawer');
+    } else if (state === 'details') {
+      openVendorDetails('The Marigold Studio');
+    } else if (state === 'edit') {
+      openDrawer('edit-drawer');
+    } else if (state === 'filter-photo') {
+      categoryFilter.value = 'Photography & Videography';
+      eventFilter.value = 'Wedding';
+      searchInput.value = '';
+      handleSearchFilter();
+      showNotification('Filter applied: Photography & Videography on Wedding');
+    } else if (state === 'no-results') {
+      searchInput.value = 'xyzNonExistentVendor99';
+      handleSearchFilter();
+    } else if (state === 'empty') {
+      document.getElementById('vendor-table-container').classList.add('hidden');
+      document.getElementById('empty-state').classList.remove('hidden');
+      document.getElementById('vendor-count-label').textContent = 'Showing 0 vendors';
+    } else if (state === 'archived') {
+      document.getElementById('archived-banner').classList.remove('hidden');
+      addCTA.setAttribute('disabled', 'true');
+      addCTA.classList.add('opacity-50', 'cursor-not-allowed');
+      showNotification('Archived wedding workspace loaded (Read-Only)');
+    }
+  }
+
+  // Drawer Controls
+  function openDrawer(drawerId) {
+    closeAllDrawers();
+    const scrim = document.getElementById('drawer-scrim');
+    const drawer = document.getElementById(drawerId);
+
+    scrim.classList.remove('opacity-0', 'pointer-events-none');
+    scrim.classList.add('opacity-100');
+
+    drawer.classList.remove('translate-x-full');
+    drawer.classList.add('translate-x-0');
+  }
+
+  function closeAllDrawers() {
+    const scrim = document.getElementById('drawer-scrim');
+    scrim.classList.remove('opacity-100');
+    scrim.classList.add('opacity-0', 'pointer-events-none');
+
+    ['add-drawer', 'details-drawer', 'edit-drawer'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('translate-x-0');
+        el.classList.add('translate-x-full');
+      }
+    });
+
+    closeRowMenu();
+  }
+
+  function openVendorDetails(vendorName) {
+    openDrawer('details-drawer');
+  }
+
+  function switchToEditDrawer() {
+    closeAllDrawers();
+    setTimeout(() => {
+      openDrawer('edit-drawer');
+    }, 150);
+  }
+
+  // Multi-select ceremony chip toggling
+  function toggleCeremonyChip(button) {
+    const isSelected = button.classList.contains('bg-primary');
+    if (isSelected) {
+      button.classList.remove('bg-primary', 'text-on-primary', 'shadow-xs');
+      button.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+    } else {
+      button.classList.add('bg-primary', 'text-on-primary', 'shadow-xs');
+      button.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+    }
+  }
+
+  // Filtering & Search Engine
+  function handleSearchFilter() {
+    const query = document.getElementById('vendor-search-input').value.toLowerCase().trim();
+    const selectedCat = document.getElementById('category-filter').value;
+    const selectedEvt = document.getElementById('event-filter').value;
+    const clearBtn = document.getElementById('clear-search-btn');
+    const resetBtn = document.getElementById('reset-filters-btn');
+
+    if (query.length > 0) {
+      clearBtn.classList.remove('hidden');
+    } else {
+      clearBtn.classList.add('hidden');
+    }
+
+    if (query.length > 0 || selectedCat !== 'all' || selectedEvt !== 'all') {
+      resetBtn.classList.remove('hidden');
+    } else {
+      resetBtn.classList.add('hidden');
+    }
+
+    const rows = document.querySelectorAll('.vendor-row');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const name = row.getAttribute('data-name').toLowerCase();
+      const category = row.getAttribute('data-category');
+      const events = row.getAttribute('data-events');
+
+      const matchesQuery = name.includes(query) || category.toLowerCase().includes(query);
+      const matchesCat = (selectedCat === 'all') || (category === selectedCat);
+      const matchesEvt = (selectedEvt === 'all') || (events && events.includes(selectedEvt));
+
+      if (matchesQuery && matchesCat && matchesEvt) {
+        row.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+
+    const countLabel = document.getElementById('vendor-count-label');
+    const noResultsState = document.getElementById('no-results-state');
+    const table = document.getElementById('vendor-table-container');
+
+    countLabel.textContent = `Showing ${visibleCount} active vendor${visibleCount === 1 ? '' : 's'}`;
+
+    if (visibleCount === 0) {
+      table.classList.add('hidden');
+      noResultsState.classList.remove('hidden');
+    } else {
+      table.classList.remove('hidden');
+      noResultsState.classList.add('hidden');
+    }
+  }
+
+  function clearSearch() {
+    document.getElementById('vendor-search-input').value = '';
+    handleSearchFilter();
+  }
+
+  function resetAllFilters() {
+    document.getElementById('vendor-search-input').value = '';
+    document.getElementById('category-filter').value = 'all';
+    document.getElementById('event-filter').value = 'all';
+    document.getElementById('empty-state').classList.add('hidden');
+    document.getElementById('vendor-table-container').classList.remove('hidden');
+    handleSearchFilter();
+  }
+
+  // Row Overflow Context Menu
+  let activeMenuRowId = null;
+  function toggleRowMenu(event, menuId) {
+    event.stopPropagation();
+    const menu = document.getElementById('row-context-menu');
+    const btnRect = event.currentTarget.getBoundingClientRect();
+
+    if (!menu.classList.contains('hidden') && activeMenuRowId === menuId) {
+      menu.classList.add('hidden');
+      activeMenuRowId = null;
+      return;
+    }
+
+    menu.style.top = (btnRect.bottom + window.scrollY + 4) + 'px';
+    menu.style.left = (btnRect.right - 176) + 'px';
+    menu.classList.remove('hidden');
+    activeMenuRowId = menuId;
+  }
+
+  function closeRowMenu() {
+    const menu = document.getElementById('row-context-menu');
+    if (menu) menu.classList.add('hidden');
+    activeMenuRowId = null;
+  }
+
+  document.addEventListener('click', () => {
+    closeRowMenu();
+  });
+
+  function contextAction(type) {
+    closeRowMenu();
+    if (type === 'view') {
+      openVendorDetails('The Marigold Studio');
+    } else if (type === 'edit') {
+      openDrawer('edit-drawer');
+    } else if (type === 'share') {
+      showNotification('vCard contact card copied to clipboard');
+    } else if (type === 'delete') {
+      deleteVendorPrompt('Selected Vendor');
+    }
+  }
+
+  // Toast System
+  function showNotification(message, icon = 'check_circle') {
+    const toast = document.getElementById('toast-notification');
+    const msgEl = document.getElementById('toast-message');
+    const iconEl = document.getElementById('toast-icon');
+
+    msgEl.textContent = message;
+    iconEl.textContent = icon;
+
+    toast.classList.remove('translate-y-20', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    setTimeout(() => {
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('translate-y-20', 'opacity-0');
+    }, 3200);
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      showNotification(`Copied to clipboard: ${text}`);
+    }).catch(() => {
+      showNotification(`Copied: ${text}`);
+    });
+  }
+
+  // Simulated Mutations
+  function submitNewVendor() {
+    const name = document.getElementById('add-name').value.trim();
+    if (!name) {
+      alert('Please provide a vendor or business name.');
+      return;
+    }
+    closeAllDrawers();
+    showNotification(`Vendor "${name}" created and synced with wedding roster.`);
+  }
+
+  function saveEditChanges() {
+    closeAllDrawers();
+    showNotification('Vendor profile updated successfully.');
+  }
+
+  function deleteVendorPrompt(vendorName) {
+    if (confirm(`Remove ${vendorName} from your wedding vendor roster? This will unlink associated ceremonies.`)) {
+      closeAllDrawers();
+      showNotification(`${vendorName} was removed from the directory.`, 'delete');
+    }
+  }
+
+  function exportDirectoryCSV() {
+    showNotification('Exporting directory to CSV & PDF dossier...', 'download');
+  }
+
+  function importContactsPrompt() {
+    showNotification('Contact import wizard launched.', 'contacts');
+  }
+
+  // 375px Mobile Simulator Toggle
+  let isMobileSimActive = false;
+  function toggleMobileSimulator() {
+    const canvas = document.getElementById('viewport-container');
+    const btn = document.getElementById('btn-mobile-sim');
+
+    isMobileSimActive = !isMobileSimActive;
+
+    if (isMobileSimActive) {
+      canvas.classList.remove('max-w-[1440px]', 'px-space-margin');
+      canvas.classList.add('max-w-[375px]', 'px-3', 'shadow-2xl', 'bg-surface', 'rounded-2xl', 'my-4');
+      btn.classList.add('bg-primary', 'text-on-primary');
+      showNotification('375px Mobile Viewport Preview Active');
+    } else {
+      canvas.classList.add('max-w-[1440px]', 'px-space-margin');
+      canvas.classList.remove('max-w-[375px]', 'px-3', 'shadow-2xl', 'bg-surface', 'rounded-2xl', 'my-4');
+      btn.classList.remove('bg-primary', 'text-on-primary');
+      showNotification('Restored to Desktop 1440px Canvas');
+    }
+  }
+</script></main></div></body></html>

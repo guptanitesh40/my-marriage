@@ -39,6 +39,19 @@ export function homeSection(id: (typeof homeSections)[keyof typeof homeSections]
   return `${routes.home}#${id}`;
 }
 
+/**
+ * A wedding's workspace. `/dashboard` leads here; the wedding is in the
+ * address so a page never depends on a remembered "current wedding".
+ */
+export function workspacePath(weddingId: string): string {
+  return `/weddings/${encodeURIComponent(weddingId)}`;
+}
+
+/** A wedding's ceremonies. */
+export function eventsPath(weddingId: string): string {
+  return `${workspacePath(weddingId)}/events`;
+}
+
 /** `/login?next=<path>`: sign in, then come back to `path`. */
 export function loginThenReturnTo(path: string): string {
   return `${routes.login}?${new URLSearchParams({ next: path }).toString()}`;
@@ -51,3 +64,40 @@ export function loginThenReturnTo(path: string): string {
 export function publicWeddingUrl(slug: string): string {
   return `…/w/${slug}`;
 }
+
+/** A wedding's Tasks page, with its filters in the query string. */
+export function tasksPath(weddingId: string, query?: URLSearchParams): string {
+  const search = query?.toString();
+  return `${workspacePath(weddingId)}/tasks${search ? `?${search}` : ''}`;
+}
+
+/** A wedding's vendor directory, with its filters in the query string. */
+export function vendorsPath(weddingId: string, query?: URLSearchParams): string {
+  const search = query?.toString();
+  return `${workspacePath(weddingId)}/vendors${search ? `?${search}` : ''}`;
+}
+
+/** A wedding's expenses, with their filters in the query string. */
+export function expensesPath(weddingId: string, query?: URLSearchParams): string {
+  const search = query?.toString();
+  return `${workspacePath(weddingId)}/expenses${search ? `?${search}` : ''}`;
+}
+
+/** A wedding's guest list, with its filters in the query string. */
+export function guestsPath(weddingId: string, query?: URLSearchParams): string {
+  const search = query?.toString();
+  return `${workspacePath(weddingId)}/guests${search ? `?${search}` : ''}`;
+}
+
+/** A wedding's website editor. */
+export function websitePath(weddingId: string): string {
+  return `${workspacePath(weddingId)}/website`;
+}
+
+/** A published wedding website, public at its address. */
+export function publicSitePath(slug: string): string {
+  return `/w/${slug}`;
+}
+
+/** A guest's private invitation page; the link's secret follows `#t=`. */
+export const invitationPath = '/invitation';

@@ -66,6 +66,35 @@ export class NotificationsService {
     return id;
   }
 
+  /**
+   * Several emails at once, as `requestEmail` but in one write per
+   * collection: for sending to a whole guest list in one transaction.
+   */
+  async requestEmails(
+    session: ClientSession,
+    requests: readonly (EmailRequest & { id: Types.ObjectId })[],
+  ): Promise<void> {
+    if (requests.length === 0) return;
+    await this.notifications.insertMany(
+      requests.map(({ id, ...request }) => ({
+        _id: id,
+        ...request,
+        idempotencyKey: `${request.kind}:${id.toHexString()}`,
+        state: 'queued',
+        attempts: 0,
+      })),
+      { session },
+    );
+    await this.outbox.addMany(
+      session,
+      requests.map(({ id }) => ({
+        eventType: EMAIL_REQUESTED,
+        aggregateId: id,
+        payloadRef: { notificationId: id.toHexString() },
+      })),
+    );
+  }
+
   /** What became of each email, by notification ID; missing IDs are left out. */
   async states(ids: readonly Types.ObjectId[]): Promise<Map<string, NotificationState>> {
     if (ids.length === 0) return new Map();

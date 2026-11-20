@@ -70,3 +70,7 @@ export function fieldError(field: string, message: string): BadRequestException 
 }
 
 export const PAST_DATE_MESSAGE = 'Choose today or a later date.';
+
+export function slugTaken() {
+  return fieldError('slug', 'That address is already taken. Try another one.');
+}

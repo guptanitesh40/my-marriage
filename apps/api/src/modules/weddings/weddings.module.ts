@@ -6,6 +6,7 @@ import { InviteEmailComposer } from './invite-email.composer.js';
 import { MemberInvitesService } from './member-invites.service.js';
 import { MembershipInvite, MembershipInviteSchema } from './schemas/membership-invite.schema.js';
 import { WeddingMembership, WeddingMembershipSchema } from './schemas/wedding-membership.schema.js';
+import { WeddingSlug, WeddingSlugSchema } from './schemas/wedding-slug.schema.js';
 import { Wedding, WeddingSchema } from './schemas/wedding.schema.js';
 import { WeddingAccessService } from './wedding-access.service.js';
 import { WeddingsService } from './weddings.service.js';
@@ -21,6 +22,7 @@ import { WeddingsService } from './weddings.service.js';
       { name: Wedding.name, schema: WeddingSchema },
       { name: WeddingMembership.name, schema: WeddingMembershipSchema },
       { name: MembershipInvite.name, schema: MembershipInviteSchema },
+      { name: WeddingSlug.name, schema: WeddingSlugSchema },
     ]),
     AuthModule,
     NotificationsModule,

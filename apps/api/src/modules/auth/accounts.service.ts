@@ -19,4 +19,11 @@ export class AccountsService {
     const user = await this.users.findById(userId, { displayName: 1 }).lean();
     return user?.displayName;
   }
+
+  /** The names of several accounts, by ID; accounts that do not exist are left out. */
+  async displayNames(userIds: readonly Types.ObjectId[]): Promise<Map<string, string>> {
+    if (userIds.length === 0) return new Map();
+    const users = await this.users.find({ _id: { $in: userIds } }, { displayName: 1 }).lean();
+    return new Map(users.map((user) => [user._id.toHexString(), user.displayName]));
+  }
 }

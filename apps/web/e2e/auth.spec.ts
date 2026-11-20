@@ -14,6 +14,7 @@ import {
   PASSWORD,
   signIn,
   signUp,
+  WORKSPACE,
 } from './support/journeys';
 import { linkIn, uniqueEmail, waitForEmail } from './support/mail';
 import { newVisitor, test } from './support/visitor';
@@ -98,27 +99,29 @@ test('sign up, verify the email, create the wedding, use the dashboard, sign out
   });
   await page.getByRole('link', { name: 'I’ll do this later' }).click();
 
-  await expect(page).toHaveURL('/dashboard');
-  await expect(
-    page.getByRole('heading', { level: 1, name: 'Welcome, Priya Sharma' }),
-  ).toBeVisible();
-  await expect(page.getByRole('main')).toContainText(email);
-  await expect(page.getByRole('main')).toContainText('Priya & Rahul, Udaipur, Rajasthan');
+  // The dashboard is the wedding's workspace.
+  await expect(page).toHaveURL(WORKSPACE);
+  const workspace = new URL(page.url()).pathname;
+  await expect(page.getByRole('heading', { level: 1, name: 'Welcome, Priya.' })).toBeVisible();
+  await expect(page.getByRole('main')).toContainText(
+    'Priya & Rahul’s wedding · Udaipur, Rajasthan',
+  );
+  await expect(page.getByRole('complementary')).toContainText(email);
   await expectNoSeriousA11yIssues(page);
 
-  // Signed in, "Log in" goes straight to the dashboard.
-  await expectRedirectBeforeRender(page, '/login', '/dashboard');
-  await expectRedirectBeforeRender(page, '/signup', '/dashboard');
+  // Signed in, "Log in" goes straight to the workspace.
+  await expectRedirectBeforeRender(page, '/login', workspace);
+  await expectRedirectBeforeRender(page, '/signup', workspace);
   // …or where a sign-in link asked to return to, as the login form would,
   // but never to another site.
-  await page.goto('/login?next=%2Fdashboard%3Ftab%3Dguests');
-  await expect(page).toHaveURL('/dashboard?tab=guests');
+  await page.goto(`/login?next=${encodeURIComponent(`${workspace}?tab=guests`)}`);
+  await expect(page).toHaveURL(`${workspace}?tab=guests`);
   await page.goto('/login?next=%2F%2Fevil.example');
-  await expect(page).toHaveURL('/dashboard');
+  await expect(page).toHaveURL(workspace);
   // The homepage header leads back in instead of offering to sign in.
   await expectHomeLeadsTo(page, 'Go to dashboard', '/dashboard');
   await page.getByRole('banner').getByRole('link', { name: 'Go to dashboard' }).click();
-  await expect(page).toHaveURL('/dashboard');
+  await expect(page).toHaveURL(workspace);
 
   await page.getByRole('button', { name: 'Sign out' }).click();
   await expect(page).toHaveURL('/');
@@ -127,7 +130,7 @@ test('sign up, verify the email, create the wedding, use the dashboard, sign out
   await expect(page).toHaveURL('/login?next=%2Fdashboard');
 
   await signIn(page, email, PASSWORD);
-  await expect(page).toHaveURL('/dashboard');
+  await expect(page).toHaveURL(workspace);
   expect(errors).toEqual([]);
 });
 

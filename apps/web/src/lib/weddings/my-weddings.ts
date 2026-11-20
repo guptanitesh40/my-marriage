@@ -20,11 +20,6 @@ export const getMyWeddings = cache(async (): Promise<Wedding[] | null> => {
   }
 });
 
-/** The visitor's own active wedding: at most one, enforced by the API. */
-export function ownedActiveWedding(weddings: readonly Wedding[]): Wedding | undefined {
-  return weddings.find((wedding) => wedding.role === 'owner' && wedding.status === 'active');
-}
-
 export type MemberInvite = components['schemas']['MemberInviteDto'];
 
 /** A wedding's invitations, for one of its members; null if the API cannot answer. */

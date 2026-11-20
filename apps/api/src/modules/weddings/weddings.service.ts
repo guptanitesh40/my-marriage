@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Types, type Connection, type Model } from 'mongoose';
+import { AccountsService } from '../auth/accounts.service.js';
 import type { AuthenticatedUser } from '../auth/sessions.service.js';
+import type { MemberDto, MemberListDto } from './dto/member.dto.js';
 import type { CreateWeddingDto } from './dto/create-wedding.dto.js';
 import type { UpdateWeddingDto } from './dto/update-wedding.dto.js';
 import type { WeddingDto } from './dto/wedding.dto.js';
 import { WeddingMembership } from './schemas/wedding-membership.schema.js';
+import { WeddingSlug } from './schemas/wedding-slug.schema.js';
 import { Wedding, WEDDING_QUOTA_BYTES } from './schemas/wedding.schema.js';
 import { isFallbackBase, slugBase, withSuffix } from './slug.js';
 import { WeddingAccessService } from './wedding-access.service.js';
@@ -13,6 +16,7 @@ import {
   fieldError,
   ownerActiveLimit,
   PAST_DATE_MESSAGE,
+  slugTaken,
   weddingArchived,
 } from './wedding-errors.js';
 import { todayInIndia } from './wedding-policy.js';
@@ -34,8 +38,37 @@ export class WeddingsService {
     @InjectConnection() private readonly connection: Connection,
     @InjectModel(Wedding.name) private readonly weddings: Model<Wedding>,
     @InjectModel(WeddingMembership.name) private readonly memberships: Model<WeddingMembership>,
+    @InjectModel(WeddingSlug.name) private readonly slugs: Model<WeddingSlug>,
     private readonly access: WeddingAccessService,
+    private readonly accounts: AccountsService,
   ) {}
+
+  /** The wedding's active owners and managers, for any of them. */
+  async members(user: AuthenticatedUser, weddingId: string): Promise<MemberListDto> {
+    const { wedding } = await this.access.require(user, weddingId);
+    return { members: await this.memberDirectory(wedding._id) };
+  }
+
+  /**
+   * The wedding's active owners and managers with their names: owners
+   * first, then by name. Members whose account is gone are left out.
+   */
+  async memberDirectory(weddingId: Types.ObjectId): Promise<MemberDto[]> {
+    const members = await this.access.activeMembers(weddingId);
+    const names = await this.accounts.displayNames(members.map((m) => m.userId));
+    return members
+      .flatMap((member) => {
+        const displayName = names.get(member.userId.toHexString());
+        return displayName
+          ? [{ userId: member.userId.toHexString(), displayName, role: member.role }]
+          : [];
+      })
+      .sort(
+        (a, b) =>
+          Number(b.role === 'owner') - Number(a.role === 'owner') ||
+          a.displayName.localeCompare(b.displayName, 'en-IN'),
+      );
+  }
 
   /**
    * Creates an active wedding with the user as its first owner, in one
@@ -97,6 +130,9 @@ export class WeddingsService {
             { session },
           );
           if (!created) throw new Error('Wedding was not created');
+          // Reserves the address for good (decision 0017); taken, even as
+          // another wedding's old address, means a new suffix.
+          await this.slugs.create([{ slug, weddingId, current: true }], { session });
           return created;
         });
         return toWeddingDto(wedding, 'owner');
@@ -130,8 +166,18 @@ export class WeddingsService {
   }
 
   /**
+   * One wedding, for its owners and managers, in any status: archived
+   * weddings stay readable (PRD J4). Anyone else gets 404.
+   */
+  async get(user: AuthenticatedUser, weddingId: string): Promise<WeddingDto> {
+    const { wedding, role } = await this.access.require(user, weddingId);
+    return toWeddingDto(wedding, role);
+  }
+
+  /**
    * Changes the details of an active wedding (PRD WED-04), for its owners and
-   * managers. The slug stays: renaming the web address comes with the website.
+   * managers, including a new web address (decision 0017): the old one stays
+   * this wedding's, in `wedding_slugs`, so its links redirect.
    * A date already stored may be in the past by now; only a new date must
    * not be. One atomic write, which also raises the archive write fence
    * (schema document §6.3), so an edit never lands on an archived wedding.
@@ -153,20 +199,53 @@ export class WeddingsService {
       if (value !== undefined) set[field] = value;
     }
     if (input.weddingDate) set.weddingDate = toDate(input.weddingDate);
+    const update = {
+      $set: set,
+      ...(input.weddingDate === null ? { $unset: { weddingDate: 1 } } : {}),
+      $inc: { writeFenceVersion: 1 },
+    };
 
-    const updated = await this.weddings
-      .findOneAndUpdate(
-        { _id: wedding._id, status: 'active' },
-        {
-          $set: set,
-          ...(input.weddingDate === null ? { $unset: { weddingDate: 1 } } : {}),
-          $inc: { writeFenceVersion: 1 },
-        },
-        { returnDocument: 'after' },
-      )
-      .lean();
-    // Archived between the check above and this write.
-    if (!updated) throw weddingArchived();
-    return toWeddingDto(updated, role);
+    if (input.slug === undefined || input.slug === wedding.slug) {
+      const updated = await this.weddings
+        .findOneAndUpdate({ _id: wedding._id, status: 'active' }, update, {
+          returnDocument: 'after',
+        })
+        .lean();
+      // Archived between the check above and this write.
+      if (!updated) throw weddingArchived();
+      return toWeddingDto(updated, role);
+    }
+
+    const slug = input.slug;
+    try {
+      const updated = await this.connection.transaction(async (session) => {
+        // An address this wedding used before can be taken back; any other
+        // one in use or once used by another wedding cannot.
+        const known = await this.slugs.findOne({ slug }).session(session).lean();
+        if (known && !known.weddingId.equals(wedding._id)) throw slugTaken();
+        if (known) {
+          await this.slugs.updateOne({ _id: known._id }, { $set: { current: true } }, { session });
+        } else {
+          await this.slugs.create([{ slug, weddingId: wedding._id, current: true }], { session });
+        }
+        await this.slugs.updateOne(
+          { slug: wedding.slug, weddingId: wedding._id },
+          { $set: { current: false } },
+          { session },
+        );
+        return this.weddings
+          .findOneAndUpdate(
+            { _id: wedding._id, status: 'active' },
+            { ...update, $set: { ...set, slug } },
+            { returnDocument: 'after', session },
+          )
+          .lean();
+      });
+      if (!updated) throw weddingArchived();
+      return toWeddingDto(updated, role);
+    } catch (error) {
+      if (duplicateKeyOn(error) === 'slug') throw slugTaken();
+      throw error;
+    }
   }
 }

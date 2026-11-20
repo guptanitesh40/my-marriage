@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Wedding Site — Not Available (Mobile) — My Marriage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cream: '#FDF9F0',
+              surface: '#FFFFFF',
+              darkgreen: '#184539',
+              forest: '#235347',
+              gold: '#B89A70',
+              darkgold: '#735A35',
+              charcoal: '#1C1C16',
+              secondary: '#404845',
+              muted: '#717A75',
+              border: '#EAE4D6',
+              borderSoft: '#F0ECE1',
+              cardBg: '#FAF6EE',
+              badgeBg: '#F3EFE6'
+            }
+          },
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            sans: ['Manrope', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FDF9F0;
+      color: #1C1C16;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .serif-display {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#FDF9F0] text-brand-charcoal flex flex-col justify-between selection:bg-[#B89A70]/20 selection:text-[#184539]">
+
+  <!-- Top Minimal Header (Public anonymous brand wordmark, NO organizer chrome) -->
+  <header class="w-full pt-8 pb-4 px-6 flex items-center justify-center">
+    <a href="#" class="inline-flex items-center gap-2 group transition-opacity duration-200 hover:opacity-85 focus:outline-none focus:ring-2 focus:ring-brand-darkgreen/20 rounded-full px-2 py-1">
+      <!-- Minimalist Brand Logo / Icon -->
+      <div class="w-7 h-7 rounded-full bg-brand-darkgreen flex items-center justify-center text-brand-cream shadow-xs">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" class="w-4 h-4 fill-none" aria-hidden="true">
+          <circle cx="16" cy="20" r="8" stroke="#FDF9F0" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="20" r="8" stroke="#B89A70" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20 14.5V25.5" stroke="#FDF9F0" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+        </svg>
+      </div>
+      <span class="serif-display text-[19px] tracking-tight font-medium text-brand-darkgreen">My Marriage</span>
+    </a>
+  </header>
+
+  <!-- Main Unavailable Container -->
+  <main class="flex-1 flex flex-col items-center justify-center px-6 py-8 max-w-[390px] mx-auto w-full text-center">
+    
+    <!-- Central Gentle Notice Card -->
+    <div class="w-full bg-white rounded-3xl border border-brand-border p-7 sm:p-8 shadow-[0_4px_24px_rgba(24,69,57,0.03)] flex flex-col items-center">
+      
+      <!-- Soft Circular Icon (Link-off / Broken-link emblem) -->
+      <div class="w-16 h-16 rounded-full bg-brand-cardBg border border-brand-borderSoft flex items-center justify-center mb-6 text-brand-secondary/80">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-brand-darkgold/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <!-- Unlinked / Disconnected chain link icon -->
+          <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+          <path d="M15 7h2a5 5 0 0 1 4 8" />
+          <line x1="8" y1="12" x2="12" y2="12" stroke-dasharray="1.5 2" />
+          <line x1="3" y1="3" x2="21" y2="21" stroke-width="1.75" />
+        </svg>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="serif-display text-[26px] leading-[1.25] font-normal text-brand-charcoal mb-3 tracking-tight">
+        This wedding website isn't available
+      </h1>
+
+      <!-- Primary Informational Copy (Non-revealing: no couple names, no draft existence leak) -->
+      <p class="text-[15px] leading-relaxed text-brand-secondary font-normal mb-5 max-w-[290px]">
+        The address may be mistyped, or the couple hasn't published their website yet.
+      </p>
+
+      <!-- Soft Divider Motif -->
+      <div class="flex items-center justify-center gap-1.5 py-1 mb-5 opacity-40">
+        <span class="w-1 h-1 rounded-full bg-brand-darkgold"></span>
+        <span class="w-1.5 h-1.5 rotate-45 border border-brand-darkgold"></span>
+        <span class="w-1 h-1 rounded-full bg-brand-darkgold"></span>
+      </div>
+
+      <!-- Secondary Guidance Card for Invited Guests -->
+      <div class="w-full bg-brand-cardBg/90 rounded-2xl p-4 border border-brand-borderSoft/80 mb-6 text-left flex items-start gap-3">
+        <div class="mt-0.5 shrink-0 text-brand-darkgreen">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <p class="text-[13px] leading-[1.5] text-brand-secondary">
+          <span class="font-semibold text-brand-charcoal">Invited to this wedding?</span> Use the private invitation link the couple sent you to RSVP or view your schedule.
+        </p>
+      </div>
+
+      <!-- Action Navigation Links -->
+      <div class="w-full flex flex-col items-center gap-3">
+        <!-- Quiet text link to Homepage -->
+        <a href="/" class="inline-flex items-center justify-center gap-1.5 text-[14px] font-semibold text-brand-darkgreen hover:text-brand-forest transition-colors py-2 px-4 rounded-xl hover:bg-brand-cardBg focus:outline-none focus:ring-2 focus:ring-brand-darkgreen/30">
+          <span>Go to My Marriage</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Privacy Assurance Note -->
+    <div class="mt-6 flex items-center justify-center gap-1.5 text-[12px] text-brand-muted">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+      <span>Private & secure wedding directory</span>
+    </div>
+
+  </main>
+
+  <!-- Quiet, elegant footer with My Marriage attribution -->
+  <footer class="w-full pb-8 pt-4 px-6 text-center">
+    <div class="flex flex-col items-center justify-center gap-1">
+      <p class="text-[12px] text-brand-secondary/70">
+        Modern wedding planning for India & beyond
+      </p>
+      <p class="text-[11px] tracking-wider uppercase text-brand-muted/80 font-medium">
+        Made with My Marriage
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
+

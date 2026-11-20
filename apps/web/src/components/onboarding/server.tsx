@@ -6,13 +6,8 @@ import { ButtonLink } from '@/components/ui/button-link';
 import { getCurrentUser, type CurrentUser } from '@/lib/auth/current-user';
 import { loginThenReturnTo, routes } from '@/lib/routes';
 import { coupleName, whereAndWhen } from '@/lib/weddings/format';
-import {
-  getInvites,
-  getMyInvites,
-  getMyWeddings,
-  ownedActiveWedding,
-  type Wedding,
-} from '@/lib/weddings/my-weddings';
+import { ownedActiveWedding } from '@/lib/weddings/choose';
+import { getInvites, getMyInvites, getMyWeddings, type Wedding } from '@/lib/weddings/my-weddings';
 import { PartnerInvite } from './partner-invite';
 import { PendingInvitations } from './pending-invitations';
 import { StepHeading, StepProgress, stepCardClass } from './step-progress';

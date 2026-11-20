@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_blank" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary-fixed-dim": "#e2c195", "surface-tint": "#3b6759", "on-surface": "#1c1c16", "on-secondary-fixed": "#281800", "background": "#fdf9f0", "surface-container-highest": "#e6e2d9", "on-surface-variant": "#404845", "on-tertiary": "#ffffff", "on-tertiary-fixed": "#121e1b", "on-background": "#1c1c16", "surface-container-lowest": "#ffffff", "on-primary-fixed-variant": "#224e42", "on-error": "#ffffff", "surface-bright": "#fdf9f0", "secondary": "#735a35", "primary-container": "#315d50", "on-tertiary-container": "#c0cdc9", "on-secondary-container": "#785e39", "surface-variant": "#e6e2d9", "primary-fixed-dim": "#a2d0c0", "secondary-fixed": "#ffddb0", "secondary-container": "#fddaac", "tertiary-fixed-dim": "#bcc9c5", "on-error-container": "#93000a", "outline-variant": "#c0c8c4", "inverse-surface": "#32302b", "surface-container": "#f2ede4", "on-tertiary-fixed-variant": "#3d4946", "error-container": "#ffdad6", "on-primary": "#ffffff", "tertiary-fixed": "#d8e5e1", "on-primary-container": "#a5d4c3", "surface-container-low": "#f7f3ea", "outline": "#717975", "tertiary-container": "#4b5854", "error": "#ba1a1a", "on-primary-fixed": "#002018", "tertiary": "#34413d", "surface-container-high": "#ece8df", "inverse-primary": "#a2d0c0", "primary-fixed": "#bdeddb", "primary": "#184539", "surface-dim": "#dddad1", "surface": "#fdf9f0", "on-secondary-fixed-variant": "#594320", "inverse-on-surface": "#f5f0e7", "on-secondary": "#ffffff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin-mobile": "1.25rem", "gutter": "1.5rem", "margin": "2.5rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-md": "1rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "space-xl": "2.25rem" }, fontFamily: { "display-lg": ["Newsreader"], "label-md": ["Manrope"], "headline-md": ["Newsreader"], "display-lg-mobile": ["Newsreader"], "body-sm": ["Manrope"], "headline-lg-mobile": ["Newsreader"], "headline-lg": ["Newsreader"], "body-md": ["Manrope"], "headline-sm": ["Newsreader"], "title-sm": ["Manrope"], "label-sm": ["Manrope"], "body-lg": ["Manrope"], "title-md": ["Manrope"] }, fontSize: { "display-lg": ["3.5rem", { lineHeight: "4rem", letterSpacing: "-0.025em", fontWeight: "400" }], "label-md": ["0.8125rem", { lineHeight: "1rem", letterSpacing: "0.02em", fontWeight: "600" }], "headline-md": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.01em", fontWeight: "500" }], "display-lg-mobile": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.015em", fontWeight: "400" }], "body-sm": ["0.8125rem", { lineHeight: "1.25rem", fontWeight: "400" }], "headline-lg-mobile": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.01em", fontWeight: "400" }], "headline-lg": ["2.5rem", { lineHeight: "3rem", letterSpacing: "-0.02em", fontWeight: "400" }], "body-md": ["0.9375rem", { lineHeight: "1.5rem", fontWeight: "400" }], "headline-sm": ["1.25rem", { lineHeight: "1.75rem", fontWeight: "500" }], "title-sm": ["0.9375rem", { lineHeight: "1.375rem", fontWeight: "600" }], "label-sm": ["0.6875rem", { lineHeight: "0.875rem", letterSpacing: "0.04em", fontWeight: "600" }], "body-lg": ["1.0625rem", { lineHeight: "1.65rem", fontWeight: "400" }], "title-md": ["1.125rem", { lineHeight: "1.625rem", letterSpacing: "-0.01em", fontWeight: "600" }] } } } }</script><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#fdf9f0;}body{overscroll-behavior-y:none;font-family:'Manrope',sans-serif;color:#1c1c16;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface min-h-screen text-on-surface flex flex-col antialiased selection:bg-secondary-container selection:text-on-secondary-container"><main class="flex-1 flex flex-col relative w-full max-w-[430px] mx-auto bg-surface pt-safe pb-safe"><div class="flex flex-col w-full text-on-surface">
+<!-- Interactive Prototype Controller Bar -->
+<aside aria-label="Prototype States Switcher" class="w-full bg-surface-container py-2.5 px-3 z-30 sticky top-0 shadow-sm">
+<div class="flex items-center justify-between gap-2 mb-1.5 px-1">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-sm">tune</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Testing Views</span>
+</div>
+<span class="text-on-surface-variant font-label-sm text-label-sm" id="currentStateLabel">First visit</span>
+</div>
+<!-- Scrolling Pills Container -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scroll-smooth" style="-webkit-overflow-scrolling: touch;">
+<button class="state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-primary text-on-primary font-medium" data-state-btn="first-visit" onclick="setRsvpState('first-visit')" type="button">First visit</button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-medium" data-state-btn="saved" onclick="setRsvpState('saved')" type="button">Saved</button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-medium" data-state-btn="validation" onclick="setRsvpState('validation')" type="button">Validation</button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-medium" data-state-btn="changed-elsewhere" onclick="setRsvpState('changed-elsewhere')" type="button">Changed elsewhere</button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-medium" data-state-btn="save-failed" onclick="setRsvpState('save-failed')" type="button">Save failed</button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-medium" data-state-btn="link-unavailable" onclick="setRsvpState('link-unavailable')" type="button">Link not available</button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-medium" data-state-btn="archived" onclick="setRsvpState('archived')" type="button">Archived</button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-medium" data-state-btn="cancelled-ceremony" onclick="setRsvpState('cancelled-ceremony')" type="button">Cancelled ceremony</button>
+</div>
+</aside>
+<!-- Notification & System Banner Slot -->
+<div class="w-full px-4 pt-3 transition-all duration-300 hidden" id="notificationSlot">
+<!-- Populated dynamically based on state -->
+</div>
+<!-- Standalone Error / Broken Link State Container (Visible in 'link-unavailable') -->
+<section class="hidden px-6 py-16 flex-col items-center text-center" id="unavailableView">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center text-secondary mb-6 shadow-sm">
+<span class="material-symbols-outlined text-3xl">link_off</span>
+</div>
+<!-- Monogram Accent -->
+<div class="flex items-center gap-2 mb-3">
+<span class="h-px w-6 bg-secondary-fixed-dim"></span>
+<span class="font-headline-sm text-headline-sm italic text-secondary">My Marriage</span>
+<span class="h-px w-6 bg-secondary-fixed-dim"></span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface font-medium tracking-tight mb-3">
+      This invitation link is no longer available
+    </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-8">
+      The couple may have updated their guest registry or issued a revised bearer link. Please ask them directly for a new access link.
+    </p>
+<div class="p-4 rounded-xl bg-surface-container-lowest w-full max-w-xs shadow-sm text-left flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-0.5">mark_email_unread</span>
+<div class="flex-1">
+<p class="font-title-sm text-title-sm text-on-surface">Need assistance?</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Check your SMS or WhatsApp invitation message from Ananya &amp; Arjun.</p>
+</div>
+</div>
+</section>
+<!-- Main Active RSVP Form Container -->
+<div class="flex flex-col w-full px-4 pt-4 pb-12" id="rsvpFormView">
+<!-- Editorial Header Card -->
+<header class="w-full bg-surface-container-lowest rounded-2xl p-5 mb-4 shadow-sm relative overflow-hidden">
+<!-- Subtle Muted Gold Pattern Motif -->
+<div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-secondary-container/20 pointer-events-none blur-xl"></div>
+<div class="flex items-center justify-between mb-3">
+<!-- Brand Wordmark / Serif Monogram -->
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline-sm text-xs italic">
+            M
+          </div>
+<span class="font-headline-sm text-headline-sm italic text-primary tracking-wide">My Marriage</span>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold bg-secondary-container/30 px-2.5 py-0.5 rounded-full">
+          Private Invitation
+        </span>
+</div>
+<!-- Eyebrow -->
+<p class="font-label-sm text-label-sm tracking-widest uppercase text-secondary font-semibold mb-1">
+        You're invited
+      </p>
+<!-- Wedding Headline -->
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-normal leading-tight mb-3">
+        Ananya &amp; Arjun's wedding
+      </h1>
+<!-- Delicate gold divider -->
+<div class="flex items-center gap-2 my-3">
+<div class="h-[1px] flex-1 bg-surface-container-highest"></div>
+<div class="w-1.5 h-1.5 rotate-45 bg-secondary-fixed-dim"></div>
+<div class="h-[1px] flex-1 bg-surface-container-highest"></div>
+</div>
+<!-- Greeting & Party Size Allocation -->
+<div class="space-y-1">
+<h2 class="font-title-md text-title-md text-on-surface font-semibold flex items-center gap-2">
+<span>Hello, Rajesh Sharma</span>
+<span class="material-symbols-outlined text-primary text-base" title="Invited Guest">verified</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          This invitation is for up to <span class="font-title-sm text-on-surface font-semibold">5 people</span> in your family.
+        </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Please let us know who is attending each celebration below.
+        </p>
+</div>
+</header>
+<!-- Ceremony Section Headline -->
+<div class="flex items-center justify-between px-1 mb-2">
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-semibold">
+        Your Celebrations (2)
+      </h3>
+<span class="font-label-sm text-label-sm text-secondary font-medium">Jaipur, Rajasthan</span>
+</div>
+<!-- CEREMONY 1: Haldi Card -->
+<article class="w-full bg-surface-container-lowest rounded-2xl p-5 mb-4 shadow-sm transition-all duration-300" id="cardHaldi">
+<!-- Event Header & Logistics -->
+<div class="flex items-start justify-between gap-3 mb-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim"></span>
+<h4 class="font-headline-md text-headline-md text-on-surface font-medium">Haldi</h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-secondary">calendar_today</span>
+<span>Thu, 18 Feb 2027 · 10:00 am</span>
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-sm text-secondary">location_on</span>
+<span>Poolside Lawn, Rambagh Palace, Jaipur</span>
+</p>
+</div>
+<span class="hidden px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold bg-surface-container-high text-on-surface-variant" id="haldiStatusBadge">
+          Updated
+        </span>
+</div>
+<!-- Cancelled State Banner for Haldi (revealed via prototype state) -->
+<div class="hidden p-3.5 mb-4 rounded-xl bg-error-container text-on-error-container flex items-start gap-2.5" id="haldiCancelledBanner">
+<span class="material-symbols-outlined text-error text-xl shrink-0 mt-0.5">event_busy</span>
+<div>
+<p class="font-title-sm text-title-sm font-semibold text-error">Celebration Cancelled</p>
+<p class="font-body-sm text-body-sm text-on-error-container">This celebration has been cancelled. RSVP is closed.</p>
+</div>
+</div>
+<!-- Haldi Form Controls Container -->
+<div id="haldiControls">
+<!-- Question Label -->
+<p class="font-title-sm text-title-sm text-on-surface font-semibold mb-2.5">
+          Will you attend Haldi?
+        </p>
+<!-- Segmented Attendance Choices (Large 48px touch targets) -->
+<div class="grid grid-cols-3 gap-2 p-1 bg-surface-container rounded-xl mb-4">
+<button class="ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all bg-primary text-on-primary shadow-sm" id="haldiAttendingBtn" onclick="selectAttendance('haldi', 'attending')" type="button">
+            Attending
+          </button>
+<button class="ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all text-on-surface hover:bg-surface-container-highest" id="haldiNotAttendingBtn" onclick="selectAttendance('haldi', 'not-attending')" type="button">
+            Not attending
+          </button>
+<button class="ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all text-on-surface hover:bg-surface-container-highest" id="haldiMaybeBtn" onclick="selectAttendance('haldi', 'maybe')" type="button">
+            Maybe
+          </button>
+</div>
+<!-- Attending Revealed Stepper Module -->
+<div class="bg-surface-container-low rounded-xl p-4 transition-all" id="haldiStepperArea">
+<div class="flex items-center justify-between mb-2">
+<div>
+<label class="font-title-sm text-title-sm text-on-surface font-semibold block" for="haldiCount">
+                How many people will attend?
+              </label>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="haldiStepperCaption">
+                3 of 5 people
+              </span>
+</div>
+<!-- Tactile Large Stepper -->
+<div class="flex items-center gap-2">
+<button aria-label="Decrease attendees" class="ceremony-control w-11 h-11 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center shadow-sm active:scale-95 disabled:opacity-35 disabled:pointer-events-none transition-transform" id="haldiMinusBtn" onclick="adjustCount('haldi', -1)" type="button">
+<span class="material-symbols-outlined text-xl">remove</span>
+</button>
+<span class="font-headline-sm text-headline-sm font-semibold w-7 text-center text-primary" id="haldiCount">
+                3
+              </span>
+<button aria-label="Increase attendees" class="ceremony-control w-11 h-11 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center shadow-sm active:scale-95 disabled:opacity-35 disabled:pointer-events-none transition-transform" id="haldiPlusBtn" onclick="adjustCount('haldi', 1)" type="button">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</div>
+<!-- Dynamic Validation Alert Slot for Haldi -->
+<div class="hidden mt-3 pt-2.5 flex items-center gap-2 text-error" id="haldiValidationAlert">
+<span class="material-symbols-outlined text-lg">error</span>
+<p class="font-body-sm text-body-sm font-medium">Choose how many people will attend (1 to 5).</p>
+</div>
+</div>
+<!-- Haldi Decline Feedback Box -->
+<div class="hidden p-4 rounded-xl bg-surface-container-low text-on-surface-variant font-body-sm text-body-sm" id="haldiDeclineArea">
+<p class="font-title-sm text-title-sm text-on-surface font-semibold mb-0.5">No one attending</p>
+          No one from your family will attend the Haldi ceremony.
+        </div>
+<!-- Haldi Maybe Feedback Box -->
+<div class="hidden p-4 rounded-xl bg-secondary-container/20 text-on-secondary-container font-body-sm text-body-sm" id="haldiMaybeArea">
+<p class="font-title-sm text-title-sm text-secondary font-semibold mb-0.5">Tentative RSVP</p>
+          Maybe responses help the couple estimate, but are not counted as confirmed seats.
+        </div>
+</div>
+</article>
+<!-- CEREMONY 2: Wedding Card -->
+<article class="w-full bg-surface-container-lowest rounded-2xl p-5 mb-4 shadow-sm transition-all duration-300" id="cardWedding">
+<!-- Event Header & Logistics -->
+<div class="flex items-start justify-between gap-3 mb-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<h4 class="font-headline-md text-headline-md text-on-surface font-medium">Wedding</h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-secondary">calendar_today</span>
+<span>Sat, 20 Feb 2027 · 7:00 pm</span>
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-sm text-secondary">location_on</span>
+<span>Venue to be announced</span>
+</p>
+</div>
+<span class="hidden px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold bg-surface-container-high text-on-surface-variant" id="weddingStatusBadge">
+          Confirmed
+        </span>
+</div>
+<!-- Wedding Form Controls -->
+<div id="weddingControls">
+<!-- Question Label -->
+<p class="font-title-sm text-title-sm text-on-surface font-semibold mb-2.5">
+          Will you attend Wedding?
+        </p>
+<!-- Segmented Attendance Choices (Large 48px touch targets) -->
+<div class="grid grid-cols-3 gap-2 p-1 bg-surface-container rounded-xl mb-4">
+<button class="ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all bg-primary text-on-primary shadow-sm" id="weddingAttendingBtn" onclick="selectAttendance('wedding', 'attending')" type="button">
+            Attending
+          </button>
+<button class="ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all text-on-surface hover:bg-surface-container-highest" id="weddingNotAttendingBtn" onclick="selectAttendance('wedding', 'not-attending')" type="button">
+            Not attending
+          </button>
+<button class="ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all text-on-surface hover:bg-surface-container-highest" id="weddingMaybeBtn" onclick="selectAttendance('wedding', 'maybe')" type="button">
+            Maybe
+          </button>
+</div>
+<!-- Attending Revealed Stepper Module (Defaults to maximum 5 with disabled + button) -->
+<div class="bg-surface-container-low rounded-xl p-4 transition-all" id="weddingStepperArea">
+<div class="flex items-center justify-between mb-2">
+<div>
+<label class="font-title-sm text-title-sm text-on-surface font-semibold block" for="weddingCount">
+                How many people will attend?
+              </label>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="weddingStepperCaption">
+                5 of 5 people (Maximum)
+              </span>
+</div>
+<!-- Tactile Large Stepper -->
+<div class="flex items-center gap-2">
+<button aria-label="Decrease attendees" class="ceremony-control w-11 h-11 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center shadow-sm active:scale-95 disabled:opacity-35 disabled:pointer-events-none transition-transform" id="weddingMinusBtn" onclick="adjustCount('wedding', -1)" type="button">
+<span class="material-symbols-outlined text-xl">remove</span>
+</button>
+<span class="font-headline-sm text-headline-sm font-semibold w-7 text-center text-primary" id="weddingCount">
+                5
+              </span>
+<!-- Disabled visually and programmatically because it's at maximum 5 -->
+<button aria-label="Increase attendees" class="ceremony-control w-11 h-11 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center shadow-sm opacity-35 pointer-events-none transition-transform" disabled="" id="weddingPlusBtn" onclick="adjustCount('wedding', 1)" type="button">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</div>
+<p class="font-label-sm text-label-sm text-secondary">
+            Reached full party limit (5 guests).
+          </p>
+</div>
+<!-- Wedding Decline Feedback Box (Shown in validation state) -->
+<div class="hidden p-4 rounded-xl bg-surface-container-low text-on-surface-variant font-body-sm text-body-sm" id="weddingDeclineArea">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-on-surface-variant text-lg mt-0.5">sentiment_dissatisfied</span>
+<div>
+<p class="font-title-sm text-title-sm text-on-surface font-semibold mb-0.5">No one from your family will attend</p>
+<p class="text-on-surface-variant">We'll miss having you celebrate the wedding pheras with us.</p>
+</div>
+</div>
+</div>
+<!-- Wedding Maybe Feedback Box -->
+<div class="hidden p-4 rounded-xl bg-secondary-container/20 text-on-secondary-container font-body-sm text-body-sm" id="weddingMaybeArea">
+<p class="font-title-sm text-title-sm text-secondary font-semibold mb-0.5">How many might come?</p>
+<p>Maybe isn't counted as confirmed. We will reach out closer to the date.</p>
+</div>
+</div>
+</article>
+<!-- Excluded Event Notice Card (Editorial reassurance) -->
+<div class="px-4 py-3 rounded-xl bg-surface-container/60 mb-6 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-lg">info</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        Only events designated for your family circle are listed above.
+      </p>
+</div>
+<!-- Footnotes & Privacy Reassurance -->
+<footer class="space-y-4 px-1 pb-24 text-center">
+<div class="flex items-center justify-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-base text-secondary">lock</span>
+<span>This invitation link is private. Anyone with this link can update these responses.</span>
+</div>
+<!-- Stop reminders button with modal disclosure -->
+<div>
+<button class="font-title-sm text-title-sm text-secondary hover:underline underline-offset-4 font-medium inline-block min-h-[44px] py-2" onclick="toggleReminderNotice()" type="button">
+          Stop email reminders
+        </button>
+<p class="hidden font-label-sm text-label-sm text-on-surface-variant max-w-xs mx-auto mt-1 p-2.5 rounded-lg bg-surface-container" id="reminderNotice">
+          Stopping reminders pauses RSVP nudge emails only. It does not cancel your invitation or affect your existing responses.
+        </p>
+</div>
+<!-- Tasteful Brand Signoff -->
+<div class="pt-2">
+<p class="font-headline-sm text-headline-sm italic text-secondary-fixed-dim">
+          With joy, Ananya &amp; Arjun
+        </p>
+</div>
+</footer>
+</div>
+<!-- Sticky Bottom Action Tray (Large touch target >= 50px) -->
+<div class="fixed bottom-0 left-0 right-0 max-w-[430px] mx-auto p-4 bg-surface/90 backdrop-blur-md z-20" id="stickyBottomTray">
+<div class="w-full flex flex-col gap-2">
+<button class="w-full min-h-[50px] py-3.5 px-6 rounded-xl font-title-sm text-title-sm font-semibold tracking-wide bg-primary text-on-primary flex items-center justify-center gap-2 shadow-md active:scale-[0.99] transition-transform" id="submitRsvpBtn" onclick="handleSubmitRsvp()" type="button">
+<span id="submitBtnText">Save my RSVP</span>
+<span class="material-symbols-outlined text-lg" id="submitBtnIcon">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Vanilla Interactive Prototype Logic -->
+<script>
+  // State store for reactive UI updates
+  const stateData = {
+    current: 'first-visit',
+    haldi: {
+      status: 'attending', // 'attending' | 'not-attending' | 'maybe'
+      count: 3,
+      max: 5,
+      hasError: false
+    },
+    wedding: {
+      status: 'attending',
+      count: 5,
+      max: 5,
+      hasError: false
+    }
+  };
+
+  function selectAttendance(ceremony, status) {
+    if (stateData.current === 'archived' || (ceremony === 'haldi' && stateData.current === 'cancelled-ceremony')) {
+      return;
+    }
+    stateData[ceremony].status = status;
+    updateCeremonyUI(ceremony);
+  }
+
+  function adjustCount(ceremony, delta) {
+    if (stateData.current === 'archived' || (ceremony === 'haldi' && stateData.current === 'cancelled-ceremony')) {
+      return;
+    }
+    const currentCount = stateData[ceremony].count;
+    const newCount = Math.max(1, Math.min(stateData[ceremony].max, currentCount + delta));
+    stateData[ceremony].count = newCount;
+    stateData[ceremony].hasError = false;
+    updateCeremonyUI(ceremony);
+  }
+
+  function updateCeremonyUI(ceremony) {
+    const data = stateData[ceremony];
+    const prefix = ceremony;
+
+    const btnAttending = document.getElementById(`${prefix}AttendingBtn`);
+    const btnNotAttending = document.getElementById(`${prefix}NotAttendingBtn`);
+    const btnMaybe = document.getElementById(`${prefix}MaybeBtn`);
+
+    const stepperArea = document.getElementById(`${prefix}StepperArea`);
+    const declineArea = document.getElementById(`${prefix}DeclineArea`);
+    const maybeArea = document.getElementById(`${prefix}MaybeArea`);
+    const countLabel = document.getElementById(`${prefix}Count`);
+    const caption = document.getElementById(`${prefix}StepperCaption`);
+    const minusBtn = document.getElementById(`${prefix}MinusBtn`);
+    const plusBtn = document.getElementById(`${prefix}PlusBtn`);
+    const alertBox = document.getElementById(`${prefix}ValidationAlert`);
+
+    // Reset segmented button styling
+    [btnAttending, btnNotAttending, btnMaybe].forEach(btn => {
+      if (btn) {
+        btn.className = "ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all text-on-surface hover:bg-surface-container-highest";
+      }
+    });
+
+    if (data.status === 'attending') {
+      if (btnAttending) btnAttending.className = "ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all bg-primary text-on-primary shadow-sm";
+      if (stepperArea) stepperArea.classList.remove('hidden');
+      if (declineArea) declineArea.classList.add('hidden');
+      if (maybeArea) maybeArea.classList.add('hidden');
+    } else if (data.status === 'not-attending') {
+      if (btnNotAttending) btnNotAttending.className = "ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all bg-primary text-on-primary shadow-sm";
+      if (stepperArea) stepperArea.classList.add('hidden');
+      if (declineArea) declineArea.classList.remove('hidden');
+      if (maybeArea) maybeArea.classList.add('hidden');
+    } else if (data.status === 'maybe') {
+      if (btnMaybe) btnMaybe.className = "ceremony-control min-h-[48px] px-2 py-2 rounded-lg font-title-sm text-title-sm font-medium flex items-center justify-center transition-all bg-primary text-on-primary shadow-sm";
+      if (stepperArea) stepperArea.classList.add('hidden');
+      if (declineArea) declineArea.classList.add('hidden');
+      if (maybeArea) maybeArea.classList.remove('hidden');
+    }
+
+    // Update Stepper Numbers and Button States
+    if (countLabel) countLabel.textContent = data.count;
+    if (caption) {
+      caption.textContent = `${data.count} of ${data.max} people${data.count === data.max ? ' (Maximum)' : ''}`;
+    }
+
+    if (minusBtn) {
+      if (data.count <= 1) {
+        minusBtn.disabled = true;
+        minusBtn.classList.add('opacity-35', 'pointer-events-none');
+      } else {
+        minusBtn.disabled = false;
+        minusBtn.classList.remove('opacity-35', 'pointer-events-none');
+      }
+    }
+
+    if (plusBtn) {
+      if (data.count >= data.max) {
+        plusBtn.disabled = true;
+        plusBtn.classList.add('opacity-35', 'pointer-events-none');
+      } else {
+        plusBtn.disabled = false;
+        plusBtn.classList.remove('opacity-35', 'pointer-events-none');
+      }
+    }
+
+    // Validation alerts
+    if (alertBox) {
+      if (data.hasError) {
+        alertBox.classList.remove('hidden');
+        if (stepperArea) stepperArea.classList.add('bg-error-container/30');
+      } else {
+        alertBox.classList.add('hidden');
+        if (stepperArea) stepperArea.classList.remove('bg-error-container/30');
+      }
+    }
+  }
+
+  function setRsvpState(stateName) {
+    stateData.current = stateName;
+    document.getElementById('currentStateLabel').textContent = stateName.replace('-', ' ');
+
+    // Update active pill styling
+    document.querySelectorAll('.state-pill').forEach(btn => {
+      if (btn.getAttribute('data-state-btn') === stateName) {
+        btn.className = "state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-primary text-on-primary font-medium";
+      } else {
+        btn.className = "state-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-colors bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-medium";
+      }
+    });
+
+    const notif = document.getElementById('notificationSlot');
+    const formView = document.getElementById('rsvpFormView');
+    const unavailView = document.getElementById('unavailableView');
+    const bottomTray = document.getElementById('stickyBottomTray');
+    const submitBtn = document.getElementById('submitRsvpBtn');
+    const submitBtnText = document.getElementById('submitBtnText');
+    const haldiCancelledBanner = document.getElementById('haldiCancelledBanner');
+    const haldiControls = document.getElementById('haldiControls');
+
+    // Reset common visibility
+    notif.className = "w-full px-4 pt-3 transition-all duration-300 hidden";
+    notif.innerHTML = "";
+    formView.classList.remove('hidden');
+    unavailView.classList.add('hidden');
+    bottomTray.classList.remove('hidden');
+    submitBtn.disabled = false;
+    submitBtn.className = "w-full min-h-[50px] py-3.5 px-6 rounded-xl font-title-sm text-title-sm font-semibold tracking-wide bg-primary text-on-primary flex items-center justify-center gap-2 shadow-md active:scale-[0.99] transition-transform";
+    submitBtnText.textContent = "Save my RSVP";
+    haldiCancelledBanner.classList.add('hidden');
+    haldiControls.classList.remove('opacity-40', 'pointer-events-none');
+
+    // Enable all ceremony controls by default
+    document.querySelectorAll('.ceremony-control').forEach(el => {
+      el.removeAttribute('disabled');
+      el.classList.remove('opacity-40', 'pointer-events-none');
+    });
+
+    // Reset data values to defaults
+    stateData.haldi = { status: 'attending', count: 3, max: 5, hasError: false };
+    stateData.wedding = { status: 'attending', count: 5, max: 5, hasError: false };
+
+    // STATE SWITCH IMPLEMENTATION
+    switch (stateName) {
+      case 'first-visit':
+        // Clean default loaded state
+        updateCeremonyUI('haldi');
+        updateCeremonyUI('wedding');
+        break;
+
+      case 'saved':
+        notif.classList.remove('hidden');
+        notif.innerHTML = `
+          <div class="w-full p-4 rounded-xl bg-surface-container-lowest shadow-sm flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary text-xl mt-0.5" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            <div class="flex-1">
+              <p class="font-title-sm text-title-sm font-semibold text-primary">Your responses have been saved</p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">You can change them any time before the wedding date.</p>
+            </div>
+          </div>
+        `;
+        submitBtnText.textContent = "Update RSVP";
+        updateCeremonyUI('haldi');
+        updateCeremonyUI('wedding');
+        break;
+
+      case 'validation':
+        // Haldi error (selected attending, count 0/unselected error state)
+        stateData.haldi.status = 'attending';
+        stateData.haldi.count = 0;
+        stateData.haldi.hasError = true;
+
+        // Wedding is not attending
+        stateData.wedding.status = 'not-attending';
+        updateCeremonyUI('haldi');
+        updateCeremonyUI('wedding');
+
+        notif.classList.remove('hidden');
+        notif.innerHTML = `
+          <div class="w-full p-3.5 rounded-xl bg-error-container text-on-error-container flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-error text-xl shrink-0">error</span>
+            <p class="font-body-sm text-body-sm font-medium">Please review Haldi attendee count before saving.</p>
+          </div>
+        `;
+        break;
+
+      case 'changed-elsewhere':
+        notif.classList.remove('hidden');
+        notif.innerHTML = `
+          <div class="w-full p-4 rounded-xl bg-secondary-container/40 text-on-surface shadow-sm flex flex-col gap-2.5">
+            <div class="flex items-start gap-2.5">
+              <span class="material-symbols-outlined text-secondary text-xl mt-0.5">history_toggle_drop_down</span>
+              <div class="flex-1">
+                <p class="font-title-sm text-title-sm font-semibold text-on-secondary-container">Responses changed elsewhere</p>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">These responses have changed since you opened this page. Refresh to review the latest version without losing your spot.</p>
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <button type="button" onclick="setRsvpState('saved')" class="px-4 py-2 rounded-lg bg-surface-container-lowest text-secondary font-title-sm text-title-sm font-semibold shadow-sm hover:bg-surface-container-high transition-colors">
+                Refresh version
+              </button>
+            </div>
+          </div>
+        `;
+        updateCeremonyUI('haldi');
+        updateCeremonyUI('wedding');
+        break;
+
+      case 'save-failed':
+        notif.classList.remove('hidden');
+        notif.innerHTML = `
+          <div class="w-full p-4 rounded-xl bg-error-container text-on-error-container flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-error text-xl shrink-0">cloud_off</span>
+              <p class="font-body-sm text-body-sm font-medium">We couldn't save your RSVP. All inputs preserved.</p>
+            </div>
+            <button type="button" onclick="setRsvpState('saved')" class="px-3 py-1.5 rounded-lg bg-error text-on-error font-title-sm text-title-sm font-semibold shrink-0">
+              Retry
+            </button>
+          </div>
+        `;
+        updateCeremonyUI('haldi');
+        updateCeremonyUI('wedding');
+        break;
+
+      case 'link-unavailable':
+        formView.classList.add('hidden');
+        unavailView.classList.remove('hidden');
+        unavailView.classList.add('flex');
+        bottomTray.classList.add('hidden');
+        break;
+
+      case 'archived':
+        notif.classList.remove('hidden');
+        notif.innerHTML = `
+          <div class="w-full p-4 rounded-xl bg-surface-container-high text-on-surface shadow-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-on-surface-variant text-xl">event_available</span>
+            <div class="flex-1">
+              <p class="font-title-sm text-title-sm font-semibold text-on-surface">RSVPs for this wedding are closed</p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Responses are now read-only for final venue seating.</p>
+            </div>
+          </div>
+        `;
+        updateCeremonyUI('haldi');
+        updateCeremonyUI('wedding');
+        // Disable controls
+        document.querySelectorAll('.ceremony-control').forEach(el => {
+          el.setAttribute('disabled', 'true');
+          el.classList.add('opacity-40', 'pointer-events-none');
+        });
+        submitBtn.disabled = true;
+        submitBtn.className = "w-full min-h-[50px] py-3.5 px-6 rounded-xl font-title-sm text-title-sm font-semibold tracking-wide bg-surface-container-highest text-on-surface-variant flex items-center justify-center gap-2 cursor-not-allowed";
+        submitBtnText.textContent = "RSVP Closed";
+        break;
+
+      case 'cancelled-ceremony':
+        haldiCancelledBanner.classList.remove('hidden');
+        haldiControls.classList.add('opacity-40', 'pointer-events-none');
+        updateCeremonyUI('wedding');
+        break;
+    }
+  }
+
+  function handleSubmitRsvp() {
+    if (stateData.current === 'archived') return;
+
+    const btn = document.getElementById('submitRsvpBtn');
+    const originalText = document.getElementById('submitBtnText').textContent;
+    document.getElementById('submitBtnText').textContent = "Saving...";
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.disabled = false;
+      setRsvpState('saved');
+    }, 600);
+  }
+
+  function toggleReminderNotice() {
+    const el = document.getElementById('reminderNotice');
+    el.classList.toggle('hidden');
+  }
+
+  // Initialize view on load
+  document.addEventListener('DOMContentLoaded', () => {
+    setRsvpState('first-visit');
+  });
+</script></main></body></html>

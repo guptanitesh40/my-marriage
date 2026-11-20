@@ -6,10 +6,12 @@ import {
   IsIn,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
   Max,
   Min,
+  MinLength,
   ValidateIf,
   validateSync,
 } from 'class-validator';
@@ -121,6 +123,16 @@ export class Env {
    */
   @IsIn(TRACE_MODES)
   LOG_TRACE: TraceMode;
+
+  /**
+   * Key from which guests' private invitation links are derived (decision
+   * 0015): the database keeps only a hash of each link, and the link can be
+   * rebuilt only with this key. At least 32 characters; required in
+   * production. Development and tests fall back to a fixed, public value.
+   */
+  @IsOptional()
+  @MinLength(32, { message: 'GUEST_LINK_SECRET must be at least 32 characters' })
+  GUEST_LINK_SECRET?: string;
 }
 
 const DEFAULT_TRACE_MODE: Record<string, TraceMode> = {
@@ -144,6 +156,7 @@ const ENV_KEYS = [
   'SMTP_PASSWORD',
   'MAIL_FROM',
   'LOG_TRACE',
+  'GUEST_LINK_SECRET',
 ] as const satisfies (keyof Env)[];
 
 /** Rules that span several variables, which class-validator cannot express. */
@@ -153,6 +166,10 @@ function crossFieldProblems(env: Env): string[] {
   // silently drop or locally store the emails people are waiting for.
   if (env.NODE_ENV === 'production' && env.MAIL_TRANSPORT !== 'smtp') {
     problems.push('MAIL_TRANSPORT must be smtp when NODE_ENV is production');
+  }
+  // Without it, anyone who read the code could rebuild guests' links.
+  if (env.NODE_ENV === 'production' && env.GUEST_LINK_SECRET === undefined) {
+    problems.push('GUEST_LINK_SECRET is required when NODE_ENV is production');
   }
   return problems;
 }

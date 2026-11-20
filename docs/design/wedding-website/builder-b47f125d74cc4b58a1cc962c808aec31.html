@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100..900&amp;family=Newsreader:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-surface":"#1c1c16","on-tertiary-fixed-variant":"#3d4946","secondary-container":"#fddaac","surface-container-highest":"#e6e2d9","tertiary-fixed-dim":"#bcc9c5","surface-variant":"#e6e2d9","outline-variant":"#c0c8c4","error-container":"#ffdad6","on-background":"#1c1c16","surface-container-low":"#f7f3ea","background":"#fdf9f0","on-tertiary":"#ffffff","on-primary-fixed-variant":"#224e42","primary-fixed":"#bdeddb","tertiary-container":"#4b5854","error":"#ba1a1a","on-secondary":"#ffffff","surface-container-lowest":"#ffffff","outline":"#717975","on-primary-container":"#a5d4c3","on-secondary-container":"#785e39","surface":"#fdf9f0","on-tertiary-fixed":"#121e1b","tertiary-fixed":"#d8e5e1","on-primary":"#ffffff","on-secondary-fixed-variant":"#594320","surface-bright":"#fdf9f0","secondary":"#735a35","tertiary":"#34413d","primary-container":"#315d50","inverse-on-surface":"#f5f0e7","on-secondary-fixed":"#281800","primary":"#184539","on-error":"#ffffff","secondary-fixed":"#ffddb0","on-primary-fixed":"#002018","surface-container-high":"#ece8df","on-error-container":"#93000a","inverse-surface":"#32302b","surface-container":"#f2ede4","on-surface-variant":"#404845","secondary-fixed-dim":"#e2c195","surface-dim":"#dddad1","on-tertiary-container":"#c0cdc9","primary-fixed-dim":"#a2d0c0","inverse-primary":"#a2d0c0","surface-tint":"#3b6759"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"margin":"2.5rem","space-sm":"0.5rem","space-xl":"2.25rem","margin-mobile":"1.25rem","gutter-mobile":"1rem","space-lg":"1.5rem","space-md":"1rem","gutter":"1.5rem","space-xs":"0.25rem"},fontFamily:{"display-lg":["Newsreader"],"headline-lg":["Newsreader"],"label-md":["Manrope"],"display-lg-mobile":["Newsreader"],"body-md":["Manrope"],"body-lg":["Manrope"],"headline-lg-mobile":["Newsreader"],"title-sm":["Manrope"],"headline-md":["Newsreader"],"body-sm":["Manrope"],"headline-sm":["Newsreader"],"label-sm":["Manrope"],"title-md":["Manrope"]},fontSize:{"display-lg":["3.5rem",{lineHeight:"4rem",letterSpacing:"-0.025em",fontWeight:"400"}],"headline-lg":["2.5rem",{lineHeight:"3rem",letterSpacing:"-0.02em",fontWeight:"400"}],"label-md":["0.8125rem",{lineHeight:"1rem",letterSpacing:"0.02em",fontWeight:"600"}],"display-lg-mobile":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.015em",fontWeight:"400"}],"body-md":["0.9375rem",{lineHeight:"1.5rem",fontWeight:"400"}],"body-lg":["1.0625rem",{lineHeight:"1.65rem",fontWeight:"400"}],"headline-lg-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.01em",fontWeight:"400"}],"title-sm":["0.9375rem",{lineHeight:"1.375rem",fontWeight:"600"}],"headline-md":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.01em",fontWeight:"500"}],"body-sm":["0.8125rem",{lineHeight:"1.25rem",fontWeight:"400"}],"headline-sm":["1.25rem",{lineHeight:"1.75rem",fontWeight:"500"}],"label-sm":["0.6875rem",{lineHeight:"0.875rem",letterSpacing:"0.04em",fontWeight:"600"}],"title-md":["1.125rem",{lineHeight:"1.625rem",letterSpacing:"-0.01em",fontWeight:"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-60 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)] overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center gap-space-sm"><img alt="Modern editorial brand mark for My Marriage wedding planning SaaS: interlocking minimalist gold/forest green arch and rings geometric monogram mark.. Brand logo. - Primary color: #315d50\n- Font: newsreader\n- Mode: light\n- Roundness: rounded-md\n" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrB1p5bbW_ia-0CcvelP6FsrLa5Tb_VT2766jhd1rqFDUWLmHjC8r6BoWHy50idVcSUyQIGdYrSGppxXQWzTAXtXDYMUbBlzxx5UnBbkPnvmfhzHwCYtpf31zIUBcHhFV3DUZxk1g3gDcSgaJIp0H8cIFqXHtTraYbnOQFn-oxrmBoYAJ2eSg5Ubx24qm6u5a7FEP3i409reDexOtA5yJkz3ayvXO6OE5GKALi39zCZo"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-none tracking-tight">My Marriage</span><span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary mt-0.5">Workspace</span></div></div><nav class="px-space-xs mt-space-sm flex flex-col gap-0.5" data-active-classes="bg-primary-container text-on-primary font-bold shadow-sm"><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="overview" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">grid_view</span><span class="font-body-sm text-body-sm">Overview</span></div></a><div class="flex flex-col"><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="events" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">calendar_month</span><span class="font-body-sm text-body-sm">Events</span></div><span class="material-symbols-outlined text-[16px] text-outline">expand_more</span></a><div class="ml-6 pl-2.5 flex flex-col gap-0.5"><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-haldi" href="#">Haldi</a><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-mehendi" href="#">Mehendi</a><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-sangeet" href="#">Sangeet</a><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-wedding" href="#">Wedding</a><a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" data-path="events-reception" href="#">Reception</a></div></div><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="tasks" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">check_circle</span><span class="font-body-sm text-body-sm">Tasks</span></div><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">3 due</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="guests-and-rsvp" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">group</span><span class="font-body-sm text-body-sm">Guests &amp; RSVP</span></div><span class="px-1.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm">126</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="expenses-and-budget" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">account_balance_wallet</span><span class="font-body-sm text-body-sm">Expenses &amp; Budget</span></div><span class="px-1.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm">₹2.1L due</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="vendors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">storefront</span><span class="font-body-sm text-body-sm">Vendors</span></div></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="wedding-website" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">language</span><span class="font-body-sm text-body-sm">Wedding Website</span></div><span class="w-2 h-2 rounded-full bg-primary"></span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="photos-and-qr-drive" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">photo_library</span><span class="font-body-sm text-body-sm">Photos &amp; QR Drive</span></div></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="team-and-family" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">diversity_1</span><span class="font-body-sm text-body-sm">Team &amp; Family</span></div><span class="font-label-sm text-label-sm text-outline">6</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">tune</span><span class="font-body-sm text-body-sm">Settings</span></div></a></nav></div><div class="p-space-sm flex flex-col gap-space-sm bg-surface-container/60 rounded-xl m-space-xs"><div class="flex flex-col gap-1"><div class="flex justify-between items-center"><span class="font-label-sm text-label-sm text-on-surface-variant">Cloud Vault</span><span class="font-label-sm text-label-sm text-primary font-bold">4.2 / 10 GB</span></div><div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden"><div class="h-full bg-primary rounded-full" style="width: 42%"></div></div></div><div class="flex items-center justify-between pt-1"><div class="flex items-center gap-2 overflow-hidden"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="flex flex-col truncate"><span class="font-title-sm text-title-sm truncate text-on-surface leading-tight">Ananya Sharma</span><span class="font-label-sm text-label-sm text-outline truncate">ananya@mymarriage.in</span></div></div><button class="text-outline hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button></div></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-space-sm py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"><span class="material-symbols-outlined text-primary text-[18px]">favorite</span><span class="font-title-sm text-title-sm text-on-surface">Ananya &amp; Arjun — Jaipur 2027</span><span class="material-symbols-outlined text-outline text-[16px]">unfold_more</span></div><a class="hidden xl:flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#"><span class="material-symbols-outlined text-[16px]">link</span><span>my-marriage.com/ananya-arjun</span></a></div><div class="flex items-center gap-space-sm"><button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm hidden md:inline">Search</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">⌘K</kbd></button><button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-colors shadow-sm font-label-md text-label-md" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>Quick Action</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="w-full pt-16 bg-surface"><div class="flex flex-col w-full">
+<!-- Interactive Prototype States Controller -->
+<section class="w-full bg-surface-container-high px-space-md py-2.5 shadow-sm">
+<div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">tune</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Prototype State Machine:</span>
+</div>
+<div class="flex flex-wrap items-center gap-1.5" id="prototype-toolbar">
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-label-sm text-label-sm transition-all shadow-sm" id="btn-state-draft" onclick="setScreenState('draft')" type="button">Overview (Draft)</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all" id="btn-state-published" onclick="setScreenState('published')" type="button">Overview (Published)</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all" id="btn-state-editor" onclick="setScreenState('editor')" type="button">Live Editor</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all" onclick="switchLeftTab('appearance')" type="button">Choose Style (3)</button>
+<button class="px-2.5 py-1 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm transition-all" onclick="openModal('publish-modal')" type="button">Publish Dialog</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-error font-label-sm text-label-sm hover:bg-error-container transition-all" onclick="openModal('unpublish-modal')" type="button">Unpublish Dialog</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface transition-all" id="btn-state-archived" onclick="setScreenState('archived')" type="button">Archived Mode</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm transition-all" id="btn-view-toggle" onclick="toggleViewportMode()" type="button">
+<span class="material-symbols-outlined text-[15px]">devices</span>
+<span id="viewport-toggle-label">Mobile Frame</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Notification Banner (Dynamic for Published & Archived) -->
+<div class="hidden w-full bg-primary text-on-primary px-space-md py-2 shadow-sm" id="status-banner">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="font-body-sm text-body-sm" id="banner-text">Website is live at <strong>my-marriage.com/w/ananya-arjun</strong></span>
+</div>
+<div class="flex items-center gap-3">
+<a class="text-on-primary underline font-label-sm text-label-sm hover:opacity-80" href="#preview-frame-anchor">View published link</a>
+<button class="text-on-primary/80 hover:text-on-primary font-label-sm text-label-sm" onclick="openModal('unpublish-modal')" type="button">Unpublish</button>
+</div>
+</div>
+</div>
+<!-- Main Content Container -->
+<div class="w-full max-w-[1440px] mx-auto px-4 md:px-margin py-6">
+<!-- Header Block -->
+<header class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">Public Wedding Website · Builder &amp; Publishing</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-outline">M10 Milestone</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Wedding Website</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+          Create and publish a welcoming digital home for your wedding guests. Private wedding details stay protected.
+        </p>
+<div class="flex items-center gap-3 pt-1">
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container" id="website-status-pill">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-semibold" id="status-pill-text">Draft · Not published</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline" id="status-helper-text">Your website is private until you publish it.</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3 self-start lg:self-center">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-md bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors shadow-sm font-label-md text-label-md" onclick="scrollToPreview()" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span>Preview website</span>
+</button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-md bg-primary text-on-primary hover:bg-primary-container transition-colors shadow-sm font-label-md text-label-md" id="header-publish-btn" onclick="openModal('publish-modal')" type="button">
+<span class="material-symbols-outlined text-[18px]">rocket_launch</span>
+<span id="header-publish-btn-text">Publish website</span>
+</button>
+</div>
+</header>
+<!-- Two-Column Workspace Layout (Split Screen Live Editor) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Structured Settings Panel (~420px equivalent at 5/12 cols) -->
+<div class="xl:col-span-5 flex flex-col gap-4">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<!-- Editor Tabs -->
+<div class="flex items-center bg-surface-container-low px-2 pt-2 gap-1 overflow-x-auto">
+<button class="tab-btn px-3.5 py-2 font-label-sm text-label-sm rounded-t-lg bg-surface-container-lowest text-primary font-bold shadow-sm whitespace-nowrap" id="tab-btn-basics" onclick="switchLeftTab('basics')" type="button">
+              Basics
+            </button>
+<button class="tab-btn px-3.5 py-2 font-label-sm text-label-sm rounded-t-lg text-on-surface-variant hover:text-on-surface whitespace-nowrap" id="tab-btn-ceremonies" onclick="switchLeftTab('ceremonies')" type="button">
+              Ceremonies
+            </button>
+<button class="tab-btn px-3.5 py-2 font-label-sm text-label-sm rounded-t-lg text-on-surface-variant hover:text-on-surface whitespace-nowrap" id="tab-btn-faq" onclick="switchLeftTab('faq')" type="button">
+              FAQ
+            </button>
+<button class="tab-btn px-3.5 py-2 font-label-sm text-label-sm rounded-t-lg text-on-surface-variant hover:text-on-surface whitespace-nowrap" id="tab-btn-appearance" onclick="switchLeftTab('appearance')" type="button">
+              Appearance &amp; Styles
+            </button>
+<button class="tab-btn px-3.5 py-2 font-label-sm text-label-sm rounded-t-lg text-on-surface-variant hover:text-on-surface whitespace-nowrap" id="tab-btn-additional" onclick="switchLeftTab('additional')" type="button">
+              Additional
+            </button>
+</div>
+<!-- Tab 1: Basics Content -->
+<div class="tab-panel p-space-lg flex flex-col gap-5" id="tab-content-basics">
+<!-- URL Slug Input -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex items-center justify-between">
+<span>Public Wedding URL</span>
+<span class="text-primary font-label-sm text-label-sm flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[15px]">check_circle</span> Available
+                </span>
+</label>
+<div class="flex items-center rounded-lg bg-surface-container-low px-3 py-2 text-on-surface-variant shadow-inner">
+<span class="font-body-sm text-body-sm text-outline select-none">my-marriage.com/w/</span>
+<input class="bg-transparent font-title-sm text-title-sm text-primary font-bold focus:outline-none w-full ml-0.5" id="input-slug" oninput="updateLivePreview()" type="text" value="ananya-arjun"/>
+<button class="text-outline hover:text-primary transition-colors p-1" onclick="copySlugUrl()" title="Copy Link" type="button">
+<span class="material-symbols-outlined text-[17px]">content_copy</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Short, memorable link for digital stationery and WhatsApp invites.</p>
+</div>
+<!-- Couple Display Names -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Couple Display Names</label>
+<input class="w-full px-3 py-2.5 rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest shadow-sm" id="input-couple-names" oninput="updateLivePreview()" type="text" value="Ananya &amp; Arjun"/>
+<p class="font-body-sm text-body-sm text-outline">Pre-filled from wedding setup. Can be customized for the cover page.</p>
+</div>
+<!-- Welcome Headline -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Welcome Headline</label>
+<input class="w-full px-3 py-2.5 rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md shadow-sm" id="input-headline" oninput="updateLivePreview()" type="text" value="We're getting married in Jaipur"/>
+</div>
+<!-- Our Story -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Our Story</label>
+<span class="font-label-sm text-label-sm text-outline">Markdown supported</span>
+</div>
+<textarea class="w-full px-3 py-2.5 rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md shadow-sm resize-none" id="input-story" oninput="updateLivePreview()" rows="4">From our first coffee in Mumbai to late night walks across Marine Drive... We can't wait to celebrate our union with our beloved family and friends amidst the pink stone palaces and starlit courtyards of Jaipur.</textarea>
+</div>
+<!-- Cover Visual Picker -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Cover Illustration / Header Motif</label>
+<div class="grid grid-cols-3 gap-2.5">
+<button class="motif-card p-2 rounded-lg bg-surface-container-low text-left hover:bg-surface-container transition-all flex flex-col gap-1.5" onclick="selectMotif('jaipur')" type="button">
+<div class="h-14 rounded bg-secondary-container/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[28px]">temple_hindu</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Jaipur Arch</span>
+</button>
+<button class="motif-card p-2 rounded-lg bg-surface-container-low text-left hover:bg-surface-container transition-all flex flex-col gap-1.5" onclick="selectMotif('lotus')" type="button">
+<div class="h-14 rounded bg-primary-fixed/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">spa</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Lotus Floral</span>
+</button>
+<button class="motif-card p-2 rounded-lg bg-surface-container-low text-left hover:bg-surface-container transition-all flex flex-col gap-1.5" onclick="selectMotif('monogram')" type="button">
+<div class="h-14 rounded bg-surface-container-high flex items-center justify-center text-on-surface-variant font-headline-sm">
+                    A&amp;A
+                  </div>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Monogram</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Tab 2: Ceremonies Content -->
+<div class="tab-panel hidden p-space-lg flex flex-col gap-4" id="tab-content-ceremonies">
+<div class="flex items-center justify-between pb-2">
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Included Ceremonies</h3>
+<p class="font-body-sm text-body-sm text-outline">Synchronized in real-time with the master Events module.</p>
+</div>
+<a class="font-label-sm text-label-sm text-primary font-bold hover:underline flex items-center gap-1" href="#">
+<span>Manage Events</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Event 1: Haldi -->
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">sunny</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">Haldi Rasam</span>
+<span class="font-body-sm text-body-sm text-outline">Feb 12, 2027 · 10:30 AM · The Oberoi Rajvilas Poolside</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" onchange="toggleEventVisibility('haldi', this.checked)" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-container-lowest after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Event 2: Mehendi & Sangeet -->
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">nightlife</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">Sangeet &amp; Musical Night</span>
+<span class="font-body-sm text-body-sm text-outline">Feb 13, 2027 · 7:00 PM · Royal Haveli Courtyard</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" onchange="toggleEventVisibility('sangeet', this.checked)" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-container-lowest after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Event 3: Wedding Ceremony -->
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">Pheras &amp; Wedding Ceremony</span>
+<span class="font-body-sm text-body-sm text-outline">Feb 14, 2027 · 4:00 PM · Temple Pavilion</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" onchange="toggleEventVisibility('wedding', this.checked)" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-container-lowest after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Event 4: Reception -->
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">celebration</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">Gala Reception</span>
+<span class="font-body-sm text-body-sm text-outline">Feb 15, 2027 · 8:00 PM · Grand Ballroom Lawn</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" onchange="toggleEventVisibility('reception', this.checked)" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-container-lowest after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60 text-outline text-body-sm font-body-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-[18px] shrink-0 text-primary">info</span>
+<span>Only public venues, timings, and attire suggestions are shown here. Private vendor schedules and internal family notes remain completely hidden.</span>
+</div>
+</div>
+<!-- Tab 3: FAQ Content -->
+<div class="tab-panel hidden p-space-lg flex flex-col gap-4" id="tab-content-faq">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Guest FAQ Editor</h3>
+<p class="font-body-sm text-body-sm text-outline">Help out-of-town guests navigate arrival, dress codes, and logistics.</p>
+</div>
+<button class="px-2.5 py-1.5 rounded bg-surface-container-high hover:bg-surface-container text-primary font-label-sm text-label-sm font-bold flex items-center gap-1" onclick="addNewFaq()" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Add FAQ</span>
+</button>
+</div>
+<div class="flex flex-col gap-3" id="faq-list-editor">
+<div class="p-3 rounded-lg bg-surface-container-low flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-title-sm text-title-sm text-on-surface">What is the dress code?</span>
+<button class="text-outline hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Haldi: Sunny yellow &amp; pastels. Sangeet: Indo-western glam. Wedding: Traditional Indian royal finery.</p>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-title-sm text-title-sm text-on-surface">Will transportation be arranged?</span>
+<button class="text-outline hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Yes! Shuttles will operate between Jaipur International Airport and the Oberoi Rajvilas round-the-clock.</p>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-title-sm text-title-sm text-on-surface">Is parking available at the venue?</span>
+<button class="text-outline hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Complimentary valet parking will be available at the main palace gates for all scheduled functions.</p>
+</div>
+</div>
+</div>
+<!-- Tab 4: Appearance & Styles Content -->
+<div class="tab-panel hidden p-space-lg flex flex-col gap-5" id="tab-content-appearance">
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Website Design Template</h3>
+<p class="font-body-sm text-body-sm text-outline">Select the aesthetic tone that mirrors your celebration.</p>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<!-- Template 1: Traditional Editorial -->
+<div class="cursor-pointer p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all flex flex-col gap-2.5" id="template-card-traditional" onclick="applyTemplate('traditional')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">1. Traditional Serene</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm" id="badge-template-traditional">Active Choice</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Warm ivory canvas, elegant Newsreader typography, classic archway motifs, and subtle floral borders.</p>
+<div class="flex items-center gap-2 text-outline font-label-sm text-label-sm pt-1">
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest">Warm Ivory</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest">Gold Accent</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest">Newsreader Serif</span>
+</div>
+</div>
+<!-- Template 2: Modern Minimal -->
+<div class="cursor-pointer p-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all flex flex-col gap-2.5" id="template-card-minimal" onclick="applyTemplate('minimal')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-outline"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">2. Modern Minimal</span>
+</div>
+<span class="hidden px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm" id="badge-template-minimal">Active Choice</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Clean architectural grid, crisp Manrope sans typography, high contrast, and generous negative space.</p>
+<div class="flex items-center gap-2 text-outline font-label-sm text-label-sm pt-1">
+<span class="px-2 py-0.5 rounded bg-surface-container-low">Studio White</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low">Deep Slate</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low">Pure Grid</span>
+</div>
+</div>
+<!-- Template 3: Royal Heritage -->
+<div class="cursor-pointer p-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all flex flex-col gap-2.5" id="template-card-royal" onclick="applyTemplate('royal')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary-container"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">3. Royal Heritage</span>
+</div>
+<span class="hidden px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm" id="badge-template-royal">Active Choice</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Deep Jaipur forest green accents, regal gold foiled headers, symmetrical jali lattice banners, and majestic tone.</p>
+<div class="flex items-center gap-2 text-outline font-label-sm text-label-sm pt-1">
+<span class="px-2 py-0.5 rounded bg-surface-container-low">Forest Tint</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low">Jaipur Emerald</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low">Antique Gold</span>
+</div>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low text-on-surface-variant font-body-sm text-body-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">verified_user</span>
+<span>Reassurance: Switching styles never loses your entered content, images, or ceremony data.</span>
+</div>
+</div>
+<!-- Tab 5: Additional Content -->
+<div class="tab-panel hidden p-space-lg flex flex-col gap-4" id="tab-content-additional">
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Additional Configuration</h3>
+<p class="font-body-sm text-body-sm text-outline">Search indexing, password protection, and registry options.</p>
+</div>
+<div class="flex flex-col gap-3">
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">Password Protection</span>
+<span class="font-body-sm text-body-sm text-outline">Require guests to enter a passcode to view schedules</span>
+</div>
+<input class="w-4 h-4 text-primary rounded" type="checkbox"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Custom Contact Email for Guests</label>
+<input class="w-full px-3 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md shadow-sm" type="email" value="ananya.arjun.jaipur@gmail.com"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Welcome Note from Parents</label>
+<textarea class="w-full px-3 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md shadow-sm resize-none" rows="3">With the divine blessings of our ancestors, the Sharma and Kapur families joyfully invite you to unite our hearts.</textarea>
+</div>
+</div>
+</div>
+<!-- Sticky Actions Footer inside Settings Panel -->
+<div class="p-4 bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-outline">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm" id="save-status-text">Draft saved · Just now</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-md bg-surface-container-lowest text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors shadow-sm" onclick="triggerSaveDraft()" type="button">
+                Save draft
+              </button>
+<button class="px-4 py-1.5 rounded-md bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm" onclick="triggerSaveAndPreview()" type="button">
+                Save &amp; preview
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Live Interactive Preview Frame (Split Screen, 7/12 cols) -->
+<div class="xl:col-span-7 flex flex-col gap-3" id="preview-frame-anchor">
+<!-- Frame Window Controls Bar -->
+<div class="flex flex-wrap items-center justify-between bg-surface-container-lowest px-4 py-2.5 rounded-xl shadow-sm gap-2">
+<div class="flex items-center gap-2">
+<!-- Mac style traffic lights -->
+<div class="flex items-center gap-1.5 mr-2">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-semibold">Live Preview ·</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-primary font-bold" id="preview-url-display">/w/ananya-arjun</span>
+<span class="font-label-sm text-label-sm text-outline hidden sm:inline">(Private Organizer Preview)</span>
+</div>
+<!-- Viewport Toggle -->
+<div class="flex items-center rounded-lg bg-surface-container p-0.5">
+<button class="flex items-center gap-1 px-3 py-1 rounded-md bg-surface-container-lowest text-primary font-label-sm text-label-sm font-bold shadow-sm transition-all" id="device-btn-desktop" onclick="setPreviewDevice('desktop')" type="button">
+<span class="material-symbols-outlined text-[15px]">desktop_windows</span>
+<span class="hidden sm:inline">Desktop 1280px</span>
+</button>
+<button class="flex items-center gap-1 px-3 py-1 rounded-md text-on-surface-variant font-label-sm text-label-sm transition-all" id="device-btn-mobile" onclick="setPreviewDevice('mobile')" type="button">
+<span class="material-symbols-outlined text-[15px]">smartphone</span>
+<span class="hidden sm:inline">Mobile 390px</span>
+</button>
+</div>
+</div>
+<!-- The Rendered Website Container -->
+<div class="w-full flex justify-center transition-all duration-300" id="preview-outer-container">
+<div class="w-full bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden transition-all duration-300" id="preview-device-wrapper">
+<!-- Website Cover / Hero Section -->
+<div class="relative bg-surface p-8 sm:p-12 text-center overflow-hidden transition-colors duration-300" id="rendered-hero-motif">
+<!-- Decorative background ornament -->
+<div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
+<svg class="text-secondary" fill="currentColor" height="400" viewbox="0 0 200 200" width="400">
+<path d="M100 0 C120 40 160 80 200 100 C160 120 120 160 100 200 C80 160 40 120 0 100 C40 80 80 40 100 0 Z"></path>
+</svg>
+</div>
+<!-- Top arch ornamental badge -->
+<div class="flex justify-center mb-3">
+<div class="px-4 py-1 rounded-full bg-secondary-container/40 text-secondary font-label-sm text-label-sm uppercase tracking-widest flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">favorite</span>
+<span>Namaste &amp; Welcome</span>
+</div>
+</div>
+<!-- Couple Names & Headline -->
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tight font-normal mb-2 transition-all" id="rendered-couple-names">
+                Ananya &amp; Arjun
+              </h2>
+<p class="font-headline-sm text-headline-sm text-secondary font-normal tracking-wide mb-4" id="rendered-dates-venue">
+                February 12–15, 2027 · The Oberoi Rajvilas, Jaipur
+              </p>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mx-auto italic mb-6" id="rendered-headline">
+                “We're getting married in Jaipur”
+              </p>
+<!-- RSVP CTA simulation inside guest website -->
+<div class="flex justify-center gap-3">
+<span class="px-6 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm">
+                  RSVP for Celebrations
+                </span>
+<span class="px-5 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm">
+                  Guest Travel Guide
+                </span>
+</div>
+</div>
+<!-- Website Body Content -->
+<div class="p-6 sm:p-10 flex flex-col gap-8 bg-surface-container-lowest">
+<!-- Our Story Card -->
+<div class="flex flex-col gap-3 text-center max-w-xl mx-auto">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">The Journey Together</span>
+<h3 class="font-headline-md text-headline-md text-primary">Our Story</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed" id="rendered-story-text">
+                  From our first coffee in Mumbai to late night walks across Marine Drive... We can't wait to celebrate our union with our beloved family and friends amidst the pink stone palaces and starlit courtyards of Jaipur.
+                </p>
+</div>
+<!-- Celebrations Timeline Cards -->
+<div class="flex flex-col gap-4">
+<div class="text-center">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">Multi-day Itinerary</span>
+<h3 class="font-headline-md text-headline-md text-primary">The Celebrations</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="rendered-events-grid">
+<!-- Event Haldi -->
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-2 shadow-sm" id="rendered-event-haldi">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">Day 01</span>
+<span class="font-label-sm text-label-sm text-outline">Feb 12, 2027</span>
+</div>
+<h4 class="font-title-md text-title-md text-primary font-bold">Haldi Rasam</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">10:30 AM · Rajvilas Poolside Gardens</p>
+<p class="font-label-sm text-label-sm text-secondary">Attire: Yellow hues &amp; floral prints</p>
+<a class="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1 pt-1" href="#">
+<span class="material-symbols-outlined text-[14px]">navigation</span> Get directions
+                    </a>
+</div>
+<!-- Event Sangeet -->
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-2 shadow-sm" id="rendered-event-sangeet">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold">Day 02</span>
+<span class="font-label-sm text-label-sm text-outline">Feb 13, 2027</span>
+</div>
+<h4 class="font-title-md text-title-md text-primary font-bold">Sangeet &amp; Musical Night</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">7:00 PM · Royal Haveli Courtyard</p>
+<p class="font-label-sm text-label-sm text-secondary">Attire: Indo-western glam &amp; sparkles</p>
+<a class="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1 pt-1" href="#">
+<span class="material-symbols-outlined text-[14px]">navigation</span> Get directions
+                    </a>
+</div>
+<!-- Event Wedding Ceremony -->
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-2 shadow-sm" id="rendered-event-wedding">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold">Day 03</span>
+<span class="font-label-sm text-label-sm text-outline">Feb 14, 2027</span>
+</div>
+<h4 class="font-title-md text-title-md text-primary font-bold">Pheras &amp; Wedding</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">4:00 PM · Temple Pavilion Lawn</p>
+<p class="font-label-sm text-label-sm text-secondary">Attire: Regal traditional attire</p>
+<a class="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1 pt-1" href="#">
+<span class="material-symbols-outlined text-[14px]">navigation</span> Get directions
+                    </a>
+</div>
+<!-- Event Reception -->
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-2 shadow-sm" id="rendered-event-reception">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold">Day 04</span>
+<span class="font-label-sm text-label-sm text-outline">Feb 15, 2027</span>
+</div>
+<h4 class="font-title-md text-title-md text-primary font-bold">Gala Reception</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">8:00 PM · Grand Ballroom &amp; Lawn</p>
+<p class="font-label-sm text-label-sm text-secondary">Attire: Black tie / Formal sherwani</p>
+<a class="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1 pt-1" href="#">
+<span class="material-symbols-outlined text-[14px]">navigation</span> Get directions
+                    </a>
+</div>
+</div>
+</div>
+<!-- FAQ Preview Snippet -->
+<div class="flex flex-col gap-3 pt-2">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold text-center">Frequently Asked Questions</span>
+<div class="flex flex-col gap-2">
+<div class="p-3 rounded-lg bg-surface-container-low text-on-surface flex justify-between items-center cursor-pointer">
+<span class="font-title-sm text-title-sm">What is the dress code?</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low text-on-surface flex justify-between items-center cursor-pointer">
+<span class="font-title-sm text-title-sm">Will transportation be arranged between venues?</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Footer with Note Banner -->
+<div class="pt-6 border-t-0 text-center flex flex-col gap-2">
+<p class="font-headline-sm text-headline-sm text-secondary italic">With love, Ananya &amp; Arjun</p>
+<div class="p-2.5 rounded-lg bg-surface-container-low text-outline font-label-sm text-label-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">lock</span>
+<span>🔒 Private Preview Mode — Not accessible by public or search engines.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MODAL 1: Publish Readiness Dialog -->
+<div class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-tertiary/40 backdrop-blur-sm" id="publish-modal">
+<div class="w-full max-w-lg bg-surface-container-lowest rounded-2xl shadow-2xl p-space-lg flex flex-col gap-5 animate-in fade-in zoom-in-95 duration-200">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">rocket_launch</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Ready to share your wedding website?</h3>
+<p class="font-body-sm text-body-sm text-outline">Publish readiness check passed</p>
+</div>
+</div>
+<button class="text-outline hover:text-on-surface transition-colors" onclick="closeModal('publish-modal')" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-2.5">
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">Couple names recorded</span>
+<span class="font-body-sm text-body-sm text-outline">Ananya &amp; Arjun</span>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">4 ceremonies ready to display</span>
+<span class="font-body-sm text-body-sm text-outline">Haldi, Sangeet, Wedding Ceremony, Gala Reception</span>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface">Public slug reserved</span>
+<span class="font-body-sm text-body-sm text-outline">my-marriage.com/w/ananya-arjun</span>
+</div>
+</div>
+</div>
+<!-- Explanatory Privacy Reassurance Box -->
+<div class="p-3.5 rounded-xl bg-surface-container/70 text-on-surface-variant font-body-sm text-body-sm flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0">shield</span>
+<div>
+<strong class="font-semibold text-on-surface">Privacy Guaranteed:</strong>
+          When published, ceremony schedules, venues, and your story become viewable. Guest lists, personal budgets, and private RSVPs remain strictly protected behind your organizer login.
+        </div>
+</div>
+<div class="flex items-center justify-end gap-3 pt-2">
+<button class="px-4 py-2 rounded-md bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md" onclick="closeModal('publish-modal')" type="button">
+          Cancel
+        </button>
+<button class="px-5 py-2 rounded-md bg-primary text-on-primary hover:bg-primary-container transition-colors shadow-sm font-label-md text-label-md flex items-center gap-2" onclick="confirmPublish()" type="button">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Confirm &amp; Publish</span>
+</button>
+</div>
+</div>
+</div>
+<!-- MODAL 2: Unpublish Confirmation Dialog -->
+<div class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-tertiary/40 backdrop-blur-sm" id="unpublish-modal">
+<div class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-2xl p-space-lg flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[22px]">visibility_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Unpublish website?</h3>
+</div>
+<button class="text-outline hover:text-on-surface transition-colors" onclick="closeModal('unpublish-modal')" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Your website will instantly revert to <strong>Draft mode</strong>. Guests visiting <code>my-marriage.com/w/ananya-arjun</code> will see a private placeholder page until you re-publish.
+      </p>
+<div class="p-3 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-outline">
+        Don't worry: your text, uploaded stories, FAQs, and template preferences will remain intact.
+      </div>
+<div class="flex items-center justify-end gap-3 pt-2">
+<button class="px-4 py-2 rounded-md bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md" onclick="closeModal('unpublish-modal')" type="button">
+          Keep published
+        </button>
+<button class="px-4 py-2 rounded-md bg-error text-on-error hover:opacity-90 transition-opacity font-label-md text-label-md" onclick="confirmUnpublish()" type="button">
+          Unpublish site
+        </button>
+</div>
+</div>
+</div>
+<!-- Toast Notification -->
+<div class="fixed bottom-6 right-6 z-50 hidden flex items-center gap-2.5 px-4 py-3 rounded-xl bg-inverse-surface text-inverse-on-surface shadow-xl font-body-sm text-body-sm transition-all duration-300" id="toast">
+<span class="material-symbols-outlined text-primary-fixed text-[20px]" id="toast-icon">check_circle</span>
+<span id="toast-msg">Settings saved successfully</span>
+</div>
+</div>
+<script>
+  let currentTheme = 'traditional';
+  let isMobileView = false;
+  let currentState = 'draft';
+
+  function setScreenState(state) {
+    currentState = state;
+    const pill = document.getElementById('website-status-pill');
+    const pillText = document.getElementById('status-pill-text');
+    const helper = document.getElementById('status-helper-text');
+    const banner = document.getElementById('status-banner');
+    const bannerText = document.getElementById('banner-text');
+    const pubBtn = document.getElementById('header-publish-btn');
+    const pubBtnText = document.getElementById('header-publish-btn-text');
+
+    // Reset button active styles in prototype toolbar
+    ['draft', 'published', 'editor', 'archived'].forEach(s => {
+      const el = document.getElementById('btn-state-' + s);
+      if (el) {
+        if (s === state || (state === 'editor' && s === 'draft')) {
+          el.className = 'px-2.5 py-1 rounded bg-primary text-on-primary font-label-sm text-label-sm transition-all shadow-sm';
+        } else {
+          el.className = 'px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all';
+        }
+      }
+    });
+
+    if (state === 'published') {
+      pill.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed';
+      pillText.innerText = 'Published · Live';
+      helper.innerText = 'Website is publicly accessible at my-marriage.com/w/ananya-arjun';
+      banner.classList.remove('hidden');
+      bannerText.innerHTML = 'Website is live at <strong>my-marriage.com/w/ananya-arjun</strong>';
+      pubBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-md bg-secondary text-on-secondary hover:opacity-90 transition-colors shadow-sm font-label-md text-label-md';
+      pubBtnText.innerText = 'Update published site';
+      showToast('Website is Live at my-marriage.com/w/ananya-arjun', 'rocket_launch');
+    } else if (state === 'archived') {
+      pill.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant';
+      pillText.innerText = 'Archived · Wedding Concluded';
+      helper.innerText = 'Website is preserved in read-only memories mode.';
+      banner.classList.remove('hidden');
+      bannerText.innerHTML = 'Preserved in archive mode · Download photo guestbook anytime.';
+      pubBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-md bg-surface-container-high text-on-surface-variant font-label-md text-label-md cursor-not-allowed';
+      pubBtnText.innerText = 'Archived';
+      showToast('Viewing in Archived / Legacy Mode', 'archive');
+    } else {
+      // Draft / Editor default
+      pill.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container';
+      pillText.innerText = 'Draft · Not published';
+      helper.innerText = 'Your website is private until you publish it.';
+      banner.classList.add('hidden');
+      pubBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-md bg-primary text-on-primary hover:bg-primary-container transition-colors shadow-sm font-label-md text-label-md';
+      pubBtnText.innerText = 'Publish website';
+      if (state === 'editor') {
+        switchLeftTab('basics');
+        showToast('Switched to Live Split Editor View', 'edit');
+      }
+    }
+  }
+
+  function switchLeftTab(tabId) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.className = 'tab-btn px-3.5 py-2 font-label-sm text-label-sm rounded-t-lg text-on-surface-variant hover:text-on-surface whitespace-nowrap';
+    });
+
+    const activePanel = document.getElementById('tab-content-' + tabId);
+    const activeBtn = document.getElementById('tab-btn-' + tabId);
+    if (activePanel) activePanel.classList.remove('hidden');
+    if (activeBtn) activeBtn.className = 'tab-btn px-3.5 py-2 font-label-sm text-label-sm rounded-t-lg bg-surface-container-lowest text-primary font-bold shadow-sm whitespace-nowrap';
+  }
+
+  function updateLivePreview() {
+    const slug = document.getElementById('input-slug').value.trim() || 'ananya-arjun';
+    const names = document.getElementById('input-couple-names').value.trim() || 'Ananya & Arjun';
+    const headline = document.getElementById('input-headline').value.trim();
+    const story = document.getElementById('input-story').value.trim();
+
+    document.getElementById('preview-url-display').innerText = '/w/' + slug;
+    document.getElementById('rendered-couple-names').innerText = names;
+    document.getElementById('rendered-headline').innerText = '“' + headline + '”';
+    document.getElementById('rendered-story-text').innerText = story;
+
+    document.getElementById('save-status-text').innerText = 'Unsaved changes';
+  }
+
+  function selectMotif(motif) {
+    const hero = document.getElementById('rendered-hero-motif');
+    if (motif === 'jaipur') {
+      hero.className = 'relative bg-surface p-8 sm:p-12 text-center overflow-hidden transition-colors duration-300';
+    } else if (motif === 'lotus') {
+      hero.className = 'relative bg-surface-container-low p-8 sm:p-12 text-center overflow-hidden transition-colors duration-300';
+    } else {
+      hero.className = 'relative bg-surface-container p-8 sm:p-12 text-center overflow-hidden transition-colors duration-300';
+    }
+    showToast('Updated Cover Illustration: ' + motif.toUpperCase(), 'palette');
+  }
+
+  function applyTemplate(theme) {
+    currentTheme = theme;
+    ['traditional', 'minimal', 'royal'].forEach(t => {
+      const card = document.getElementById('template-card-' + t);
+      const badge = document.getElementById('badge-template-' + t);
+      if (t === theme) {
+        card.className = 'cursor-pointer p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all flex flex-col gap-2.5 shadow-sm';
+        badge.classList.remove('hidden');
+      } else {
+        card.className = 'cursor-pointer p-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all flex flex-col gap-2.5';
+        badge.classList.add('hidden');
+      }
+    });
+
+    const renderedHero = document.getElementById('rendered-hero-motif');
+    const title = document.getElementById('rendered-couple-names');
+
+    if (theme === 'minimal') {
+      renderedHero.className = 'relative bg-surface-container-lowest p-8 sm:p-12 text-center overflow-hidden transition-colors duration-300';
+      title.className = 'font-title-md text-display-lg-mobile md:text-headline-lg text-primary tracking-tight font-bold mb-2';
+      showToast('Applied "Modern Minimal" Template', 'grid_view');
+    } else if (theme === 'royal') {
+      renderedHero.className = 'relative bg-primary-container text-on-primary-container p-8 sm:p-12 text-center overflow-hidden transition-colors duration-300';
+      title.className = 'font-display-lg text-display-lg-mobile md:text-display-lg text-surface-bright tracking-tight font-normal mb-2';
+      showToast('Applied "Royal Heritage" Template', 'diamond');
+    } else {
+      renderedHero.className = 'relative bg-surface p-8 sm:p-12 text-center overflow-hidden transition-colors duration-300';
+      title.className = 'font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tight font-normal mb-2';
+      showToast('Applied "Traditional Serene" Template', 'brush');
+    }
+  }
+
+  function toggleEventVisibility(eventId, visible) {
+    const el = document.getElementById('rendered-event-' + eventId);
+    if (el) {
+      if (visible) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    }
+  }
+
+  function setPreviewDevice(mode) {
+    isMobileView = (mode === 'mobile');
+    const wrapper = document.getElementById('preview-device-wrapper');
+    const btnDesktop = document.getElementById('device-btn-desktop');
+    const btnMobile = document.getElementById('device-btn-mobile');
+    const toggleLabel = document.getElementById('viewport-toggle-label');
+
+    if (isMobileView) {
+      wrapper.style.maxWidth = '390px';
+      btnMobile.className = 'flex items-center gap-1 px-3 py-1 rounded-md bg-surface-container-lowest text-primary font-label-sm text-label-sm font-bold shadow-sm transition-all';
+      btnDesktop.className = 'flex items-center gap-1 px-3 py-1 rounded-md text-on-surface-variant font-label-sm text-label-sm transition-all';
+      if (toggleLabel) toggleLabel.innerText = 'Desktop Frame';
+    } else {
+      wrapper.style.maxWidth = '100%';
+      btnDesktop.className = 'flex items-center gap-1 px-3 py-1 rounded-md bg-surface-container-lowest text-primary font-label-sm text-label-sm font-bold shadow-sm transition-all';
+      btnMobile.className = 'flex items-center gap-1 px-3 py-1 rounded-md text-on-surface-variant font-label-sm text-label-sm transition-all';
+      if (toggleLabel) toggleLabel.innerText = 'Mobile Frame';
+    }
+  }
+
+  function toggleViewportMode() {
+    setPreviewDevice(isMobileView ? 'desktop' : 'mobile');
+  }
+
+  function openModal(id) {
+    document.getElementById(id).classList.remove('hidden');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+  }
+
+  function confirmPublish() {
+    closeModal('publish-modal');
+    setScreenState('published');
+    showToast('Success! Website is now public at /w/ananya-arjun', 'verified');
+  }
+
+  function confirmUnpublish() {
+    closeModal('unpublish-modal');
+    setScreenState('draft');
+    showToast('Website unpublished. Retained in private organizer draft.', 'lock');
+  }
+
+  function triggerSaveDraft() {
+    document.getElementById('save-status-text').innerText = 'All changes saved to draft · Just now';
+    showToast('Draft changes saved securely.', 'check');
+  }
+
+  function triggerSaveAndPreview() {
+    triggerSaveDraft();
+    scrollToPreview();
+  }
+
+  function scrollToPreview() {
+    const el = document.getElementById('preview-frame-anchor');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function copySlugUrl() {
+    navigator.clipboard?.writeText('https://my-marriage.com/w/ananya-arjun');
+    showToast('URL copied to clipboard!', 'content_copy');
+  }
+
+  function addNewFaq() {
+    const container = document.getElementById('faq-list-editor');
+    const newDiv = document.createElement('div');
+    newDiv.className = 'p-3 rounded-lg bg-surface-container-low flex flex-col gap-2 animate-in fade-in';
+    newDiv.innerHTML = `
+      <div class="flex items-center justify-between">
+        <input type="text" placeholder="Question..." class="bg-transparent font-title-sm text-title-sm text-on-surface focus:outline-none w-full" value="Are children welcome?" />
+        <button type="button" onclick="this.parentElement.parentElement.remove()" class="text-outline hover:text-error transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+      </div>
+      <textarea rows="2" placeholder="Answer..." class="bg-transparent font-body-sm text-body-sm text-on-surface-variant focus:outline-none w-full resize-none">Yes, our young guests have a dedicated children's playroom with supervisors during evening events.</textarea>
+    `;
+    container.appendChild(newDiv);
+    showToast('New FAQ block added.', 'add');
+  }
+
+  function showToast(msg, icon = 'check_circle') {
+    const toast = document.getElementById('toast');
+    const text = document.getElementById('toast-msg');
+    const ico = document.getElementById('toast-icon');
+    text.innerText = msg;
+    ico.innerText = icon;
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 3200);
+  }
+</script></main></div></body></html>

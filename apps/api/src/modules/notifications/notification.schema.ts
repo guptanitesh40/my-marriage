@@ -11,6 +11,8 @@ export const NOTIFICATION_KINDS = [
   'password_reset',
   'password_changed',
   'member_invite',
+  'guest_invite',
+  'guest_reminder',
 ] as const;
 export type NotificationKind = (typeof NOTIFICATION_KINDS)[number];
 

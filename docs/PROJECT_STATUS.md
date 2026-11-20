@@ -7,19 +7,351 @@ belong in `docs/decisions/`; requirements stay in `docs/reference/`.
 
 ## Where things stand
 
-| Area                   | State                                                     |
-| ---------------------- | --------------------------------------------------------- |
-| Repository foundation  | Done                                                      |
-| Public homepage        | Done (privacy and terms are drafts, pending legal review) |
-| Authentication         | Done (profile editing and session management not started) |
-| Wedding management     | Onboarding steps 1–2 done (ceremony, handoff next)        |
-| Guests, RSVPs, website | Not started                                               |
-| Photos                 | Not started                                               |
+| Area                  | State                                                      |
+| --------------------- | ---------------------------------------------------------- |
+| Repository foundation | Done                                                       |
+| Public homepage       | Done (privacy and terms are drafts, pending legal review)  |
+| Authentication        | Done (profile editing and session management not started)  |
+| Wedding management    | Onboarding steps 1–2 done; ceremony step waits for events  |
+| Wedding workspace     | Shell started (M4.1a); switcher and overview next          |
+| Events                | Listing, adding, editing and deleting ceremonies (M5.1)    |
+| Tasks                 | List, filters, add, edit, quick completion (M6)            |
+| Vendors               | Directory, filters, add, details, edit, delete (M7)        |
+| Expenses              | Ledger, payments, discounts/extras, reversals, delete (M8) |
+| Guests & RSVP         | Guest list, private links, RSVP, CSV, reminders (M9)       |
+| Wedding website       | M10.1: draft, publish API, address, theme choice           |
+| Photos                | Not started                                                |
 
 Open questions waiting on the owner are listed in
 [0002 — Foundation for Phase 1](decisions/0002-phase-1-foundation.md#still-open--needs-the-owner).
 
 ## Log
+
+### Wedding website (M10.1) — 2026-11-20
+
+Decisions in [0017](decisions/0017-wedding-website.md); designs in
+`docs/design/wedding-website/`.
+
+- **API:**
+  - website draft and published copy
+  - save with version check, preview, publish and unpublish (owner-only
+    once archived)
+  - readiness checks
+  - public `/public/weddings/{slug}` and its events (allowlisted, not cached)
+  - address changes with permanent redirects (`wedding_slugs`)
+  - ceremony map link, dress code and YouTube livestream on events
+- **Wedding Website page** in the sidebar:
+  - draft or live status
+  - website address
+  - what publishing needs
+  - the three-template picker (saves the draft only)
+- Still missing:
+  - the three public-site templates and the preview (M10.2)
+  - the editor tabs, live preview and Events form fields (M10.3)
+  - publish/unpublish buttons, `/w/{slug}` and link previews (M10.4)
+
+### Guest reminders — 2026-11-20
+
+Decisions in [0016](decisions/0016-guest-reminders.md).
+
+- **Send reminder** on the Guests page: everyone invited, about all upcoming
+  ceremonies or one, with an optional note. A preview shows how many
+  families will get it and who is left out and why (no email, invitation
+  not shared, link off, reminders turned off), and the emails left today.
+- **Send reminder** in a guest's details, with the last reminder's status.
+- **Automatic reminders** (off until switched on): 30, 7 and/or 3 days
+  before each ceremony, at 9:00 am in its time zone, checked by the worker
+  every 15 minutes, never twice, following moved dates.
+- **Reminder email**: the invitation card with each ceremony, the guest's
+  current answer, the couple's note and the private link.
+- **Guest opt-out** on the invitation page, linked from every reminder.
+- Still missing: per-ceremony automatic settings, reminder history beyond
+  the last one, and WhatsApp reminders (no API).
+
+### Guests & RSVP (M9) — 2026-11-20
+
+From the Stitch "Guests & RSVP" designs (organizer desktop and mobile, and
+the guest's private RSVP page). Decisions in
+[0015](decisions/0015-guests-rsvp.md).
+
+- **Guests & RSVP page** at `/weddings/{weddingId}/guests`, from the
+  sidebar:
+  - totals that keep contacts, invited people (each family once),
+    ceremony answers and confirmed people per ceremony apart
+  - search by name, email or phone; filters by ceremony, RSVP (or not
+    invited yet) and invitation status; sorting; 50 per page; cards on
+    phones
+  - a row per family: party size, contact, ceremonies, each ceremony's
+    answer (e.g. Haldi 3/5) and the invitation status
+- **Add and edit** in the drawer: name, party size (counter), email, phone,
+  private notes, and ceremonies to invite to with their dates and venues.
+  Lowering the party size below an answer is refused, naming the ceremony.
+- **Details**: each ceremony's answer with its earlier answers, ceremonies
+  not invited to, and the private invitation: copy the link, share it on
+  WhatsApp by hand, send or resend the email (queued / sent / failed, never
+  "delivered"), replace or turn off the link. Owners can remove a guest.
+- **The guest's page** at `/invitation`: opened from the private link with
+  no account; the secret is removed from the address and exchanged for a
+  guest cookie. Only their ceremonies, each with Attending (1 to party
+  size), Not attending or Maybe; one Save; saved answers on return; clear
+  states for a changed-elsewhere conflict, a failed save, a closed or
+  cancelled ceremony, an archived wedding and an unavailable link.
+- **Import** (CSV, previewed row by row with duplicate warnings) and
+  **export** (CSV, with a privacy warning).
+- **API:** guests (`GET`, `POST`, `GET`/`PATCH`/`DELETE` on one), invitations
+  (`GET`, `PUT`), links (create/reissue, revoke), invitation email, import
+  preview and commit, and guest access (exchange, invitation, RSVP,
+  logout). Migration `0010-guest-indexes`; new setting `GUEST_LINK_SECRET`
+  (required in production).
+- **Tests:**
+  - API integration tests: contacts and validation, totals, the private
+    link (only a hash stored, same link until reissued), the guest's view
+    (only their ceremonies, nothing private), per-ceremony answers, party
+    size limits, version conflicts, unselected, cancelled and deleted
+    ceremonies, reissue and revoke, removal, party-size conflicts, the
+    invitation email through the worker (no link in the queue), import,
+    isolation, archived weddings, and a trace check that no link or guest
+    cookie is logged
+  - web unit tests for CSV, filters, labels, input and the RSVP form
+  - browser tests at three widths (axe), the family journey (invite, open
+    the link on a phone, answer 3 of 5 and 5 of 5, totals, conflict,
+    replace link), CSV import, and another person's wedding
+- **Not done yet:**
+  - email reminders at 30, 7 and 3 days, and the guest's opt-out
+  - XLSX import/export (needs a new dependency) and asynchronous exports
+  - an audit log of organizer edits
+
+### Expenses (M8) — 2026-11-20
+
+From the Stitch "Expenses Management" designs (desktop and mobile), with
+the owner's addition of discounts and extras agreed after the deal.
+Decisions in [0014](decisions/0014-expenses.md).
+
+- **Expenses page** at `/weddings/{weddingId}/expenses`, from the sidebar:
+  - totals from the real ledger: recorded (what is owed), paid with a bar,
+    outstanding with how many are overdue, and savings from negotiated
+    discounts (with extras paid)
+  - search; filters by category, event (or General; an expense can cover
+    several), vendor (or No vendor) and status (unpaid, partially paid, overdue, paid); sorting.
+    Kept in the address.
+  - a row per expense with owed (and the agreed amount when it changed),
+    paid, outstanding, status with icon and words, and due date; cards on
+    phones
+- **Details** in a wider drawer: owed / paid / outstanding, the agreed
+  amount with discounts and extras, status, due date, notes, linked event
+  and vendor (or "no longer available"), and the whole history.
+- **Ledger actions** in dialogs: Record payment (never more than is
+  outstanding; method optional), Discount or extra (with 5% and 10% of the
+  agreed amount as shortcuts, and what's owed before and after), and
+  Reverse (shows the effect; the original stays in the history). Paid in
+  full disables Record payment until an extra is recorded.
+- **Add and edit** in the drawer: name, category ("Other" names its own),
+  agreed amount in ₹, events (tick every ceremony it covers), vendor, due
+  date, notes. The agreed amount
+  can't drop below what has been paid.
+- **Delete** (owners only) from the details, after a confirmation. The
+  expense and its history are kept, marked deleted; it leaves the totals.
+- **Links in:** each ceremony's "⋮" menu has "View expenses"; a vendor's
+  details link to its expenses.
+- **States:** a first-time empty state without totals, a no-results state,
+  loading placeholders, a retryable error, and read-only for archived
+  weddings.
+- **API:**
+  - `GET`, `POST /weddings/{weddingId}/expenses`; `GET`, `PATCH` on one;
+    `GET .../expenses-summary`
+  - `GET`, `POST .../payments`; `POST .../adjustments`;
+    `POST .../payments/reverse`; `DELETE` on one (soft, owners only)
+  - migration `0009-expense-events`: an expense covers several events
+  - every ledger entry is written with the expense's totals and the write
+    fence in one transaction; migration `0008-expense-indexes`
+- **Tests:**
+  - API integration tests: required fields and paise, links of the same
+    wedding, deleted links kept, several payments, overpayment, future
+    dates, simultaneous payments, discounts and extras, reversals (once,
+    not of a reversal, not of a paid extra, not across expenses), editing
+    limits, sorting and totals, isolation, archived weddings, and the trace
+  - web unit tests for money parsing and formatting, filters, form checks,
+    the form, the details and the three dialogs
+  - browser tests at three widths (axe), the full journey (add, pay,
+    overpay refused, 10% discount, reversal, bonus, edit limit, totals,
+    filters, Events → expenses), phone cards and dialogs, and another
+    person's wedding
+- **Not done yet:**
+  - receipt uploads (need private S3 uploads)
+  - restoring a deleted expense, an audit trail of detail edits, export
+  - expense totals on the Overview page
+
+### Vendors (M7) — 2026-11-19
+
+From the Stitch "Vendors Management" design. Decisions in
+[0013](decisions/0013-vendors.md).
+
+- **Vendors page** at `/weddings/{weddingId}/vendors`, from the sidebar:
+  - summary tiles from the real directory: total and categories, vendors
+    at two or more ceremonies, vendors with phone and email, vendors with
+    no ceremony
+  - search by name, category, contact, phone or email; filters by
+    category and by ceremony (or "Not linked to an event"), kept in the
+    address
+  - a row per vendor: initials, name, category, contact person, phone and
+    email (as links), and up to three ceremonies with "+N more"; cards on
+    phones. Missing details say "Not added".
+- **Details** in the right-hand drawer: contact with copy buttons,
+  assigned ceremonies with their dates, private notes, address, and Edit.
+- **Add and edit** in the drawer: name and category (required; "Other"
+  takes a category of its own), contact person, phone, email, address,
+  ceremonies as tick-chips, and private notes. Editing can replace or
+  remove every ceremony.
+- **Delete** (owners only), from the details drawer after a
+  confirmation. The record is kept, marked deleted, so future expenses
+  keep their history.
+- **Events page:** each ceremony's "⋮" menu has "View vendors".
+- **States:** a first-time empty state, a no-results state with "Clear all
+  filters", loading placeholders, a recoverable error, and read-only for
+  archived weddings.
+- **API:**
+  - `GET`, `POST /weddings/{weddingId}/vendors`; `GET`, `PATCH`,
+    `DELETE` (soft, owners only) on one
+  - linked events are checked to be the wedding's own, in the same
+    transaction as the write fence; migration `0007-vendor-indexes`
+- **Tests:**
+  - API integration tests: required fields, optional and empty fields,
+    email and phone checks, several events once each, foreign, deleted or
+    unknown events, editing and unlinking events, managers, anonymous
+    visitors, another wedding's vendors by either ID, removed managers,
+    archived weddings, soft delete (owners only), and the trace
+  - web unit tests for the filters, figures, form checks, the form and the
+    directory
+  - browser tests at three widths (axe), the add/view/edit/filter journey,
+    phone cards and keyboard use, Events → vendors, and another person's
+    wedding
+- **Not done yet:**
+  - restoring a deleted vendor
+  - export and import, and vendors on an Event Details page (no such page
+    yet)
+  - linking vendors to expenses (M8)
+
+### Tasks (M6) — 2026-11-19
+
+From the Stitch "Tasks Management" design. Decisions in
+[0012](decisions/0012-tasks.md).
+
+- **Tasks page** at `/weddings/{weddingId}/tasks`, from the sidebar:
+  - summary tiles with the wedding's real counts
+  - search; All, My Tasks, Overdue and Completed views; filters by event
+    (or General), status, priority and assignee (or Unassigned); sorting.
+    All are kept in the address and done by the server.
+  - rows showing the ceremony, assignee, due date (overdue in red), and
+    priority or status, as cards on phones
+  - a circle to complete or reopen a task in one click
+- **Add and edit** in the right-hand drawer: name, description, event,
+  assignee (active owners and managers only), due date and optional time
+  (India time), priority (Medium by default) and status (To Do by
+  default). Completing records when and by whom.
+- **Events page, redesigned to the Stitch layout:** summary tiles, search
+  and All / Upcoming / Completed tabs, and on each ceremony its tasks done
+  and overdue (a link to them), "Manage" and a "⋮" menu (View tasks,
+  Delete for owners).
+- **States:** a first-time empty state, a no-results state with "Clear all
+  filters", loading placeholders, a recoverable error, and read-only for
+  archived weddings.
+- **API:**
+  - `GET`, `POST /weddings/{weddingId}/tasks`, `PATCH` on one
+  - `GET /weddings/{weddingId}/members`
+  - every write checks the event and assignee belong to the wedding, in
+    the same transaction as the write fence
+- **Tests:**
+  - API integration tests: roles, isolation, foreign or deleted events,
+    removed or foreign assignees, validation, statuses and completion
+    details, views, filters, search, sorting, counts, archived weddings
+    and the trace
+  - web unit tests for the filters, due dates, form and quick completion
+  - browser tests at three widths (axe), the add/edit/complete/filter
+    journey, keyboard use on a phone, and another person's wedding
+- **Not done yet:**
+  - the Event Details "Tasks" section (no Event Details page yet)
+  - task counts on the Overview page
+  - export, task reminders, removing members (and unassigning their tasks)
+  - deleting tasks (Cancelled is used instead)
+
+### Events: listing, adding, editing and deleting ceremonies (M5.1) — 2026-11-19
+
+The first wedding-management module, from the Stitch "Events Management"
+design. Decisions in [0010](decisions/0010-events.md) and
+[0011](decisions/0011-event-edit-delete.md).
+
+- **Events page** at `/weddings/{weddingId}/events`, from the sidebar. It
+  lists the wedding's ceremonies by day and time; those without a day come
+  last. Each card shows its day number, when (in the event's time zone),
+  status, venue and description, and what is still to decide ("Date not
+  set", "Venue not set").
+- **Add a ceremony** from a drawer on the right (full width on phones):
+  - presets Haldi, Mehendi, Sangeet, Garba, Wedding and Reception, or any
+    name
+  - optional date, start time, time zone (India unless changed), venue,
+    address and a public description
+  - the list updates after saving, without a reload
+- **Edit** from each card: the same drawer, filled in, with a status
+  (scheduled, completed, cancelled). Clearing a field removes it.
+- **Delete** from each card, for owners only, after a confirmation. The
+  record stays in the database, marked deleted, and is no longer shown.
+- **First visit:** an empty state with "Add first ceremony". On an
+  archived wedding the page is read-only.
+- **API:**
+  - `GET` and `POST /weddings/{weddingId}/events`, and `PATCH` on one, for
+    the wedding's owners and managers; 404 to anyone else, and 409
+    `WEDDING_ARCHIVED` for an archived wedding
+  - `DELETE` on one, for owners only: a soft delete (`deletedAt`,
+    `deletedBy`)
+  - the day and time are sent as local values and stored with the UTC
+    instant (a schema addition, `startDate`)
+- **Tests:**
+  - API integration tests for isolation, roles, archived weddings
+    (including an archive at the same moment), rollback, validation, time
+    zones and order
+  - time-zone unit tests, including daylight saving
+  - web unit tests for the form, the card and the sidebar
+  - browser tests at three widths (axe), keyboard use and another
+    person's wedding
+- **Not done yet:**
+  - restoring a deleted event (the record is kept, so it can come later)
+  - end time, dress code, maps link, managers, livestream
+  - the timeline
+  - audit events
+
+### Wedding workspace (M4.1a) — 2026-11-19
+
+The signed-in workspace around each wedding, from the Stitch "Workspace
+Handoff" and "Wedding Overview" designs. Decisions in
+[0009](decisions/0009-wedding-workspace.md).
+
+- **Each wedding has its own address,** `/weddings/{weddingId}`.
+  `/dashboard`, where every "Go to your dashboard" leads, opens your own
+  active wedding, or else the newest you belong to; without a wedding it
+  still leads to onboarding.
+- **The shell:** on large screens, a sidebar with the wedding and your role
+  (owner or manager), the workspace sections and your account with
+  sign-out. A top bar names the wedding, and shows "Archived" or "Deletion
+  pending" when it applies. Sections not built yet are listed as "Soon",
+  without links.
+- **The overview** welcomes you by name and says which wedding this is,
+  where and when. Nothing on it is invented: planning summaries arrive
+  with their features.
+- **Not yours, not found:** another wedding's address, or one that is not a
+  wedding, shows "We couldn't find that wedding" and never says whether it
+  exists. Signed out, a workspace address asks you to sign in and comes
+  back.
+- **API:** `GET /weddings/{weddingId}`, the wedding with your role in any
+  status; 404 to anyone who is not a member.
+- **Tests:** API integration tests for members, managers, archived
+  weddings, removed members and malformed IDs; web unit tests for the
+  shell and the choice of wedding; browser tests at three widths (axe), for
+  another person's wedding and for signing in again.
+- **Not done yet:**
+  - collapsing the sidebar and the phone drawer (M4.1b)
+  - the wedding switcher and the archived-wedding banner (M4.2)
+  - the dashboard summary, countdown and storage (M4.3)
+  - the getting-started checklist (M4.4)
 
 ### Partner invitation (onboarding step 2) — 2026-11-19
 

@@ -1,0 +1,101 @@
+import { cleanup, render, screen, within } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import type { components } from '@my-marriage/contracts';
+import { WorkspaceShell } from './workspace-shell';
+
+vi.mock('@/lib/api/browser', () => ({ api: { POST: vi.fn(), GET: vi.fn() } }));
+const pathname = vi.hoisted(() => ({ current: '/weddings/6740a1b2c3d4e5f601234567' }));
+vi.mock('next/navigation', () => ({ usePathname: () => pathname.current }));
+
+afterEach(cleanup);
+
+const wedding: components['schemas']['WeddingDto'] = {
+  id: '6740a1b2c3d4e5f601234567',
+  slug: 'ananya-arjun',
+  brideName: 'Ananya',
+  groomName: 'Arjun',
+  city: 'Jaipur',
+  state: 'Rajasthan',
+  weddingDate: '2027-12-10',
+  status: 'active',
+  role: 'owner',
+};
+const user = { displayName: 'Ananya Sharma', email: 'ananya@example.com' };
+
+function renderShell(overrides: Partial<typeof wedding> = {}) {
+  return render(
+    <WorkspaceShell wedding={{ ...wedding, ...overrides }} user={user}>
+      <h1>Page content</h1>
+    </WorkspaceShell>,
+  );
+}
+
+describe('WorkspaceShell', () => {
+  it('names the wedding, the visitor’s role and who is signed in', () => {
+    renderShell();
+    expect(screen.getByText('Ananya & Arjun', { selector: 'aside p' })).toBeTruthy();
+    expect(screen.getByRole('banner').textContent).toContain('Ananya & Arjun — Jaipur 2027');
+    expect(screen.getByText('Owner')).toBeTruthy();
+    expect(screen.getByText('Ananya Sharma')).toBeTruthy();
+    expect(screen.getByText('ananya@example.com')).toBeTruthy();
+    expect(screen.getByText('AS')).toBeTruthy();
+    expect(screen.getByRole('main').textContent).toContain('Page content');
+  });
+
+  it('shows a manager as a manager, and leaves out the year without a date', () => {
+    renderShell({ role: 'manager', weddingDate: undefined });
+    expect(screen.getByText('Manager')).toBeTruthy();
+    expect(screen.getByRole('banner').textContent).toContain('Ananya & Arjun — Jaipur');
+    expect(screen.getByRole('banner').textContent).not.toMatch(/\d{4}/);
+  });
+
+  it('links only the sections that exist; the rest are marked as coming soon', () => {
+    renderShell();
+    const nav = screen.getByRole('navigation', { name: 'Workspace' });
+    const links = within(nav).getAllByRole('link');
+    expect(links.map((link) => [link.textContent, link.getAttribute('href')])).toEqual([
+      ['Overview', '/weddings/6740a1b2c3d4e5f601234567'],
+      ['Events', '/weddings/6740a1b2c3d4e5f601234567/events'],
+      ['Tasks', '/weddings/6740a1b2c3d4e5f601234567/tasks'],
+      ['Guests & RSVP', '/weddings/6740a1b2c3d4e5f601234567/guests'],
+      ['Expenses & Budget', '/weddings/6740a1b2c3d4e5f601234567/expenses'],
+      ['Vendors', '/weddings/6740a1b2c3d4e5f601234567/vendors'],
+      ['Wedding Website', '/weddings/6740a1b2c3d4e5f601234567/website'],
+    ]);
+    for (const section of ['Photos & QR Drive', 'Settings']) {
+      const item = within(nav).getByText(section).closest('li');
+      expect(item?.textContent).toContain('Soon');
+      expect(item?.querySelector('a')).toBeNull();
+    }
+  });
+
+  it.each([
+    ['/weddings/6740a1b2c3d4e5f601234567', 'Overview'],
+    ['/weddings/6740a1b2c3d4e5f601234567/events', 'Events'],
+    ['/weddings/6740a1b2c3d4e5f601234567/tasks', 'Tasks'],
+    ['/weddings/6740a1b2c3d4e5f601234567/vendors', 'Vendors'],
+    ['/weddings/6740a1b2c3d4e5f601234567/expenses', 'Expenses & Budget'],
+  ])('marks the current section on %s', (path, current) => {
+    pathname.current = path;
+    renderShell();
+    const nav = screen.getByRole('navigation', { name: 'Workspace' });
+    const marked = within(nav)
+      .getAllByRole('link')
+      .filter((link) => link.getAttribute('aria-current') === 'page')
+      .map((link) => link.textContent);
+    expect(marked).toEqual([current]);
+  });
+
+  it.each([
+    ['archived', 'Archived'],
+    ['deletion_pending', 'Deletion pending'],
+  ] as const)('says when the wedding is %s', (status, label) => {
+    renderShell({ status });
+    expect(within(screen.getByRole('banner')).getByText(label)).toBeTruthy();
+  });
+
+  it('shows no status for an active wedding', () => {
+    renderShell();
+    expect(screen.queryByText('Archived')).toBeNull();
+  });
+});

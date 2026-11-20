@@ -45,3 +45,18 @@ export function withSuffix(base: string, random: (max: number) => number = rando
   }
   return `${base}-${suffix}`;
 }
+
+/** A web address a couple may choose (decision 0017): 3 to 60 characters. */
+export const SLUG_LIMITS = { min: 3, max: 60 } as const;
+
+export const SLUG_MESSAGE =
+  'Use 3 to 60 lowercase letters, numbers and single hyphens, like ananya-arjun.';
+
+export function isValidSlug(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.length >= SLUG_LIMITS.min &&
+    value.length <= SLUG_LIMITS.max &&
+    SLUG_PATTERN.test(value)
+  );
+}

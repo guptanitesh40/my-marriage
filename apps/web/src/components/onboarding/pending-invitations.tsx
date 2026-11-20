@@ -8,6 +8,7 @@ import { FormAlert } from '@/components/forms/form-alert';
 import { Icon } from '@/components/ui/icon';
 import { api } from '@/lib/api/browser';
 import { networkFailure, toFailure } from '@/lib/api/errors';
+import { firstName, initials } from '@/lib/format';
 import { routes } from '@/lib/routes';
 import { coupleName, longDate } from '@/lib/weddings/format';
 import { stepCardClass } from './step-progress';
@@ -17,21 +18,6 @@ type MyInvite = components['schemas']['MyInviteDto'];
 /** Why an invitation could not be accepted, as the design shows it. */
 type Problem =
   { kind: 'gone' } | { kind: 'full' } | { kind: 'failed'; message: string; retry: boolean };
-
-/** "Arjun Mehta" → "Arjun"; the inviter's first name for short sentences. */
-function firstName(name: string | undefined): string | undefined {
-  return name?.trim().split(/\s+/)[0];
-}
-
-/** "Arjun Mehta" → "AM". */
-function initials(name: string): string {
-  const words = name.trim().split(/\s+/);
-  const letters = words.length > 1 ? [words[0], words[words.length - 1]] : words;
-  return letters
-    .map((word) => word?.charAt(0) ?? '')
-    .join('')
-    .toUpperCase();
-}
 
 function weddingDay(invite: MyInvite): string {
   return invite.weddingDate ? longDate(invite.weddingDate, { weekday: true }) : 'Date not set yet';

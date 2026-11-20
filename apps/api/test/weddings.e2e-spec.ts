@@ -311,7 +311,8 @@ describe('Weddings (integration)', () => {
       const wedding = await created(cookie);
       expect((await update(cookie, wedding.id, { brideName: '  ' })).status).toBe(400);
       expect((await update(cookie, wedding.id, { groomName: null })).status).toBe(400);
-      expect((await update(cookie, wedding.id, { slug: 'mine' })).status).toBe(400);
+      // The address can change (decision 0017), but only to a well-formed one.
+      expect((await update(cookie, wedding.id, { slug: 'Not Mine!' })).status).toBe(400);
       const past = await update(cookie, wedding.id, { weddingDate: '2024-01-01' });
       expect(past.status).toBe(400);
       expect(JSON.stringify(past.body)).toContain('Choose today or a later date.');
@@ -350,6 +351,75 @@ describe('Weddings (integration)', () => {
       const archived = await update(owner.cookie, wedding.id, { city: 'Pune' });
       expect((archived.body as { error: { code: string } }).error.code).toBe('WEDDING_ARCHIVED');
       expect((await weddings.findById(wedding.id).lean())?.city).toBe('Kota');
+    });
+  });
+
+  describe('reading one wedding', () => {
+    function get(cookie: string | undefined, weddingId: string) {
+      const req = request(app.getHttpServer()).get(`/api/v1/weddings/${weddingId}`);
+      return cookie ? req.set('Cookie', cookie) : req;
+    }
+
+    it('shows a member the wedding with their role, archived or not, and nobody else', async () => {
+      const owner = await signupVerified(app);
+      const manager = await signupVerified(app);
+      const stranger = await signupVerified(app);
+      const wedding = (await create(owner.cookie, couple({ weddingDate: '2099-12-10' }))).body as {
+        data: { id: string; slug: string };
+      };
+      const id = wedding.data.id;
+      await memberships.create({
+        weddingId: new Types.ObjectId(id),
+        userId: new Types.ObjectId(manager.userId),
+        role: 'manager',
+        status: 'active',
+        activeOwned: false,
+        joinedAt: new Date(),
+      });
+
+      const mine = await get(owner.cookie, id);
+      expect(mine.status).toBe(200);
+      expect((mine.body as { data: unknown }).data).toEqual({
+        id,
+        slug: wedding.data.slug,
+        brideName: expect.stringMatching(/^Ananya /) as unknown,
+        groomName: 'Arjun',
+        city: 'Jaipur',
+        state: 'Rajasthan',
+        weddingDate: '2099-12-10',
+        status: 'active',
+        role: 'owner',
+      });
+      const managed = (await get(manager.cookie, id)).body as { data: { role: string } };
+      expect(managed.data.role).toBe('manager');
+
+      await weddings.updateOne({ _id: id }, { $set: { status: 'archived' } });
+      const archived = (await get(owner.cookie, id)).body as { data: { status: string } };
+      expect(archived.data.status).toBe('archived');
+
+      // Not a member, removed, a malformed ID or an unknown one: all the same 404.
+      await memberships.updateOne(
+        { weddingId: new Types.ObjectId(id), userId: new Types.ObjectId(manager.userId) },
+        { $set: { status: 'removed' } },
+      );
+      for (const [cookie, weddingId] of [
+        [stranger.cookie, id],
+        [manager.cookie, id],
+        [owner.cookie, 'not-an-id'],
+        [owner.cookie, new Types.ObjectId().toHexString()],
+      ] as const) {
+        const res = await get(cookie, weddingId);
+        expect(res.status).toBe(404);
+        expect((res.body as { error: { code: string } }).error.code).toBe('WEDDING_NOT_FOUND');
+      }
+    });
+
+    it('needs a signed-in user with a verified email', async () => {
+      const owner = await signupVerified(app);
+      const wedding = (await create(owner.cookie, couple())).body as { data: { id: string } };
+      expect((await get(undefined, wedding.data.id)).status).toBe(401);
+      const unverified = await signup(app);
+      expect((await get(unverified.cookie, wedding.data.id)).status).toBe(403);
     });
   });
 

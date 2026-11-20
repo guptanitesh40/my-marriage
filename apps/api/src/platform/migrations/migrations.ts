@@ -104,10 +104,164 @@ const inviteIndexes: Migration = {
   },
 };
 
+const eventIndexes: Migration = {
+  id: '0005-event-indexes',
+  description: 'events indexes',
+  up: async (db) => {
+    const events = db.collection('events');
+    // Schema document §4.07: reminders by start, and filters by state.
+    await events.createIndex({ weddingId: 1, startAt: 1 });
+    await events.createIndex({ weddingId: 1, state: 1 });
+    // The organizer's list, in date order (decision 0010).
+    await events.createIndex({ weddingId: 1, startDate: 1, startAt: 1, createdAt: 1 });
+  },
+};
+
+const taskIndexes: Migration = {
+  id: '0006-task-indexes',
+  description: 'tasks indexes',
+  up: async (db) => {
+    const tasks = db.collection('tasks');
+    // Schema document §4.09: My Tasks, by event, and by state, each by due time.
+    await tasks.createIndex({ weddingId: 1, assigneeId: 1, state: 1, dueAt: 1 });
+    await tasks.createIndex({ weddingId: 1, eventId: 1, dueAt: 1 });
+    await tasks.createIndex({ weddingId: 1, state: 1, dueAt: 1 });
+  },
+};
+
+const vendorIndexes: Migration = {
+  id: '0007-vendor-indexes',
+  description: 'vendors indexes',
+  up: async (db) => {
+    const vendors = db.collection('vendors');
+    // Schema document §4.10: by name, by category, and by linked event.
+    await vendors.createIndex({ weddingId: 1, name: 1 });
+    await vendors.createIndex({ weddingId: 1, category: 1 });
+    await vendors.createIndex({ weddingId: 1, eventIds: 1 });
+  },
+};
+
+const expenseIndexes: Migration = {
+  id: '0008-expense-indexes',
+  description: 'expenses and expense_payments indexes',
+  up: async (db) => {
+    const expenses = db.collection('expenses');
+    // Schema document §4.11: by event, by vendor, and by due day (decision 0014).
+    await expenses.createIndex({ weddingId: 1, eventId: 1 });
+    await expenses.createIndex({ weddingId: 1, vendorId: 1 });
+    await expenses.createIndex({ weddingId: 1, dueDate: 1 });
+    const entries = db.collection('expense_payments');
+    // Schema document §4.12: an expense's history, and the wedding's by day.
+    await entries.createIndex({ weddingId: 1, expenseId: 1, paidAt: 1 });
+    await entries.createIndex({ weddingId: 1, paidAt: 1 });
+    // An entry can be reversed once.
+    await entries.createIndex(
+      { reversalOfId: 1 },
+      { unique: true, partialFilterExpression: { reversalOfId: { $exists: true } } },
+    );
+  },
+};
+
+const expenseEvents: Migration = {
+  id: '0009-expense-events',
+  description: 'expenses link to several events',
+  up: async (db) => {
+    const expenses = db.collection('expenses');
+    // One expense can cover several ceremonies (decision 0014): eventId becomes eventIds.
+    await expenses.updateMany({ eventId: { $exists: true } }, [
+      { $set: { eventIds: ['$eventId'] } },
+      { $unset: 'eventId' },
+    ]);
+    await expenses.updateMany({ eventIds: { $exists: false } }, { $set: { eventIds: [] } });
+    await expenses.createIndex({ weddingId: 1, eventIds: 1 });
+    const old = await expenses.indexExists('weddingId_1_eventId_1');
+    if (old) await expenses.dropIndex('weddingId_1_eventId_1');
+  },
+};
+
+const guestIndexes: Migration = {
+  id: '0010-guest-indexes',
+  description: 'guest_contacts, event_invitations, invitation_tokens and guest_sessions indexes',
+  up: async (db) => {
+    // Schema document §4.13 to §4.16 (decision 0015).
+    const guests = db.collection('guest_contacts');
+    await guests.createIndex({ weddingId: 1, name: 1 });
+    await guests.createIndex({ weddingId: 1, emailNormalized: 1 });
+    await guests.createIndex({ weddingId: 1, status: 1 });
+    const invitations = db.collection('event_invitations');
+    await invitations.createIndex({ weddingId: 1, guestId: 1, eventId: 1 }, { unique: true });
+    await invitations.createIndex({ weddingId: 1, eventId: 1, isInvited: 1, 'rsvp.status': 1 });
+    await invitations.createIndex({ weddingId: 1, guestId: 1 });
+    const tokens = db.collection('invitation_tokens');
+    await tokens.createIndex({ tokenHash: 1 }, { unique: true });
+    await tokens.createIndex({ weddingId: 1, guestId: 1, status: 1 });
+    const sessions = db.collection('guest_sessions');
+    await sessions.createIndex({ sessionHash: 1 }, { unique: true });
+    await sessions.createIndex({ tokenId: 1, expiresAt: 1 });
+    await sessions.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+  },
+};
+
+const reminderIndexes: Migration = {
+  id: '0011-reminder-indexes',
+  description: 'guest_reminders and reminder_settings indexes',
+  up: async (db) => {
+    // Decision 0016.
+    const reminders = db.collection('guest_reminders');
+    await reminders.createIndex({ notificationId: 1 }, { unique: true });
+    await reminders.createIndex(
+      { scheduleKeys: 1 },
+      { unique: true, partialFilterExpression: { scheduleKeys: { $exists: true } } },
+    );
+    await reminders.createIndex({ weddingId: 1, guestId: 1, createdAt: -1 });
+    const settings = db.collection('reminder_settings');
+    await settings.createIndex({ weddingId: 1 }, { unique: true });
+    await settings.createIndex({ enabled: 1 });
+  },
+};
+
+const websiteIndexes: Migration = {
+  id: '0012-website-indexes',
+  description: 'website_configs and wedding_slugs indexes; every wedding’s address recorded',
+  up: async (db) => {
+    // Schema document §4.17 and decision 0017.
+    await db.collection('website_configs').createIndex({ weddingId: 1 }, { unique: true });
+    const slugs = db.collection('wedding_slugs');
+    await slugs.createIndex({ slug: 1 }, { unique: true });
+    await slugs.createIndex({ weddingId: 1 });
+    // Weddings created before addresses were recorded: their current one.
+    const weddings = db
+      .collection<{ slug: string }>('weddings')
+      .find({}, { projection: { slug: 1 } });
+    for await (const wedding of weddings) {
+      await slugs.updateOne(
+        { slug: wedding.slug },
+        {
+          $setOnInsert: {
+            slug: wedding.slug,
+            weddingId: wedding._id,
+            current: true,
+            createdAt: new Date(),
+          },
+        },
+        { upsert: true },
+      );
+    }
+  },
+};
+
 /** Every migration, oldest first. Append here as each collection is introduced. */
 export const MIGRATIONS: readonly Migration[] = [
   identityIndexes,
   messagingIndexes,
   weddingIndexes,
   inviteIndexes,
+  eventIndexes,
+  taskIndexes,
+  vendorIndexes,
+  expenseIndexes,
+  expenseEvents,
+  guestIndexes,
+  reminderIndexes,
+  websiteIndexes,
 ];

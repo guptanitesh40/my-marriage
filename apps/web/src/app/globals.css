@@ -43,6 +43,8 @@
   --color-on-secondary-container: #785e39;
   --color-secondary-fixed: #ffddb0;
   --color-secondary-fixed-dim: #e2c195;
+  --color-tertiary: #34413d;
+  --color-on-tertiary: #ffffff;
   --color-on-secondary-fixed: #281800;
 
   /* The second ring of the logo (docs/design/brand/logo.svg). Logo only. */

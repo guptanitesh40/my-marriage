@@ -18,10 +18,11 @@ export interface RateLimitRule {
   windowSeconds: number;
 }
 
-/** One hit against `rule` for `subject`. */
+/** One hit against `rule` for `subject`; `amount` counts several at once (default 1). */
 export interface RateLimitHit {
   rule: RateLimitRule;
   subject: string;
+  amount?: number;
 }
 
 export interface RateLimitState {
@@ -45,12 +46,15 @@ export class RateLimitedException extends HttpException {
   }
 }
 
-// Counts a hit and starts the window on the first one, atomically, so
+// Counts hits and starts the window with the first, atomically, so
 // concurrent requests can never both see a count below the limit.
 const HIT_SCRIPT = `
-local count = redis.call('INCR', KEYS[1])
-if count == 1 then redis.call('EXPIRE', KEYS[1], ARGV[1]) end
+local count = redis.call('INCRBY', KEYS[1], ARGV[2])
 local ttl = redis.call('TTL', KEYS[1])
+if ttl < 0 then
+  redis.call('EXPIRE', KEYS[1], ARGV[1])
+  ttl = tonumber(ARGV[1])
+end
 return { count, ttl }
 `;
 
@@ -58,7 +62,8 @@ return { count, ttl }
 // ended rather than coming back as a key with no expiry.
 const REFUND_SCRIPT = `
 local count = tonumber(redis.call('GET', KEYS[1]) or '0')
-if count > 0 then redis.call('DECR', KEYS[1]) end
+local amount = math.min(count, tonumber(ARGV[1]))
+if amount > 0 then redis.call('DECRBY', KEYS[1], amount) end
 return 0
 `;
 
@@ -77,10 +82,10 @@ export class RateLimiter {
 
   constructor(@InjectRedis() private readonly redis: Redis) {}
 
-  /** Counts one hit for `subject`; `allowed` is false once the limit is passed. */
-  async hit(rule: RateLimitRule, subject: string): Promise<RateLimitState> {
+  /** Counts `amount` hits for `subject`; `allowed` is false once the limit is passed. */
+  async hit(rule: RateLimitRule, subject: string, amount = 1): Promise<RateLimitState> {
     const result = await this.run(() =>
-      this.redis.eval(HIT_SCRIPT, 1, this.key(rule, subject), rule.windowSeconds),
+      this.redis.eval(HIT_SCRIPT, 1, this.key(rule, subject), rule.windowSeconds, amount),
     );
     const [count, ttl] = Array.isArray(result) ? result.map(Number) : [];
     if (count === undefined || ttl === undefined || Number.isNaN(count)) {
@@ -110,16 +115,24 @@ export class RateLimiter {
     const counted: RateLimitHit[] = [];
     try {
       for (const hit of hits) {
-        const state = await this.hit(hit.rule, hit.subject);
+        const state = await this.hit(hit.rule, hit.subject, hit.amount);
         counted.push(hit);
         if (!state.allowed) throw new RateLimitedException(state.retryAfterSeconds);
       }
       return await work();
     } catch (error) {
       // Best effort: a failed refund must not hide why the request failed.
-      await Promise.allSettled(counted.map((hit) => this.refund(hit.rule, hit.subject)));
+      await Promise.allSettled(
+        counted.map((hit) => this.refund(hit.rule, hit.subject, hit.amount)),
+      );
       throw error;
     }
+  }
+
+  /** How many hits `subject` has left in the current window. */
+  async remaining(rule: RateLimitRule, subject: string): Promise<number> {
+    const count = await this.run(() => this.redis.get(this.key(rule, subject)));
+    return Math.max(0, rule.limit - Number(count ?? 0));
   }
 
   /** Forgets every hit for `subject`, e.g. failed sign-ins after a successful one. */
@@ -127,9 +140,9 @@ export class RateLimiter {
     await this.run(() => this.redis.del(this.key(rule, subject)));
   }
 
-  /** Takes back one hit, without touching the window's expiry. */
-  private async refund(rule: RateLimitRule, subject: string): Promise<void> {
-    await this.run(() => this.redis.eval(REFUND_SCRIPT, 1, this.key(rule, subject)));
+  /** Takes back hits, without touching the window's expiry. */
+  private async refund(rule: RateLimitRule, subject: string, amount = 1): Promise<void> {
+    await this.run(() => this.redis.eval(REFUND_SCRIPT, 1, this.key(rule, subject), amount));
   }
 
   private key(rule: RateLimitRule, subject: string): string {

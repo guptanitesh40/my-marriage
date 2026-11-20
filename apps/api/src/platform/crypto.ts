@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, createHmac, randomBytes } from 'node:crypto';
 
 /**
  * A new bearer secret (session cookie, email link): 32 random bytes — 256
@@ -16,4 +16,14 @@ export function randomToken(): string {
  */
 export function sha256(value: string): string {
   return createHash('sha256').update(value, 'utf8').digest('hex');
+}
+
+/**
+ * A secret derived from `key` and `subject` (HMAC-SHA-256, URL-safe base64):
+ * the same inputs always give the same 256-bit value, and without the key
+ * it cannot be computed. For links that must be shown again (guest
+ * invitation links, decision 0015): store only `sha256()` of the result.
+ */
+export function derivedToken(key: string, subject: string): string {
+  return createHmac('sha256', key).update(subject, 'utf8').digest('base64url');
 }
