@@ -4,9 +4,10 @@ import { describedBy, FieldFrame, inputClass, type FieldProps } from './text-fie
 
 type SelectFieldProps = FieldProps &
   Omit<ComponentProps<'select'>, 'id' | 'className' | 'children'> & {
-    options: readonly string[];
-    /** The first, empty choice, e.g. "Choose a state". */
-    placeholder: string;
+    /** Each choice, as its label or as a value and the label shown for it. */
+    options: readonly (string | { value: string; label: string })[];
+    /** The first, empty choice, e.g. "Choose a state"; none when left out. */
+    placeholder?: string;
   };
 
 /**
@@ -34,12 +35,16 @@ export function SelectField({
           aria-describedby={describedBy(field)}
           className={`${inputClass} cursor-pointer appearance-none border-outline-variant pr-10`}
         >
-          <option value="">{placeholder}</option>
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
+          {placeholder !== undefined && <option value="">{placeholder}</option>}
+          {options.map((option) => {
+            const { value, label } =
+              typeof option === 'string' ? { value: option, label: option } : option;
+            return (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            );
+          })}
         </select>
         <Icon
           name="expand-more"

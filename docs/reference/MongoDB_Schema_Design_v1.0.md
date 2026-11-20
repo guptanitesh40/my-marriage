@@ -203,7 +203,7 @@ Top-level wedding and strongly consistent lifecycle / quota state.
 
 | **FIELD** | **BSON / RULE** | **MEANING / VALIDATION** |
 |---|---|---|
-| slug | string / required | Lowercase URL slug; globally unique; slug changes need redirect plan. |
+| slug | string / required | Lowercase URL slug; globally unique; changes keep the old one in wedding_slugs, which redirects (decision 0017). |
 | brideName, groomName | string / required | Names required to create workspace. |
 | city, state | string / required | Wedding location; English text initially. |
 | weddingDate | date? | Tentative date; optional until known. |
@@ -264,7 +264,8 @@ Wedding ceremonies with distinct schedule, venue and livestream.
 | weddingId | ObjectId / required | Tenant-scoped parent. |
 | title | string / required | Presets or custom name. |
 | description | string? | Public ceremony description; sanitized in website projection. |
-| startAt, endAt | date? | UTC instants; may be unset while planning. |
+| startDate | date? | Local calendar day in timeZone, stored as midnight UTC; set as soon as the day is known (decision 0010). |
+| startAt, endAt | date? | UTC instants; startAt is set once both the day and the time are known; may be unset while planning. |
 | timeZone | string / required | IANA timezone; default Asia/Kolkata. |
 | venue | object? | name, address, mapsUrl, optional coordinates. |
 | dressCode | string? | Optional public detail. |
@@ -272,9 +273,10 @@ Wedding ceremonies with distinct schedule, venue and livestream.
 | managerIds | ObjectId[] | Bounded subset of active wedding members. |
 | livestream | object? | provider youtube; validated external URL. |
 | scheduleVersion | int / required | Increment on event changes affecting reminder scheduling. |
+| deletedAt, deletedBy | date?, ObjectId? | Set when an owner deletes the event; the record is kept so linked expenses, tasks and invitations keep their history, and every read leaves it out (decision 0011). |
 | createdAt, updatedAt | date / required | Timestamps. |
 
-Indexes: INDEX(weddingId,startAt); INDEX(weddingId,state); use controlled public DTOs.
+Indexes: INDEX(weddingId,startAt); INDEX(weddingId,state); INDEX(weddingId,startDate,startAt,createdAt) for the organizer list; use controlled public DTOs.
 
 ### 4.08  event_timeline_items
 
@@ -304,10 +306,11 @@ Individual tasks; do not embed growing task arrays in wedding.
 | title | string / required | Human-readable task title. |
 | description | string? | Additional notes. |
 | assigneeId | ObjectId? | Must be active owner/manager in wedding. |
-| dueAt | date? | Optional deadline in UTC. |
+| dueDate | date? | The due day in India time, stored as midnight UTC (decision 0012). |
+| dueAt | date? | Optional deadline in UTC; set once both the day and the time are known. |
 | priority | enum / required | low \| normal \| high; default normal. |
 | state | enum / required | todo \| in_progress \| completed \| cancelled. |
-| completedAt, completedBy | date?, ObjectId? | Written on completion. |
+| completedAt, completedBy | date?, ObjectId? | Written on completion; cleared if the task is reopened. |
 | createdBy | ObjectId / required | Audit actor. |
 | createdAt, updatedAt | date / required | Timestamps. |
 
@@ -321,11 +324,12 @@ Private vendor contacts and ceremony associations.
 |---|---|---|
 | weddingId | ObjectId / required | Tenant context. |
 | name | string / required | Vendor / company name. |
-| category | string / required | Photography, catering, venue, etc. |
+| category | string / required | Free text, up to 60 characters: Photography, catering, venue, etc. |
 | contactName | string? | Representative. |
 | phone, email | string? | Private contact details. |
 | address, notes | string? | Private vendor notes. |
-| eventIds | ObjectId[] | Bounded array of linked wedding events. |
+| eventIds | ObjectId[] | Linked wedding events, at most 50, once each; checked in the write's transaction. IDs of events deleted later stay stored (decision 0013). |
+| deletedAt, deletedBy | date?, ObjectId? | Set when an owner deletes the vendor; the record is kept for expense history and no longer listed (decision 0013). |
 | createdAt, updatedAt | date / required | Timestamps. |
 
 Indexes: INDEX(weddingId,name); INDEX(weddingId,category); INDEX(weddingId,eventIds).
@@ -337,16 +341,20 @@ Expense identity and amount; payments stored separately.
 | **FIELD** | **BSON / RULE** | **MEANING / VALIDATION** |
 |---|---|---|
 | weddingId | ObjectId / required | Tenant context. |
-| eventId, vendorId | ObjectId? | References event/vendor in same wedding. |
+| eventIds | ObjectId[] | The wedding's events it covers, at most 50, once each; empty for a general expense (decision 0014). |
+| vendorId | ObjectId? | References a vendor in the same wedding. |
 | title, category | string / required | Expense description and category. |
-| amountPaise | number / required | Safe nonnegative integer in paise; never decimal floats. |
-| paidPaise | number / derived | Optional cached sum of payments; reconciled transactionally. |
-| dueAt | date? | Optional due date. |
-| receiptAssetIds | ObjectId[] | Private files only; not part of public gallery. |
+| amountPaise | number / required | The agreed amount: a positive safe integer in paise; never decimal floats. |
+| paidPaise | number / derived | Cached: payments less reversed payments; changed only with a ledger entry, in its transaction (decision 0014). |
+| discountPaise, extraPaise | number / derived | Cached: discounts and extras agreed later, less reversed ones. Final = amountPaise − discountPaise + extraPaise. |
+| dueDate | date? | The due day in India time, stored as midnight UTC (decision 0014). |
+| receiptAssetIds | ObjectId[] | Private files only; not part of public gallery. Not built until private uploads exist. |
 | notes | string? | Organizer-only notes. |
+| createdBy | ObjectId / required | Audit actor. |
+| deletedAt, deletedBy | date?, ObjectId? | Set when an owner deletes the expense; it and its ledger are kept, and it leaves lists and totals (decision 0014). |
 | createdAt, updatedAt | date / required | Timestamps. |
 
-Indexes: INDEX(weddingId,eventId); INDEX(weddingId,vendorId); INDEX(weddingId,dueAt).
+Indexes: INDEX(weddingId,eventIds); INDEX(weddingId,vendorId); INDEX(weddingId,dueDate).
 
 ### 4.12  expense_payments
 
@@ -356,15 +364,15 @@ Immutable payment ledger; adjust by correction records, not silent overwrite.
 |---|---|---|
 | weddingId, expenseId | ObjectId / required | Tenant + parent expense. |
 | amountPaise | number / required | Positive safe integer, in paise. |
-| entryType | enum / required | payment \| reversal; reversals subtract from recorded paid total. |
-| paidAt | date / required | Payment date. |
+| entryType | enum / required | payment \| discount \| extra \| reversal (decision 0014). A reversal undoes the entry it points to. |
+| paidAt | date / required | The day it happened (paid, or agreed), India time, stored as midnight UTC. |
 | method | enum? | cash \| bank_transfer \| card \| cheque \| other. |
 | note | string? | Optional context. |
 | recordedBy | ObjectId / required | Organizer who recorded transaction. |
 | reversalOfId | ObjectId? | Reference to compensated entry, if adjustment needed. |
 | createdAt | date / required | Historical record time. |
 
-Indexes: INDEX(weddingId,expenseId,paidAt); INDEX(weddingId,paidAt).
+Indexes: INDEX(weddingId,expenseId,paidAt); INDEX(weddingId,paidAt); UNIQUE(reversalOfId) where it exists, so an entry is reversed at most once.
 
 ## Guests & invitations
 
@@ -379,8 +387,12 @@ One named guest contact representing an invited group.
 | partySize | int / required | Integer >= 1; shared across every selected event. |
 | emailNormalized, phone | string? | Email optional for manual WhatsApp link delivery. |
 | organizerNotes | string? | Private, never returned to guest/public DTO. |
-| reminderOptOutAt | date? | Suppress future guest reminders. |
+| reminderOptOutAt | date? | Set by the guest from their invitation: no reminder emails (decision 0016). |
+| lastReminderId, lastReminderAt | ObjectId?, date? | The last reminder email asked for, to show its status. |
 | status | enum / required | active \| removed; removed disables private links. |
+| removedAt, removedBy | date?, ObjectId? | When and by whom (owners only, decision 0015). |
+| lastInviteEmailId, lastInviteEmailAt | ObjectId?, date? | The last invitation email asked for, to show its state. |
+| createdBy | ObjectId / required | Audit actor. |
 | createdAt, updatedAt | date / required | Timestamps. |
 
 Indexes: INDEX(weddingId,name); INDEX(weddingId,emailNormalized) nonunique; INDEX(weddingId,status).
@@ -397,6 +409,7 @@ Single invitation per guest and event, with embedded current RSVP.
 | rsvp.attendingCount | int? | For attending: 1..guest.partySize; declined 0; pending/maybe null. |
 | rsvp.respondedAt | date? | Time of last response. |
 | rsvp.responseVersion | int / required | Optimistic concurrency version, monotonically increasing. |
+| history | array | Earlier answers {status, attendingCount?, at}, the last 20 (PRD INV-04, decision 0015). |
 | invitedAt, invitedBy | date, ObjectId | Invitation audit. |
 | updatedAt | date / required | Last invitation or RSVP update. |
 
@@ -409,7 +422,7 @@ One revocable high-entropy bearer link scoped to a primary guest contact.
 | **FIELD** | **BSON / RULE** | **MEANING / VALIDATION** |
 |---|---|---|
 | weddingId, guestId | ObjectId / required | Tenant and invitation contact scope. |
-| tokenHash | string / required | HMAC/SHA-256 digest of random token; not raw token. |
+| tokenHash | string / required | SHA-256 of the link's secret, which is HMAC(GUEST_LINK_SECRET, record ID) and never stored (decision 0015). |
 | status | enum / required | active \| revoked. |
 | revokedAt | date? | Blocks new exchanges and guest session authorization. |
 | createdBy, createdAt | ObjectId, date | Issuer and issuance date. |
@@ -437,20 +450,35 @@ Indexes: UNIQUE(sessionHash); INDEX(tokenId,expiresAt); TTL(expiresAt,0).
 
 ### 4.17  website_configs
 
-One site configuration per wedding; published content allowlisted.
+One site configuration per wedding: a draft, and the published copy (decision 0017).
 
 | **FIELD** | **BSON / RULE** | **MEANING / VALIDATION** |
 |---|---|---|
 | weddingId | ObjectId / required | Unique wedding ownership. |
-| templateId | enum / required | traditional \| modern \| royal. |
-| content | object / required | Story, FAQ, hero, theme variables; bounded size. |
+| templateId | enum / required | Draft template: traditional \| modern \| royal. |
+| content | object / required | Draft words: headline, story (plain text), faq (≤ 20); bounded size. |
+| contentVersion | int / required | Raised on each saved draft; saves and publishes name the version they started from. |
 | published | bool / required | Explicit publish/unpublish state. |
-| publishedAt | date? | First/current publish timestamp. |
-| contentVersion | int / required | Invalidation/versioning for public projection. |
-| lastPublishedBy | ObjectId? | Organizer publisher. |
-| updatedAt | date / required | Update timestamp. |
+| publishedTemplateId, publishedContent | enum?, object? | The published copy; all the public site reads. |
+| publishedVersion | int? | Draft version published; behind contentVersion when there are unpublished changes. |
+| publishedAt | date? | Current publication timestamp. |
+| lastPublishedBy, updatedBy | ObjectId? | Organizer publisher and last editor. |
+| createdAt, updatedAt | date / required | Timestamps. |
 
 Indexes: UNIQUE(weddingId); public projection must filter wedding.status/site publication.
+
+### 4.17a  wedding_slugs
+
+Every web address a wedding has used (decision 0017): old links redirect, and no other wedding can take them.
+
+| **FIELD** | **BSON / RULE** | **MEANING / VALIDATION** |
+|---|---|---|
+| slug | string / required | Unique, for good. |
+| weddingId | ObjectId / required | The wedding it belongs to. |
+| current | bool / required | The one in use (also weddings.slug). |
+| createdAt | date / required | Timestamp. |
+
+Indexes: UNIQUE(slug); INDEX(weddingId).
 
 ### 4.18  albums
 
@@ -563,7 +591,7 @@ Outbound email intention and provider delivery state.
 | weddingId | ObjectId? | Context; identity emails may be account-scoped. |
 | guestId, eventId | ObjectId? | Optional reminder target and event. |
 | userId | ObjectId? | For auth/member messages. |
-| kind | enum / required | verify_email \| password_reset \| member_invite \| guest_invite \| reminder \| export_ready. |
+| kind | enum / required | verify_email \| password_reset \| password_changed \| member_invite \| guest_invite \| guest_reminder \| export_ready (reminders: decision 0016). |
 | recipientEmailNormalized | string / required | Private delivery address, never public. |
 | dueAt, scheduleVersion | date,int? | Reminder schedule and revision. |
 | idempotencyKey | string / required | Stable unique key for logical delivery. |
@@ -573,6 +601,37 @@ Outbound email intention and provider delivery state.
 | createdAt, updatedAt | date / required | Timestamps. |
 
 Indexes: UNIQUE(idempotencyKey); UNIQUE(providerMessageId) PARTIAL(string exists); INDEX(state,dueAt).
+
+### 4.24a  guest_reminders
+
+One reminder email to one guest, by hand or automatic (decision 0016); the worker writes the email from it.
+
+| **FIELD** | **BSON / RULE** | **MEANING / VALIDATION** |
+|---|---|---|
+| weddingId, guestId | ObjectId / required | Tenant and guest. |
+| notificationId | ObjectId / required | The email; unique. |
+| source | enum / required | manual \| automatic. |
+| items | array / required | eventId and the scheduleVersion it was planned against. |
+| offsetDays | int? | Automatic: 30, 7 or 3. |
+| scheduleKeys | string[]? | Automatic: `invitationId:offset:scheduleVersion`; unique, so each is sent once. |
+| note, sentBy | string?, ObjectId? | Manual: the couple's note (≤ 500) and the sender. |
+| createdAt | date / required | Timestamp. |
+
+Indexes: UNIQUE(notificationId); UNIQUE(scheduleKeys) PARTIAL(exists); INDEX(weddingId,guestId,createdAt).
+
+### 4.24b  reminder_settings
+
+A wedding's automatic reminders; no record means off.
+
+| **FIELD** | **BSON / RULE** | **MEANING / VALIDATION** |
+|---|---|---|
+| weddingId | ObjectId / required | Unique. |
+| enabled | bool / required | Off until the couple switches it on. |
+| offsetsDays | int[] / required | Any of 30, 7, 3. |
+| updatedBy | ObjectId / required | Who last changed it. |
+| createdAt, updatedAt | date / required | Timestamps. |
+
+Indexes: UNIQUE(weddingId); INDEX(enabled).
 
 ### 4.25  (removed)
 

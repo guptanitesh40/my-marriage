@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-surface" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;background-color:#fdf9f0;color:#1c1c16;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}*{-webkit-tap-highlight-color:transparent;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#fdf9f0","primary-fixed":"#bdeddb","error":"#ba1a1a","on-error":"#ffffff","primary-fixed-dim":"#a2d0c0","surface-bright":"#fdf9f0","on-secondary-container":"#785e39","on-background":"#1c1c16","on-tertiary-fixed":"#121e1b","tertiary-fixed-dim":"#bcc9c5","secondary-fixed":"#ffddb0","on-surface-variant":"#404845","primary-container":"#315d50","secondary-container":"#fddaac","surface-container-highest":"#e6e2d9","surface-tint":"#3b6759","inverse-on-surface":"#f5f0e7","surface-container":"#f2ede4","on-primary-container":"#a5d4c3","surface-container-low":"#f7f3ea","on-primary-fixed":"#002018","on-error-container":"#93000a","outline":"#717975","surface-dim":"#dddad1","inverse-primary":"#a2d0c0","on-primary":"#ffffff","inverse-surface":"#32302b","surface-container-lowest":"#ffffff","outline-variant":"#c0c8c4","on-primary-fixed-variant":"#224e42","secondary-fixed-dim":"#e2c195","surface-container-high":"#ece8df","error-container":"#ffdad6","tertiary":"#34413d","background":"#fdf9f0","on-secondary":"#ffffff","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#594320","on-surface":"#1c1c16","surface-variant":"#e6e2d9","on-tertiary-container":"#c0cdc9","on-secondary-fixed":"#281800","secondary":"#735a35","tertiary-fixed":"#d8e5e1","primary":"#184539","tertiary-container":"#4b5854","on-tertiary-fixed-variant":"#3d4946"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"margin":"2.5rem","space-lg":"1.5rem","space-xl":"2.25rem","space-sm":"0.5rem","space-md":"1rem","space-xs":"0.25rem","margin-mobile":"1.25rem","gutter-mobile":"1rem","gutter":"1.5rem"},fontFamily:{"display-lg":["Newsreader"],"label-md":["Manrope"],"headline-lg":["Newsreader"],"body-sm":["Manrope"],"body-md":["Manrope"],"headline-md":["Newsreader"],"headline-sm":["Newsreader"],"title-md":["Manrope"],"body-lg":["Manrope"],"headline-lg-mobile":["Newsreader"],"title-sm":["Manrope"],"label-sm":["Manrope"],"display-lg-mobile":["Newsreader"]},fontSize:{"display-lg":["3.5rem",{"lineHeight":"4rem","letterSpacing":"-0.025em","fontWeight":"400"}],"label-md":["0.8125rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"headline-lg":["2.5rem",{"lineHeight":"3rem","letterSpacing":"-0.02em","fontWeight":"400"}],"body-sm":["0.8125rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"body-md":["0.9375rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"headline-md":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"500"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","fontWeight":"500"}],"title-md":["1.125rem",{"lineHeight":"1.625rem","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["1.0625rem",{"lineHeight":"1.65rem","fontWeight":"400"}],"headline-lg-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"400"}],"title-sm":["0.9375rem",{"lineHeight":"1.375rem","fontWeight":"600"}],"label-sm":["0.6875rem",{"lineHeight":"0.875rem","letterSpacing":"0.04em","fontWeight":"600"}],"display-lg-mobile":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.015em","fontWeight":"400"}]}}}}</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="Modern editorial brand mark for My Marriage wedding planning SaaS: interlocking minimalist gold/forest green arch and rings geometric monogram mark.. Brand logo. - Primary color: #315d50
+- Font: newsreader
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/ALJJyrB1p5bbW_ia-0CcvelP6FsrLa5Tb_VT2766jhd1rqFDUWLmHjC8r6BoWHy50idVcSUyQIGdYrSGppxXQWzTAXtXDYMUbBlzxx5UnBbkPnvmfhzHwCYtpf31zIUBcHhFV3DUZxk1g3gDcSgaJIp0H8cIFqXHtTraYbnOQFn-oxrmBoYAJ2eSg5Ubx24qm6u5a7FEP3i409reDexOtA5yJkz3ayvXO6OE5GKALi39zCZo"/><button class="min-h-[44px] inline-flex items-center gap-space-xs px-2.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-left max-w-[170px] flex-shrink" type="button"><span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span><span class="font-title-sm text-title-sm text-on-surface truncate">Ananya &amp; Arjun</span><span class="material-symbols-outlined text-on-surface-variant text-[18px] flex-shrink-0">unfold_more</span></button></div><div class="flex items-center gap-space-xs flex-shrink-0"><button aria-label="Notifications" class="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-surface-container text-on-surface-variant transition-colors relative" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-secondary"></span></button><button aria-label="Menu and Sign out" class="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-surface-container transition-colors ml-0.5" type="button"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></button></div></div></header><main class="flex flex-col relative w-full pt-16 pb-safe bg-surface flex-1"><div class="flex flex-col w-full text-on-surface">
+<!-- Interactive Prototype States Switcher -->
+<section class="w-full bg-surface px-space-md py-space-sm border-b border-surface-container-highest shadow-sm sticky top-0 z-40">
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5" id="prototype-pill-tabs">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider flex-shrink-0 mr-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">tune</span> State:
+      </span>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-md text-label-md bg-primary text-on-primary transition-all flex-shrink-0 shadow-sm" data-state="list" type="button">
+        List
+      </button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all flex-shrink-0" data-state="filters" type="button">
+        Filters
+      </button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all flex-shrink-0" data-state="details" type="button">
+        Guest details
+      </button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all flex-shrink-0" data-state="add" type="button">
+        Add guest
+      </button>
+<button class="state-pill px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all flex-shrink-0" data-state="empty" type="button">
+        Empty
+      </button>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- 1. MAIN LIST VIEW                          -->
+<!-- ========================================== -->
+<div class="prototype-view flex flex-col w-full px-margin-mobile py-space-md gap-space-md" id="view-list">
+<!-- Editorial Header Block -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">diversity_1</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">Guest List &amp; Registry</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight font-headline-md">Guests &amp; RSVP</h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        Keep your guest list organized and track who's joining each celebration.
+      </p>
+</div>
+<!-- Primary CTA & Import/Export -->
+<div class="flex flex-col gap-space-xs pt-1">
+<button class="w-full h-11 bg-primary text-on-primary rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 hover:bg-primary-container active:scale-[0.99] transition-all shadow-sm" id="trigger-add-guest" type="button">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+<span>+ Add guest</span>
+</button>
+<div class="flex items-center justify-center gap-3 pt-1">
+<button class="text-secondary font-label-md text-label-md hover:underline flex items-center gap-1 py-1 px-2 rounded-md" type="button">
+<span class="material-symbols-outlined text-[16px]">file_upload</span> Import CSV
+        </button>
+<span class="text-outline-variant font-body-sm">·</span>
+<button class="text-secondary font-label-md text-label-md hover:underline flex items-center gap-1 py-1 px-2 rounded-md" type="button">
+<span class="material-symbols-outlined text-[16px]">download</span> Export spreadsheet
+        </button>
+</div>
+</div>
+<!-- Editorial Compact Metrics Panel -->
+<div class="w-full bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wide text-secondary">Summary Overview</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Live sync
+        </span>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<div class="bg-surface-container-lowest p-3 rounded-lg flex flex-col justify-between shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Guest contacts</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">5</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">families</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded-lg flex flex-col justify-between shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Invited people</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">11</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">headcount</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded-lg flex flex-col gap-1.5 shadow-sm">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface font-medium">Ceremony responses</span>
+<span class="text-primary font-bold">4 of 8 answered (50%)</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 50%"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Invited people counted once across the entire multi-day wedding</span>
+</div>
+</div>
+<!-- Search & Active Filter Row -->
+<div class="flex items-center gap-space-xs pt-1">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full h-11 pl-10 pr-3 bg-surface-container-lowest text-on-surface rounded-lg font-body-md text-body-md placeholder:text-outline focus:outline-none shadow-sm focus:ring-1 focus:ring-primary" placeholder="Search guests by name, phone..." type="text"/>
+</div>
+<button class="h-11 px-3 bg-surface-container-lowest text-on-surface font-title-sm text-title-sm rounded-lg flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-colors flex-shrink-0" id="trigger-filter-sheet" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">tune</span>
+<span>Filters</span>
+<span class="px-1.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold">4</span>
+</button>
+</div>
+<!-- Guest Cards Sequence -->
+<div class="flex flex-col gap-space-sm pb-6">
+<!-- Guest Card 1: Rajesh Sharma -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-space-sm shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Rajesh Sharma</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Uncle · Maternal Family</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container font-label-md text-label-md text-on-surface font-medium flex-shrink-0">
+            5 people
+          </span>
+</div>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">Haldi</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">Wedding</span>
+</div>
+<div class="bg-surface-container-low/60 rounded-lg p-2.5 flex flex-col gap-1 text-body-sm font-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Haldi Ceremony</span>
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> Attending 3/5
+            </span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Wedding Ceremony</span>
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> Attending 5/5
+            </span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed-dim/40 text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">mail</span> Email delivered
+          </span>
+<button class="trigger-guest-details text-primary font-title-sm text-title-sm hover:underline flex items-center gap-0.5 py-1.5 px-2 rounded-md hover:bg-surface-container" type="button">
+<span>View details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Guest Card 2: Priya Desai -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-space-sm shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Priya Desai</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Bride's College Friend</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container font-label-md text-label-md text-on-surface font-medium flex-shrink-0">
+            2 people
+          </span>
+</div>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">Sangeet</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">Reception</span>
+</div>
+<div class="bg-surface-container-low/60 rounded-lg p-2.5 flex flex-col gap-1 text-body-sm font-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Sangeet Night</span>
+<span class="text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">schedule</span> Pending
+            </span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Reception</span>
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> Attending 2/2
+            </span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">link</span> Link shared
+          </span>
+<button class="trigger-guest-details text-primary font-title-sm text-title-sm hover:underline flex items-center gap-0.5 py-1.5 px-2 rounded-md hover:bg-surface-container" type="button">
+<span>View details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Guest Card 3: Neha Patel -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-space-sm shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Neha Patel</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Groom's Cousin</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container font-label-md text-label-md text-on-surface font-medium flex-shrink-0">
+            3 people
+          </span>
+</div>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">Mehendi</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">Wedding</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">+1 more</span>
+</div>
+<div class="bg-surface-container-low/60 rounded-lg p-2.5 flex flex-col gap-1 text-body-sm font-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Mehendi Afternoon</span>
+<span class="text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">help</span> Maybe (2)
+            </span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Wedding Ceremony</span>
+<span class="text-on-surface-variant font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Pending
+            </span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Reception</span>
+<span class="text-on-surface-variant font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Pending
+            </span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">link</span> Link shared
+          </span>
+<button class="trigger-guest-details text-primary font-title-sm text-title-sm hover:underline flex items-center gap-0.5 py-1.5 px-2 rounded-md hover:bg-surface-container" type="button">
+<span>View details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Guest Card 4: Amit Mehta -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-space-sm shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Amit Mehta</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Family Colleague</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container font-label-md text-label-md text-on-surface font-medium flex-shrink-0">
+            1 person
+          </span>
+</div>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">Wedding</span>
+</div>
+<div class="bg-surface-container-low/60 rounded-lg p-2.5 flex flex-col gap-1 text-body-sm font-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Wedding Ceremony</span>
+<span class="text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">cancel</span> Not attending (0/1)
+            </span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">warning</span> Email failed
+          </span>
+<button class="trigger-guest-details text-primary font-title-sm text-title-sm hover:underline flex items-center gap-0.5 py-1.5 px-2 rounded-md hover:bg-surface-container" type="button">
+<span>View details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Guest Card 5: Kavya Shah -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-space-sm shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Kavya Shah</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">School Friend</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container font-label-md text-label-md text-on-surface font-medium flex-shrink-0">
+            4 people
+          </span>
+</div>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">No events selected</span>
+</div>
+<div class="bg-surface-container-low/60 rounded-lg p-2.5 flex flex-col gap-1 text-body-sm font-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Status</span>
+<span class="text-on-surface-variant font-medium italic">Not invited yet</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">radio_button_unchecked</span> Not shared
+          </span>
+<button class="trigger-guest-details text-primary font-title-sm text-title-sm hover:underline flex items-center gap-0.5 py-1.5 px-2 rounded-md hover:bg-surface-container" type="button">
+<span>View details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 2. FILTERS VIEW (Bottom sheet modal)      -->
+<!-- ========================================== -->
+<div class="prototype-view hidden fixed inset-0 z-50 flex flex-col justify-end bg-inverse-surface/40 backdrop-blur-sm" id="view-filters">
+<div class="w-full bg-surface-container-lowest rounded-t-2xl max-h-[777px] flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-200">
+<!-- Drag handle & Header -->
+<div class="w-full pt-3 pb-2 px-space-md flex flex-col items-center border-b border-surface-container">
+<div class="w-10 h-1 bg-surface-container-highest rounded-full mb-3"></div>
+<div class="w-full flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">tune</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold font-headline-md">Filter guests</h2>
+</div>
+<button class="close-filter-sheet min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-surface-container text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+<!-- Scrollable Filter Content -->
+<div class="overflow-y-auto px-space-md py-space-md flex flex-col gap-space-lg flex-1">
+<!-- Ceremony Selection -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-title-sm text-title-sm text-on-surface font-bold">Invited Ceremony</label>
+<div class="flex flex-wrap gap-2 pt-1">
+<button class="px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold" type="button">All ceremonies</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Haldi</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Mehendi</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Sangeet</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Wedding</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Reception</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Not invited</button>
+</div>
+</div>
+<!-- RSVP State -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-title-sm text-title-sm text-on-surface font-bold">RSVP State</label>
+<div class="flex flex-wrap gap-2 pt-1">
+<button class="px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold" type="button">All responses</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Confirmed attending</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Pending response</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Maybe</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Not attending</button>
+</div>
+</div>
+<!-- Invitation Status -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-title-sm text-title-sm text-on-surface font-bold">Invitation Dispatch</label>
+<div class="flex flex-wrap gap-2 pt-1">
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">All</button>
+<button class="px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold" type="button">Delivered</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Sent</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Link shared</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Failed</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high" type="button">Not shared</button>
+</div>
+</div>
+<!-- Sort Order -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-title-sm text-title-sm text-on-surface font-bold">Sort By</label>
+<div class="grid grid-cols-1 gap-2 pt-1">
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low cursor-pointer">
+<span class="font-body-md text-body-md text-on-surface font-medium">Guest Name (A to Z)</span>
+<input checked="" class="accent-primary w-4 h-4" name="sort_order" type="radio"/>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low cursor-pointer">
+<span class="font-body-md text-body-md text-on-surface font-medium">Recently updated</span>
+<input class="accent-primary w-4 h-4" name="sort_order" type="radio"/>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low cursor-pointer">
+<span class="font-body-md text-body-md text-on-surface font-medium">Party size (Largest first)</span>
+<input class="accent-primary w-4 h-4" name="sort_order" type="radio"/>
+</label>
+</div>
+</div>
+</div>
+<!-- Sticky Filter Footer -->
+<div class="p-space-md bg-surface-container-lowest border-t border-surface-container flex items-center gap-3">
+<button class="close-filter-sheet flex-1 h-11 rounded-lg font-title-sm text-title-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-center" type="button">
+          Clear filters
+        </button>
+<button class="close-filter-sheet flex-[2] h-11 bg-primary text-on-primary rounded-lg font-title-sm text-title-sm flex items-center justify-center shadow-sm hover:bg-primary-container transition-all" type="button">
+          Show 5 guests
+        </button>
+</div>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 3. GUEST DETAILS VIEW                     -->
+<!-- ========================================== -->
+<div class="prototype-view hidden flex flex-col w-full px-margin-mobile py-space-md gap-space-md pb-24" id="view-details">
+<!-- Navigation Back Header -->
+<div class="flex items-center justify-between">
+<button class="back-to-list-btn min-h-[44px] inline-flex items-center gap-1 text-primary font-title-sm text-title-sm py-1.5 px-2 rounded-lg hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span>Back to guests</span>
+</button>
+<span class="px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> Confirmed Guest
+      </span>
+</div>
+<!-- Primary Guest Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-space-md shadow-sm">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Primary Contact</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-headline-md pt-0.5">Rajesh Sharma</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Maternal Uncle &amp; Family</p>
+</div>
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold">
+          5 people
+        </span>
+</div>
+<!-- Contact Info Rows -->
+<div class="flex flex-col gap-2 pt-1 border-t border-surface-container-low">
+<a class="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-low transition-colors" href="tel:+919820144521">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Phone &amp; WhatsApp</span>
+<span class="font-body-md text-body-md text-on-surface font-medium truncate">+91 98201 44521</span>
+</div>
+</a>
+<a class="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-low transition-colors" href="mailto:rajesh.sharma@example.com">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Email Address</span>
+<span class="font-body-md text-body-md text-on-surface font-medium truncate">rajesh.sharma@example.com</span>
+</div>
+</a>
+</div>
+<!-- Organizer Notes -->
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-secondary font-label-sm text-label-sm font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-[15px]">lock</span>
+<span>Organizer Notes (Private)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">
+          “Maternal uncle family, needs ground-floor accommodation near the elevator for elder grandmother.”
+        </p>
+</div>
+</div>
+<!-- Invited Ceremonies Breakdown -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between px-1">
+<h3 class="font-title-sm text-title-sm text-on-surface font-bold">Invited Ceremonies (2)</h3>
+<span class="font-label-sm text-label-sm text-secondary">All RSVPs complete</span>
+</div>
+<!-- Haldi Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-2 shadow-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface font-bold">Haldi Ceremony</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thu 18 Feb 2027 · Poolside Lawn</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary-fixed-dim/40 text-on-primary-fixed font-label-sm text-label-sm font-bold">
+            Attending
+          </span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Confirmed Attendance:</span>
+<span class="font-bold text-primary">3 of 5 people</span>
+</div>
+</div>
+<!-- Wedding Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-2 shadow-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface font-bold">Wedding Ceremony</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sat 20 Feb 2027 · Main Mandapam</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary-fixed-dim/40 text-on-primary-fixed font-label-sm text-label-sm font-bold">
+            Attending
+          </span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Confirmed Attendance:</span>
+<span class="font-bold text-primary">5 of 5 people</span>
+</div>
+</div>
+</div>
+<!-- Private Invitation & Sharing Actions -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-title-sm text-title-sm text-on-surface font-bold">Private Invitation Access</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary font-bold">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Link active
+        </span>
+</div>
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full min-h-[44px] px-3 bg-surface-container hover:bg-surface-container-high rounded-lg text-on-surface font-title-sm text-title-sm flex items-center justify-center gap-2 transition-colors" id="copy-link-btn" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">content_copy</span>
+<span id="copy-btn-text">Copy private link</span>
+</button>
+<button class="w-full min-h-[44px] px-3 bg-primary text-on-primary hover:bg-primary-container rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">send</span>
+<span>Send email invitation</span>
+</button>
+<button class="w-full min-h-[44px] px-3 bg-surface-container-low hover:bg-surface-container rounded-lg text-secondary font-title-sm text-title-sm flex items-center justify-center gap-2 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+<span>Share on WhatsApp (manual)</span>
+</button>
+<button class="w-full py-2 text-error font-label-md text-label-md hover:underline flex items-center justify-center gap-1 mt-1" type="button">
+<span class="material-symbols-outlined text-[16px]">link_off</span>
+<span>Revoke and create new link</span>
+</button>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg flex items-start gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-secondary flex-shrink-0 mt-0.5">info</span>
+<span>Anyone with this unique private link can view and respond directly on behalf of this party without signing in.</span>
+</div>
+</div>
+<!-- Sticky Details Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 p-space-md bg-surface-container-lowest border-t border-surface-container-high flex items-center gap-3 z-30 shadow-lg">
+<button class="back-to-list-btn flex-1 h-11 rounded-lg bg-surface-container font-title-sm text-title-sm text-on-surface hover:bg-surface-container-high transition-colors flex items-center justify-center" type="button">
+        Close
+      </button>
+<button class="flex-1 h-11 bg-primary text-on-primary rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-1.5 shadow-sm hover:bg-primary-container transition-all" id="edit-guest-from-details" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+<span>Edit guest</span>
+</button>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 4. ADD GUEST VIEW                          -->
+<!-- ========================================== -->
+<div class="prototype-view hidden flex flex-col w-full px-margin-mobile py-space-md gap-space-md pb-28" id="view-add">
+<!-- Add Guest Form Header -->
+<div class="flex items-start justify-between border-b border-surface-container pb-space-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">New Invitation</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-headline-md">Add guest</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">A guest contact can represent a whole family.</p>
+</div>
+<button class="back-to-list-btn min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-surface-container text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[22px]">close</span>
+</button>
+</div>
+<!-- Form Body -->
+<form class="flex flex-col gap-space-md" id="add-guest-form" onsubmit="event.preventDefault();">
+<!-- Primary Contact Name -->
+<div class="flex flex-col gap-1.5">
+<label class="font-title-sm text-title-sm text-on-surface font-bold flex items-center gap-1" for="guest-name">
+          Primary contact name <span class="text-error">*</span>
+</label>
+<input class="w-full h-11 px-3 bg-surface-container-lowest text-on-surface rounded-lg font-body-md text-body-md placeholder:text-outline focus:outline-none shadow-sm focus:ring-1 focus:ring-primary" id="guest-name" placeholder="e.g. Rajesh Sharma" required="" type="text"/>
+</div>
+<!-- Headcount Stepper -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex flex-col gap-2 shadow-sm">
+<div class="flex items-center justify-between">
+<label class="font-title-sm text-title-sm text-on-surface font-bold flex items-center gap-1">
+            Number of people invited <span class="text-error">*</span>
+</label>
+<div class="flex items-center gap-3 bg-surface-container p-1 rounded-lg">
+<button aria-label="Decrease headcount" class="w-8 h-8 rounded-md bg-surface-container-lowest text-on-surface flex items-center justify-center font-bold hover:bg-surface shadow-xs disabled:opacity-40 transition-colors" id="stepper-minus" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="font-headline-sm text-headline-sm font-bold text-primary w-6 text-center" id="stepper-value">5</span>
+<button aria-label="Increase headcount" class="w-8 h-8 rounded-md bg-surface-container-lowest text-on-surface flex items-center justify-center font-bold hover:bg-surface shadow-xs transition-colors" id="stepper-plus" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Canonical headcount across all invited celebrations.</p>
+</div>
+<!-- Email Field -->
+<div class="flex flex-col gap-1.5">
+<label class="font-title-sm text-title-sm text-on-surface font-semibold flex items-center justify-between" for="guest-email">
+<span>Email</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-normal">Optional</span>
+</label>
+<input class="w-full h-11 px-3 bg-surface-container-lowest text-on-surface rounded-lg font-body-md text-body-md placeholder:text-outline focus:outline-none shadow-sm focus:ring-1 focus:ring-primary" id="guest-email" placeholder="Used for sending digital invitations" type="email"/>
+</div>
+<!-- Phone Field -->
+<div class="flex flex-col gap-1.5">
+<label class="font-title-sm text-title-sm text-on-surface font-semibold flex items-center justify-between" for="guest-phone">
+<span>Phone / WhatsApp</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-normal">Optional</span>
+</label>
+<input class="w-full h-11 px-3 bg-surface-container-lowest text-on-surface rounded-lg font-body-md text-body-md placeholder:text-outline focus:outline-none shadow-sm focus:ring-1 focus:ring-primary" id="guest-phone" placeholder="+91 98000 00000" type="tel"/>
+</div>
+<!-- Notes -->
+<div class="flex flex-col gap-1.5">
+<label class="font-title-sm text-title-sm text-on-surface font-semibold flex items-center justify-between" for="guest-notes">
+<span>Private notes</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-normal">Optional</span>
+</label>
+<textarea class="w-full p-3 bg-surface-container-lowest text-on-surface rounded-lg font-body-md text-body-md placeholder:text-outline focus:outline-none shadow-sm focus:ring-1 focus:ring-primary" id="guest-notes" placeholder="Dietary needs, relationship tags, hotel requirements..." rows="2"></textarea>
+</div>
+<!-- Multi-Ceremony Selection Checklist -->
+<div class="flex flex-col gap-2 pt-1">
+<span class="font-title-sm text-title-sm text-on-surface font-bold">Invite to celebrations</span>
+<div class="flex flex-col gap-2">
+<!-- Ceremony 1 -->
+<label class="flex items-center justify-between p-3 rounded-xl bg-surface-container-lowest shadow-sm cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Haldi Ceremony</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thu, 18 Feb · Poolside Lawn</span>
+</div>
+<input checked="" class="w-5 h-5 accent-primary rounded cursor-pointer" type="checkbox"/>
+</label>
+<!-- Ceremony 2 -->
+<label class="flex items-center justify-between p-3 rounded-xl bg-surface-container-lowest shadow-sm cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Mehendi Afternoon</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Fri, 19 Feb · Courtyard</span>
+</div>
+<input class="w-5 h-5 accent-primary rounded cursor-pointer" type="checkbox"/>
+</label>
+<!-- Ceremony 3 -->
+<label class="flex items-center justify-between p-3 rounded-xl bg-surface-container-lowest shadow-sm cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Sangeet Musical Night</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Fri, 19 Feb · Grand Ballroom</span>
+</div>
+<input class="w-5 h-5 accent-primary rounded cursor-pointer" type="checkbox"/>
+</label>
+<!-- Ceremony 4 -->
+<label class="flex items-center justify-between p-3 rounded-xl bg-surface-container-lowest shadow-sm cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Wedding (Varmala &amp; Pheras)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sat, 20 Feb · Main Mandapam</span>
+</div>
+<input checked="" class="w-5 h-5 accent-primary rounded cursor-pointer" type="checkbox"/>
+</label>
+<!-- Ceremony 5 -->
+<label class="flex items-center justify-between p-3 rounded-xl bg-surface-container-lowest shadow-sm cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Grand Reception Dinner</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sun, 21 Feb · Palace Gardens</span>
+</div>
+<input class="w-5 h-5 accent-primary rounded cursor-pointer" type="checkbox"/>
+</label>
+</div>
+</div>
+</form>
+<!-- Sticky Add Footer -->
+<div class="fixed bottom-0 left-0 right-0 p-space-md bg-surface-container-lowest border-t border-surface-container-high flex items-center gap-3 z-30 shadow-lg">
+<button class="back-to-list-btn flex-1 h-11 rounded-lg bg-surface-container font-title-sm text-title-sm text-on-surface hover:bg-surface-container-high transition-colors flex items-center justify-center" type="button">
+        Cancel
+      </button>
+<button class="flex-[2] h-11 bg-primary text-on-primary rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-1.5 shadow-sm hover:bg-primary-container transition-all" id="save-guest-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>Add guest</span>
+</button>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 5. EMPTY STATE VIEW                       -->
+<!-- ========================================== -->
+<div class="prototype-view hidden flex flex-col items-center justify-center w-full px-margin-mobile py-space-xl text-center" id="view-empty">
+<div class="w-full max-w-[340px] bg-surface-container-lowest rounded-2xl p-space-xl flex flex-col items-center gap-space-md shadow-sm">
+<!-- Poetic visual ornament -->
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center text-primary relative">
+<span class="material-symbols-outlined text-[40px] text-secondary">mark_email_unread</span>
+<div class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-secondary">favorite</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">New Celebration</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-headline-md">Your guest list starts here</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Add a family contact, set their invited party size, and choose the celebrations they're invited to.
+        </p>
+</div>
+<div class="flex flex-col w-full gap-2 pt-2">
+<button class="w-full h-11 bg-primary text-on-primary rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 hover:bg-primary-container active:scale-[0.99] transition-all shadow-sm" id="empty-add-guest-btn" type="button">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+<span>+ Add your first guest</span>
+</button>
+<button class="w-full h-11 bg-surface-container-lowest text-on-surface rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">upload_file</span>
+<span>Import guest list</span>
+</button>
+</div>
+<div class="pt-2 border-t border-surface-container w-full">
+<p class="font-label-sm text-label-sm text-on-surface-variant italic">
+          One contact can represent an entire family or couple.
+        </p>
+</div>
+</div>
+</div>
+<!-- Notification Toast for Delight -->
+<div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 translate-y-4" id="toast-notification">
+<div class="px-4 py-2.5 bg-inverse-surface text-inverse-on-surface rounded-full shadow-lg font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary-fixed">check_circle</span>
+<span id="toast-message">Private link copied to clipboard</span>
+</div>
+</div>
+</div>
+<script>
+  (function initGuestRSVPPrototype() {
+    const views = {
+      list: document.getElementById('view-list'),
+      filters: document.getElementById('view-filters'),
+      details: document.getElementById('view-details'),
+      add: document.getElementById('view-add'),
+      empty: document.getElementById('view-empty')
+    };
+
+    const pills = document.querySelectorAll('.state-pill');
+    let currentState = 'list';
+
+    function switchState(stateName) {
+      currentState = stateName;
+      
+      // Update pills
+      pills.forEach(pill => {
+        if (pill.dataset.state === stateName) {
+          pill.classList.remove('bg-surface-container', 'text-on-surface-variant');
+          pill.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+        } else {
+          pill.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+          pill.classList.add('bg-surface-container', 'text-on-surface-variant');
+        }
+      });
+
+      // Show/Hide Views
+      Object.keys(views).forEach(key => {
+        if (key === 'filters') {
+          if (stateName === 'filters') {
+            views.filters.classList.remove('hidden');
+          } else {
+            views.filters.classList.add('hidden');
+          }
+        } else {
+          if (key === stateName) {
+            views[key].classList.remove('hidden');
+          } else if (stateName === 'filters' && key === 'list') {
+            // keep list view active underneath filter sheet
+            views.list.classList.remove('hidden');
+          } else {
+            views[key].classList.add('hidden');
+          }
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Pill tab clicks
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        switchState(pill.dataset.state);
+      });
+    });
+
+    // In-view interaction hooks
+    const triggerAddBtn = document.getElementById('trigger-add-guest');
+    if (triggerAddBtn) {
+      triggerAddBtn.addEventListener('click', () => switchState('add'));
+    }
+
+    const emptyAddBtn = document.getElementById('empty-add-guest-btn');
+    if (emptyAddBtn) {
+      emptyAddBtn.addEventListener('click', () => switchState('add'));
+    }
+
+    const triggerFilterBtn = document.getElementById('trigger-filter-sheet');
+    if (triggerFilterBtn) {
+      triggerFilterBtn.addEventListener('click', () => switchState('filters'));
+    }
+
+    const closeFilterBtns = document.querySelectorAll('.close-filter-sheet');
+    closeFilterBtns.forEach(btn => {
+      btn.addEventListener('click', () => switchState('list'));
+    });
+
+    const guestDetailBtns = document.querySelectorAll('.trigger-guest-details');
+    guestDetailBtns.forEach(btn => {
+      btn.addEventListener('click', () => switchState('details'));
+    });
+
+    const backToListBtns = document.querySelectorAll('.back-to-list-btn');
+    backToListBtns.forEach(btn => {
+      btn.addEventListener('click', () => switchState('list'));
+    });
+
+    const editGuestFromDetails = document.getElementById('edit-guest-from-details');
+    if (editGuestFromDetails) {
+      editGuestFromDetails.addEventListener('click', () => switchState('add'));
+    }
+
+    const saveGuestBtn = document.getElementById('save-guest-btn');
+    if (saveGuestBtn) {
+      saveGuestBtn.addEventListener('click', () => {
+        showToast('Guest Rajesh Sharma saved successfully');
+        setTimeout(() => switchState('list'), 400);
+      });
+    }
+
+    // Toast utility
+    const toast = document.getElementById('toast-notification');
+    const toastMsg = document.getElementById('toast-message');
+    function showToast(message) {
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-4');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2400);
+    }
+
+    // Copy link micro-interaction
+    const copyLinkBtn = document.getElementById('copy-link-btn');
+    const copyBtnText = document.getElementById('copy-btn-text');
+    if (copyLinkBtn && copyBtnText) {
+      copyLinkBtn.addEventListener('click', () => {
+        showToast('Private invitation link copied!');
+        copyBtnText.textContent = 'Link copied!';
+        setTimeout(() => {
+          copyBtnText.textContent = 'Copy private link';
+        }, 2200);
+      });
+    }
+
+    // Headcount Stepper Logic
+    let headcount = 5;
+    const stepperVal = document.getElementById('stepper-value');
+    const minusBtn = document.getElementById('stepper-minus');
+    const plusBtn = document.getElementById('stepper-plus');
+
+    if (stepperVal && minusBtn && plusBtn) {
+      minusBtn.addEventListener('click', () => {
+        if (headcount > 1) {
+          headcount--;
+          stepperVal.textContent = headcount;
+        }
+      });
+      plusBtn.addEventListener('click', () => {
+        if (headcount < 50) {
+          headcount++;
+          stepperVal.textContent = headcount;
+        }
+      });
+    }
+  })();
+</script></main></body></html>

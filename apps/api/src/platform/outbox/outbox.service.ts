@@ -22,11 +22,18 @@ export class OutboxService {
    * or be lost when the change committed.
    */
   async add(session: ClientSession, event: NewOutboxEvent): Promise<void> {
+    await this.addMany(session, [event]);
+  }
+
+  /** Adds several events in one write, in the caller's transaction. */
+  async addMany(session: ClientSession, events: readonly NewOutboxEvent[]): Promise<void> {
     if (!session.inTransaction()) {
       throw new Error('Outbox events must be written inside the transaction of the change');
     }
-    await this.events.create(
-      [{ ...event, state: 'pending', nextAttemptAt: new Date(), attempts: 0 }],
+    if (events.length === 0) return;
+    const now = new Date();
+    await this.events.insertMany(
+      events.map((event) => ({ ...event, state: 'pending', nextAttemptAt: now, attempts: 0 })),
       { session },
     );
   }

@@ -231,12 +231,16 @@ describe('Outbox and email delivery (integration)', () => {
       composers: [ProbeComposer],
     });
     try {
+      // Its own recipients: other tests may leave emails queued in the same database.
+      const tag = Math.random().toString(36).slice(2, 10);
       const ids = await Promise.all(
-        Array.from({ length: 20 }, (_, index) => requestEmail(`guest${index}@example.com`)),
+        Array.from({ length: 20 }, (_, index) => requestEmail(`guest${index}.${tag}@example.com`)),
       );
       await Promise.all(ids.map((id) => finalState(id)));
 
-      const keys = [...worker.mail.sent, ...second.mail.sent].map((email) => email.idempotencyKey);
+      const keys = [...worker.mail.sent, ...second.mail.sent]
+        .filter((email) => email.to.endsWith(`.${tag}@example.com`))
+        .map((email) => email.idempotencyKey);
       expect(keys).toHaveLength(20);
       expect(new Set(keys).size).toBe(20);
     } finally {

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-dim": "#dddad1", "on-primary-fixed-variant": "#224e42", "background": "#fdf9f0", "primary-container": "#315d50", "on-secondary-fixed-variant": "#594320", "surface-container-lowest": "#ffffff", "on-secondary-fixed": "#281800", "surface-container": "#f2ede4", "surface": "#fdf9f0", "surface-bright": "#fdf9f0", "primary-fixed-dim": "#a2d0c0", "inverse-primary": "#a2d0c0", "on-primary": "#ffffff", "on-background": "#1c1c16", "tertiary-fixed-dim": "#bcc9c5", "primary-fixed": "#bdeddb", "secondary-container": "#fddaac", "tertiary": "#34413d", "error": "#ba1a1a", "secondary": "#735a35", "on-tertiary-container": "#c0cdc9", "surface-tint": "#3b6759", "secondary-fixed-dim": "#e2c195", "on-error-container": "#93000a", "on-primary-container": "#a5d4c3", "secondary-fixed": "#ffddb0", "tertiary-fixed": "#d8e5e1", "on-secondary-container": "#785e39", "on-primary-fixed": "#002018", "inverse-surface": "#32302b", "outline": "#717975", "outline-variant": "#c0c8c4", "tertiary-container": "#4b5854", "surface-container-highest": "#e6e2d9", "on-error": "#ffffff", "on-tertiary-fixed": "#121e1b", "on-tertiary": "#ffffff", "surface-container-high": "#ece8df", "on-surface-variant": "#404845", "surface-variant": "#e6e2d9", "surface-container-low": "#f7f3ea", "inverse-on-surface": "#f5f0e7", "error-container": "#ffdad6", "on-secondary": "#ffffff", "primary": "#184539", "on-surface": "#1c1c16", "on-tertiary-fixed-variant": "#3d4946" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-lg": "1.5rem", "margin": "2.5rem", "space-xl": "2.25rem", "margin-mobile": "1.25rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "gutter": "1.5rem", "gutter-mobile": "1rem", "space-md": "1rem" }, "fontFamily": { "label-md": ["Manrope"], "body-sm": ["Manrope"], "display-lg": ["Newsreader"], "headline-sm": ["Newsreader"], "body-lg": ["Manrope"], "body-md": ["Manrope"], "display-lg-mobile": ["Newsreader"], "headline-lg": ["Newsreader"], "title-md": ["Manrope"], "label-sm": ["Manrope"], "headline-md": ["Newsreader"], "headline-lg-mobile": ["Newsreader"], "title-sm": ["Manrope"] }, "fontSize": { "label-md": ["0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" }], "display-lg": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.025em", "fontWeight": "400" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "fontWeight": "500" }], "body-lg": ["1.0625rem", { "lineHeight": "1.65rem", "fontWeight": "400" }], "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" }], "display-lg-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.015em", "fontWeight": "400" }], "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "400" }], "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "500" }], "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "400" }], "title-sm": ["0.9375rem", { "lineHeight": "1.375rem", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-60 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)] select-none"><div class="flex flex-col flex-1 overflow-y-auto"><div class="h-16 px-space-md flex items-center justify-between gap-space-sm bg-surface-container-low"><div class="flex items-center gap-space-sm min-w-0"><img alt="Modern editorial brand mark for My Marriage wedding planning SaaS: interlocking minimalist gold/forest green arch and rings geometric monogram mark.. Brand logo. - Primary color: #315d50
+- Font: newsreader
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/ALJJyrDXSp7-q8nd6F7CCCAvbpUeFFUDp48tmeptADdgjjaEVZQh9-mughFAuLwae1UyNS7MYNhFeIpMAmYje9PtCToye8bYc9tjts00tnV0cmkPkT_JV2Xbc9b-lWnXbAjVsTfl9bIzHbzJo_L53cKy30NWCdMODxK45YxOoajuQvnNrp6bjzsjDC8EfzHmwE72gx7eu-rZF9iYw97x_i72_CjbrXgwp8pIfCpFjp_V83KE"/><div class="flex flex-col truncate"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">My Marriage</span><span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider mt-0.5">Studio Edit</span></div></div><button class="text-on-surface-variant hover:text-on-surface p-1 rounded-lg hover:bg-surface-container transition-colors" title="Collapse sidebar" type="button"><span class="material-symbols-outlined text-[18px]">first_page</span></button></div><div class="px-space-md py-space-sm"><div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container border border-surface-container-highest/60"><div class="flex flex-col min-w-0 pr-1"><span class="font-title-sm text-title-sm text-on-surface truncate leading-tight">Ananya &amp; Arjun</span><div class="flex items-center gap-1.5 mt-0.5"><span class="inline-block w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Co-Owner</span></div></div><span class="material-symbols-outlined text-[16px] text-on-surface-variant">unfold_more</span></div></div><div class="px-space-md py-space-xs"><span class="font-label-sm text-label-sm text-outline uppercase tracking-wider px-space-xs">Workspace</span></div><nav class="flex flex-col gap-0.5 px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm"><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="overview" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">space_dashboard</span><span class="font-body-sm text-body-sm truncate">Overview</span></div></a><div class="flex flex-col"><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="events" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">calendar_month</span><span class="font-body-sm text-body-sm truncate">Events</span></div><span class="material-symbols-outlined text-[16px] text-outline">expand_more</span></a><div class="pl-7 pr-space-xs py-0.5 flex flex-col gap-0.5 border-l border-surface-container-highest ml-4"><a class="px-2 py-1 rounded text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors" data-path="events-haldi" href="#">Haldi</a><a class="px-2 py-1 rounded text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors" data-path="events-mehendi" href="#">Mehendi</a><a class="px-2 py-1 rounded text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors" data-path="events-sangeet" href="#">Sangeet</a><a class="px-2 py-1 rounded text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors" data-path="events-wedding" href="#">Wedding</a><a class="px-2 py-1 rounded text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors" data-path="events-reception" href="#">Reception</a></div></div><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="tasks" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">checklist</span><span class="font-body-sm text-body-sm truncate">Tasks</span></div><span class="px-1.5 py-0.5 rounded font-label-sm text-label-sm bg-secondary-container text-on-secondary-container">3 due</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="guests-rsvp" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">group</span><span class="font-body-sm text-body-sm truncate">Guests &amp; RSVP</span></div><span class="px-1.5 py-0.5 rounded font-label-sm text-label-sm bg-surface-container-highest text-on-surface-variant">126</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="expenses-budget" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span><span class="font-body-sm text-body-sm truncate">Expenses &amp; Budget</span></div><span class="px-1.5 py-0.5 rounded font-label-sm text-label-sm bg-secondary-container text-on-secondary-container">₹2.1L due</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="vendors" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">storefront</span><span class="font-body-sm text-body-sm truncate">Vendors</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="wedding-website" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">language</span><span class="font-body-sm text-body-sm truncate">Wedding Website</span></div><span class="w-2 h-2 rounded-full bg-primary-fixed-dim"></span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="photos-qr-drive" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">photo_library</span><span class="font-body-sm text-body-sm truncate">Photos &amp; QR Drive</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="team-family-access" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">supervisor_account</span><span class="font-body-sm text-body-sm truncate">Team &amp; Family</span></div><span class="font-label-sm text-label-sm text-outline">6</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-[18px]">settings</span><span class="font-body-sm text-body-sm truncate">Settings</span></div></a></nav></div><div class="p-space-sm border-t border-surface-container-highest/60 flex flex-col gap-space-sm"><div class="px-space-xs py-1"><div class="flex justify-between items-center mb-1"><span class="font-label-sm text-label-sm text-on-surface-variant">Cloud Vault</span><span class="font-label-sm text-label-sm text-on-surface font-semibold">1.8 / 5 GB</span></div><div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden"><div class="bg-primary h-full rounded-full" style="width: 36%"></div></div></div><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="documentation" href="#"><span class="material-symbols-outlined text-[18px]">help_outline</span><span class="font-body-sm text-body-sm">Docs &amp; Concierge</span></a><div class="flex items-center justify-between p-space-xs rounded-lg hover:bg-surface-container transition-colors cursor-pointer"><div class="flex items-center gap-2 min-w-0"><div class="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-on-primary font-title-sm text-title-sm flex-shrink-0">A</div><div class="flex flex-col truncate"><span class="font-title-sm text-title-sm text-on-surface truncate leading-tight">Ananya Sharma</span><span class="font-label-sm text-label-sm text-outline truncate">ananya@mymarriage.in</span></div></div><span class="material-symbols-outlined text-[16px] text-outline">more_vert</span></div></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 h-16 bg-surface/90 backdrop-blur-xl z-40 flex items-center justify-between px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-space-sm py-1.5 rounded-lg bg-surface-container-lowest border border-surface-container-highest shadow-sm cursor-pointer"><span class="material-symbols-outlined text-[18px] text-secondary">celebration</span><span class="font-title-sm text-title-sm text-on-surface tracking-tight">Ananya &amp; Arjun — Jaipur 2027</span><span class="material-symbols-outlined text-[16px] text-outline">arrow_drop_down</span></div><div class="hidden lg:flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant"><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span><a class="font-label-sm text-label-sm tracking-wide text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">my-marriage.com/ananya-arjun<span class="material-symbols-outlined text-[14px]">open_in_new</span></a></div></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-lowest border border-surface-container-highest text-outline w-56 text-body-sm"><span class="material-symbols-outlined text-[18px]">search</span><span class="flex-1 text-on-surface-variant/70">Quick search...</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container text-[11px] font-label-sm text-on-surface-variant border border-surface-container-highest">⌘K</kbd></div><div class="flex items-center gap-2"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm shadow-sm hover:bg-primary-container transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>Quick Action</span></button><button class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Notifications" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary ring-2 ring-surface"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Section: Header & Action Row -->
+<section class="px-space-md lg:px-margin pt-space-md lg:pt-space-lg pb-space-md">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-1">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase font-semibold">CEREMONIES &amp; SCHEDULES</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Events</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 max-w-xl">
+          Plan, schedule, and orchestrate every celebration across your multi-day royal wedding itinerary.
+        </p>
+</div>
+<!-- Action Group -->
+<div class="flex items-center gap-2.5 flex-wrap">
+<button class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-title-sm text-title-sm shadow-sm hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">download</span>
+<span>Export Run-sheet</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm shadow-sm hover:bg-primary-container transition-all" id="openAddEventBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add Event</span>
+</button>
+</div>
+</div>
+<!-- Quick Summary Metric Ribbon -->
+<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-space-lg">
+<div class="flex items-center gap-3.5 p-3.5 bg-surface-container-lowest rounded-xl shadow-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">event_available</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Total Ceremonies</span>
+<div class="flex items-baseline gap-1.5 mt-0.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">5</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Scheduled</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3.5 p-3.5 bg-surface-container-lowest rounded-xl shadow-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/40 flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">date_range</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Multi-Day Span</span>
+<div class="flex items-baseline gap-1.5 mt-0.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">4 Days</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">12–15 Dec</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3.5 p-3.5 bg-surface-container-lowest rounded-xl shadow-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Confirmed RSVPs</span>
+<div class="flex items-baseline gap-1.5 mt-0.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">320</span>
+<span class="font-label-md text-label-md text-outline">/ 350 max</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3.5 p-3.5 bg-surface-container-lowest rounded-xl shadow-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary-container flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Ceremony Tasks</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">74%</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<div class="flex-1 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 74%"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">28/38</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Events Control & Filter Toolbar -->
+<section class="px-space-md lg:px-margin py-2">
+<div class="bg-surface-container-lowest p-2.5 rounded-xl shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+<!-- Search Field -->
+<div class="relative flex-1 min-w-[260px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-outline">search</span>
+<input class="w-full bg-surface pl-9 pr-3 py-2 rounded-lg text-body-sm font-body-sm text-on-surface placeholder-outline focus:outline-none focus:bg-surface-container-lowest transition-all" id="eventSearch" placeholder="Search events by ceremony name, venue, or coordinator..." type="text"/>
+</div>
+<!-- Segmented Status Tabs -->
+<div class="flex items-center gap-1 overflow-x-auto py-0.5">
+<button class="tab-pill px-3 py-1.5 rounded-lg text-label-md font-label-md bg-tertiary text-on-tertiary shadow-sm transition-all whitespace-nowrap" data-filter="all" type="button">All (5)</button>
+<button class="tab-pill px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all whitespace-nowrap" data-filter="upcoming" type="button">Upcoming (5)</button>
+<button class="tab-pill px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all whitespace-nowrap" data-filter="completed" type="button">Completed (0)</button>
+<button class="tab-pill px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all whitespace-nowrap" data-filter="drafts" type="button">Drafts (1)</button>
+</div>
+<!-- Right Controls: Host filter, Sort, and View Mode -->
+<div class="flex items-center gap-2 flex-wrap sm:flex-nowrap justify-between lg:justify-end">
+<!-- Host Filter Dropdown button -->
+<div class="relative inline-flex">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-outline">group</span>
+<span>All Hosts</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</button>
+</div>
+<!-- Sort Select -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-surface text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">swap_vert</span>
+<span class="hidden sm:inline text-outline font-label-sm">Sort:</span>
+<span class="text-on-surface font-medium truncate max-w-[130px]">Chronological</span>
+</div>
+<!-- View Switcher -->
+<div class="flex items-center p-0.5 rounded-lg bg-surface">
+<button class="p-1.5 rounded-md bg-surface-container-lowest text-primary shadow-xs transition-colors" id="viewTimelineBtn" title="Timeline List View" type="button">
+<span class="material-symbols-outlined text-[18px]">view_timeline</span>
+</button>
+<button class="p-1.5 rounded-md text-on-surface-variant hover:text-on-surface transition-colors" id="viewGridBtn" title="Card Grid View" type="button">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Ceremonies Sequence Container -->
+<section class="px-space-md lg:px-margin py-space-md">
+<div class="flex flex-col gap-4 relative" id="eventsContainer">
+<!-- Timeline Central Spine (Desktop) -->
+<div class="hidden lg:block absolute left-8 top-6 bottom-6 w-0.5 bg-surface-container-highest z-0"></div>
+<!-- Ceremony 1: Haldi -->
+<article class="event-card relative z-10 bg-surface-container-lowest rounded-2xl p-space-md lg:p-space-lg shadow-sm hover:shadow-md transition-all">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Left: Timeline Node + Identity -->
+<div class="flex items-start gap-4 min-w-0">
+<!-- Node Marker -->
+<div class="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-title-sm text-title-sm flex-shrink-0 shadow-xs ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[18px]">spa</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded-md bg-secondary-container/50 text-on-secondary-container font-label-sm text-label-sm font-semibold tracking-wide uppercase">Day 1 · Morning</span>
+<span class="font-label-sm text-label-sm text-outline">Thu, 12 Dec 2027 · 10:00 AM – 1:30 PM</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Confirmed
+                </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight mt-1">Haldi Ceremony</h2>
+<!-- Meta Row -->
+<div class="flex flex-wrap items-center gap-y-1.5 gap-x-4 mt-2 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+<span class="text-on-surface font-medium">Poolside Courtyard</span>
+<span class="text-outline">· Rambagh Palace, Jaipur</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">palette</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Yellow &amp; Ivory</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">person_outline</span>
+<span>Groom's Family · <span class="font-medium text-on-surface">Rajesh Mehta</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Key Metrics + Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-row items-start sm:items-center justify-between lg:justify-end gap-space-md pt-space-sm lg:pt-0 lg:pl-4">
+<!-- Mini Data Tiles -->
+<div class="grid grid-cols-3 gap-3 w-full sm:w-auto">
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">RSVPs</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold mt-0.5">64 / 80</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Tasks</span>
+<span class="font-title-sm text-title-sm text-primary font-semibold mt-0.5">8 / 10 done</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Budget</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold mt-0.5">₹2.4L</span>
+</div>
+</div>
+<!-- Button CTA Group -->
+<div class="flex items-center gap-2 self-end sm:self-center">
+<a class="inline-flex items-center gap-1 px-3.5 py-2 rounded-lg bg-surface text-primary font-title-sm text-title-sm hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors" href="#">
+<span>Manage</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface transition-colors" title="Event Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Ceremony 2: Mehendi -->
+<article class="event-card relative z-10 bg-surface-container-lowest rounded-2xl p-space-md lg:p-space-lg shadow-sm hover:shadow-md transition-all">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Left: Identity -->
+<div class="flex items-start gap-4 min-w-0">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-title-sm text-title-sm flex-shrink-0 shadow-xs ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[18px]">local_florist</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold tracking-wide uppercase">Day 1 · Evening</span>
+<span class="font-label-sm text-label-sm text-outline">Thu, 12 Dec 2027 · 4:30 PM – 9:00 PM</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold">
+                  Scheduled
+                </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight mt-1">Mehendi Celebration</h2>
+<div class="flex flex-wrap items-center gap-y-1.5 gap-x-4 mt-2 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+<span class="text-on-surface font-medium">The Haveli Lawns</span>
+<span class="text-outline">· Rambagh Palace, Jaipur</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">palette</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Garden Pastels &amp; Floral</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">person_outline</span>
+<span>Bride's Sister · <span class="font-medium text-on-surface">Ritu Sharma</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Key Metrics + Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-row items-start sm:items-center justify-between lg:justify-end gap-space-md pt-space-sm lg:pt-0 lg:pl-4">
+<div class="grid grid-cols-3 gap-3 w-full sm:w-auto">
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">RSVPs</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold mt-0.5">120 / 140</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Tasks</span>
+<span class="font-title-sm text-title-sm text-primary font-semibold mt-0.5">6 / 8 done</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Artists</span>
+<span class="font-title-sm text-title-sm text-secondary font-semibold mt-0.5">Henna Booked</span>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end sm:self-center">
+<a class="inline-flex items-center gap-1 px-3.5 py-2 rounded-lg bg-surface text-primary font-title-sm text-title-sm hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors" href="#">
+<span>Manage</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface transition-colors" title="Event Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Ceremony 3: Sangeet -->
+<article class="event-card relative z-10 bg-surface-container-lowest rounded-2xl p-space-md lg:p-space-lg shadow-sm hover:shadow-md transition-all">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Left: Identity -->
+<div class="flex items-start gap-4 min-w-0">
+<div class="w-9 h-9 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-title-sm text-title-sm flex-shrink-0 shadow-xs ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[18px]">music_note</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-label-sm font-semibold tracking-wide uppercase">Day 2 · Evening</span>
+<span class="font-label-sm text-label-sm text-outline">Fri, 13 Dec 2027 · 7:00 PM – Late</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Program Set
+                </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight mt-1">Sangeet Sandhya</h2>
+<div class="flex flex-wrap items-center gap-y-1.5 gap-x-4 mt-2 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+<span class="text-on-surface font-medium">The Grand Ballroom</span>
+<span class="text-outline">· Jai Mahal Palace, Jaipur</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">palette</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Royal Jewel Tones</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">headset_mic</span>
+<span>DJ Sahil Confirmed · <span class="font-medium text-on-surface">Couple &amp; Friends</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Key Metrics + Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-row items-start sm:items-center justify-between lg:justify-end gap-space-md pt-space-sm lg:pt-0 lg:pl-4">
+<div class="grid grid-cols-3 gap-3 w-full sm:w-auto">
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">RSVPs</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold mt-0.5">210 / 250</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Dances</span>
+<span class="font-title-sm text-title-sm text-primary font-semibold mt-0.5">14 Tracks</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">AV &amp; Sound</span>
+<span class="font-title-sm text-title-sm text-secondary font-semibold mt-0.5">Locked</span>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end sm:self-center">
+<a class="inline-flex items-center gap-1 px-3.5 py-2 rounded-lg bg-surface text-primary font-title-sm text-title-sm hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors" href="#">
+<span>Manage</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface transition-colors" title="Event Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Ceremony 4: Wedding / Vedic Pheras (Priority / Hero Card) -->
+<article class="event-card relative z-10 bg-surface-container-lowest rounded-2xl p-space-md lg:p-space-lg shadow-sm hover:shadow-md transition-all">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Left: Identity -->
+<div class="flex items-start gap-4 min-w-0">
+<div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-sm text-title-sm flex-shrink-0 shadow-xs ring-4 ring-primary/20">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded-md bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold tracking-wide uppercase">Day 3 · Auspicious Muhurat</span>
+<span class="font-label-sm text-label-sm text-outline">Sat, 14 Dec 2027 · 4:00 PM – 8:30 PM (Sunset Pheras)</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[12px]">stars</span>
+                  Main Ceremony
+                </span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">The Wedding (Vedic Pheras)</h2>
+</div>
+<div class="flex flex-wrap items-center gap-y-1.5 gap-x-4 mt-2 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+<span class="text-on-surface font-medium">The Mandap at Baradari</span>
+<span class="text-outline">· Rambagh Palace, Jaipur</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">palette</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Regal Red &amp; Heritage Silks</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">verified_user</span>
+<span>Pandit Shastri &amp; Core Ops Lead</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Key Metrics + Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-row items-start sm:items-center justify-between lg:justify-end gap-space-md pt-space-sm lg:pt-0 lg:pl-4">
+<div class="grid grid-cols-3 gap-3 w-full sm:w-auto">
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">RSVPs</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold mt-0.5">320 / 350</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Mandap</span>
+<span class="font-title-sm text-title-sm text-primary font-semibold mt-0.5">Decor Active</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Priest</span>
+<span class="font-title-sm text-title-sm text-secondary font-semibold mt-0.5">Locked</span>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end sm:self-center">
+<a class="inline-flex items-center gap-1 px-4 py-2 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm shadow-sm hover:bg-primary-container transition-colors" href="#">
+<span>Manage</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface transition-colors" title="Event Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Ceremony 5: Royal Reception -->
+<article class="event-card relative z-10 bg-surface-container-lowest rounded-2xl p-space-md lg:p-space-lg shadow-sm hover:shadow-md transition-all">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Left: Identity -->
+<div class="flex items-start gap-4 min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-title-sm text-title-sm flex-shrink-0 shadow-xs ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[18px]">wine_bar</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold tracking-wide uppercase">Day 4 · Finale Night</span>
+<span class="font-label-sm text-label-sm text-outline">Sun, 15 Dec 2027 · 7:30 PM – Midnight</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold">
+                  Scheduled
+                </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight mt-1">Royal Reception</h2>
+<div class="flex flex-wrap items-center gap-y-1.5 gap-x-4 mt-2 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+<span class="text-on-surface font-medium">Palace Gardens &amp; Banquet Lawn</span>
+<span class="text-outline">· Jaipur</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">palette</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Black Tie &amp; Sherwani</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">person_outline</span>
+<span>Banquet Director Mr. Rathore</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Key Metrics + Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-row items-start sm:items-center justify-between lg:justify-end gap-space-md pt-space-sm lg:pt-0 lg:pl-4">
+<div class="grid grid-cols-3 gap-3 w-full sm:w-auto">
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">RSVPs</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold mt-0.5">400 / 450</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Catering</span>
+<span class="font-title-sm text-title-sm text-primary font-semibold mt-0.5">6 Courses</span>
+</div>
+<div class="flex flex-col bg-surface p-2 rounded-lg min-w-[80px]">
+<span class="font-label-sm text-label-sm text-outline uppercase">Live Act</span>
+<span class="font-title-sm text-title-sm text-secondary font-semibold mt-0.5">Symphony</span>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end sm:self-center">
+<a class="inline-flex items-center gap-1 px-3.5 py-2 rounded-lg bg-surface text-primary font-title-sm text-title-sm hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors" href="#">
+<span>Manage</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface transition-colors" title="Event Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Add Ceremony Right-Side Slide-out Drawer Modal -->
+<div class="fixed inset-0 bg-inverse-surface/30 backdrop-blur-xs z-50 transition-opacity duration-300 opacity-0 pointer-events-none" id="addEventDrawerOverlay">
+<div class="flex justify-end h-full">
+<div class="w-full max-w-lg bg-surface-container-lowest h-full shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out overflow-y-auto" id="addEventDrawer">
+<!-- Drawer Header -->
+<div class="p-space-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest font-semibold">New Itinerary Entry</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-0.5">Add New Ceremony</h3>
+</div>
+<button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface transition-colors" id="closeAddEventBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Drawer Body Form -->
+<form class="p-space-lg flex flex-col gap-5 flex-1 overflow-y-auto">
+<!-- Preset Ceremony Chips -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface">Ceremony Type Preset</label>
+<div class="flex flex-wrap gap-1.5">
+<button class="preset-btn px-2.5 py-1 rounded-md bg-secondary-container/50 text-on-secondary-container font-label-md text-label-md hover:bg-secondary-container transition-colors" type="button">Haldi</button>
+<button class="preset-btn px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">Mehendi</button>
+<button class="preset-btn px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">Sangeet</button>
+<button class="preset-btn px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">Cocktail</button>
+<button class="preset-btn px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">Tilak</button>
+<button class="preset-btn px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">Chooda</button>
+<button class="preset-btn px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">Pheras/Wedding</button>
+<button class="preset-btn px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">Reception</button>
+<button class="preset-btn px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">Custom +</button>
+</div>
+</div>
+<!-- Event Name -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Event / Ceremony Name *</label>
+<input class="px-3.5 py-2 rounded-lg bg-surface text-body-md font-body-md text-on-surface focus:outline-none focus:ring-1.5 focus:ring-primary" placeholder="e.g. Sangeet &amp; Musical Night" type="text" value="Sangeet &amp; Cocktail"/>
+</div>
+<!-- Date & Time Row -->
+<div class="grid grid-cols-2 gap-3">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Date *</label>
+<input class="px-3 py-2 rounded-lg bg-surface text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1.5 focus:ring-primary" type="date" value="2027-12-13"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Start Time *</label>
+<input class="px-3 py-2 rounded-lg bg-surface text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1.5 focus:ring-primary" type="time" value="18:30"/>
+</div>
+</div>
+<!-- Venue & Location -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Venue &amp; Address *</label>
+<input class="px-3.5 py-2 rounded-lg bg-surface text-body-md font-body-md text-on-surface focus:outline-none focus:ring-1.5 focus:ring-primary" placeholder="e.g. Banquet Lawn, Rambagh Palace, Jaipur" type="text" value="The Grand Ballroom, Jai Mahal Palace, Jaipur"/>
+</div>
+<!-- Host Family & Anticipated Count -->
+<div class="grid grid-cols-2 gap-3">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Host Family</label>
+<select class="px-3 py-2 rounded-lg bg-surface text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1.5 focus:ring-primary">
+<option>Joint (Both Families)</option>
+<option>Bride's Family</option>
+<option>Groom's Family</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Expected Guests</label>
+<input class="px-3 py-2 rounded-lg bg-surface text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1.5 focus:ring-primary" placeholder="250" type="number" value="250"/>
+</div>
+</div>
+<!-- Dress Code / Theme -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Dress Code / Attire Theme</label>
+<input class="px-3.5 py-2 rounded-lg bg-surface text-body-md font-body-md text-on-surface focus:outline-none focus:ring-1.5 focus:ring-primary" placeholder="e.g. Royal Jewel Tones or Pastel Silk" type="text" value="Royal Velvet &amp; Contemporary Ethnic"/>
+</div>
+<!-- Notes / Description -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Brief Run-sheet Notes</label>
+<textarea class="px-3.5 py-2 rounded-lg bg-surface text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1.5 focus:ring-primary" placeholder="Add Panditji timings, stage setup cues, or special guest instructions..." rows="3">Choreographed dance entries commence at 8:00 PM followed by dinner banquet and DJ set.</textarea>
+</div>
+</form>
+<!-- Drawer Footer Actions -->
+<div class="p-space-lg bg-surface flex items-center justify-end gap-3">
+<button class="px-4 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-title-sm text-title-sm hover:bg-surface-container transition-colors" id="cancelDrawerBtn" type="button">
+            Cancel
+          </button>
+<button class="px-5 py-2 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm shadow-sm hover:bg-primary-container transition-colors" id="saveCeremonyBtn" type="button">
+            Save Ceremony
+          </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Simple interactive controls for drawer and UI toggles
+  (function() {
+    const openAddEventBtn = document.getElementById('openAddEventBtn');
+    const closeAddEventBtn = document.getElementById('closeAddEventBtn');
+    const cancelDrawerBtn = document.getElementById('cancelDrawerBtn');
+    const saveCeremonyBtn = document.getElementById('saveCeremonyBtn');
+    const overlay = document.getElementById('addEventDrawerOverlay');
+    const drawer = document.getElementById('addEventDrawer');
+
+    function openDrawer() {
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      overlay.classList.add('opacity-100');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+    }
+
+    function closeDrawer() {
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      overlay.classList.remove('opacity-100');
+      drawer.classList.add('translate-x-full');
+      drawer.classList.remove('translate-x-0');
+    }
+
+    if (openAddEventBtn) openAddEventBtn.addEventListener('click', openDrawer);
+    if (closeAddEventBtn) closeAddEventBtn.addEventListener('click', closeDrawer);
+    if (cancelDrawerBtn) cancelDrawerBtn.addEventListener('click', closeDrawer);
+    if (saveCeremonyBtn) {
+      saveCeremonyBtn.addEventListener('click', function() {
+        closeDrawer();
+      });
+    }
+
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeDrawer();
+    });
+
+    // Preset chip clicks
+    const presetBtns = document.querySelectorAll('.preset-btn');
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        presetBtns.forEach(b => {
+          b.classList.remove('bg-secondary-container/50', 'text-on-secondary-container');
+          b.classList.add('bg-surface-container', 'text-on-surface');
+        });
+        btn.classList.add('bg-secondary-container/50', 'text-on-secondary-container');
+        btn.classList.remove('bg-surface-container');
+      });
+    });
+
+    // Segmented tab active states
+    const tabs = document.querySelectorAll('.tab-pill');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => {
+          t.className = 'tab-pill px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all whitespace-nowrap';
+        });
+        tab.className = 'tab-pill px-3 py-1.5 rounded-lg text-label-md font-label-md bg-tertiary text-on-tertiary shadow-sm transition-all whitespace-nowrap';
+      });
+    });
+
+    // Simple search filtering
+    const searchInput = document.getElementById('eventSearch');
+    const cards = document.querySelectorAll('.event-card');
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase();
+        cards.forEach(card => {
+          const text = card.innerText.toLowerCase();
+          card.style.display = text.includes(query) ? '' : 'none';
+        });
+      });
+    }
+  })();
+</script></main></div></body></html>

@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<title>Expenses &amp; Budget — My Marriage</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container": "#f2ede4",
+            "on-surface": "#1c1c16",
+            "secondary-fixed": "#ffddb0",
+            "secondary-fixed-dim": "#e2c195",
+            "on-error": "#ffffff",
+            "surface-container-low": "#f7f3ea",
+            "primary": "#184539",
+            "background": "#fdf9f0",
+            "outline-variant": "#c0c8c4",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#594320",
+            "tertiary-fixed-dim": "#bcc9c5",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed-variant": "#3d4946",
+            "surface-variant": "#e6e2d9",
+            "on-primary-fixed-variant": "#224e42",
+            "error": "#ba1a1a",
+            "outline": "#717975",
+            "on-surface-variant": "#404845",
+            "on-secondary-container": "#785e39",
+            "tertiary-fixed": "#d8e5e1",
+            "surface-bright": "#fdf9f0",
+            "on-primary-fixed": "#002018",
+            "primary-container": "#315d50",
+            "surface-tint": "#3b6759",
+            "inverse-on-surface": "#f5f0e7",
+            "on-primary-container": "#a5d4c3",
+            "on-tertiary": "#ffffff",
+            "on-primary": "#ffffff",
+            "surface": "#fdf9f0",
+            "tertiary": "#34413d",
+            "on-secondary": "#ffffff",
+            "inverse-surface": "#32302b",
+            "secondary-container": "#fddaac",
+            "primary-fixed": "#bdeddb",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#a2d0c0",
+            "surface-container-highest": "#e6e2d9",
+            "inverse-primary": "#a2d0c0",
+            "on-tertiary-fixed": "#121e1b",
+            "on-secondary-fixed": "#281800",
+            "on-background": "#1c1c16",
+            "surface-container-high": "#ece8df",
+            "surface-dim": "#dddad1",
+            "on-tertiary-container": "#c0cdc9",
+            "secondary": "#735a35",
+            "tertiary-container": "#4b5854"
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {
+            "space-sm": "0.5rem",
+            "space-xl": "2.25rem",
+            "space-xs": "0.25rem",
+            "margin-mobile": "1.25rem",
+            "gutter-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "margin": "2.5rem",
+            "gutter": "1.5rem"
+          },
+          fontFamily: {
+            "title-sm": ["Manrope"],
+            "body-md": ["Manrope"],
+            "label-md": ["Manrope"],
+            "headline-lg": ["Newsreader", "serif"],
+            "headline-sm": ["Newsreader", "serif"],
+            "headline-md": ["Newsreader", "serif"],
+            "label-sm": ["Manrope"],
+            "display-lg-mobile": ["Newsreader", "serif"],
+            "body-sm": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "display-lg": ["Newsreader", "serif"],
+            "headline-lg-mobile": ["Newsreader", "serif"],
+            "title-md": ["Manrope"]
+          },
+          fontSize: {
+            "title-sm": ["0.9375rem", { lineHeight: "1.375rem", fontWeight: "600" }],
+            "body-md": ["0.9375rem", { lineHeight: "1.5rem", fontWeight: "400" }],
+            "label-md": ["0.8125rem", { lineHeight: "1rem", letterSpacing: "0.02em", fontWeight: "600" }],
+            "headline-lg": ["2.5rem", { lineHeight: "3rem", letterSpacing: "-0.02em", fontWeight: "400" }],
+            "headline-sm": ["1.25rem", { lineHeight: "1.75rem", fontWeight: "500" }],
+            "headline-md": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.01em", fontWeight: "500" }],
+            "label-sm": ["0.6875rem", { lineHeight: "0.875rem", letterSpacing: "0.04em", fontWeight: "600" }],
+            "display-lg-mobile": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.015em", fontWeight: "400" }],
+            "body-sm": ["0.8125rem", { lineHeight: "1.25rem", fontWeight: "400" }],
+            "body-lg": ["1.0625rem", { lineHeight: "1.65rem", fontWeight: "400" }],
+            "display-lg": ["3.5rem", { lineHeight: "4rem", letterSpacing: "-0.025em", fontWeight: "400" }],
+            "headline-lg-mobile": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "title-md": ["1.125rem", { lineHeight: "1.625rem", letterSpacing: "-0.01em", fontWeight: "600" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased">
+<!-- Fixed Left Sidebar Chrome -->
+<aside class="fixed left-0 top-0 h-screen w-60 bg-surface-container-low z-40 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)] overflow-y-auto">
+<div class="flex flex-col">
+<div class="h-16 px-space-md flex items-center gap-space-sm border-b border-surface-container/60">
+<img alt="Brand logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrB1p5bbW_ia-0CcvelP6FsrLa5Tb_VT2766jhd1rqFDUWLmHjC8r6BoWHy50idVcSUyQIGdYrSGppxXQWzTAXtXDYMUbBlzxx5UnBbkPnvmfhzHwCYtpf31zIUBcHhFV3DUZxk1g3gDcSgaJIp0H8cIFqXHtTraYbnOQFn-oxrmBoYAJ2eSg5Ubx24qm6u5a7FEP3i409reDexOtA5yJkz3ayvXO6OE5GKALi39zCZo"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-primary leading-none tracking-tight">My Marriage</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary mt-0.5">Workspace</span>
+</div>
+</div>
+<nav class="px-space-xs mt-space-sm flex flex-col gap-0.5">
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">grid_view</span>
+<span class="font-body-sm text-body-sm">Overview</span>
+</div>
+</a>
+<div class="flex flex-col">
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">calendar_month</span>
+<span class="font-body-sm text-body-sm">Events</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</a>
+<div class="ml-6 pl-2.5 flex flex-col gap-0.5">
+<a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" href="#">Haldi</a>
+<a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" href="#">Mehendi</a>
+<a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" href="#">Sangeet</a>
+<a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" href="#">Wedding</a>
+<a class="px-space-sm py-1 rounded text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors" href="#">Reception</a>
+</div>
+</div>
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">check_circle</span>
+<span class="font-body-sm text-body-sm">Tasks</span>
+</div>
+<span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">3 due</span>
+</a>
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">group</span>
+<span class="font-body-sm text-body-sm">Guests &amp; RSVP</span>
+</div>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm">126</span>
+</a>
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg bg-primary-container text-on-primary font-bold shadow-sm" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-on-primary">account_balance_wallet</span>
+<span class="font-body-sm text-body-sm text-on-primary">Expenses &amp; Budget</span>
+</div>
+<span class="px-1.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm">₹1.7L due</span>
+</a>
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">storefront</span>
+<span class="font-body-sm text-body-sm">Vendors</span>
+</div>
+</a>
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">language</span>
+<span class="font-body-sm text-body-sm">Wedding Website</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</a>
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">photo_library</span>
+<span class="font-body-sm text-body-sm">Photos &amp; QR Drive</span>
+</div>
+</a>
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">diversity_1</span>
+<span class="font-body-sm text-body-sm">Team &amp; Family</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">6</span>
+</a>
+<a class="group flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[19px] text-outline group-hover:text-primary transition-colors">tune</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</div>
+</a>
+</nav>
+</div>
+<div class="p-space-sm flex flex-col gap-space-sm bg-surface-container/60 rounded-xl m-space-xs">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cloud Vault</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">4.2 / 10 GB</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 42%"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2 overflow-hidden">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+</div>
+<div class="flex flex-col truncate">
+<span class="font-title-sm text-title-sm truncate text-on-surface leading-tight">Ananya Sharma</span>
+<span class="font-label-sm text-label-sm text-outline truncate">ananya@mymarriage.in</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right App Container -->
+<div class="pl-60">
+<!-- Top Nav Header -->
+<header class="fixed top-0 left-60 right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-30 flex items-center justify-between px-8 border-b border-surface-container">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-2 px-space-sm py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-primary text-[18px]">favorite</span>
+<span class="font-title-sm text-title-sm text-on-surface">Ananya &amp; Arjun — Jaipur 2027</span>
+<span class="material-symbols-outlined text-outline text-[16px]">unfold_more</span>
+</div>
+<a class="hidden xl:flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[16px]">link</span>
+<span>my-marriage.com/ananya-arjun</span>
+</a>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">search</span>
+<span class="font-body-sm text-body-sm hidden md:inline">Search</span>
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">⌘K</kbd>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-colors shadow-sm font-label-md text-label-md" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Quick Action</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="w-full pt-16 bg-surface min-h-screen">
+<!-- Interactive Prototype Switcher Bar (QA / Review Bar) -->
+<aside aria-label="Prototype state switcher" class="w-full bg-surface-container-high px-8 py-2 flex items-center justify-between sticky top-16 z-20 shadow-sm border-b border-surface-container">
+<div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline shrink-0 mr-1 flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[15px] text-secondary">tune</span>
+            State:
+          </span>
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-label-md text-label-md transition-all shadow-sm shrink-0" id="btn-state-main" onclick="setPrototypeState('main')">
+            Main List
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-add" onclick="setPrototypeState('add')">
+            Add Drawer
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-edit" onclick="setPrototypeState('edit')">
+            Edit Expense
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-validation" onclick="setPrototypeState('validation')">
+            Validation Errors
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-details" onclick="setPrototypeState('details')">
+            Details &amp; Ledger
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-payment-modal" onclick="setPrototypeState('payment-modal')">
+            Record Payment
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-reverse-modal" onclick="setPrototypeState('reverse-modal')">
+            Reverse Modal
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-fully-paid" onclick="setPrototypeState('fully-paid')">
+            Fully Paid
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-empty" onclick="setPrototypeState('empty')">
+            Empty State
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-no-results" onclick="setPrototypeState('no-results')">
+            No Results
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-archived" onclick="setPrototypeState('archived')">
+            Archived
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-loading" onclick="setPrototypeState('loading')">
+            Loading
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all shrink-0" id="btn-state-load-failed" onclick="setPrototypeState('load-failed')">
+            Load Failed
+          </button>
+</div>
+</aside>
+<!-- Symmetrical Content Wrapper (Identical to Vendors layout: max-w-7xl mx-auto px-8 py-8) -->
+<div class="w-full max-w-7xl mx-auto px-6 md:px-8 py-8 flex flex-col gap-6" id="main-content-canvas">
+<!-- ARCHIVED BANNER (Placed right under the header when archived) -->
+<div class="hidden w-full bg-secondary-fixed/40 border border-secondary-fixed-dim/60 rounded-xl px-5 py-3.5 items-center gap-3" id="archived-banner">
+<span class="material-symbols-outlined text-[22px] text-secondary shrink-0">inventory_2</span>
+<div class="flex-1 text-body-sm font-body-sm text-on-secondary-fixed-variant">
+<span class="font-semibold text-on-surface">This wedding is archived.</span> Expenses and payments can be viewed but not changed.
+          </div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-lowest text-secondary font-label-sm text-label-sm font-bold tracking-wider uppercase">Read Only</span>
+</div>
+<!-- Top Editorial Header & Add Expense CTA -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">
+                FINANCIAL LEDGER · JAIPUR 2027
+              </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+                INR (₹)
+              </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Expenses</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+              Track wedding costs, logged payments, and what's still due across ceremonies and vendors.
+            </p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<button class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container shadow-sm font-label-md text-label-md transition-all disabled:opacity-50 disabled:cursor-not-allowed" id="header-add-btn" onclick="openAddDrawer()" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>+ Add expense</span>
+</button>
+</div>
+</header>
+<!-- SKELETON LOADING VIEW (Hidden by default) -->
+<div class="hidden flex-col gap-6" id="state-loading-container">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-pulse">
+<div class="bg-surface-container-lowest rounded-xl p-6 h-36 flex flex-col justify-between">
+<div class="h-4 bg-surface-container-high rounded w-28"></div>
+<div class="h-8 bg-surface-container-high rounded w-44"></div>
+<div class="h-3 bg-surface-container-high rounded w-32"></div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 h-36 flex flex-col justify-between">
+<div class="h-4 bg-surface-container-high rounded w-28"></div>
+<div class="h-8 bg-surface-container-high rounded w-44"></div>
+<div class="h-3 bg-surface-container-high rounded w-32"></div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 h-36 flex flex-col justify-between">
+<div class="h-4 bg-surface-container-high rounded w-28"></div>
+<div class="h-8 bg-surface-container-high rounded w-44"></div>
+<div class="h-3 bg-surface-container-high rounded w-32"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col gap-4 animate-pulse">
+<div class="h-10 bg-surface-container-high rounded w-full"></div>
+<div class="h-12 bg-surface-container-high/60 rounded w-full"></div>
+<div class="h-12 bg-surface-container-high/60 rounded w-full"></div>
+<div class="h-12 bg-surface-container-high/60 rounded w-full"></div>
+</div>
+</div>
+<!-- LOAD FAILED VIEW (Hidden by default) -->
+<div class="hidden bg-surface-container-lowest rounded-xl p-12 text-center flex-col items-center justify-center gap-3 shadow-sm border border-surface-container" id="state-load-failed-container">
+<div class="w-14 h-14 rounded-full bg-error-container text-on-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]">cloud_off</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">We couldn't load your expenses</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+            There was a temporary problem retrieving your ledger data. Please check your connection and try again.
+          </p>
+<button class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md transition-all shadow-sm" onclick="setPrototypeState('main')" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Retry</span>
+</button>
+</div>
+<!-- 3 Plain-Language Financial Summary Cards -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6" id="summary-cards-section">
+<!-- Card 1: Total Recorded -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-surface-container/60 flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Total recorded</span>
+<span class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</span>
+</div>
+<div class="mt-4 flex flex-col">
+<div class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-serif">₹2,95,000</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1">Across 4 expenses</span>
+</div>
+</article>
+<!-- Card 2: Total Paid -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-surface-container/60 flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Total paid</span>
+<span class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+</span>
+</div>
+<div class="mt-4 flex flex-col">
+<div class="flex items-baseline justify-between">
+<span class="font-headline-lg text-headline-lg text-primary tracking-tight font-serif">₹1,25,000</span>
+<span class="font-label-sm text-label-sm font-semibold text-primary">42% of recorded</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 42.3%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1.5">Across recorded payments</span>
+</div>
+</article>
+<!-- Card 3: Outstanding -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-surface-container/60 flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Outstanding</span>
+<span class="w-8 h-8 rounded-lg bg-secondary-container/30 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">pending_actions</span>
+</span>
+</div>
+<div class="mt-4 flex flex-col">
+<div class="flex items-baseline justify-between">
+<span class="font-headline-lg text-headline-lg text-secondary tracking-tight font-serif">₹1,70,000</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  1 expense overdue
+                </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1.5">Pending payments to vendors</span>
+</div>
+</article>
+</section>
+<!-- Toolbar & Filter Area -->
+<section class="bg-surface-container-lowest rounded-xl p-4 shadow-sm border border-surface-container/60 flex flex-col gap-3.5" id="filters-toolbar-section">
+<!-- Top Row: Search & Dropdowns -->
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+<!-- Search bar -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="w-full pl-9 pr-4 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest border-0 transition-all" id="expense-search" oninput="handleSearch(this.value)" placeholder="Search expenses by title, category, vendor..." type="text"/>
+</div>
+<!-- Filter Dropdowns & Sort -->
+<div class="flex flex-wrap items-center gap-2">
+<select class="px-3 py-2 bg-surface-container-low hover:bg-surface-container rounded-lg text-on-surface text-body-sm font-body-sm border-0 focus:ring-1 focus:ring-primary cursor-pointer">
+<option>All Categories (4)</option>
+<option>Photography &amp; Videography</option>
+<option>Catering &amp; Food</option>
+<option>Decoration &amp; Floral</option>
+<option>Makeup &amp; Mehendi</option>
+</select>
+<select class="px-3 py-2 bg-surface-container-low hover:bg-surface-container rounded-lg text-on-surface text-body-sm font-body-sm border-0 focus:ring-1 focus:ring-primary cursor-pointer">
+<option>All Events</option>
+<option>Haldi</option>
+<option>Mehendi</option>
+<option>Wedding</option>
+<option>Reception</option>
+</select>
+<select class="px-3 py-2 bg-surface-container-low hover:bg-surface-container rounded-lg text-on-surface text-body-sm font-body-sm border-0 focus:ring-1 focus:ring-primary cursor-pointer">
+<option>All Vendors</option>
+<option>The Marigold Studio</option>
+<option>Saffron Table Catering</option>
+<option>Royal Bloom Decor</option>
+<option>Meera Bridal Artistry</option>
+</select>
+<!-- Sort dropdown -->
+<select class="px-3 py-2 bg-surface-container-low hover:bg-surface-container rounded-lg text-on-surface text-body-sm font-body-sm border-0 focus:ring-1 focus:ring-primary cursor-pointer font-medium">
+<option selected="">Sort: Due date</option>
+<option>Sort: Amount (high to low)</option>
+<option>Sort: Amount (low to high)</option>
+<option>Sort: Recently added</option>
+</select>
+<button class="px-2.5 py-1.5 text-primary hover:underline font-label-md text-label-md transition-colors whitespace-nowrap" onclick="resetFilters()" type="button">
+                Clear filters
+              </button>
+</div>
+</div>
+<!-- Bottom Row: Status Pills -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1 border-t border-surface-container/60">
+<div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+<button class="px-3 py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold shadow-sm shrink-0" type="button">
+                All (4)
+              </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-semibold transition-colors shrink-0" type="button">
+                Unpaid (1)
+              </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-semibold transition-colors shrink-0" type="button">
+                Partially paid (1)
+              </button>
+<button class="px-3 py-1 rounded-full bg-error-container/70 text-on-error-container font-label-sm text-label-sm font-semibold transition-colors shrink-0 flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                Overdue (1)
+              </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-semibold transition-colors shrink-0" type="button">
+                Paid (1)
+              </button>
+</div>
+<div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+<span class="font-body-sm text-body-sm text-outline">Showing 4 expenses · Total ₹2,95,000</span>
+</div>
+</div>
+</section>
+<!-- Main Table Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-surface-container/60 overflow-hidden flex flex-col" id="expense-table-container">
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-outline font-label-sm text-label-sm uppercase tracking-wider border-b border-surface-container">
+<th class="py-3.5 pl-6 pr-4 font-semibold text-on-surface-variant" scope="col">Expense &amp; Category</th>
+<th class="py-3.5 px-4 font-semibold text-on-surface-variant" scope="col">Ceremony / Event</th>
+<th class="py-3.5 px-4 font-semibold text-on-surface-variant" scope="col">Vendor Partner</th>
+<th class="py-3.5 px-4 font-semibold text-on-surface-variant text-right" scope="col">Total Amount</th>
+<th class="py-3.5 px-4 font-semibold text-on-surface-variant text-right" scope="col">Paid</th>
+<th class="py-3.5 px-4 font-semibold text-on-surface-variant text-right" scope="col">Outstanding</th>
+<th class="py-3.5 px-4 font-semibold text-on-surface-variant text-center" scope="col">Status</th>
+<th class="py-3.5 pl-4 pr-6 font-semibold text-on-surface-variant text-right" scope="col">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y divide-surface-container" id="expense-table-rows">
+<!-- Row 1: Photography Package (Partially Paid) -->
+<tr class="cursor-pointer hover:bg-surface-container-low/60 transition-colors group" onclick="openDrawer('marigold')">
+<td class="py-4 pl-6 pr-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">photo_camera</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
+                          Wedding photography package
+                        </span>
+<span class="font-body-sm text-body-sm text-outline">Photography &amp; Videography</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-fixed/40 text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      Wedding
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">storefront</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">The Marigold Studio</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-title-sm text-title-sm text-on-surface whitespace-nowrap">
+                    ₹80,000
+                  </td>
+<td class="py-4 px-4 text-right font-body-sm text-body-sm text-primary font-medium whitespace-nowrap">
+                    ₹30,000
+                  </td>
+<td class="py-4 px-4 text-right font-body-sm text-body-sm text-secondary font-semibold whitespace-nowrap">
+                    ₹50,000
+                  </td>
+<td class="py-4 px-4 text-center whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/50 text-on-secondary-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Partially paid
+                    </span>
+<div class="font-label-sm text-label-sm text-outline mt-0.5">Due: 10 Feb 2027</div>
+</td>
+<td class="py-4 pl-4 pr-6 text-right whitespace-nowrap" onclick="event.stopPropagation()">
+<button class="px-2.5 py-1 rounded-md text-primary hover:bg-surface-container font-label-md text-label-md transition-colors" onclick="openDrawer('marigold')" type="button">
+                      View details
+                    </button>
+</td>
+</tr>
+<!-- Row 2: Wedding Catering (OVERDUE) -->
+<tr class="cursor-pointer hover:bg-surface-container-low/60 transition-colors group bg-error-container/10" onclick="openDrawer('catering')">
+<td class="py-4 pl-6 pr-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-error-container/40 flex items-center justify-center text-error shrink-0">
+<span class="material-symbols-outlined text-[20px]">restaurant</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
+                          Wedding catering
+                        </span>
+<span class="font-body-sm text-body-sm text-outline">Catering</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-fixed/40 text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      Wedding
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">storefront</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Saffron Table Catering</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-title-sm text-title-sm text-on-surface whitespace-nowrap">
+                    ₹1,50,000
+                  </td>
+<td class="py-4 px-4 text-right font-body-sm text-body-sm text-primary font-medium whitespace-nowrap">
+                    ₹50,000
+                  </td>
+<td class="py-4 px-4 text-right font-body-sm text-body-sm text-error font-semibold whitespace-nowrap">
+                    ₹1,00,000
+                  </td>
+<td class="py-4 px-4 text-center whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+                      Overdue
+                    </span>
+<div class="font-label-sm text-label-sm text-error font-medium mt-0.5">Due: 5 Jan 2027</div>
+</td>
+<td class="py-4 pl-4 pr-6 text-right whitespace-nowrap" onclick="event.stopPropagation()">
+<button class="px-2.5 py-1 rounded-md text-primary hover:bg-surface-container font-label-md text-label-md transition-colors" onclick="openDrawer('catering')" type="button">
+                      View details
+                    </button>
+</td>
+</tr>
+<!-- Row 3: Haldi Decor (PAID - no "Completed" subtext) -->
+<tr class="cursor-pointer hover:bg-surface-container-low/60 transition-colors group" onclick="openDrawer('haldi')">
+<td class="py-4 pl-6 pr-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]">local_florist</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
+                          Haldi decoration
+                        </span>
+<span class="font-body-sm text-body-sm text-outline">Decoration</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Haldi
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">storefront</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Royal Bloom Decor</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-title-sm text-title-sm text-on-surface whitespace-nowrap">
+                    ₹45,000
+                  </td>
+<td class="py-4 px-4 text-right font-body-sm text-body-sm text-primary font-medium whitespace-nowrap">
+                    ₹45,000
+                  </td>
+<td class="py-4 px-4 text-right font-body-sm text-body-sm text-outline whitespace-nowrap">
+                    ₹0
+                  </td>
+<td class="py-4 px-4 text-center whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-fixed/50 text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                      Paid
+                    </span>
+</td>
+<td class="py-4 pl-4 pr-6 text-right whitespace-nowrap" onclick="event.stopPropagation()">
+<button class="px-2.5 py-1 rounded-md text-primary hover:bg-surface-container font-label-md text-label-md transition-colors" onclick="openDrawer('haldi')" type="button">
+                      View details
+                    </button>
+</td>
+</tr>
+<!-- Row 4: Mehendi Artist (UNPAID - No due date) -->
+<tr class="cursor-pointer hover:bg-surface-container-low/60 transition-colors group" onclick="openDrawer('mehendi')">
+<td class="py-4 pl-6 pr-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">brush</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
+                          Mehendi artist booking
+                        </span>
+<span class="font-body-sm text-body-sm text-outline">Makeup &amp; Mehendi</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-fixed/60 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                      Mehendi
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">storefront</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Meera Bridal Artistry</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-title-sm text-title-sm text-on-surface whitespace-nowrap">
+                    ₹20,000
+                  </td>
+<td class="py-4 px-4 text-right font-body-sm text-body-sm text-outline whitespace-nowrap">
+                    ₹0
+                  </td>
+<td class="py-4 px-4 text-right font-body-sm text-body-sm text-secondary font-semibold whitespace-nowrap">
+                    ₹20,000
+                  </td>
+<td class="py-4 px-4 text-center whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                      Unpaid
+                    </span>
+<div class="font-label-sm text-label-sm text-outline mt-0.5">No due date</div>
+</td>
+<td class="py-4 pl-4 pr-6 text-right whitespace-nowrap" onclick="event.stopPropagation()">
+<button class="px-2.5 py-1 rounded-md text-primary hover:bg-surface-container font-label-md text-label-md transition-colors" onclick="openDrawer('mehendi')" type="button">
+                      View details
+                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="px-6 py-3 bg-surface-container-low/40 border-t border-surface-container flex items-center justify-between text-body-sm font-body-sm text-outline">
+<span>Showing 1 to 4 of 4 total expenses</span>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded text-outline/50 cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<span class="px-2.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm font-bold">1</span>
+<button class="p-1 rounded text-outline/50 cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- EMPTY STATE (No expenses logged yet - cards & toolbar hidden completely) -->
+<div class="hidden bg-surface-container-lowest rounded-2xl p-12 text-center flex-col items-center justify-center gap-4 shadow-sm border border-surface-container/60 my-6" id="state-empty-container">
+<div class="w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[32px]">receipt_long</span>
+</div>
+<div class="flex flex-col items-center max-w-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Start tracking your wedding expenses</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1.5">
+              Keep all your wedding costs and payments organized in one place. Add an expense now and record payments as they happen.
+            </p>
+</div>
+<button class="mt-2 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md transition-all shadow-sm" onclick="openAddDrawer()" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>+ Add your first expense</span>
+</button>
+<span class="text-label-sm font-label-sm text-outline">You can link expenses to an event or vendor later.</span>
+</div>
+<!-- FILTER NO RESULTS (Cards & filters retained, table replaced) -->
+<div class="hidden bg-surface-container-lowest rounded-xl p-12 text-center flex-col items-center justify-center gap-3 shadow-sm border border-surface-container/60" id="state-no-results-container">
+<div class="w-14 h-14 rounded-full bg-surface-container-low flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[28px]">search_off</span>
+</div>
+<div class="flex flex-col items-center max-w-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">No matching expenses</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+              Try another search or adjust your filters.
+            </p>
+</div>
+<button class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high font-label-md text-label-md transition-all" onclick="resetFilters()" type="button">
+<span>Clear filters</span>
+</button>
+</div>
+<!-- Confidentiality Guarantee Card -->
+<footer class="bg-surface-container-low/70 rounded-xl p-space-md border border-surface-container flex flex-col sm:flex-row sm:items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Organizer Privacy Guarantee</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              All wedding expense ledgers, payment histories, and receipt records are strictly private to authorized wedding organizers. They are never published or accessible on the public wedding website.
+            </p>
+</div>
+</footer>
+</div>
+</main>
+</div>
+<!-- SLIDE-OVER DRAWER: EXPENSE DETAILS & PAYMENT LEDGER (Overlaid on screen) -->
+<div class="fixed inset-0 z-50 overflow-hidden hidden" id="details-drawer-root">
+<!-- Backdrop -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-xs transition-opacity duration-300" onclick="closeDrawer()"></div>
+<div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+<aside class="w-screen max-w-lg bg-surface-container-lowest shadow-2xl flex flex-col justify-between transform transition-transform ease-in-out duration-300 translate-x-0">
+<!-- Header -->
+<div class="px-6 py-5 bg-surface-container-low border-b border-surface-container flex flex-col gap-1 shrink-0">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">EXPENSE DETAILS</span>
+<button class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="closeDrawer()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mt-1 leading-tight font-serif" id="drawer-title">
+            Wedding photography package
+          </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 flex-wrap" id="drawer-meta">
+<span>Photography &amp; Videography</span>
+<span>•</span>
+<span class="text-primary font-medium">The Marigold Studio</span>
+<span>•</span>
+<span class="px-2 py-0.2 rounded-full bg-primary-fixed/40 text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">Wedding</span>
+</p>
+</div>
+<!-- Drawer Body (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6" id="drawer-body-content">
+<!-- Fully paid banner (shown conditionally in "fully-paid" state) -->
+<div class="hidden p-3.5 rounded-xl bg-primary-fixed/40 border border-primary/20 items-center gap-2.5 text-on-primary-fixed-variant" id="fully-paid-banner">
+<span class="material-symbols-outlined text-[20px] text-primary">check_circle</span>
+<span class="font-title-sm text-title-sm font-semibold">Paid in full</span>
+</div>
+<!-- Financial Snapshot Container -->
+<section class="bg-surface-container-low/70 rounded-xl p-4 flex flex-col gap-3 border border-surface-container">
+<div class="grid grid-cols-3 gap-2 text-center pb-3 border-b border-surface-container">
+<div class="flex flex-col items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Total</span>
+<span class="font-title-md text-title-md text-on-surface font-bold mt-0.5" id="drawer-stat-total">₹80,000</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">Paid</span>
+<span class="font-title-md text-title-md text-primary font-bold mt-0.5" id="drawer-stat-paid">₹30,000</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Outstanding</span>
+<span class="font-title-md text-title-md text-secondary font-bold mt-0.5" id="drawer-stat-outstanding">₹50,000</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-body-sm text-body-sm text-outline">Settlement status</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/60 text-on-secondary-container font-label-sm text-label-sm font-bold" id="drawer-status-pill">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Partially paid
+              </span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-outline">Payment due date</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium" id="drawer-stat-due">10 Feb 2027</span>
+</div>
+</section>
+<!-- Private Notes -->
+<section class="flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Private organizer notes</span>
+<div class="p-3.5 rounded-lg bg-surface-container-low text-body-sm font-body-sm text-on-surface leading-relaxed">
+              Covers 3 drone cinematographers and 4 candid shooters across Haldi, Sangeet &amp; Pheras. Raw rushes to be delivered within 14 days of reception.
+            </div>
+</section>
+<!-- Receipts & Invoices Attachment -->
+<section class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Receipts &amp; attachments (1)</span>
+<button class="text-primary hover:underline font-label-sm text-label-sm font-semibold flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">upload_file</span>
+                Upload
+              </button>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low border border-surface-container flex items-center justify-between group hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-3 truncate">
+<span class="w-8 h-8 rounded bg-primary-fixed/40 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">description</span>
+</span>
+<div class="flex flex-col truncate">
+<span class="font-body-sm text-body-sm text-on-surface font-medium truncate">marigold-quote.pdf</span>
+<span class="font-label-sm text-label-sm text-outline">1.2 MB · Uploaded 1 Dec 2026</span>
+</div>
+</div>
+<div class="flex items-center gap-1 shrink-0">
+<button class="p-1.5 text-outline hover:text-on-surface transition-colors" title="Download" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Payment History Ledger Section -->
+<section class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-title-sm text-title-sm text-on-surface font-bold">Payment history</h3>
+<span class="font-label-sm text-label-sm text-outline">Manual recordings outside My Marriage</span>
+</div>
+<button class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-sm text-label-sm font-semibold transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" id="drawer-record-pay-btn" onclick="openPaymentModal()" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>+ Record payment</span>
+</button>
+</div>
+<!-- Disabled message if fully paid -->
+<p class="hidden font-body-sm text-body-sm text-outline italic text-[12px]" id="drawer-pay-disabled-msg">
+              Nothing left to pay. Total amount is fully settled.
+            </p>
+<!-- Payment Records List -->
+<div class="flex flex-col gap-2.5" id="details-payment-records">
+<!-- Item 1: Tranche 2 -->
+<div class="p-3.5 rounded-lg bg-surface-container-low border border-surface-container flex flex-col gap-2 relative">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[14px]">done</span>
+</span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">₹20,000</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Cash</span>
+</div>
+<button class="drawer-reverse-btn text-outline hover:text-error font-label-sm text-label-sm underline transition-colors" onclick="openReverseModal('20000', 'Cash', '5 Dec 2026')" type="button">
+                    Reverse
+                  </button>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-outline text-[12px]">
+<span>5 Dec 2026</span>
+<span>Recorded by Ananya</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-[13px] italic">
+                  "Advance paid at studio during selection session."
+                </p>
+</div>
+<!-- Item 2: Tranche 1 -->
+<div class="p-3.5 rounded-lg bg-surface-container-low border border-surface-container flex flex-col gap-2 relative">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[14px]">done</span>
+</span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">₹10,000</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Bank transfer</span>
+</div>
+<button class="drawer-reverse-btn text-outline hover:text-error font-label-sm text-label-sm underline transition-colors" onclick="openReverseModal('10000', 'Bank transfer', '1 Dec 2026')" type="button">
+                    Reverse
+                  </button>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-outline text-[12px]">
+<span>1 Dec 2026</span>
+<span>Recorded by Arjun</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-[13px] italic">
+                  "Initial booking token to lock wedding date."
+                </p>
+</div>
+<!-- Item 3: Reversal audit row -->
+<div class="p-3.5 rounded-lg bg-surface-container border border-dashed border-outline-variant flex flex-col gap-1.5 opacity-85">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-surface-container-high text-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[14px]">undo</span>
+</span>
+<span class="font-title-sm text-title-sm text-outline font-medium line-through">₹10,000</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-outline font-label-sm text-label-sm">Reversal</span>
+</div>
+<span class="text-error font-label-sm text-label-sm font-semibold">−₹10,000</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-outline text-[12px]">
+<span>Reversal of 1 Dec payment</span>
+<span>Recorded by Ananya</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline text-[12px] italic">
+                  "Duplicate entry reversed during bank reconciliation."
+                </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Strict Footer: strictly "Close" and "Edit expense" -->
+<div class="px-6 py-4 bg-surface-container-low border-t border-surface-container flex items-center justify-between shrink-0">
+<button class="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="closeDrawer()" type="button">
+            Close
+          </button>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md transition-all shadow-sm" id="drawer-edit-btn" onclick="openEditDrawer()" type="button">
+            Edit expense
+          </button>
+</div>
+</aside>
+</div>
+</div>
+<!-- SLIDE-OVER DRAWER: ADD / EDIT EXPENSE DRAWER -->
+<div class="fixed inset-0 z-50 overflow-hidden hidden" id="add-drawer-root">
+<!-- Backdrop -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-xs transition-opacity duration-300" onclick="closeAddDrawer()"></div>
+<div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+<aside class="w-screen max-w-lg bg-surface-container-lowest shadow-2xl flex flex-col justify-between transform transition-transform ease-in-out duration-300 translate-x-0">
+<!-- Header -->
+<div class="px-6 py-5 bg-surface-container-low border-b border-surface-container flex items-center justify-between shrink-0">
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface leading-tight font-serif" id="form-drawer-title">Add expense</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="form-drawer-subtitle">
+              Record a wedding cost. You can add payments later.
+            </p>
+</div>
+<button class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors" onclick="closeAddDrawer()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Form Body (Scrollable, proper ordering & tags) -->
+<div class="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-4">
+<!-- Inline warning for Edit Mode -->
+<div class="hidden p-3 rounded-lg bg-secondary-container/40 border border-secondary text-on-secondary-container flex items-start gap-2 text-body-sm font-body-sm" id="edit-inline-warning">
+<span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5">info</span>
+<span>Total can't be less than the ₹30,000 already paid.</span>
+</div>
+<!-- 1. Expense Name * (Required) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="input-expense-name">
+                Expense name <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-outline">Required</span>
+</div>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none transition-colors" id="input-expense-name" placeholder="e.g. Wedding photography package" type="text" value=""/>
+<span class="hidden text-error font-label-sm text-label-sm mt-0.5" id="err-expense-name">Enter an expense name.</span>
+</div>
+<!-- 2. Category * (Required) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="select-category">
+                Category <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-outline">Required</span>
+</div>
+<select class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none transition-colors" id="select-category" onchange="checkCustomCategory(this.value)">
+<option disabled="" selected="" value="">Select a category...</option>
+<option value="Venue">Venue</option>
+<option value="Catering">Catering</option>
+<option value="Photography &amp; Videography">Photography &amp; Videography</option>
+<option value="Decoration">Decoration</option>
+<option value="Makeup &amp; Mehendi">Makeup &amp; Mehendi</option>
+<option value="Music &amp; Entertainment">Music &amp; Entertainment</option>
+<option value="Clothing &amp; Jewellery">Clothing &amp; Jewellery</option>
+<option value="Transportation">Transportation</option>
+<option value="Accommodation">Accommodation</option>
+<option value="Gifts">Gifts</option>
+<option value="Other">Other</option>
+</select>
+<span class="hidden text-error font-label-sm text-label-sm mt-0.5" id="err-category">Choose a category.</span>
+<!-- Inline Custom Category Field -->
+<div class="hidden flex-col gap-1 mt-2" id="custom-category-box">
+<label class="font-label-sm text-label-sm text-outline font-semibold">Custom category name *</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-sm font-body-sm text-on-surface placeholder:text-outline border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none" placeholder="e.g. Vintage Car Rental" type="text"/>
+</div>
+</div>
+<!-- 3. Total amount (₹) * (Required) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="input-amount">
+                Total amount (₹) <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-outline">Required</span>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-outline">₹</span>
+<input class="w-full pl-8 pr-4 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none transition-colors" id="input-amount" placeholder="80,000" type="number"/>
+</div>
+<span class="hidden text-error font-label-sm text-label-sm mt-0.5" id="err-amount">Enter an amount greater than ₹0.</span>
+</div>
+<!-- 4. Event (Optional) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="select-event">
+                Event
+              </label>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</div>
+<select class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none" id="select-event">
+<option selected="" value="">General / No event</option>
+<option value="Haldi">Haldi</option>
+<option value="Mehendi">Mehendi</option>
+<option value="Sangeet">Sangeet</option>
+<option value="Wedding">Wedding</option>
+<option value="Reception">Reception</option>
+</select>
+</div>
+<!-- 5. Vendor (Optional) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="select-vendor">
+                Vendor
+              </label>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</div>
+<select class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none" id="select-vendor">
+<option selected="" value="">No vendor</option>
+<option value="The Marigold Studio">The Marigold Studio</option>
+<option value="Royal Bloom Decor">Royal Bloom Decor</option>
+<option value="Saffron Table Catering">Saffron Table Catering</option>
+<option value="Rhythm Collective">Rhythm Collective</option>
+<option value="Meera Bridal Artistry">Meera Bridal Artistry</option>
+<option value="Cityline Guest Travel">Cityline Guest Travel</option>
+</select>
+</div>
+<!-- 6. Payment due date (Optional) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="input-due-date">
+                Payment due date
+              </label>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</div>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none" id="input-due-date" type="date"/>
+</div>
+<!-- 7. Notes (Optional) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="textarea-notes">
+                Notes
+              </label>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</div>
+<textarea class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none" id="textarea-notes" placeholder="Private notes for organizers..." rows="3"></textarea>
+<span class="font-label-sm text-label-sm text-outline">Private notes for organizers</span>
+</div>
+<!-- 8. Receipt (Optional) -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Receipt</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-surface-container flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-outline">Attach receipt — PDF, JPG or PNG, up to 10 MB</span>
+<button class="font-label-sm text-label-sm text-primary font-semibold hover:underline" type="button">Upload</button>
+</div>
+<!-- Attached File Display -->
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border border-surface-container flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">description</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">marigold-quote.pdf</span>
+</div>
+<button class="font-label-sm text-label-sm text-error hover:underline" type="button">Remove</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer: Cancel & Save -->
+<div class="px-6 py-4 bg-surface-container-low border-t border-surface-container flex items-center justify-end gap-3 shrink-0">
+<button class="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="closeAddDrawer()" type="button">
+            Cancel
+          </button>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md transition-all shadow-sm" id="form-submit-btn" onclick="closeAddDrawer()" type="button">
+            Save expense
+          </button>
+</div>
+</aside>
+</div>
+</div>
+<!-- MODAL: RECORD PAYMENT DIALOG -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-xs hidden items-center justify-center p-4 overflow-y-auto" id="payment-modal-root">
+<div class="w-full max-w-lg bg-surface-container-lowest rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
+<!-- Modal Header -->
+<div class="px-6 py-4 bg-surface-container-low border-b border-surface-container flex items-center justify-between">
+<div class="flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold font-serif">Record payment</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">This records money already paid outside My Marriage.</p>
+</div>
+<button class="p-1 rounded-lg text-outline hover:text-on-surface transition-colors" onclick="closePaymentModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="px-6 py-5 flex flex-col gap-4">
+<!-- Outstanding context banner -->
+<div class="p-3 rounded-lg bg-secondary-container/30 border border-secondary-container flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-secondary-container font-medium">Outstanding:</span>
+<span class="font-title-sm text-title-sm text-secondary font-bold">₹50,000</span>
+</div>
+<!-- Amount Paid * (Required) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="pay-amount-input">
+              Amount paid (₹) <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-outline">Required</span>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-outline">₹</span>
+<input class="w-full pl-8 pr-4 py-2 bg-surface-container-low rounded-lg text-title-sm font-title-sm text-on-surface focus:bg-surface-container-lowest focus:outline-none border border-transparent focus:border-primary" id="pay-amount-input" oninput="checkPaymentAmount(this.value)" type="number" value="20000"/>
+</div>
+<span class="hidden text-error font-label-sm text-label-sm mt-0.5" id="pay-amount-error">Amount can't be more than the outstanding ₹50,000.</span>
+</div>
+<!-- Payment Date * (Required) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="pay-date-input">
+              Payment date <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-outline">Required</span>
+</div>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface focus:bg-surface-container-lowest focus:outline-none border border-transparent focus:border-primary" id="pay-date-input" type="date" value="2027-01-12"/>
+</div>
+<!-- Payment Method (Optional) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="pay-method-select">
+              Payment method
+            </label>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</div>
+<select class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface focus:bg-surface-container-lowest focus:outline-none border border-transparent focus:border-primary" id="pay-method-select">
+<option>Cash</option>
+<option selected="">Bank transfer</option>
+<option>Card</option>
+<option>Cheque</option>
+<option>Other</option>
+</select>
+</div>
+<!-- Note (Optional) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="pay-note-input">
+              Note
+            </label>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</div>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none border border-transparent focus:border-primary" id="pay-note-input" placeholder="e.g. UTR / Cheque reference or memo" type="text" value="Second tranche released against milestone review"/>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-6 py-4 bg-surface-container-low border-t border-surface-container flex items-center justify-end gap-3">
+<button class="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="closePaymentModal()" type="button">
+          Cancel
+        </button>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md transition-all shadow-sm" onclick="closePaymentModal()" type="button">
+          Record payment
+        </button>
+</div>
+</div>
+</div>
+<!-- MODAL: PAYMENT REVERSAL CONFIRMATION -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-xs hidden items-center justify-center p-4 overflow-y-auto" id="reverse-modal-root">
+<div class="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
+<div class="px-6 py-5 flex items-start gap-3">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">undo</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-title-md text-title-md text-on-surface font-bold font-serif" id="reversal-modal-title">Reverse this payment?</h3>
+<p class="font-body-sm text-body-sm text-outline mt-1 font-medium" id="reversal-modal-details">
+            ₹10,000 · Bank transfer · 1 Dec 2026
+          </p>
+<div class="mt-3 p-3 rounded-lg bg-surface-container-low border border-surface-container flex flex-col gap-1 text-body-sm font-body-sm text-on-surface">
+<span class="font-semibold text-secondary" id="reversal-modal-effect">Paid goes from ₹30,000 to ₹20,000 · Outstanding from ₹50,000 to ₹60,000</span>
+<span class="text-outline text-[12px] mt-0.5">The original payment stays in the history, with a reversal entry next to it.</span>
+</div>
+</div>
+</div>
+<div class="px-6 pb-4">
+<label class="font-label-sm text-label-sm text-on-surface font-semibold">Reason for reversal (Optional)</label>
+<input class="w-full px-3 py-2 mt-1 bg-surface-container-low rounded-lg text-body-sm font-body-sm text-on-surface border border-transparent focus:border-primary focus:bg-surface-container-lowest focus:outline-none" placeholder="e.g. Cheque returned, entered twice, or refund received" type="text"/>
+</div>
+<div class="px-6 py-3.5 bg-surface-container-low border-t border-surface-container flex items-center justify-end gap-2.5">
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="closeReverseModal()" type="button">
+          Cancel
+        </button>
+<button class="px-3.5 py-1.5 rounded-lg bg-error text-on-error hover:bg-on-error-container font-label-md text-label-md transition-colors shadow-sm" onclick="closeReverseModal()" type="button">
+          Reverse payment
+        </button>
+</div>
+</div>
+</div>
+<!-- Vanilla JavaScript for 100% interactive Prototype Switcher -->
+<script>
+    let isArchived = false;
+
+    function setPrototypeState(state) {
+      // 1. Highlight active switcher tab
+      const stateButtons = [
+        'btn-state-main', 'btn-state-add', 'btn-state-edit', 'btn-state-validation',
+        'btn-state-details', 'btn-state-payment-modal', 'btn-state-reverse-modal',
+        'btn-state-fully-paid', 'btn-state-empty', 'btn-state-no-results',
+        'btn-state-archived', 'btn-state-loading', 'btn-state-load-failed'
+      ];
+      stateButtons.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+          btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+          btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+        }
+      });
+
+      const currentBtn = document.getElementById('btn-state-' + state);
+      if (currentBtn) {
+        currentBtn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        currentBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+      }
+
+      // 2. Reset base elements visibility
+      document.getElementById('summary-cards-section').classList.remove('hidden');
+      document.getElementById('filters-toolbar-section').classList.remove('hidden');
+      document.getElementById('expense-table-container').classList.remove('hidden');
+      document.getElementById('state-empty-container').classList.add('hidden');
+      document.getElementById('state-no-results-container').classList.add('hidden');
+      document.getElementById('state-loading-container').classList.add('hidden');
+      document.getElementById('state-load-failed-container').classList.add('hidden');
+      document.getElementById('archived-banner').classList.add('hidden');
+      document.getElementById('archived-banner').classList.remove('flex');
+      
+      const headerAddBtn = document.getElementById('header-add-btn');
+      headerAddBtn.disabled = false;
+      isArchived = false;
+
+      // Close all overlays first
+      closeDrawer();
+      closeAddDrawer();
+      closePaymentModal();
+      closeReverseModal();
+
+      // State specific logic
+      if (state === 'main') {
+        // Default list view with 4 rows and Overdue catering
+      } else if (state === 'add') {
+        openAddDrawer();
+      } else if (state === 'edit') {
+        openEditDrawer();
+      } else if (state === 'validation') {
+        openValidationDrawer();
+      } else if (state === 'details') {
+        openDrawer('marigold');
+      } else if (state === 'payment-modal') {
+        openPaymentModal();
+      } else if (state === 'reverse-modal') {
+        openReverseModal('10000', 'Bank transfer', '1 Dec 2026');
+      } else if (state === 'fully-paid') {
+        openDrawer('haldi');
+      } else if (state === 'empty') {
+        // Completely hide summary cards and filters toolbar
+        document.getElementById('summary-cards-section').classList.add('hidden');
+        document.getElementById('filters-toolbar-section').classList.add('hidden');
+        document.getElementById('expense-table-container').classList.add('hidden');
+        document.getElementById('state-empty-container').classList.remove('hidden');
+        document.getElementById('state-empty-container').classList.add('flex');
+      } else if (state === 'no-results') {
+        // Keep cards and toolbar, replace table with empty search results
+        document.getElementById('expense-table-container').classList.add('hidden');
+        document.getElementById('state-no-results-container').classList.remove('hidden');
+        document.getElementById('state-no-results-container').classList.add('flex');
+      } else if (state === 'archived') {
+        isArchived = true;
+        document.getElementById('archived-banner').classList.remove('hidden');
+        document.getElementById('archived-banner').classList.add('flex');
+        headerAddBtn.disabled = true;
+      } else if (state === 'loading') {
+        document.getElementById('summary-cards-section').classList.add('hidden');
+        document.getElementById('filters-toolbar-section').classList.add('hidden');
+        document.getElementById('expense-table-container').classList.add('hidden');
+        document.getElementById('state-loading-container').classList.remove('hidden');
+        document.getElementById('state-loading-container').classList.add('flex');
+      } else if (state === 'load-failed') {
+        document.getElementById('summary-cards-section').classList.add('hidden');
+        document.getElementById('filters-toolbar-section').classList.add('hidden');
+        document.getElementById('expense-table-container').classList.add('hidden');
+        document.getElementById('state-load-failed-container').classList.remove('hidden');
+        document.getElementById('state-load-failed-container').classList.add('flex');
+      }
+    }
+
+    function openDrawer(expenseKey) {
+      const drawerRoot = document.getElementById('details-drawer-root');
+      const title = document.getElementById('drawer-title');
+      const meta = document.getElementById('drawer-meta');
+      const total = document.getElementById('drawer-stat-total');
+      const paid = document.getElementById('drawer-stat-paid');
+      const outstanding = document.getElementById('drawer-stat-outstanding');
+      const due = document.getElementById('drawer-stat-due');
+      const statusPill = document.getElementById('drawer-status-pill');
+      const fullyPaidBanner = document.getElementById('fully-paid-banner');
+      const recordPayBtn = document.getElementById('drawer-record-pay-btn');
+      const payDisabledMsg = document.getElementById('drawer-pay-disabled-msg');
+      const editBtn = document.getElementById('drawer-edit-btn');
+      const reverseBtns = document.querySelectorAll('.drawer-reverse-btn');
+
+      // Reset
+      fullyPaidBanner.classList.add('hidden');
+      fullyPaidBanner.classList.remove('flex');
+      recordPayBtn.disabled = false;
+      payDisabledMsg.classList.add('hidden');
+
+      if (expenseKey === 'haldi') {
+        // Fully Paid state
+        title.innerText = 'Haldi decoration';
+        meta.innerHTML = '<span>Decoration</span> • <span class="text-primary font-medium">Royal Bloom Decor</span> • <span class="px-2 py-0.2 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">Haldi</span>';
+        total.innerText = '₹45,000';
+        paid.innerText = '₹45,000';
+        outstanding.innerText = '₹0';
+        due.innerText = 'Paid in full';
+        statusPill.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Paid';
+        statusPill.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-fixed/50 text-on-primary-fixed-variant font-label-sm text-label-sm font-bold';
+        
+        fullyPaidBanner.classList.remove('hidden');
+        fullyPaidBanner.classList.add('flex');
+        recordPayBtn.disabled = true;
+        payDisabledMsg.classList.remove('hidden');
+      } else if (expenseKey === 'catering') {
+        // Catering Overdue
+        title.innerText = 'Wedding catering';
+        meta.innerHTML = '<span>Catering</span> • <span class="text-primary font-medium">Saffron Table Catering</span> • <span class="px-2 py-0.2 rounded-full bg-primary-fixed/40 text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">Wedding</span>';
+        total.innerText = '₹1,50,000';
+        paid.innerText = '₹50,000';
+        outstanding.innerText = '₹1,00,000';
+        due.innerText = '5 Jan 2027 (Overdue)';
+        statusPill.innerHTML = '<span class="material-symbols-outlined text-[13px]">warning</span> Overdue';
+        statusPill.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold';
+      } else if (expenseKey === 'mehendi') {
+        // Mehendi Unpaid
+        title.innerText = 'Mehendi artist booking';
+        meta.innerHTML = '<span>Makeup & Mehendi</span> • <span class="text-primary font-medium">Meera Bridal Artistry</span> • <span class="px-2 py-0.2 rounded-full bg-tertiary-fixed/60 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">Mehendi</span>';
+        total.innerText = '₹20,000';
+        paid.innerText = '₹0';
+        outstanding.innerText = '₹20,000';
+        due.innerText = 'No due date';
+        statusPill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Unpaid';
+        statusPill.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-bold';
+      } else {
+        // Default Marigold Studio
+        title.innerText = 'Wedding photography package';
+        meta.innerHTML = '<span>Photography & Videography</span> • <span class="text-primary font-medium">The Marigold Studio</span> • <span class="px-2 py-0.2 rounded-full bg-primary-fixed/40 text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">Wedding</span>';
+        total.innerText = '₹80,000';
+        paid.innerText = '₹30,000';
+        outstanding.innerText = '₹50,000';
+        due.innerText = '10 Feb 2027';
+        statusPill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Partially paid';
+        statusPill.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/60 text-on-secondary-container font-label-sm text-label-sm font-bold';
+      }
+
+      // Handle Archived read-only mode in drawer
+      if (isArchived) {
+        editBtn.classList.add('hidden');
+        recordPayBtn.classList.add('hidden');
+        reverseBtns.forEach(btn => btn.classList.add('hidden'));
+      } else {
+        editBtn.classList.remove('hidden');
+        if (expenseKey !== 'haldi') recordPayBtn.classList.remove('hidden');
+        reverseBtns.forEach(btn => btn.classList.remove('hidden'));
+      }
+
+      drawerRoot.classList.remove('hidden');
+    }
+
+    function closeDrawer() {
+      document.getElementById('details-drawer-root').classList.add('hidden');
+    }
+
+    function openAddDrawer() {
+      // Clear inputs & errors
+      document.getElementById('form-drawer-title').innerText = 'Add expense';
+      document.getElementById('form-drawer-subtitle').innerText = 'Record a wedding cost. You can add payments later.';
+      document.getElementById('form-submit-btn').innerText = 'Save expense';
+      document.getElementById('edit-inline-warning').classList.add('hidden');
+      
+      document.getElementById('input-expense-name').value = '';
+      document.getElementById('select-category').value = '';
+      document.getElementById('input-amount').value = '';
+      document.getElementById('select-event').value = '';
+      document.getElementById('select-vendor').value = '';
+      document.getElementById('input-due-date').value = '';
+      document.getElementById('textarea-notes').value = '';
+
+      hideValidationErrors();
+      document.getElementById('add-drawer-root').classList.remove('hidden');
+    }
+
+    function openEditDrawer() {
+      // Prefilled with Photography Package
+      closeDrawer();
+      document.getElementById('form-drawer-title').innerText = 'Edit expense';
+      document.getElementById('form-drawer-subtitle').innerText = 'Update details for this wedding cost.';
+      document.getElementById('form-submit-btn').innerText = 'Save changes';
+      document.getElementById('edit-inline-warning').classList.remove('hidden');
+
+      document.getElementById('input-expense-name').value = 'Wedding photography package';
+      document.getElementById('select-category').value = 'Photography & Videography';
+      document.getElementById('input-amount').value = '80000';
+      document.getElementById('select-event').value = 'Wedding';
+      document.getElementById('select-vendor').value = 'The Marigold Studio';
+      document.getElementById('input-due-date').value = '2027-02-10';
+      document.getElementById('textarea-notes').value = 'Covers 3 drone cinematographers and 4 candid shooters across ceremonies.';
+
+      hideValidationErrors();
+      document.getElementById('add-drawer-root').classList.remove('hidden');
+    }
+
+    function openValidationDrawer() {
+      openAddDrawer();
+      // Trigger error messages
+      document.getElementById('err-expense-name').classList.remove('hidden');
+      document.getElementById('input-expense-name').classList.add('border-error');
+      
+      document.getElementById('err-category').classList.remove('hidden');
+      document.getElementById('select-category').classList.add('border-error');
+
+      document.getElementById('err-amount').classList.remove('hidden');
+      document.getElementById('input-amount').classList.add('border-error');
+    }
+
+    function hideValidationErrors() {
+      document.getElementById('err-expense-name').classList.add('hidden');
+      document.getElementById('input-expense-name').classList.remove('border-error');
+      document.getElementById('err-category').classList.add('hidden');
+      document.getElementById('select-category').classList.remove('border-error');
+      document.getElementById('err-amount').classList.add('hidden');
+      document.getElementById('input-amount').classList.remove('border-error');
+    }
+
+    function closeAddDrawer() {
+      document.getElementById('add-drawer-root').classList.add('hidden');
+    }
+
+    function checkCustomCategory(val) {
+      const customBox = document.getElementById('custom-category-box');
+      if (val === 'Other') {
+        customBox.classList.remove('hidden');
+        customBox.classList.add('flex');
+      } else {
+        customBox.classList.add('hidden');
+        customBox.classList.remove('flex');
+      }
+    }
+
+    function openPaymentModal() {
+      document.getElementById('pay-amount-input').value = '20000';
+      document.getElementById('pay-amount-error').classList.add('hidden');
+      document.getElementById('pay-amount-input').classList.remove('border-error');
+      document.getElementById('payment-modal-root').classList.remove('hidden');
+      document.getElementById('payment-modal-root').classList.add('flex');
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal-root').classList.add('hidden');
+      document.getElementById('payment-modal-root').classList.remove('flex');
+    }
+
+    function checkPaymentAmount(val) {
+      const err = document.getElementById('pay-amount-error');
+      const input = document.getElementById('pay-amount-input');
+      if (parseFloat(val) > 50000) {
+        err.classList.remove('hidden');
+        input.classList.add('border-error');
+      } else {
+        err.classList.add('hidden');
+        input.classList.remove('border-error');
+      }
+    }
+
+    function openReverseModal(amt, method, date) {
+      document.getElementById('reversal-modal-title').innerText = 'Reverse this payment?';
+      document.getElementById('reversal-modal-details').innerText = `₹${parseInt(amt).toLocaleString('en-IN')} · ${method} · ${date}`;
+      
+      const newPaid = 30000 - parseInt(amt);
+      const newOutstanding = 50000 + parseInt(amt);
+      document.getElementById('reversal-modal-effect').innerText = `Paid goes from ₹30,000 to ₹${newPaid.toLocaleString('en-IN')} · Outstanding from ₹50,000 to ₹${newOutstanding.toLocaleString('en-IN')}`;
+
+      document.getElementById('reverse-modal-root').classList.remove('hidden');
+      document.getElementById('reverse-modal-root').classList.add('flex');
+    }
+
+    function closeReverseModal() {
+      document.getElementById('reverse-modal-root').classList.add('hidden');
+      document.getElementById('reverse-modal-root').classList.remove('flex');
+    }
+
+    function handleSearch(term) {
+      if (term.toLowerCase().includes('xyz') || term.toLowerCase().includes('none')) {
+        document.getElementById('expense-table-container').classList.add('hidden');
+        document.getElementById('state-no-results-container').classList.remove('hidden');
+        document.getElementById('state-no-results-container').classList.add('flex');
+      } else {
+        document.getElementById('expense-table-container').classList.remove('hidden');
+        document.getElementById('state-no-results-container').classList.add('hidden');
+        document.getElementById('state-no-results-container').classList.remove('flex');
+      }
+    }
+
+    function resetFilters() {
+      document.getElementById('expense-search').value = '';
+      setPrototypeState('main');
+    }
+  </script>
+</body></html>

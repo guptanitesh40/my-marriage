@@ -75,6 +75,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | POST | `/weddings/{weddingId}/events` | Create ceremony | Organizer |
 | GET | `/weddings/{weddingId}/events/{eventId}` | Read ceremony | Organizer |
 | PATCH | `/weddings/{weddingId}/events/{eventId}` | Update or cancel ceremony | Organizer |
+| DELETE | `/weddings/{weddingId}/events/{eventId}` | Delete ceremony; the record is kept, marked deleted (owner only) | Organizer |
 | GET | `/weddings/{weddingId}/events/{eventId}/timeline` | Get event-day timeline | Organizer |
 | POST | `/weddings/{weddingId}/events/{eventId}/timeline` | Create event timeline item | Organizer |
 | PATCH | `/weddings/{weddingId}/events/{eventId}/timeline/{timelineId}` | Edit event timeline item | Organizer |
@@ -86,9 +87,10 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 |---|---|---|---|
 | GET | `/weddings/{weddingId}/tasks` | List tasks with filters | Organizer |
 | POST | `/weddings/{weddingId}/tasks` | Create task and assign wedding member | Organizer |
+| GET | `/weddings/{weddingId}/tasks/summary` | Task counts per event (total, completed, overdue; cancelled not counted) for the Events page | Organizer |
 | GET | `/weddings/{weddingId}/tasks/{taskId}` | Get task | Organizer |
 | PATCH | `/weddings/{weddingId}/tasks/{taskId}` | Update task/status | Organizer |
-| DELETE | `/weddings/{weddingId}/tasks/{taskId}` | Cancel/remove task from active list | Organizer |
+| DELETE | `/weddings/{weddingId}/tasks/{taskId}` | Not built: set `state` to `cancelled` instead (decision 0012) | Organizer |
 
 ### Vendors
 
@@ -98,7 +100,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | POST | `/weddings/{weddingId}/vendors` | Create vendor contact | Organizer |
 | GET | `/weddings/{weddingId}/vendors/{vendorId}` | Read vendor | Organizer |
 | PATCH | `/weddings/{weddingId}/vendors/{vendorId}` | Update vendor | Organizer |
-| DELETE | `/weddings/{weddingId}/vendors/{vendorId}` | Retire vendor while preserving expense references | Organizer |
+| DELETE | `/weddings/{weddingId}/vendors/{vendorId}` | Delete vendor; the record is kept, marked deleted, for expense history (owner only) | Organizer |
 
 ### Expenses
 
@@ -110,7 +112,9 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | PATCH | `/weddings/{weddingId}/expenses/{expenseId}` | Update expense amount/details | Organizer |
 | GET | `/weddings/{weddingId}/expenses/{expenseId}/payments` | List payment ledger entries | Organizer |
 | POST | `/weddings/{weddingId}/expenses/{expenseId}/payments` | Record payment | Organizer |
-| POST | `/weddings/{weddingId}/expenses/{expenseId}/payments/reverse` | Reverse previous payment by compensating entry | Organizer |
+| POST | `/weddings/{weddingId}/expenses/{expenseId}/payments/reverse` | Reverse a payment, discount or extra by compensating entry | Organizer |
+| POST | `/weddings/{weddingId}/expenses/{expenseId}/adjustments` | Record a discount or an extra agreed after the deal (decision 0014) | Organizer |
+| DELETE | `/weddings/{weddingId}/expenses/{expenseId}` | Delete expense; kept with its history, marked deleted (owner only) | Organizer |
 | GET | `/weddings/{weddingId}/expenses-summary` | Get INR paise totals | Organizer |
 
 ### Guests
@@ -121,11 +125,11 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | POST | `/weddings/{weddingId}/guests` | Create primary guest contact | Organizer |
 | GET | `/weddings/{weddingId}/guests/{guestId}` | Read guest contact | Organizer |
 | PATCH | `/weddings/{weddingId}/guests/{guestId}` | Update party size and private contact info | Organizer |
-| DELETE | `/weddings/{weddingId}/guests/{guestId}` | Remove guest and revoke invitation capabilities | Organizer |
+| DELETE | `/weddings/{weddingId}/guests/{guestId}` | Remove guest and revoke invitation capabilities (owner only; kept as removed) | Organizer |
 | POST | `/weddings/{weddingId}/guests/import/preview` | Validate CSV/XLSX guest import before commit | Organizer |
 | POST | `/weddings/{weddingId}/guests/import/commit` | Commit previously validated import selection | Organizer |
-| POST | `/weddings/{weddingId}/guests/exports` | Start CSV/XLSX guest export | Organizer |
-| GET | `/weddings/{weddingId}/guests/exports/{exportId}` | Check guest export and receive short-lived link | Organizer |
+| POST | `/weddings/{weddingId}/guests/exports` | Not built: the web app exports CSV from the list (decision 0015) | Organizer |
+| GET | `/weddings/{weddingId}/guests/exports/{exportId}` | Not built (decision 0015) | Organizer |
 
 ### Invitations
 
@@ -136,6 +140,9 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | POST | `/weddings/{weddingId}/guests/{guestId}/invitation-links` | Generate/reissue private guest link | Organizer |
 | POST | `/weddings/{weddingId}/guests/{guestId}/invitation-links/revoke` | Revoke all active guest invitation links/sessions | Organizer |
 | POST | `/weddings/{weddingId}/guests/{guestId}/invitation-email` | Queue guest invitation email | Organizer |
+| POST | `/weddings/{weddingId}/guests/reminders/preview` | Who a reminder to everyone invited would reach, and who is left out and why (decision 0016) | Organizer |
+| POST | `/weddings/{weddingId}/guests/reminders` | Remind everyone invited, optionally about one ceremony, with an optional note (202; 429 `EMAIL_DAILY_LIMIT`) | Organizer |
+| POST | `/weddings/{weddingId}/guests/{guestId}/reminder` | Remind one guest (202; 409 `INVITATION_NOT_SHARED`, `INVITATION_LINK_OFF`, `GUEST_REMINDERS_OFF`) | Organizer |
 
 ### Guest RSVP
 
@@ -144,7 +151,8 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | POST | `/guest-access/exchange` | Exchange raw private invite token for scoped cookie | Public |
 | GET | `/guest-access/invitation` | View contact name and selected ceremonies | Guest |
 | PATCH | `/guest-access/events/{eventInvitationId}/rsvp` | Change RSVP for selected ceremony | Guest |
-| POST | `/guest-access/reminders/opt-out` | Opt out guest contact of reminder emails | Guest |
+| POST | `/guest-access/reminders/opt-out` | Stop reminder emails (decision 0016) | Guest |
+| POST | `/guest-access/reminders/opt-in` | Receive reminder emails again | Guest |
 | POST | `/guest-access/logout` | Clear invitation-scoped session | Guest |
 
 ### Website
@@ -152,10 +160,11 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | Method | Endpoint | Purpose | Access |
 |---|---|---|---|
 | GET | `/weddings/{weddingId}/website` | Read wedding website editor configuration | Organizer |
-| PATCH | `/weddings/{weddingId}/website` | Edit template and site content | Organizer |
+| PATCH | `/weddings/{weddingId}/website` | Save the draft template and content; needs `contentVersion` (decision 0017) | Organizer |
 | GET | `/weddings/{weddingId}/website/preview` | Preview unpublished content (noncacheable) | Organizer |
-| POST | `/weddings/{weddingId}/website/publish` | Publish wedding public website | Organizer |
+| POST | `/weddings/{weddingId}/website/publish` | Publish the saved draft at `contentVersion` (first time or update) | Organizer |
 | POST | `/weddings/{weddingId}/website/unpublish` | Unpublish site (owner safety exception after archive) | Organizer |
+| GET | `/weddings/{weddingId}/website/address?slug=` | Check a web address is free for this wedding (decision 0017) | Organizer |
 
 ### Public
 
@@ -249,7 +258,8 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 {
   "title": "Haldi",
   "timeZone": "Asia/Kolkata",
-  "startAt": "2026-12-13T04:30:00Z",
+  "startDate": "2026-12-13",
+  "startTime": "10:00",
   "venue": {
     "name": "Family Farmhouse",
     "address": "Ahmedabad, Gujarat"
@@ -257,7 +267,13 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 }
 ```
 
-**Rule:** An event may be created before date or venue is finalized. Timezone is explicit and reminders are scheduled from confirmed event times.
+**Rule:** An event may be created before date or venue is finalized. Timezone is explicit and reminders are scheduled from confirmed event times. The day and time are sent as clocks show them in `timeZone`; the server stores the UTC instant `startAt` once both are known (decision 0010). The list answers `{ events, truncated }`: date order, events without a day last, at most 100.
+
+### Update or delete a ceremony
+
+`PATCH /api/v1/weddings/{weddingId}/events/{eventId}` with an `EventUpdate`; `DELETE /api/v1/weddings/{weddingId}/events/{eventId}` answers 204.
+
+**Rule:** Fields left out of a `PATCH` stay as they are; `null` clears an optional one, and clearing `startDate` clears the time too. Changing only `timeZone` keeps the clock reading of the day and time. A new day must be today or later; a day already stored may be kept. Owners and managers edit; only owners delete (403 `OWNER_REQUIRED`). Deleting keeps the record, with `deletedAt` and `deletedBy`, so whatever refers to it keeps its history; it is never listed or returned again (404 `EVENT_NOT_FOUND`). Both are refused on an archived wedding (409 `WEDDING_ARCHIVED`). Decision 0011.
 
 ### Add a guest contact
 
@@ -412,7 +428,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 }
 ```
 
-**Rule:** Emails are dispatched by BullMQ workers over Gmail SMTP. Jobs recheck event status, opt-outs, wedding state and scheduleVersion just before sending.
+**Rule:** Emails are dispatched by BullMQ workers over Gmail SMTP. Jobs recheck event status, opt-outs, wedding state and scheduleVersion just before sending. Off until switched on; the response also gives `sendTime` (`09:00`, in each ceremony's time zone). Automatic reminders go to everyone invited with an email address and a shared link, whatever their answer (decision 0016).
 
 
 #### SignupRequest
@@ -450,7 +466,8 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 |---|---|---|
 | `title` | string | Yes |
 | `description` | string | No |
-| `startAt` | date-time | No |
+| `startDate` | date (local day) | No |
+| `startTime` | `HH:mm` (local, needs `startDate`) | No |
 | `endAt` | date-time | No |
 | `timeZone` | string | No |
 | `venue` | Venue | No |
@@ -458,6 +475,18 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | `managerIds` | array<Id> | No |
 | `livestream` | object | No |
 | `reminderSettings` | object | No |
+
+#### EventUpdate
+
+| Field | Type | Required |
+|---|---|---|
+| `title` | string | No |
+| `description` | string \| null | No |
+| `startDate` | date (local day) \| null | No |
+| `startTime` | `HH:mm` (local) \| null | No |
+| `timeZone` | string | No |
+| `venue` | Venue \| null (replaces the whole venue) | No |
+| `state` | enum: scheduled\|completed\|cancelled | No |
 
 #### TimelineCreate
 
@@ -478,8 +507,16 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | `title` | string | Yes |
 | `description` | string | No |
 | `assigneeId` | Id | No |
-| `dueAt` | date-time | No |
-| `priority` | enum: low|normal|high | No |
+| `dueDate` | date (India day) | No |
+| `dueTime` | `HH:mm` (India time, needs `dueDate`) | No |
+| `priority` | enum: low|normal|high (default normal) | No |
+| `state` | enum: todo|in_progress|completed|cancelled (default todo) | No |
+
+#### TaskUpdate
+
+The `TaskCreate` fields, all optional; `null` clears `description`, `eventId`, `assigneeId`, `dueDate` and `dueTime`.
+
+**Rule (tasks, decision 0012):** `eventId` must be one of the wedding's events and `assigneeId` one of its active owners or managers, else 400 on that field. Completing records `completedAt` and `completedBy`; reopening clears them. `GET /weddings/{weddingId}/tasks` takes `view` (all|mine|overdue|completed), `q`, `eventId` and `assigneeId` (an Id or `none`), `state`, `priority` and `sort` (due|due_desc|priority|updated), and answers `{ tasks, truncated, counts }`, at most 200 tasks. `GET /weddings/{weddingId}/members` answers `{ members: [{ userId, displayName, role }] }`.
 
 #### VendorCreate
 
@@ -494,27 +531,51 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | `notes` | string | No |
 | `eventIds` | array<Id> | No |
 
+#### VendorUpdate
+
+The `VendorCreate` fields, all optional; `null` or `""` removes `contactName`, `phone`, `email`, `address` and `notes`; `eventIds` replaces the linked events (`[]` unlinks them all, `null` is refused).
+
+**Rule (vendors, decision 0013):** `category` is any text up to 60 characters. `eventIds` must be the wedding's own, non-deleted events (at most 50, repeats ignored), else 400 on `eventIds`. A phone number has 6 to 15 digits and may use `+`, spaces, dots, dashes and brackets. `GET /weddings/{weddingId}/vendors` answers `{ vendors, truncated }`: the whole directory by name, at most 500; each vendor has `events: [{ id, title }]` in the wedding's order, leaving out deleted events. The web app searches and filters that list.
+
 #### ExpenseCreate
 
 | Field | Type | Required |
 |---|---|---|
 | `title` | string | Yes |
 | `category` | string | Yes |
-| `eventId` | Id | No |
+| `eventIds` | array<Id> (several ceremonies; empty for general) | No |
 | `vendorId` | Id | No |
 | `amountPaise` | MoneyPaise | Yes |
-| `dueAt` | date-time | No |
+| `dueDate` | date (India day) | No |
 | `notes` | string | No |
-| `receiptAssetIds` | array<Id> | No |
+| `receiptAssetIds` | array<Id> | Not yet: needs private uploads (decision 0014) |
 
 #### ExpensePaymentCreate
 
 | Field | Type | Required |
 |---|---|---|
 | `amountPaise` | MoneyPaise | Yes |
-| `paidAt` | date-time | Yes |
+| `paidAt` | date (India day, today or earlier) | Yes |
 | `method` | enum: cash|bank_transfer|card|cheque|other | No |
 | `note` | string | No |
+
+#### ExpenseAdjustmentCreate
+
+| Field | Type | Required |
+|---|---|---|
+| `kind` | enum: discount|extra | Yes |
+| `amountPaise` | MoneyPaise | Yes |
+| `date` | date (India day, today or earlier) | Yes |
+| `note` | string | No |
+
+#### ExpenseEntryReverse
+
+| Field | Type | Required |
+|---|---|---|
+| `entryId` | Id (a payment, discount or extra of this expense) | Yes |
+| `note` | string | No |
+
+**Rule (expenses, decision 0014):** final = `amountPaise` − discounts + extras; outstanding = final − paid. A payment can't exceed what is outstanding (400 on `amountPaise`); a discount can't either; an extra can. Each entry can be reversed once (409 `ENTRY_ALREADY_REVERSED`); a reversal can't be reversed (409 `ENTRY_NOT_REVERSIBLE`); undoing a paid extra is refused (409 `REVERSAL_BELOW_PAID`). Editing can't set the agreed amount below paid + discounts − extras. `ExpenseUpdate` is `ExpenseCreate` with every field optional; `null` clears `vendorId`, `dueDate` and `notes`; `eventIds` replaces the events (`[]` for none). Each expense has `events: [{ id, title, available }]` in the wedding's order. A linked event or vendor deleted later stays, with `available: false`. A deleted expense answers 404 everywhere and leaves the totals. `GET .../expenses` answers `{ expenses, truncated, totals }`; `totals` (also `GET .../expenses-summary`) has `finalPaise`, `paidPaise`, `outstandingPaise`, `discountPaise`, `extraPaise`, `overdue` and `count`. Ledger writes answer `{ expense, entries }`.
 
 #### GuestCreate
 
@@ -525,6 +586,9 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | `email` | email | No |
 | `phone` | string | No |
 | `organizerNotes` | string | No |
+| `eventIds` | array<Id> | No (invites at once; decision 0015) |
+
+**Rule (guests, decision 0015):** `partySize` is 1–100. `PATCH` takes the same fields (not `eventIds`), `null` clearing email, phone and notes; a party size below an answer already given for an open ceremony is 409 `PARTY_SIZE_CONFLICT`. `GET .../guests` answers `{ guests, truncated, totals }` (all active guests, at most 2,000), with `totals` `{ contacts, invitedPeople, answered, pending, events: [{ eventId, title, invitedGuests, invitedPeople, attending, notAttending, maybe, pending, confirmedPeople }] }`. `GET`, `POST`, `PATCH` and `PUT .../invitations` on one guest answer `{ guest, invitations }` with each answer's history. `POST .../invitation-links` (`{ reissue? }`) answers `{ status, secretUrl }`: the private link `/invitation#t=…`, the same each time until reissued or revoked. `POST .../invitation-email` is 202, needs an email (400 on `email`) and an open ceremony (422 `NO_CEREMONIES_SELECTED`). `POST /guest-access/exchange` (`{ token }`) sets `mm_guest_session` or answers 404 `INVITATION_LINK_UNAVAILABLE`; guest routes without a live session answer 401 `GUEST_SESSION_REQUIRED`. RSVP errors: 404 `EVENT_INVITATION_NOT_FOUND`, 409 `RSVP_VERSION_CONFLICT`, `RSVP_CLOSED`, `WEDDING_ARCHIVED`.
 
 #### InvitationSelection
 
@@ -545,7 +609,14 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | Field | Type | Required |
 |---|---|---|
 | `templateId` | enum: traditional|modern|royal | No |
-| `content` | object | No |
+| `content` | object: `headline`, `story` (plain text), `faq` (≤ 20 question/answer) | No |
+| `contentVersion` | integer: the version the edit started from | Yes |
+
+#### WebsitePublish
+
+| Field | Type | Required |
+|---|---|---|
+| `contentVersion` | integer | Yes |
 
 #### UploadIntentCreate
 
@@ -563,7 +634,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 |---|---|---|
 | `fileName` | string | Yes |
 | `mode` | enum: csv|xlsx | Yes |
-| `rows` | array<GuestCreate> | Yes |
+| `rows` | array<ImportRow>: `name`, `partySize` (number or text), `email`, `phone`, `organizerNotes`, `events` (ceremony names) | Yes |
 
 #### ImportCommit
 

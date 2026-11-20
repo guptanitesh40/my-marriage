@@ -529,6 +529,65 @@
       }
     },
     "/api/v1/weddings/{weddingId}": {
+      "get": {
+        "operationId": "WeddingsController_get",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Get wedding private details",
+        "tags": [
+          "Weddings"
+        ]
+      },
       "patch": {
         "operationId": "WeddingsController_update",
         "parameters": [
@@ -594,6 +653,67 @@
           }
         ],
         "summary": "Update active wedding details",
+        "tags": [
+          "Weddings"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/members": {
+      "get": {
+        "operationId": "WeddingsController_members",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MemberListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List wedding owners/managers",
         "tags": [
           "Weddings"
         ]
@@ -1028,6 +1148,3721 @@
           "Team"
         ]
       }
+    },
+    "/api/v1/weddings/{weddingId}/events": {
+      "get": {
+        "operationId": "EventsController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List ceremonies",
+        "tags": [
+          "Events"
+        ]
+      },
+      "post": {
+        "operationId": "EventsController_create",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEventDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Create ceremony",
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/events/{eventId}": {
+      "patch": {
+        "operationId": "EventsController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EventDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EVENT_NOT_FOUND: no such event in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Update or cancel ceremony",
+        "tags": [
+          "Events"
+        ]
+      },
+      "delete": {
+        "operationId": "EventsController_remove",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The event is deleted."
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: managers cannot delete events."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EVENT_NOT_FOUND: no such event in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Delete ceremony (owners only)",
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/tasks": {
+      "get": {
+        "operationId": "TasksController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "view",
+            "required": false,
+            "in": "query",
+            "description": "`mine`: assigned to you. `overdue`: open and past due. `completed`.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "mine",
+                "overdue",
+                "completed"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "description": "Words in the title, the description or the assignee's name.",
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventId",
+            "required": false,
+            "in": "query",
+            "description": "An ID, or `none`.",
+            "schema": {
+              "example": "none",
+              "type": "string"
+            }
+          },
+          {
+            "name": "assigneeId",
+            "required": false,
+            "in": "query",
+            "description": "An ID, or `none`.",
+            "schema": {
+              "example": "none",
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "todo",
+                "in_progress",
+                "completed",
+                "cancelled"
+              ]
+            }
+          },
+          {
+            "name": "priority",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "low",
+                "normal",
+                "high"
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Due date (earliest first, the default), latest first, highest priority, or recently updated.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "due",
+                "due_desc",
+                "priority",
+                "updated"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/TaskListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List tasks with filters",
+        "tags": [
+          "Tasks"
+        ]
+      },
+      "post": {
+        "operationId": "TasksController_create",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/TaskDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Create task and assign wedding member",
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/tasks/summary": {
+      "get": {
+        "operationId": "TasksController_summary",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/TaskSummaryDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Task counts by event",
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/tasks/{taskId}": {
+      "patch": {
+        "operationId": "TasksController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTaskDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/TaskDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. TASK_NOT_FOUND: no such task in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Update task/status",
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/vendors": {
+      "get": {
+        "operationId": "VendorsController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/VendorListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List private vendors",
+        "tags": [
+          "Vendors"
+        ]
+      },
+      "post": {
+        "operationId": "VendorsController_create",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVendorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/VendorDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Create vendor contact",
+        "tags": [
+          "Vendors"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/vendors/{vendorId}": {
+      "get": {
+        "operationId": "VendorsController_get",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vendorId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/VendorDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. VENDOR_NOT_FOUND: no such vendor in it."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read vendor",
+        "tags": [
+          "Vendors"
+        ]
+      },
+      "patch": {
+        "operationId": "VendorsController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vendorId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVendorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/VendorDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. VENDOR_NOT_FOUND: no such vendor in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Update vendor",
+        "tags": [
+          "Vendors"
+        ]
+      },
+      "delete": {
+        "operationId": "VendorsController_remove",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vendorId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The vendor is deleted."
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: managers cannot delete vendors."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. VENDOR_NOT_FOUND: no such vendor in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Delete vendor (owners only); the record is kept, marked deleted",
+        "tags": [
+          "Vendors"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expenses": {
+      "get": {
+        "operationId": "ExpensesController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List expenses",
+        "tags": [
+          "Expenses"
+        ]
+      },
+      "post": {
+        "operationId": "ExpensesController_create",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExpenseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Create expense in integer paise",
+        "tags": [
+          "Expenses"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expenses-summary": {
+      "get": {
+        "operationId": "ExpensesController_summary",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseTotalsDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Get INR paise totals",
+        "tags": [
+          "Expenses"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expenses/{expenseId}": {
+      "get": {
+        "operationId": "ExpensesController_get",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expenseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read expense with paid/outstanding totals",
+        "tags": [
+          "Expenses"
+        ]
+      },
+      "patch": {
+        "operationId": "ExpensesController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expenseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExpenseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Update expense amount/details",
+        "tags": [
+          "Expenses"
+        ]
+      },
+      "delete": {
+        "operationId": "ExpensesController_remove",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expenseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The expense is deleted."
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: managers cannot delete expenses."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Delete expense (owners only); kept with its history, marked deleted",
+        "tags": [
+          "Expenses"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expenses/{expenseId}/payments": {
+      "get": {
+        "operationId": "ExpensesController_ledger",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expenseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseLedgerDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List payment ledger entries",
+        "tags": [
+          "Expenses"
+        ]
+      },
+      "post": {
+        "operationId": "ExpensesController_recordPayment",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expenseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordPaymentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Record payment",
+        "tags": [
+          "Expenses"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expenses/{expenseId}/adjustments": {
+      "post": {
+        "operationId": "ExpensesController_recordAdjustment",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expenseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordAdjustmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Record a discount or an extra",
+        "tags": [
+          "Expenses"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expenses/{expenseId}/payments/reverse": {
+      "post": {
+        "operationId": "ExpensesController_reverse",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expenseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReverseEntryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it. EXPENSE_ENTRY_NOT_FOUND: no such entry in its history."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only. ENTRY_ALREADY_REVERSED, ENTRY_NOT_REVERSIBLE, REVERSAL_BELOW_PAID."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Reverse previous payment by compensating entry",
+        "tags": [
+          "Expenses"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/reminders/preview": {
+      "post": {
+        "operationId": "GuestsController_previewReminders",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReminderScopeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReminderPreviewDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Preview a reminder to everyone invited",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/reminders": {
+      "post": {
+        "operationId": "GuestsController_remindAll",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendReminderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReminderResultDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "429": {
+            "description": "EMAIL_DAILY_LIMIT: says how many are left today."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Remind everyone invited",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests": {
+      "get": {
+        "operationId": "GuestsController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List guest contacts",
+        "tags": [
+          "Guests"
+        ]
+      },
+      "post": {
+        "operationId": "GuestsController_create",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGuestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Create primary guest contact",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/import/preview": {
+      "post": {
+        "operationId": "GuestsController_previewImport",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportPreviewDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ImportPreviewResultDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Validate CSV/XLSX guest import before commit",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/import/commit": {
+      "post": {
+        "operationId": "GuestsController_commitImport",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportCommitDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ImportCommitResultDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Commit previously validated import selection",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/{guestId}": {
+      "get": {
+        "operationId": "GuestsController_get",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read guest contact",
+        "tags": [
+          "Guests"
+        ]
+      },
+      "patch": {
+        "operationId": "GuestsController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGuestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only. PARTY_SIZE_CONFLICT: answers above it."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Update party size and private contact info",
+        "tags": [
+          "Guests"
+        ]
+      },
+      "delete": {
+        "operationId": "GuestsController_remove",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The guest is removed."
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: managers cannot remove guests."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Remove guest and revoke invitation capabilities",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/invitations": {
+      "get": {
+        "operationId": "GuestsController_invitations",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List event invitations for guest",
+        "tags": [
+          "Guests"
+        ]
+      },
+      "put": {
+        "operationId": "GuestsController_setInvitations",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvitationSelectionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Set selected events for guest",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/invitation-links": {
+      "post": {
+        "operationId": "GuestsController_createLink",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLinkDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestLinkDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Generate/reissue private guest link",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/invitation-links/revoke": {
+      "post": {
+        "operationId": "GuestsController_revokeLink",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestLinkDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Revoke all active guest invitation links/sessions",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/reminder": {
+      "post": {
+        "operationId": "GuestsController_remindOne",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendReminderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReminderResultDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only. INVITATION_NOT_SHARED, INVITATION_LINK_OFF or GUEST_REMINDERS_OFF."
+          },
+          "429": {
+            "description": "EMAIL_DAILY_LIMIT"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Remind one guest",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/invitation-email": {
+      "post": {
+        "operationId": "GuestsController_sendEmail",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestDetailDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Queue guest invitation email",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/guest-access/exchange": {
+      "post": {
+        "operationId": "GuestAccessController_exchange",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExchangeTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The guest cookie is set."
+          },
+          "404": {
+            "description": "INVITATION_LINK_UNAVAILABLE: unknown or revoked."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Exchange raw private invite token for scoped cookie",
+        "tags": [
+          "Guest RSVP"
+        ]
+      }
+    },
+    "/api/v1/guest-access/invitation": {
+      "get": {
+        "operationId": "GuestAccessController_invitation",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestViewDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "GUEST_SESSION_REQUIRED: open the link again."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_guest_session": []
+          }
+        ],
+        "summary": "View contact name and selected ceremonies",
+        "tags": [
+          "Guest RSVP"
+        ]
+      }
+    },
+    "/api/v1/guest-access/events/{invitationId}/rsvp": {
+      "patch": {
+        "operationId": "GuestAccessController_answer",
+        "parameters": [
+          {
+            "name": "invitationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RsvpPatchDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestViewEventDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "GUEST_SESSION_REQUIRED: open the link again."
+          },
+          "404": {
+            "description": "EVENT_INVITATION_NOT_FOUND: not invited to it."
+          },
+          "409": {
+            "description": "RSVP_VERSION_CONFLICT, RSVP_CLOSED or WEDDING_ARCHIVED."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_guest_session": []
+          }
+        ],
+        "summary": "Change RSVP for selected ceremony",
+        "tags": [
+          "Guest RSVP"
+        ]
+      }
+    },
+    "/api/v1/guest-access/reminders/opt-out": {
+      "post": {
+        "operationId": "GuestAccessController_optOut",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestReminderChoiceDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "GUEST_SESSION_REQUIRED: open the link again."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_guest_session": []
+          }
+        ],
+        "summary": "Opt out of reminder emails",
+        "tags": [
+          "Guest RSVP"
+        ]
+      }
+    },
+    "/api/v1/guest-access/reminders/opt-in": {
+      "post": {
+        "operationId": "GuestAccessController_optIn",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestReminderChoiceDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "GUEST_SESSION_REQUIRED: open the link again."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_guest_session": []
+          }
+        ],
+        "summary": "Receive reminder emails again",
+        "tags": [
+          "Guest RSVP"
+        ]
+      }
+    },
+    "/api/v1/guest-access/logout": {
+      "post": {
+        "operationId": "GuestAccessController_logout",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Signed out of the invitation."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Clear invitation-scoped session",
+        "tags": [
+          "Guest RSVP"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/reminder-settings": {
+      "get": {
+        "operationId": "ReminderSettingsController_get",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReminderSettingsDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read reminder scheduling settings",
+        "tags": [
+          "Guests"
+        ]
+      },
+      "put": {
+        "operationId": "ReminderSettingsController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReminderSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReminderSettingsDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Configure reminder offsets (30/7/3)",
+        "tags": [
+          "Guests"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/website": {
+      "get": {
+        "operationId": "WebsiteController_get",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WebsiteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read wedding website editor configuration",
+        "tags": [
+          "Website"
+        ]
+      },
+      "patch": {
+        "operationId": "WebsiteController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWebsiteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WebsiteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEBSITE_VERSION_CONFLICT: changed elsewhere; reload. WEDDING_ARCHIVED: read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Edit template and site content",
+        "tags": [
+          "Website"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/website/preview": {
+      "get": {
+        "operationId": "WebsiteController_preview",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicWebsiteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Preview unpublished content (noncacheable)",
+        "tags": [
+          "Website"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/website/publish": {
+      "post": {
+        "operationId": "WebsiteController_publish",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublishWebsiteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WebsiteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEBSITE_VERSION_CONFLICT: changed elsewhere; reload. WEDDING_ARCHIVED: read-only."
+          },
+          "422": {
+            "description": "WEBSITE_NOT_READY: says what is missing."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Publish wedding public website",
+        "tags": [
+          "Website"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/website/unpublish": {
+      "post": {
+        "operationId": "WebsiteController_unpublish",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WebsiteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: archived weddings, owners only."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Unpublish site (owner safety exception after archive)",
+        "tags": [
+          "Website"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/website/address": {
+      "get": {
+        "operationId": "WebsiteController_address",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "ananya-arjun"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/SlugAvailabilityDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Check a wedding website address",
+        "tags": [
+          "Website"
+        ]
+      }
+    },
+    "/api/v1/public/weddings/{slug}": {
+      "get": {
+        "operationId": "PublicWebsiteController_wedding",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicWebsiteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEBSITE_NOT_FOUND: missing, unpublished or unpublished again — never which."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Read published sanitized public wedding",
+        "tags": [
+          "Public website"
+        ]
+      }
+    },
+    "/api/v1/public/weddings/{slug}/events": {
+      "get": {
+        "operationId": "PublicWebsiteController_events",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicEventListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEBSITE_NOT_FOUND: missing, unpublished or unpublished again — never which."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List published event information",
+        "tags": [
+          "Public website"
+        ]
+      }
     }
   },
   "info": {
@@ -1365,6 +5200,44 @@
           "state"
         ]
       },
+      "MemberDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "owner",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID; what a task's `assigneeId` names."
+          },
+          "displayName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "userId",
+          "displayName"
+        ]
+      },
+      "MemberListDto": {
+        "type": "object",
+        "properties": {
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberDto"
+            }
+          }
+        },
+        "required": [
+          "members"
+        ]
+      },
       "UpdateWeddingDto": {
         "type": "object",
         "properties": {
@@ -1391,6 +5264,12 @@
             "minLength": 1,
             "maxLength": 60,
             "example": "Rajasthan"
+          },
+          "slug": {
+            "type": "string",
+            "description": "A new web address for the wedding website (decision 0017). The old one\nstays reserved for this wedding and redirects to the new one.",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "example": "ananya-arjun"
           },
           "weddingDate": {
             "type": "string",
@@ -1592,6 +5471,2786 @@
           "city",
           "state",
           "expiresAt"
+        ]
+      },
+      "EventVenueDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "mapsUrl": {
+            "type": "string",
+            "description": "Google Maps link for directions."
+          }
+        }
+      },
+      "EventLivestreamDto": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "enum": [
+              "youtube"
+            ],
+            "type": "string"
+          },
+          "videoId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "provider",
+          "videoId",
+          "url"
+        ]
+      },
+      "EventDto": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "The day (`YYYY-MM-DD`) where the ceremony happens; missing until known.",
+            "format": "date",
+            "example": "2027-12-13"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "The start time (`HH:mm`) on that day, where it happens; missing until known.",
+            "example": "18:30"
+          },
+          "timeZone": {
+            "type": "string",
+            "description": "IANA time zone the day and time are read in.",
+            "example": "Asia/Kolkata"
+          },
+          "state": {
+            "enum": [
+              "scheduled",
+              "completed",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Event ID."
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "startAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The start as an instant, when both the day and the time are known."
+          },
+          "venue": {
+            "$ref": "#/components/schemas/EventVenueDto"
+          },
+          "dressCode": {
+            "type": "string"
+          },
+          "livestream": {
+            "$ref": "#/components/schemas/EventLivestreamDto"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "timeZone",
+          "state",
+          "id",
+          "title",
+          "createdAt"
+        ]
+      },
+      "EventListDto": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventDto"
+            }
+          },
+          "truncated": {
+            "type": "boolean",
+            "description": "True when the wedding has more events than the list returns."
+          }
+        },
+        "required": [
+          "events",
+          "truncated"
+        ]
+      },
+      "EventVenueInputDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Rambagh Palace"
+          },
+          "address": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "example": "Bhawani Singh Road, Jaipur"
+          },
+          "mapsUrl": {
+            "type": "string",
+            "description": "A Google Maps link, for \"Get directions\" on the wedding website.",
+            "maxLength": 2048,
+            "example": "https://maps.app.goo.gl/AbCdEf123"
+          }
+        }
+      },
+      "CreateEventDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A preset such as Haldi or Sangeet, or any name.",
+            "minLength": 1,
+            "maxLength": 80,
+            "example": "Haldi"
+          },
+          "description": {
+            "type": "string",
+            "description": "Shown to guests once the wedding website is published.",
+            "maxLength": 2000,
+            "example": "Turmeric and laughter by the pool."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "The day, if known: today or later, where the ceremony happens.",
+            "format": "date",
+            "example": "2027-12-10"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "The start time on that day (`HH:mm`, 24-hour); needs `startDate`.",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "example": "18:30"
+          },
+          "timeZone": {
+            "type": "string",
+            "description": "IANA time zone of the venue; Asia/Kolkata if left out.",
+            "example": "Asia/Kolkata",
+            "default": "Asia/Kolkata"
+          },
+          "dressCode": {
+            "type": "string",
+            "description": "Suggested attire, shown on the wedding website.",
+            "maxLength": 120,
+            "example": "Yellow hues & floral prints"
+          },
+          "livestreamUrl": {
+            "type": "string",
+            "description": "A YouTube link for the livestream (PRD LIVE-01); only the video is kept.",
+            "maxLength": 2048,
+            "example": "https://youtu.be/dQw4w9WgXcQ"
+          },
+          "venue": {
+            "$ref": "#/components/schemas/EventVenueInputDto"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "UpdateEventDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "example": "Haldi"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Shown to guests once the wedding website is published; `null` removes it.",
+            "maxLength": 2000,
+            "example": "Turmeric and laughter by the pool."
+          },
+          "startDate": {
+            "type": "string",
+            "nullable": true,
+            "description": "The day; `null` removes it and the time with it. A new day must not be in the past.",
+            "format": "date",
+            "example": "2027-12-10"
+          },
+          "startTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The start time (`HH:mm`, 24-hour); needs a day. `null` removes it.",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "example": "18:30"
+          },
+          "timeZone": {
+            "type": "string",
+            "description": "IANA time zone of the venue. The day and time keep their clock reading in the new zone.",
+            "example": "Asia/Kolkata",
+            "default": "Asia/Kolkata"
+          },
+          "venue": {
+            "nullable": true,
+            "description": "Replaces the whole venue; `null` removes it.",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EventVenueInputDto"
+              }
+            ]
+          },
+          "dressCode": {
+            "type": "string",
+            "nullable": true,
+            "description": "Suggested attire; `null` removes it.",
+            "maxLength": 120,
+            "example": "Yellow hues & floral prints"
+          },
+          "livestreamUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "A YouTube link for the livestream; `null` or empty removes it.",
+            "maxLength": 2048,
+            "example": "https://youtu.be/dQw4w9WgXcQ"
+          },
+          "state": {
+            "description": "Mark the ceremony completed or cancelled, or scheduled again.",
+            "enum": [
+              "scheduled",
+              "completed",
+              "cancelled"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "TaskEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
+      },
+      "TaskAssigneeDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "owner",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "userId",
+          "displayName"
+        ]
+      },
+      "TaskPersonDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Missing if the account no longer exists."
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "TaskDto": {
+        "type": "object",
+        "properties": {
+          "dueDate": {
+            "type": "string",
+            "description": "The day it is due (`YYYY-MM-DD`, India time).",
+            "format": "date",
+            "example": "2027-12-08"
+          },
+          "dueTime": {
+            "type": "string",
+            "description": "The time it is due (`HH:mm`, India time).",
+            "example": "14:00"
+          },
+          "priority": {
+            "enum": [
+              "low",
+              "normal",
+              "high"
+            ],
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "todo",
+              "in_progress",
+              "completed",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Task ID."
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "event": {
+            "description": "Its ceremony; missing for a general task.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskEventDto"
+              }
+            ]
+          },
+          "assignee": {
+            "description": "Missing when unassigned, or when the assignee is no longer on the team.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskAssigneeDto"
+              }
+            ]
+          },
+          "dueAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The instant it is due, when the time is known."
+          },
+          "overdue": {
+            "type": "boolean",
+            "description": "Open (to do or in progress) and past its due day or time."
+          },
+          "completedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "completedBy": {
+            "$ref": "#/components/schemas/TaskPersonDto"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "priority",
+          "state",
+          "id",
+          "title",
+          "overdue",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "TaskCountsDto": {
+        "type": "object",
+        "properties": {
+          "all": {
+            "type": "number"
+          },
+          "mine": {
+            "type": "number",
+            "description": "Assigned to you."
+          },
+          "overdue": {
+            "type": "number"
+          },
+          "inProgress": {
+            "type": "number"
+          },
+          "completed": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "all",
+          "mine",
+          "overdue",
+          "inProgress",
+          "completed"
+        ]
+      },
+      "TaskListDto": {
+        "type": "object",
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          },
+          "truncated": {
+            "type": "boolean",
+            "description": "True when more tasks match than the list returns."
+          },
+          "counts": {
+            "$ref": "#/components/schemas/TaskCountsDto"
+          }
+        },
+        "required": [
+          "tasks",
+          "truncated",
+          "counts"
+        ]
+      },
+      "EventTaskCountsDto": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          },
+          "completed": {
+            "type": "number"
+          },
+          "overdue": {
+            "type": "number",
+            "description": "Open and past due."
+          }
+        },
+        "required": [
+          "eventId",
+          "total",
+          "completed",
+          "overdue"
+        ]
+      },
+      "TaskSummaryDto": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventTaskCountsDto"
+            }
+          }
+        },
+        "required": [
+          "events"
+        ]
+      },
+      "CreateTaskDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Book Haldi decorator"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000,
+            "example": "Marigold strings and floral seating."
+          },
+          "eventId": {
+            "type": "string",
+            "description": "One of this wedding's events; left out for a general task.",
+            "pattern": "^[a-f0-9]{24}$",
+            "example": "6740a1b2c3d4e5f601234567"
+          },
+          "assigneeId": {
+            "type": "string",
+            "description": "An active owner or manager of this wedding; left out for an unassigned task.",
+            "pattern": "^[a-f0-9]{24}$",
+            "example": "6740a1b2c3d4e5f601234567"
+          },
+          "dueDate": {
+            "type": "string",
+            "description": "The day it is due (`YYYY-MM-DD`), in India time.",
+            "format": "date",
+            "example": "2027-12-10"
+          },
+          "dueTime": {
+            "type": "string",
+            "description": "The time it is due on that day (`HH:mm`, India time); needs `dueDate`.",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "example": "18:30"
+          },
+          "priority": {
+            "description": "`normal` (shown as Medium) if left out.",
+            "enum": [
+              "low",
+              "normal",
+              "high"
+            ],
+            "type": "string"
+          },
+          "state": {
+            "description": "`todo` if left out.",
+            "enum": [
+              "todo",
+              "in_progress",
+              "completed",
+              "cancelled"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "UpdateTaskDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Book Haldi decorator"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "`null` removes it.",
+            "maxLength": 2000,
+            "example": "Marigold strings and floral seating."
+          },
+          "eventId": {
+            "type": "string",
+            "nullable": true,
+            "description": "`null` makes it a general task.",
+            "pattern": "^[a-f0-9]{24}$",
+            "example": "6740a1b2c3d4e5f601234567"
+          },
+          "assigneeId": {
+            "type": "string",
+            "nullable": true,
+            "description": "`null` unassigns it.",
+            "pattern": "^[a-f0-9]{24}$",
+            "example": "6740a1b2c3d4e5f601234567"
+          },
+          "dueDate": {
+            "type": "string",
+            "nullable": true,
+            "description": "`null` removes the due day and the time with it.",
+            "format": "date",
+            "example": "2027-12-10"
+          },
+          "dueTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "`null` removes the time; needs a day.",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "example": "18:30"
+          },
+          "priority": {
+            "enum": [
+              "low",
+              "normal",
+              "high"
+            ],
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "todo",
+              "in_progress",
+              "completed",
+              "cancelled"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "VendorEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
+      },
+      "VendorDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Vendor ID."
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "contactName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "events": {
+            "description": "Its ceremonies, in the wedding's order; deleted events are left out.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VendorEventDto"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "category",
+          "events",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "VendorListDto": {
+        "type": "object",
+        "properties": {
+          "vendors": {
+            "description": "By name, A to Z.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VendorDto"
+            }
+          },
+          "truncated": {
+            "type": "boolean",
+            "description": "True when the wedding has more vendors than the list returns."
+          }
+        },
+        "required": [
+          "vendors",
+          "truncated"
+        ]
+      },
+      "CreateVendorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "The Marigold Studio"
+          },
+          "category": {
+            "type": "string",
+            "description": "Any text; the app suggests common ones, such as Catering (decision 0013).",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Photography & Videography"
+          },
+          "contactName": {
+            "type": "string",
+            "maxLength": 80,
+            "example": "Rohan Shah"
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 30,
+            "example": "+91 98200 00000"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254,
+            "example": "contact@vendor.in"
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "402, Heritage Arts Enclave, C-Scheme, Jaipur"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Private notes for the wedding's owners and managers.",
+            "maxLength": 4000,
+            "example": "Confirmed for 3 drones and 4 ground cinematographers."
+          },
+          "eventIds": {
+            "description": "This wedding's events the vendor works at; none when left out.",
+            "maxItems": 50,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "category"
+        ]
+      },
+      "UpdateVendorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "The Marigold Studio"
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Photography & Videography"
+          },
+          "contactName": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 80,
+            "example": "Rohan Shah"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 30,
+            "example": "+91 98200 00000"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "format": "email",
+            "maxLength": 254,
+            "example": "contact@vendor.in"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 500,
+            "example": "402, Heritage Arts Enclave, C-Scheme, Jaipur"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 4000,
+            "example": "Confirmed for 3 drones and 4 ground cinematographers."
+          },
+          "eventIds": {
+            "description": "Replaces the linked events; `[]` unlinks them all.",
+            "maxItems": 50,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
+          }
+        }
+      },
+      "ExpenseEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "available"
+        ]
+      },
+      "ExpenseVendorDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "available"
+        ]
+      },
+      "ExpenseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "Unpaid (nothing paid), partially paid, or paid (nothing left).",
+            "enum": [
+              "unpaid",
+              "partially_paid",
+              "paid"
+            ],
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string",
+            "description": "The day payment is due (`YYYY-MM-DD`, India time).",
+            "format": "date",
+            "example": "2027-02-10"
+          },
+          "id": {
+            "type": "string",
+            "description": "Expense ID."
+          },
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "events": {
+            "description": "The ceremonies it is for, in the wedding's order; empty for a general expense.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpenseEventDto"
+            }
+          },
+          "vendor": {
+            "$ref": "#/components/schemas/ExpenseVendorDto"
+          },
+          "amountPaise": {
+            "type": "number",
+            "description": "The amount agreed."
+          },
+          "discountPaise": {
+            "type": "number",
+            "description": "Discounts agreed later, less reversed ones."
+          },
+          "extraPaise": {
+            "type": "number",
+            "description": "Extras agreed later, less reversed ones."
+          },
+          "finalPaise": {
+            "type": "number",
+            "description": "What is owed in the end: agreed − discounts + extras."
+          },
+          "paidPaise": {
+            "type": "number",
+            "description": "Payments, less reversed ones."
+          },
+          "outstandingPaise": {
+            "type": "number",
+            "description": "What is still to pay: final − paid."
+          },
+          "overdue": {
+            "type": "boolean",
+            "description": "Something is still to pay and the due day has passed (India time)."
+          },
+          "notes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "id",
+          "title",
+          "category",
+          "events",
+          "amountPaise",
+          "discountPaise",
+          "extraPaise",
+          "finalPaise",
+          "paidPaise",
+          "outstandingPaise",
+          "overdue",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ExpenseTotalsDto": {
+        "type": "object",
+        "properties": {
+          "finalPaise": {
+            "type": "number",
+            "description": "What is owed across all expenses: agreed − discounts + extras."
+          },
+          "paidPaise": {
+            "type": "number"
+          },
+          "outstandingPaise": {
+            "type": "number"
+          },
+          "discountPaise": {
+            "type": "number",
+            "description": "Saved by negotiation: discounts across all expenses."
+          },
+          "extraPaise": {
+            "type": "number",
+            "description": "Extras across all expenses."
+          },
+          "overdue": {
+            "type": "number",
+            "description": "How many expenses are overdue."
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "finalPaise",
+          "paidPaise",
+          "outstandingPaise",
+          "discountPaise",
+          "extraPaise",
+          "overdue",
+          "count"
+        ]
+      },
+      "ExpenseListDto": {
+        "type": "object",
+        "properties": {
+          "expenses": {
+            "description": "By due day (soonest first, none last), then name.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpenseDto"
+            }
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "totals": {
+            "description": "Over the whole wedding, whatever the list shows.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExpenseTotalsDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "expenses",
+          "truncated",
+          "totals"
+        ]
+      },
+      "CreateExpenseDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Wedding photography package"
+          },
+          "category": {
+            "type": "string",
+            "description": "Any text; the app suggests common ones, such as Catering.",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Photography & Videography"
+          },
+          "amountPaise": {
+            "type": "integer",
+            "description": "Paise: ₹80,000 is 8000000.",
+            "minimum": 1,
+            "maximum": 100000000000,
+            "example": 8000000
+          },
+          "eventIds": {
+            "description": "This wedding's events it is for, if any; repeats ignored.",
+            "maxItems": 50,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
+          },
+          "vendorId": {
+            "type": "string",
+            "description": "One of this wedding's vendors.",
+            "pattern": "^[a-f0-9]{24}$",
+            "example": "6740a1b2c3d4e5f601234567"
+          },
+          "dueDate": {
+            "type": "string",
+            "description": "The day payment is due (`YYYY-MM-DD`, India time).",
+            "format": "date",
+            "example": "2027-12-10"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Private notes for the wedding's owners and managers.",
+            "maxLength": 4000,
+            "example": "Covers 3 drone cinematographers and 4 candid shooters."
+          }
+        },
+        "required": [
+          "title",
+          "category",
+          "amountPaise"
+        ]
+      },
+      "EntryPersonDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Missing if the account no longer exists."
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "ExpenseEntryDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "payment",
+              "discount",
+              "extra",
+              "reversal"
+            ],
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "description": "The day it happened (`YYYY-MM-DD`, India time).",
+            "format": "date",
+            "example": "2026-12-01"
+          },
+          "method": {
+            "enum": [
+              "cash",
+              "bank_transfer",
+              "card",
+              "cheque",
+              "other"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "amountPaise": {
+            "type": "number"
+          },
+          "note": {
+            "type": "string"
+          },
+          "recordedBy": {
+            "$ref": "#/components/schemas/EntryPersonDto"
+          },
+          "reversalOfId": {
+            "type": "string",
+            "description": "For a reversal: the entry it undid."
+          },
+          "reversed": {
+            "type": "boolean",
+            "description": "For a payment, discount or extra: whether it has been reversed."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "date",
+          "id",
+          "amountPaise",
+          "recordedBy",
+          "reversed",
+          "createdAt"
+        ]
+      },
+      "ExpenseDetailDto": {
+        "type": "object",
+        "properties": {
+          "expense": {
+            "$ref": "#/components/schemas/ExpenseDto"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpenseEntryDto"
+            }
+          }
+        },
+        "required": [
+          "expense",
+          "entries"
+        ]
+      },
+      "UpdateExpenseDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Wedding photography package"
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "example": "Photography & Videography"
+          },
+          "amountPaise": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000000000,
+            "example": 8000000,
+            "description": "Paise: ₹80,000 is 8000000."
+          },
+          "eventIds": {
+            "description": "Replaces its events; `[]` makes it a general expense.",
+            "maxItems": 50,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
+          },
+          "vendorId": {
+            "type": "string",
+            "nullable": true,
+            "description": "`null` removes the vendor.",
+            "pattern": "^[a-f0-9]{24}$",
+            "example": "6740a1b2c3d4e5f601234567"
+          },
+          "dueDate": {
+            "type": "string",
+            "nullable": true,
+            "format": "date",
+            "example": "2027-12-10"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 4000,
+            "example": "Covers 3 drone cinematographers and 4 candid shooters."
+          }
+        }
+      },
+      "ExpenseLedgerDto": {
+        "type": "object",
+        "properties": {
+          "entries": {
+            "description": "Newest first.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpenseEntryDto"
+            }
+          }
+        },
+        "required": [
+          "entries"
+        ]
+      },
+      "RecordPaymentDto": {
+        "type": "object",
+        "properties": {
+          "amountPaise": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000000000,
+            "example": 8000000,
+            "description": "Paise: ₹80,000 is 8000000."
+          },
+          "paidAt": {
+            "type": "string",
+            "description": "The day it was paid (`YYYY-MM-DD`, India time).",
+            "format": "date",
+            "example": "2026-12-01"
+          },
+          "method": {
+            "enum": [
+              "cash",
+              "bank_transfer",
+              "card",
+              "cheque",
+              "other"
+            ],
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "Advance"
+          }
+        },
+        "required": [
+          "amountPaise",
+          "paidAt"
+        ]
+      },
+      "RecordAdjustmentDto": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "discount",
+              "extra"
+            ],
+            "type": "string"
+          },
+          "amountPaise": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000000000,
+            "example": 8000000,
+            "description": "Paise: ₹80,000 is 8000000."
+          },
+          "date": {
+            "type": "string",
+            "description": "The day it was agreed (`YYYY-MM-DD`, India time).",
+            "format": "date",
+            "example": "2026-12-10"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "Agreed 5% off after the final quote."
+          }
+        },
+        "required": [
+          "kind",
+          "amountPaise",
+          "date"
+        ]
+      },
+      "ReverseEntryDto": {
+        "type": "object",
+        "properties": {
+          "entryId": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{24}$",
+            "example": "6740a1b2c3d4e5f601234567"
+          },
+          "note": {
+            "type": "string",
+            "description": "Why, for the history.",
+            "maxLength": 500,
+            "example": "Entered twice."
+          }
+        },
+        "required": [
+          "entryId"
+        ]
+      },
+      "SkippedGuestsDto": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "names": {
+            "description": "At most REMINDER_PREVIEW_NAMES, by name.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "count",
+          "names"
+        ]
+      },
+      "ReminderSkipsDto": {
+        "type": "object",
+        "properties": {
+          "noEmail": {
+            "description": "No email address: share their link on WhatsApp instead.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SkippedGuestsDto"
+              }
+            ]
+          },
+          "notShared": {
+            "description": "The invitation was never shared: send it first.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SkippedGuestsDto"
+              }
+            ]
+          },
+          "linkOff": {
+            "description": "Their link is turned off.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SkippedGuestsDto"
+              }
+            ]
+          },
+          "remindersOff": {
+            "description": "The guest turned reminder emails off.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SkippedGuestsDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "noEmail",
+          "notShared",
+          "linkOff",
+          "remindersOff"
+        ]
+      },
+      "ReminderPreviewDto": {
+        "type": "object",
+        "properties": {
+          "recipients": {
+            "type": "number",
+            "description": "Guests who would be emailed: one email each."
+          },
+          "skipped": {
+            "$ref": "#/components/schemas/ReminderSkipsDto"
+          },
+          "emailsLeftToday": {
+            "type": "number",
+            "description": "Emails this wedding can still send today (shared with invitations)."
+          }
+        },
+        "required": [
+          "recipients",
+          "skipped",
+          "emailsLeftToday"
+        ]
+      },
+      "ReminderScopeDto": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Remind about this ceremony only."
+          }
+        }
+      },
+      "ReminderResultDto": {
+        "type": "object",
+        "properties": {
+          "queued": {
+            "type": "number",
+            "description": "Reminder emails queued: one per guest."
+          },
+          "skipped": {
+            "$ref": "#/components/schemas/ReminderSkipsDto"
+          }
+        },
+        "required": [
+          "queued",
+          "skipped"
+        ]
+      },
+      "SendReminderDto": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Remind about this ceremony only."
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "Please reply by 25 January."
+          }
+        }
+      },
+      "RsvpDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "pending",
+              "attending",
+              "not_attending",
+              "maybe"
+            ],
+            "type": "string"
+          },
+          "attendingCount": {
+            "type": "number",
+            "description": "Attending: 1 to the party size; not attending: 0; maybe: optional; pending: none."
+          },
+          "respondedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "responseVersion": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "status",
+          "responseVersion"
+        ]
+      },
+      "GuestInvitationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The event invitation's ID."
+          },
+          "eventId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean",
+            "description": "False once the event was deleted."
+          },
+          "cancelled": {
+            "type": "boolean",
+            "description": "The ceremony was cancelled: its RSVP is closed; the last answer stays."
+          },
+          "rsvp": {
+            "$ref": "#/components/schemas/RsvpDto"
+          }
+        },
+        "required": [
+          "id",
+          "eventId",
+          "title",
+          "available",
+          "cancelled",
+          "rsvp"
+        ]
+      },
+      "GuestLinkDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "none: never created; active: works; revoked: every link was revoked.",
+            "enum": [
+              "none",
+              "active",
+              "revoked"
+            ],
+            "type": "string"
+          },
+          "secretUrl": {
+            "type": "string",
+            "description": "The private link; only on a single guest, never in lists. Named so that\nrequest traces mask it: it is a bearer credential."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "lastUsedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "GuestEmailDto": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "description": "What became of the last invitation email; \"sent\" is never \"delivered\" (PRD INV-08).",
+            "enum": [
+              "queued",
+              "processing",
+              "sent",
+              "delivered",
+              "bounced",
+              "failed",
+              "suppressed"
+            ],
+            "type": "string"
+          },
+          "requestedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "state",
+          "requestedAt"
+        ]
+      },
+      "GuestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "partySize": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "organizerNotes": {
+            "type": "string"
+          },
+          "invitations": {
+            "description": "The ceremonies they are invited to, in the wedding's order.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuestInvitationDto"
+            }
+          },
+          "link": {
+            "$ref": "#/components/schemas/GuestLinkDto"
+          },
+          "lastEmail": {
+            "description": "Missing if no invitation email was asked for.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GuestEmailDto"
+              }
+            ]
+          },
+          "lastReminder": {
+            "description": "The last reminder email, by hand or automatic; missing if none.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GuestEmailDto"
+              }
+            ]
+          },
+          "remindersOff": {
+            "type": "boolean",
+            "description": "The guest turned reminder emails off from their invitation."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "partySize",
+          "invitations",
+          "link",
+          "remindersOff",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "EventRsvpTotalsDto": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "invitedGuests": {
+            "type": "number",
+            "description": "Guest contacts invited."
+          },
+          "invitedPeople": {
+            "type": "number",
+            "description": "People invited: the sum of those contacts' party sizes."
+          },
+          "attending": {
+            "type": "number"
+          },
+          "notAttending": {
+            "type": "number"
+          },
+          "maybe": {
+            "type": "number"
+          },
+          "pending": {
+            "type": "number"
+          },
+          "confirmedPeople": {
+            "type": "number",
+            "description": "People confirmed: attending counts only; maybe is not included."
+          }
+        },
+        "required": [
+          "eventId",
+          "title",
+          "invitedGuests",
+          "invitedPeople",
+          "attending",
+          "notAttending",
+          "maybe",
+          "pending",
+          "confirmedPeople"
+        ]
+      },
+      "GuestTotalsDto": {
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "type": "number",
+            "description": "Guest contacts (families or groups)."
+          },
+          "invitedPeople": {
+            "type": "number",
+            "description": "People invited to at least one ceremony, each counted once across the wedding."
+          },
+          "answered": {
+            "type": "number",
+            "description": "Ceremony invitations answered (attending, not attending or maybe)."
+          },
+          "pending": {
+            "type": "number",
+            "description": "Ceremony invitations not answered yet."
+          },
+          "events": {
+            "description": "Per ceremony, in the wedding's order.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventRsvpTotalsDto"
+            }
+          }
+        },
+        "required": [
+          "contacts",
+          "invitedPeople",
+          "answered",
+          "pending",
+          "events"
+        ]
+      },
+      "GuestListDto": {
+        "type": "object",
+        "properties": {
+          "guests": {
+            "description": "By name, A to Z.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuestDto"
+            }
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/GuestTotalsDto"
+          }
+        },
+        "required": [
+          "guests",
+          "truncated",
+          "totals"
+        ]
+      },
+      "RsvpChangeDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "pending",
+              "attending",
+              "not_attending",
+              "maybe"
+            ],
+            "type": "string"
+          },
+          "attendingCount": {
+            "type": "number"
+          },
+          "at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "at"
+        ]
+      },
+      "GuestDetailInvitationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The event invitation's ID."
+          },
+          "eventId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean",
+            "description": "False once the event was deleted."
+          },
+          "cancelled": {
+            "type": "boolean",
+            "description": "The ceremony was cancelled: its RSVP is closed; the last answer stays."
+          },
+          "rsvp": {
+            "$ref": "#/components/schemas/RsvpDto"
+          },
+          "history": {
+            "description": "Earlier answers, newest first.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RsvpChangeDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "eventId",
+          "title",
+          "available",
+          "cancelled",
+          "rsvp",
+          "history"
+        ]
+      },
+      "GuestDetailDto": {
+        "type": "object",
+        "properties": {
+          "guest": {
+            "$ref": "#/components/schemas/GuestDto"
+          },
+          "invitations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuestDetailInvitationDto"
+            }
+          }
+        },
+        "required": [
+          "guest",
+          "invitations"
+        ]
+      },
+      "CreateGuestDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Rajesh Sharma"
+          },
+          "partySize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "example": 5
+          },
+          "email": {
+            "type": "string",
+            "description": "Needed only to send the invitation by email.",
+            "format": "email",
+            "maxLength": 254,
+            "example": "contact@vendor.in"
+          },
+          "phone": {
+            "type": "string",
+            "description": "For sharing the link on WhatsApp by hand.",
+            "maxLength": 30,
+            "example": "+91 98200 00000"
+          },
+          "organizerNotes": {
+            "type": "string",
+            "description": "Organizer-only.",
+            "maxLength": 2000,
+            "example": "Needs a ground-floor room."
+          },
+          "eventIds": {
+            "description": "Ceremonies to invite them to; they can be invited later.",
+            "maxItems": 50,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "partySize"
+        ]
+      },
+      "ImportRowResultDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "ready",
+              "error",
+              "duplicate"
+            ],
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "description": "The row's position in the file's data rows, from 0."
+          },
+          "problems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "field",
+                "message"
+              ]
+            }
+          },
+          "duplicateOf": {
+            "type": "string",
+            "description": "For a possible duplicate: the guest already on the list, or an earlier row."
+          }
+        },
+        "required": [
+          "status",
+          "index",
+          "problems"
+        ]
+      },
+      "ImportPreviewResultDto": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportRowResultDto"
+            }
+          },
+          "ready": {
+            "type": "number"
+          },
+          "errors": {
+            "type": "number"
+          },
+          "duplicates": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "rows",
+          "ready",
+          "errors",
+          "duplicates"
+        ]
+      },
+      "ImportRowDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "Rajesh Sharma"
+          },
+          "partySize": {
+            "description": "A whole number of 1 or more; checked per row.",
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "example": 5
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "organizerNotes": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "events": {
+            "description": "Ceremony names, matched to the wedding's events ignoring case (decision 0015).",
+            "maxItems": 50,
+            "example": [
+              "Haldi",
+              "Wedding"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 200
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ImportPreviewDto": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "maxLength": 200,
+            "example": "guest-list.csv"
+          },
+          "mode": {
+            "enum": [
+              "csv",
+              "xlsx"
+            ],
+            "type": "string"
+          },
+          "rows": {
+            "maxItems": 1000,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportRowDto"
+            }
+          }
+        },
+        "required": [
+          "fileName",
+          "mode",
+          "rows"
+        ]
+      },
+      "ImportCommitResultDto": {
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "number"
+          },
+          "skipped": {
+            "type": "number"
+          },
+          "rejected": {
+            "type": "number",
+            "description": "Rows not imported because they have problems."
+          }
+        },
+        "required": [
+          "created",
+          "skipped",
+          "rejected"
+        ]
+      },
+      "ImportCommitDto": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "maxItems": 1000,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportRowDto"
+            }
+          },
+          "skipDuplicates": {
+            "type": "boolean",
+            "description": "Leave out rows that look like guests already on the list."
+          },
+          "sourceFormat": {
+            "enum": [
+              "csv",
+              "xlsx"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "rows"
+        ]
+      },
+      "UpdateGuestDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Rajesh Sharma"
+          },
+          "partySize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "example": 5
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "format": "email",
+            "maxLength": 254,
+            "example": "contact@vendor.in"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 30,
+            "example": "+91 98200 00000"
+          },
+          "organizerNotes": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 2000,
+            "example": "Needs a ground-floor room."
+          }
+        }
+      },
+      "InvitationSelectionDto": {
+        "type": "object",
+        "properties": {
+          "eventIds": {
+            "maxItems": 50,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
+          }
+        }
+      },
+      "CreateLinkDto": {
+        "type": "object",
+        "properties": {
+          "reissue": {
+            "type": "boolean",
+            "description": "Revoke the current link and create a new one."
+          }
+        }
+      },
+      "ExchangeTokenDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{20,100}$",
+            "description": "From the link, after `#t=`."
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "GuestViewEventDto": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2027-02-18"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "10:00"
+          },
+          "invitationId": {
+            "type": "string",
+            "description": "The event invitation's ID, used to answer it."
+          },
+          "title": {
+            "type": "string"
+          },
+          "timeZone": {
+            "type": "string"
+          },
+          "venueName": {
+            "type": "string"
+          },
+          "venueAddress": {
+            "type": "string"
+          },
+          "cancelled": {
+            "type": "boolean",
+            "description": "Cancelled: its RSVP is closed; the last answer is shown."
+          },
+          "rsvp": {
+            "$ref": "#/components/schemas/RsvpDto"
+          }
+        },
+        "required": [
+          "invitationId",
+          "title",
+          "timeZone",
+          "cancelled",
+          "rsvp"
+        ]
+      },
+      "GuestViewDto": {
+        "type": "object",
+        "properties": {
+          "reminderEmails": {
+            "description": "Reminder emails: `on` or `off` (the guest's choice); missing when the\ncouple has no email address for them, so there is nothing to turn off.",
+            "enum": [
+              "on",
+              "off"
+            ],
+            "type": "string"
+          },
+          "coupleName": {
+            "type": "string",
+            "description": "\"Ananya & Arjun\"."
+          },
+          "guestName": {
+            "type": "string"
+          },
+          "partySize": {
+            "type": "number"
+          },
+          "writable": {
+            "type": "boolean",
+            "description": "False once the wedding is archived: answers can be seen, not changed."
+          },
+          "events": {
+            "description": "In the wedding's order.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuestViewEventDto"
+            }
+          }
+        },
+        "required": [
+          "coupleName",
+          "guestName",
+          "partySize",
+          "writable",
+          "events"
+        ]
+      },
+      "RsvpPatchDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "attending",
+              "not_attending",
+              "maybe"
+            ],
+            "type": "string"
+          },
+          "attendingCount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "responseVersion": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "status",
+          "responseVersion"
+        ]
+      },
+      "GuestReminderChoiceDto": {
+        "type": "object",
+        "properties": {
+          "reminderEmails": {
+            "enum": [
+              "on",
+              "off"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "reminderEmails"
+        ]
+      },
+      "ReminderSettingsDto": {
+        "type": "object",
+        "properties": {
+          "reminderOffsetsDays": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "enum": [
+                30,
+                7,
+                3
+              ]
+            },
+            "example": [
+              30,
+              7,
+              3
+            ]
+          },
+          "sendTime": {
+            "type": "string",
+            "description": "Local time in each ceremony's time zone, `HH:mm`.",
+            "example": "09:00"
+          },
+          "remindersEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "reminderOffsetsDays",
+          "sendTime",
+          "remindersEnabled"
+        ]
+      },
+      "UpdateReminderSettingsDto": {
+        "type": "object",
+        "properties": {
+          "remindersEnabled": {
+            "type": "boolean"
+          },
+          "reminderOffsetsDays": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "number",
+              "enum": [
+                30,
+                7,
+                3
+              ]
+            },
+            "example": [
+              30,
+              7,
+              3
+            ]
+          }
+        },
+        "required": [
+          "remindersEnabled",
+          "reminderOffsetsDays"
+        ]
+      },
+      "WebsiteFaqDto": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "answer"
+        ]
+      },
+      "WebsiteContentDto": {
+        "type": "object",
+        "properties": {
+          "headline": {
+            "type": "string"
+          },
+          "story": {
+            "type": "string"
+          },
+          "faq": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebsiteFaqDto"
+            }
+          }
+        },
+        "required": [
+          "faq"
+        ]
+      },
+      "ReadinessCheckDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "enum": [
+              "names",
+              "address",
+              "ceremonies"
+            ],
+            "type": "string"
+          },
+          "ok": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "description": "What is there, or what to do."
+          }
+        },
+        "required": [
+          "key",
+          "ok",
+          "message"
+        ]
+      },
+      "WebsiteReadinessDto": {
+        "type": "object",
+        "properties": {
+          "ready": {
+            "type": "boolean"
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadinessCheckDto"
+            }
+          }
+        },
+        "required": [
+          "ready",
+          "checks"
+        ]
+      },
+      "WebsiteDto": {
+        "type": "object",
+        "properties": {
+          "templateId": {
+            "description": "The draft's template.",
+            "enum": [
+              "traditional",
+              "modern",
+              "royal"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "published"
+            ],
+            "type": "string"
+          },
+          "publishedTemplateId": {
+            "description": "The template the public sees, while published.",
+            "enum": [
+              "traditional",
+              "modern",
+              "royal"
+            ],
+            "type": "string"
+          },
+          "content": {
+            "$ref": "#/components/schemas/WebsiteContentDto"
+          },
+          "contentVersion": {
+            "type": "number",
+            "description": "Send it back with the next edit or publication."
+          },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "hasUnpublishedChanges": {
+            "type": "boolean",
+            "description": "Published, and the draft has changed since."
+          },
+          "slug": {
+            "type": "string",
+            "description": "The wedding's web address; the public site is at `/w/{slug}`."
+          },
+          "readiness": {
+            "$ref": "#/components/schemas/WebsiteReadinessDto"
+          },
+          "writable": {
+            "type": "boolean",
+            "description": "False once the wedding is archived: nothing but unpublishing can change."
+          },
+          "canUnpublish": {
+            "type": "boolean",
+            "description": "Whether this member may unpublish now (owners only, once archived)."
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "templateId",
+          "status",
+          "content",
+          "contentVersion",
+          "hasUnpublishedChanges",
+          "slug",
+          "readiness",
+          "writable",
+          "canUnpublish"
+        ]
+      },
+      "WebsiteFaqInputDto": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "example": "What should I wear?"
+          },
+          "answer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1500,
+            "example": "Festive Indian wear."
+          }
+        },
+        "required": [
+          "question",
+          "answer"
+        ]
+      },
+      "WebsiteContentInputDto": {
+        "type": "object",
+        "properties": {
+          "headline": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 120,
+            "example": "We’re getting married in Jaipur"
+          },
+          "story": {
+            "type": "string",
+            "nullable": true,
+            "description": "Plain text; blank lines separate paragraphs.",
+            "maxLength": 4000,
+            "example": "We met in Mumbai…"
+          },
+          "faq": {
+            "description": "The whole list, in order: it replaces the saved one.",
+            "maxItems": 20,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebsiteFaqInputDto"
+            }
+          }
+        }
+      },
+      "UpdateWebsiteDto": {
+        "type": "object",
+        "properties": {
+          "templateId": {
+            "enum": [
+              "traditional",
+              "modern",
+              "royal"
+            ],
+            "type": "string"
+          },
+          "content": {
+            "$ref": "#/components/schemas/WebsiteContentInputDto"
+          },
+          "contentVersion": {
+            "type": "integer",
+            "description": "The version this edit started from; a newer one on the server is a conflict.",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "contentVersion"
+        ]
+      },
+      "PublicDateRangeDto": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date"
+          },
+          "end": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ]
+      },
+      "PublicEventDto": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2027-02-12"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "10:30"
+          },
+          "timeZone": {
+            "type": "string",
+            "example": "Asia/Kolkata"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "venueName": {
+            "type": "string"
+          },
+          "venueAddress": {
+            "type": "string"
+          },
+          "mapsUrl": {
+            "type": "string",
+            "description": "A checked Google Maps link."
+          },
+          "dressCode": {
+            "type": "string"
+          },
+          "livestreamVideoId": {
+            "type": "string",
+            "description": "A YouTube video ID; the site builds the embed and watch links."
+          },
+          "cancelled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "timeZone",
+          "title",
+          "cancelled"
+        ]
+      },
+      "PublicWebsiteDto": {
+        "type": "object",
+        "properties": {
+          "templateId": {
+            "enum": [
+              "traditional",
+              "modern",
+              "royal"
+            ],
+            "type": "string"
+          },
+          "slug": {
+            "type": "string",
+            "description": "The current address: different from the one asked for when it moved."
+          },
+          "brideName": {
+            "type": "string"
+          },
+          "groomName": {
+            "type": "string"
+          },
+          "coupleName": {
+            "type": "string",
+            "description": "\"Ananya & Arjun\"."
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "headline": {
+            "type": "string"
+          },
+          "story": {
+            "type": "string",
+            "description": "Plain text; blank lines separate paragraphs."
+          },
+          "faq": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebsiteFaqDto"
+            }
+          },
+          "dateRange": {
+            "description": "The first and last day of the ceremonies with a date, cancelled ones left out.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicDateRangeDto"
+              }
+            ]
+          },
+          "events": {
+            "description": "In date order, those without a date last.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicEventDto"
+            }
+          },
+          "preview": {
+            "type": "boolean",
+            "description": "An organizer's preview of the draft, never shown to the public."
+          }
+        },
+        "required": [
+          "templateId",
+          "slug",
+          "brideName",
+          "groomName",
+          "coupleName",
+          "city",
+          "state",
+          "faq",
+          "events",
+          "preview"
+        ]
+      },
+      "PublishWebsiteDto": {
+        "type": "object",
+        "properties": {
+          "contentVersion": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "contentVersion"
+        ]
+      },
+      "SlugAvailabilityDto": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string"
+          },
+          "valid": {
+            "type": "boolean",
+            "description": "A well-formed address."
+          },
+          "available": {
+            "type": "boolean",
+            "description": "Free for this wedding: unused, or one of its own."
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "valid",
+          "available"
+        ]
+      },
+      "PublicEventListDto": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicEventDto"
+            }
+          }
+        },
+        "required": [
+          "events"
         ]
       },
       "FieldErrorDto": {

@@ -3,6 +3,9 @@ import { linkIn, waitForEmail } from './mail';
 
 export const PASSWORD = 'mehendi at the haveli';
 
+/** A wedding's workspace, where `/dashboard` leads. */
+export const WORKSPACE = /\/weddings\/[0-9a-f]{24}$/;
+
 /** Signs up through the form and waits for the verification screen. */
 export async function signUp(page: Page, email: string, name = 'Priya Sharma') {
   await page.goto('/signup');
@@ -53,7 +56,7 @@ export async function createWedding(
  * Visits `from` and expects HTTP redirects (one or more) to `to`: the
  * browser never receives `from`, so nothing of it flashes on screen first.
  */
-export async function expectRedirectBeforeRender(page: Page, from: string, to: string) {
+export async function expectRedirectBeforeRender(page: Page, from: string, to: string | RegExp) {
   const response = await page.goto(from);
   let first = response?.request();
   while (first?.redirectedFrom()) first = first.redirectedFrom() ?? undefined;

@@ -11,6 +11,7 @@ import {
   expectRedirectBeforeRender,
   signUp,
   signUpVerified,
+  WORKSPACE,
 } from './support/journeys';
 import { linkIn, uniqueEmail, waitForEmail } from './support/mail';
 import { newVisitor, test } from './support/visitor';
@@ -179,8 +180,8 @@ test('the partner is invited, signs up from the email, accepts and becomes an ow
     partner.getByRole('heading', { level: 1, name: 'Welcome to the wedding' }),
   ).toBeVisible();
   await partner.getByRole('link', { name: 'Go to your dashboard' }).click();
-  await expect(partner).toHaveURL('/dashboard');
-  await expect(partner.getByRole('main')).toContainText('Pushpa & Nitesh, Ara, Bihar');
+  await expect(partner).toHaveURL(WORKSPACE);
+  await expect(partner.getByRole('main')).toContainText('Pushpa & Nitesh’s wedding · Ara, Bihar');
 
   // The owner sees that the partner has joined.
   await owner.goto('/onboarding/partner');
@@ -244,8 +245,10 @@ test('a partner who signs up without the link sees the invitation and joins in o
   await expect(dialog).toBeHidden();
 
   await partner.getByRole('button', { name: 'Accept and join' }).click();
-  await expect(partner).toHaveURL('/dashboard');
-  await expect(partner.getByRole('main')).toContainText('Ananya & Arjun, Jaipur, Rajasthan');
+  await expect(partner).toHaveURL(WORKSPACE);
+  await expect(partner.getByRole('main')).toContainText(
+    'Ananya & Arjun’s wedding · Jaipur, Rajasthan',
+  );
 
   await owner.goto('/onboarding/partner');
   await expect(owner.getByText('Your partner has joined')).toBeVisible();

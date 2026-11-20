@@ -37,7 +37,12 @@ describe('validateEnv', () => {
   it('traces every request in development, failures in production, nothing in tests', () => {
     expect(validateEnv(valid).LOG_TRACE).toBe('full');
     expect(validateEnv({ ...valid, NODE_ENV: 'test' }).LOG_TRACE).toBe('off');
-    const production = { ...valid, NODE_ENV: 'production', MAIL_TRANSPORT: 'smtp' };
+    const production = {
+      ...valid,
+      NODE_ENV: 'production',
+      MAIL_TRANSPORT: 'smtp',
+      GUEST_LINK_SECRET: 'a'.repeat(48),
+    };
     const smtp = { SMTP_USER: 'hello@gmail.com', SMTP_PASSWORD: 'x' };
     expect(validateEnv({ ...production, ...smtp }).LOG_TRACE).toBe('errors');
     expect(validateEnv({ ...valid, LOG_TRACE: 'off' }).LOG_TRACE).toBe('off');
@@ -104,5 +109,16 @@ describe('validateEnv', () => {
     expect(() => validateEnv({ ...valid, NODE_ENV: 'production' })).toThrow(
       /MAIL_TRANSPORT must be smtp/,
     );
+  });
+
+  it('needs a long guest link secret in production, and only there', () => {
+    const smtp = { MAIL_TRANSPORT: 'smtp', SMTP_USER: 'hello@gmail.com', SMTP_PASSWORD: 'x' };
+    expect(() => validateEnv({ ...valid, ...smtp, NODE_ENV: 'production' })).toThrow(
+      /GUEST_LINK_SECRET is required/,
+    );
+    expect(() => validateEnv({ ...valid, GUEST_LINK_SECRET: 'too short' })).toThrow(
+      /at least 32 characters/,
+    );
+    expect(validateEnv(valid).GUEST_LINK_SECRET).toBeUndefined();
   });
 });

@@ -199,7 +199,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Get wedding private details */
+        get: operations["WeddingsController_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -207,6 +208,23 @@ export interface paths {
         head?: never;
         /** Update active wedding details */
         patch: operations["WeddingsController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List wedding owners/managers */
+        get: operations["WeddingsController_members"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/weddings/{weddingId}/member-invites": {
@@ -306,6 +324,668 @@ export interface paths {
         put?: never;
         /** Accept an invitation sent to my email address */
         post: operations["MemberInvitesController_acceptById"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List ceremonies */
+        get: operations["EventsController_list"];
+        put?: never;
+        /** Create ceremony */
+        post: operations["EventsController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/events/{eventId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete ceremony (owners only) */
+        delete: operations["EventsController_remove"];
+        options?: never;
+        head?: never;
+        /** Update or cancel ceremony */
+        patch: operations["EventsController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/tasks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List tasks with filters */
+        get: operations["TasksController_list"];
+        put?: never;
+        /** Create task and assign wedding member */
+        post: operations["TasksController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/tasks/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Task counts by event */
+        get: operations["TasksController_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/tasks/{taskId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update task/status */
+        patch: operations["TasksController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/vendors": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List private vendors */
+        get: operations["VendorsController_list"];
+        put?: never;
+        /** Create vendor contact */
+        post: operations["VendorsController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/vendors/{vendorId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read vendor */
+        get: operations["VendorsController_get"];
+        put?: never;
+        post?: never;
+        /** Delete vendor (owners only); the record is kept, marked deleted */
+        delete: operations["VendorsController_remove"];
+        options?: never;
+        head?: never;
+        /** Update vendor */
+        patch: operations["VendorsController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expenses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List expenses */
+        get: operations["ExpensesController_list"];
+        put?: never;
+        /** Create expense in integer paise */
+        post: operations["ExpensesController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expenses-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get INR paise totals */
+        get: operations["ExpensesController_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expenses/{expenseId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read expense with paid/outstanding totals */
+        get: operations["ExpensesController_get"];
+        put?: never;
+        post?: never;
+        /** Delete expense (owners only); kept with its history, marked deleted */
+        delete: operations["ExpensesController_remove"];
+        options?: never;
+        head?: never;
+        /** Update expense amount/details */
+        patch: operations["ExpensesController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expenses/{expenseId}/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List payment ledger entries */
+        get: operations["ExpensesController_ledger"];
+        put?: never;
+        /** Record payment */
+        post: operations["ExpensesController_recordPayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expenses/{expenseId}/adjustments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record a discount or an extra */
+        post: operations["ExpensesController_recordAdjustment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expenses/{expenseId}/payments/reverse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reverse previous payment by compensating entry */
+        post: operations["ExpensesController_reverse"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/reminders/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview a reminder to everyone invited */
+        post: operations["GuestsController_previewReminders"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/reminders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Remind everyone invited */
+        post: operations["GuestsController_remindAll"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List guest contacts */
+        get: operations["GuestsController_list"];
+        put?: never;
+        /** Create primary guest contact */
+        post: operations["GuestsController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/import/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Validate CSV/XLSX guest import before commit */
+        post: operations["GuestsController_previewImport"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/import/commit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Commit previously validated import selection */
+        post: operations["GuestsController_commitImport"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/{guestId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read guest contact */
+        get: operations["GuestsController_get"];
+        put?: never;
+        post?: never;
+        /** Remove guest and revoke invitation capabilities */
+        delete: operations["GuestsController_remove"];
+        options?: never;
+        head?: never;
+        /** Update party size and private contact info */
+        patch: operations["GuestsController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/invitations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List event invitations for guest */
+        get: operations["GuestsController_invitations"];
+        /** Set selected events for guest */
+        put: operations["GuestsController_setInvitations"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/invitation-links": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Generate/reissue private guest link */
+        post: operations["GuestsController_createLink"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/invitation-links/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revoke all active guest invitation links/sessions */
+        post: operations["GuestsController_revokeLink"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/reminder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Remind one guest */
+        post: operations["GuestsController_remindOne"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/guests/{guestId}/invitation-email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Queue guest invitation email */
+        post: operations["GuestsController_sendEmail"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/guest-access/exchange": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Exchange raw private invite token for scoped cookie */
+        post: operations["GuestAccessController_exchange"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/guest-access/invitation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** View contact name and selected ceremonies */
+        get: operations["GuestAccessController_invitation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/guest-access/events/{invitationId}/rsvp": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change RSVP for selected ceremony */
+        patch: operations["GuestAccessController_answer"];
+        trace?: never;
+    };
+    "/api/v1/guest-access/reminders/opt-out": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Opt out of reminder emails */
+        post: operations["GuestAccessController_optOut"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/guest-access/reminders/opt-in": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Receive reminder emails again */
+        post: operations["GuestAccessController_optIn"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/guest-access/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Clear invitation-scoped session */
+        post: operations["GuestAccessController_logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/reminder-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read reminder scheduling settings */
+        get: operations["ReminderSettingsController_get"];
+        /** Configure reminder offsets (30/7/3) */
+        put: operations["ReminderSettingsController_update"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/website": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read wedding website editor configuration */
+        get: operations["WebsiteController_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Edit template and site content */
+        patch: operations["WebsiteController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/website/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Preview unpublished content (noncacheable) */
+        get: operations["WebsiteController_preview"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/website/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Publish wedding public website */
+        post: operations["WebsiteController_publish"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/website/unpublish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Unpublish site (owner safety exception after archive) */
+        post: operations["WebsiteController_unpublish"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/website/address": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Check a wedding website address */
+        get: operations["WebsiteController_address"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/weddings/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read published sanitized public wedding */
+        get: operations["PublicWebsiteController_wedding"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/weddings/{slug}/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List published event information */
+        get: operations["PublicWebsiteController_events"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -459,6 +1139,16 @@ export interface components {
              */
             weddingDate?: string;
         };
+        MemberDto: {
+            /** @enum {string} */
+            role: "owner" | "manager";
+            /** @description User ID; what a task's `assigneeId` names. */
+            userId: string;
+            displayName: string;
+        };
+        MemberListDto: {
+            members: components["schemas"]["MemberDto"][];
+        };
         UpdateWeddingDto: {
             /** @example Ananya */
             brideName?: string;
@@ -468,6 +1158,12 @@ export interface components {
             city?: string;
             /** @example Rajasthan */
             state?: string;
+            /**
+             * @description A new web address for the wedding website (decision 0017). The old one
+             *     stays reserved for this wedding and redirects to the new one.
+             * @example ananya-arjun
+             */
+            slug?: string;
             /**
              * Format: date
              * @description The wedding day; `null` removes it. A new date must not be in the past.
@@ -547,6 +1243,1084 @@ export interface components {
             invitedByName?: string;
             /** Format: date-time */
             expiresAt: string;
+        };
+        EventVenueDto: {
+            name?: string;
+            address?: string;
+            /** @description Google Maps link for directions. */
+            mapsUrl?: string;
+        };
+        EventLivestreamDto: {
+            /** @enum {string} */
+            provider: "youtube";
+            videoId: string;
+            url: string;
+        };
+        EventDto: {
+            /**
+             * Format: date
+             * @description The day (`YYYY-MM-DD`) where the ceremony happens; missing until known.
+             * @example 2027-12-13
+             */
+            startDate?: string;
+            /**
+             * @description The start time (`HH:mm`) on that day, where it happens; missing until known.
+             * @example 18:30
+             */
+            startTime?: string;
+            /**
+             * @description IANA time zone the day and time are read in.
+             * @example Asia/Kolkata
+             */
+            timeZone: string;
+            /** @enum {string} */
+            state: "scheduled" | "completed" | "cancelled";
+            /** @description Event ID. */
+            id: string;
+            title: string;
+            description?: string;
+            /**
+             * Format: date-time
+             * @description The start as an instant, when both the day and the time are known.
+             */
+            startAt?: string;
+            venue?: components["schemas"]["EventVenueDto"];
+            dressCode?: string;
+            livestream?: components["schemas"]["EventLivestreamDto"];
+            /** Format: date-time */
+            createdAt: string;
+        };
+        EventListDto: {
+            events: components["schemas"]["EventDto"][];
+            /** @description True when the wedding has more events than the list returns. */
+            truncated: boolean;
+        };
+        EventVenueInputDto: {
+            /** @example Rambagh Palace */
+            name?: string;
+            /** @example Bhawani Singh Road, Jaipur */
+            address?: string;
+            /**
+             * @description A Google Maps link, for "Get directions" on the wedding website.
+             * @example https://maps.app.goo.gl/AbCdEf123
+             */
+            mapsUrl?: string;
+        };
+        CreateEventDto: {
+            /**
+             * @description A preset such as Haldi or Sangeet, or any name.
+             * @example Haldi
+             */
+            title: string;
+            /**
+             * @description Shown to guests once the wedding website is published.
+             * @example Turmeric and laughter by the pool.
+             */
+            description?: string;
+            /**
+             * Format: date
+             * @description The day, if known: today or later, where the ceremony happens.
+             * @example 2027-12-10
+             */
+            startDate?: string;
+            /**
+             * @description The start time on that day (`HH:mm`, 24-hour); needs `startDate`.
+             * @example 18:30
+             */
+            startTime?: string;
+            /**
+             * @description IANA time zone of the venue; Asia/Kolkata if left out.
+             * @default Asia/Kolkata
+             * @example Asia/Kolkata
+             */
+            timeZone: string;
+            /**
+             * @description Suggested attire, shown on the wedding website.
+             * @example Yellow hues & floral prints
+             */
+            dressCode?: string;
+            /**
+             * @description A YouTube link for the livestream (PRD LIVE-01); only the video is kept.
+             * @example https://youtu.be/dQw4w9WgXcQ
+             */
+            livestreamUrl?: string;
+            venue?: components["schemas"]["EventVenueInputDto"];
+        };
+        UpdateEventDto: {
+            /** @example Haldi */
+            title?: string;
+            /**
+             * @description Shown to guests once the wedding website is published; `null` removes it.
+             * @example Turmeric and laughter by the pool.
+             */
+            description?: string | null;
+            /**
+             * Format: date
+             * @description The day; `null` removes it and the time with it. A new day must not be in the past.
+             * @example 2027-12-10
+             */
+            startDate?: string | null;
+            /**
+             * @description The start time (`HH:mm`, 24-hour); needs a day. `null` removes it.
+             * @example 18:30
+             */
+            startTime?: string | null;
+            /**
+             * @description IANA time zone of the venue. The day and time keep their clock reading in the new zone.
+             * @default Asia/Kolkata
+             * @example Asia/Kolkata
+             */
+            timeZone: string;
+            /** @description Replaces the whole venue; `null` removes it. */
+            venue?: components["schemas"]["EventVenueInputDto"] | null;
+            /**
+             * @description Suggested attire; `null` removes it.
+             * @example Yellow hues & floral prints
+             */
+            dressCode?: string | null;
+            /**
+             * @description A YouTube link for the livestream; `null` or empty removes it.
+             * @example https://youtu.be/dQw4w9WgXcQ
+             */
+            livestreamUrl?: string | null;
+            /**
+             * @description Mark the ceremony completed or cancelled, or scheduled again.
+             * @enum {string}
+             */
+            state?: "scheduled" | "completed" | "cancelled";
+        };
+        TaskEventDto: {
+            id: string;
+            title: string;
+        };
+        TaskAssigneeDto: {
+            /** @enum {string} */
+            role: "owner" | "manager";
+            userId: string;
+            displayName: string;
+        };
+        TaskPersonDto: {
+            userId: string;
+            /** @description Missing if the account no longer exists. */
+            displayName?: string;
+        };
+        TaskDto: {
+            /**
+             * Format: date
+             * @description The day it is due (`YYYY-MM-DD`, India time).
+             * @example 2027-12-08
+             */
+            dueDate?: string;
+            /**
+             * @description The time it is due (`HH:mm`, India time).
+             * @example 14:00
+             */
+            dueTime?: string;
+            /** @enum {string} */
+            priority: "low" | "normal" | "high";
+            /** @enum {string} */
+            state: "todo" | "in_progress" | "completed" | "cancelled";
+            /** @description Task ID. */
+            id: string;
+            title: string;
+            description?: string;
+            /** @description Its ceremony; missing for a general task. */
+            event?: components["schemas"]["TaskEventDto"];
+            /** @description Missing when unassigned, or when the assignee is no longer on the team. */
+            assignee?: components["schemas"]["TaskAssigneeDto"];
+            /**
+             * Format: date-time
+             * @description The instant it is due, when the time is known.
+             */
+            dueAt?: string;
+            /** @description Open (to do or in progress) and past its due day or time. */
+            overdue: boolean;
+            /** Format: date-time */
+            completedAt?: string;
+            completedBy?: components["schemas"]["TaskPersonDto"];
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        TaskCountsDto: {
+            all: number;
+            /** @description Assigned to you. */
+            mine: number;
+            overdue: number;
+            inProgress: number;
+            completed: number;
+        };
+        TaskListDto: {
+            tasks: components["schemas"]["TaskDto"][];
+            /** @description True when more tasks match than the list returns. */
+            truncated: boolean;
+            counts: components["schemas"]["TaskCountsDto"];
+        };
+        EventTaskCountsDto: {
+            eventId: string;
+            total: number;
+            completed: number;
+            /** @description Open and past due. */
+            overdue: number;
+        };
+        TaskSummaryDto: {
+            events: components["schemas"]["EventTaskCountsDto"][];
+        };
+        CreateTaskDto: {
+            /** @example Book Haldi decorator */
+            title: string;
+            /** @example Marigold strings and floral seating. */
+            description?: string;
+            /**
+             * @description One of this wedding's events; left out for a general task.
+             * @example 6740a1b2c3d4e5f601234567
+             */
+            eventId?: string;
+            /**
+             * @description An active owner or manager of this wedding; left out for an unassigned task.
+             * @example 6740a1b2c3d4e5f601234567
+             */
+            assigneeId?: string;
+            /**
+             * Format: date
+             * @description The day it is due (`YYYY-MM-DD`), in India time.
+             * @example 2027-12-10
+             */
+            dueDate?: string;
+            /**
+             * @description The time it is due on that day (`HH:mm`, India time); needs `dueDate`.
+             * @example 18:30
+             */
+            dueTime?: string;
+            /**
+             * @description `normal` (shown as Medium) if left out.
+             * @enum {string}
+             */
+            priority?: "low" | "normal" | "high";
+            /**
+             * @description `todo` if left out.
+             * @enum {string}
+             */
+            state?: "todo" | "in_progress" | "completed" | "cancelled";
+        };
+        UpdateTaskDto: {
+            /** @example Book Haldi decorator */
+            title?: string;
+            /**
+             * @description `null` removes it.
+             * @example Marigold strings and floral seating.
+             */
+            description?: string | null;
+            /**
+             * @description `null` makes it a general task.
+             * @example 6740a1b2c3d4e5f601234567
+             */
+            eventId?: string | null;
+            /**
+             * @description `null` unassigns it.
+             * @example 6740a1b2c3d4e5f601234567
+             */
+            assigneeId?: string | null;
+            /**
+             * Format: date
+             * @description `null` removes the due day and the time with it.
+             * @example 2027-12-10
+             */
+            dueDate?: string | null;
+            /**
+             * @description `null` removes the time; needs a day.
+             * @example 18:30
+             */
+            dueTime?: string | null;
+            /** @enum {string} */
+            priority?: "low" | "normal" | "high";
+            /** @enum {string} */
+            state?: "todo" | "in_progress" | "completed" | "cancelled";
+        };
+        VendorEventDto: {
+            id: string;
+            title: string;
+        };
+        VendorDto: {
+            /** @description Vendor ID. */
+            id: string;
+            name: string;
+            category: string;
+            contactName?: string;
+            phone?: string;
+            email?: string;
+            address?: string;
+            notes?: string;
+            /** @description Its ceremonies, in the wedding's order; deleted events are left out. */
+            events: components["schemas"]["VendorEventDto"][];
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        VendorListDto: {
+            /** @description By name, A to Z. */
+            vendors: components["schemas"]["VendorDto"][];
+            /** @description True when the wedding has more vendors than the list returns. */
+            truncated: boolean;
+        };
+        CreateVendorDto: {
+            /** @example The Marigold Studio */
+            name: string;
+            /**
+             * @description Any text; the app suggests common ones, such as Catering (decision 0013).
+             * @example Photography & Videography
+             */
+            category: string;
+            /** @example Rohan Shah */
+            contactName?: string;
+            /** @example +91 98200 00000 */
+            phone?: string;
+            /**
+             * Format: email
+             * @example contact@vendor.in
+             */
+            email?: string;
+            /** @example 402, Heritage Arts Enclave, C-Scheme, Jaipur */
+            address?: string;
+            /**
+             * @description Private notes for the wedding's owners and managers.
+             * @example Confirmed for 3 drones and 4 ground cinematographers.
+             */
+            notes?: string;
+            /**
+             * @description This wedding's events the vendor works at; none when left out.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            eventIds?: string[];
+        };
+        UpdateVendorDto: {
+            /** @example The Marigold Studio */
+            name?: string;
+            /** @example Photography & Videography */
+            category?: string;
+            /** @example Rohan Shah */
+            contactName?: string | null;
+            /** @example +91 98200 00000 */
+            phone?: string | null;
+            /**
+             * Format: email
+             * @example contact@vendor.in
+             */
+            email?: string | null;
+            /** @example 402, Heritage Arts Enclave, C-Scheme, Jaipur */
+            address?: string | null;
+            /** @example Confirmed for 3 drones and 4 ground cinematographers. */
+            notes?: string | null;
+            /**
+             * @description Replaces the linked events; `[]` unlinks them all.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            eventIds?: string[];
+        };
+        ExpenseEventDto: {
+            id: string;
+            title: string;
+            available: boolean;
+        };
+        ExpenseVendorDto: {
+            id: string;
+            name: string;
+            available: boolean;
+        };
+        ExpenseDto: {
+            /**
+             * @description Unpaid (nothing paid), partially paid, or paid (nothing left).
+             * @enum {string}
+             */
+            status: "unpaid" | "partially_paid" | "paid";
+            /**
+             * Format: date
+             * @description The day payment is due (`YYYY-MM-DD`, India time).
+             * @example 2027-02-10
+             */
+            dueDate?: string;
+            /** @description Expense ID. */
+            id: string;
+            title: string;
+            category: string;
+            /** @description The ceremonies it is for, in the wedding's order; empty for a general expense. */
+            events: components["schemas"]["ExpenseEventDto"][];
+            vendor?: components["schemas"]["ExpenseVendorDto"];
+            /** @description The amount agreed. */
+            amountPaise: number;
+            /** @description Discounts agreed later, less reversed ones. */
+            discountPaise: number;
+            /** @description Extras agreed later, less reversed ones. */
+            extraPaise: number;
+            /** @description What is owed in the end: agreed − discounts + extras. */
+            finalPaise: number;
+            /** @description Payments, less reversed ones. */
+            paidPaise: number;
+            /** @description What is still to pay: final − paid. */
+            outstandingPaise: number;
+            /** @description Something is still to pay and the due day has passed (India time). */
+            overdue: boolean;
+            notes?: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        ExpenseTotalsDto: {
+            /** @description What is owed across all expenses: agreed − discounts + extras. */
+            finalPaise: number;
+            paidPaise: number;
+            outstandingPaise: number;
+            /** @description Saved by negotiation: discounts across all expenses. */
+            discountPaise: number;
+            /** @description Extras across all expenses. */
+            extraPaise: number;
+            /** @description How many expenses are overdue. */
+            overdue: number;
+            count: number;
+        };
+        ExpenseListDto: {
+            /** @description By due day (soonest first, none last), then name. */
+            expenses: components["schemas"]["ExpenseDto"][];
+            truncated: boolean;
+            /** @description Over the whole wedding, whatever the list shows. */
+            totals: components["schemas"]["ExpenseTotalsDto"];
+        };
+        CreateExpenseDto: {
+            /** @example Wedding photography package */
+            title: string;
+            /**
+             * @description Any text; the app suggests common ones, such as Catering.
+             * @example Photography & Videography
+             */
+            category: string;
+            /**
+             * @description Paise: ₹80,000 is 8000000.
+             * @example 8000000
+             */
+            amountPaise: number;
+            /**
+             * @description This wedding's events it is for, if any; repeats ignored.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            eventIds?: string[];
+            /**
+             * @description One of this wedding's vendors.
+             * @example 6740a1b2c3d4e5f601234567
+             */
+            vendorId?: string;
+            /**
+             * Format: date
+             * @description The day payment is due (`YYYY-MM-DD`, India time).
+             * @example 2027-12-10
+             */
+            dueDate?: string;
+            /**
+             * @description Private notes for the wedding's owners and managers.
+             * @example Covers 3 drone cinematographers and 4 candid shooters.
+             */
+            notes?: string;
+        };
+        EntryPersonDto: {
+            userId: string;
+            /** @description Missing if the account no longer exists. */
+            displayName?: string;
+        };
+        ExpenseEntryDto: {
+            /** @enum {string} */
+            type: "payment" | "discount" | "extra" | "reversal";
+            /**
+             * Format: date
+             * @description The day it happened (`YYYY-MM-DD`, India time).
+             * @example 2026-12-01
+             */
+            date: string;
+            /** @enum {string} */
+            method?: "cash" | "bank_transfer" | "card" | "cheque" | "other";
+            id: string;
+            amountPaise: number;
+            note?: string;
+            recordedBy: components["schemas"]["EntryPersonDto"];
+            /** @description For a reversal: the entry it undid. */
+            reversalOfId?: string;
+            /** @description For a payment, discount or extra: whether it has been reversed. */
+            reversed: boolean;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        ExpenseDetailDto: {
+            expense: components["schemas"]["ExpenseDto"];
+            entries: components["schemas"]["ExpenseEntryDto"][];
+        };
+        UpdateExpenseDto: {
+            /** @example Wedding photography package */
+            title?: string;
+            /** @example Photography & Videography */
+            category?: string;
+            /**
+             * @description Paise: ₹80,000 is 8000000.
+             * @example 8000000
+             */
+            amountPaise?: number;
+            /**
+             * @description Replaces its events; `[]` makes it a general expense.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            eventIds?: string[];
+            /**
+             * @description `null` removes the vendor.
+             * @example 6740a1b2c3d4e5f601234567
+             */
+            vendorId?: string | null;
+            /**
+             * Format: date
+             * @example 2027-12-10
+             */
+            dueDate?: string | null;
+            /** @example Covers 3 drone cinematographers and 4 candid shooters. */
+            notes?: string | null;
+        };
+        ExpenseLedgerDto: {
+            /** @description Newest first. */
+            entries: components["schemas"]["ExpenseEntryDto"][];
+        };
+        RecordPaymentDto: {
+            /**
+             * @description Paise: ₹80,000 is 8000000.
+             * @example 8000000
+             */
+            amountPaise: number;
+            /**
+             * Format: date
+             * @description The day it was paid (`YYYY-MM-DD`, India time).
+             * @example 2026-12-01
+             */
+            paidAt: string;
+            /** @enum {string} */
+            method?: "cash" | "bank_transfer" | "card" | "cheque" | "other";
+            /** @example Advance */
+            note?: string;
+        };
+        RecordAdjustmentDto: {
+            /** @enum {string} */
+            kind: "discount" | "extra";
+            /**
+             * @description Paise: ₹80,000 is 8000000.
+             * @example 8000000
+             */
+            amountPaise: number;
+            /**
+             * Format: date
+             * @description The day it was agreed (`YYYY-MM-DD`, India time).
+             * @example 2026-12-10
+             */
+            date: string;
+            /** @example Agreed 5% off after the final quote. */
+            note?: string;
+        };
+        ReverseEntryDto: {
+            /** @example 6740a1b2c3d4e5f601234567 */
+            entryId: string;
+            /**
+             * @description Why, for the history.
+             * @example Entered twice.
+             */
+            note?: string;
+        };
+        SkippedGuestsDto: {
+            count: number;
+            /** @description At most REMINDER_PREVIEW_NAMES, by name. */
+            names: string[];
+        };
+        ReminderSkipsDto: {
+            /** @description No email address: share their link on WhatsApp instead. */
+            noEmail: components["schemas"]["SkippedGuestsDto"];
+            /** @description The invitation was never shared: send it first. */
+            notShared: components["schemas"]["SkippedGuestsDto"];
+            /** @description Their link is turned off. */
+            linkOff: components["schemas"]["SkippedGuestsDto"];
+            /** @description The guest turned reminder emails off. */
+            remindersOff: components["schemas"]["SkippedGuestsDto"];
+        };
+        ReminderPreviewDto: {
+            /** @description Guests who would be emailed: one email each. */
+            recipients: number;
+            skipped: components["schemas"]["ReminderSkipsDto"];
+            /** @description Emails this wedding can still send today (shared with invitations). */
+            emailsLeftToday: number;
+        };
+        ReminderScopeDto: {
+            /** @description Remind about this ceremony only. */
+            eventId?: string;
+        };
+        ReminderResultDto: {
+            /** @description Reminder emails queued: one per guest. */
+            queued: number;
+            skipped: components["schemas"]["ReminderSkipsDto"];
+        };
+        SendReminderDto: {
+            /** @description Remind about this ceremony only. */
+            eventId?: string;
+            /** @example Please reply by 25 January. */
+            note?: string;
+        };
+        RsvpDto: {
+            /** @enum {string} */
+            status: "pending" | "attending" | "not_attending" | "maybe";
+            /** @description Attending: 1 to the party size; not attending: 0; maybe: optional; pending: none. */
+            attendingCount?: number;
+            /** Format: date-time */
+            respondedAt?: string;
+            responseVersion: number;
+        };
+        GuestInvitationDto: {
+            /** @description The event invitation's ID. */
+            id: string;
+            eventId: string;
+            title: string;
+            /** @description False once the event was deleted. */
+            available: boolean;
+            /** @description The ceremony was cancelled: its RSVP is closed; the last answer stays. */
+            cancelled: boolean;
+            rsvp: components["schemas"]["RsvpDto"];
+        };
+        GuestLinkDto: {
+            /**
+             * @description none: never created; active: works; revoked: every link was revoked.
+             * @enum {string}
+             */
+            status: "none" | "active" | "revoked";
+            /**
+             * @description The private link; only on a single guest, never in lists. Named so that
+             *     request traces mask it: it is a bearer credential.
+             */
+            secretUrl?: string;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            lastUsedAt?: string;
+        };
+        GuestEmailDto: {
+            /**
+             * @description What became of the last invitation email; "sent" is never "delivered" (PRD INV-08).
+             * @enum {string}
+             */
+            state: "queued" | "processing" | "sent" | "delivered" | "bounced" | "failed" | "suppressed";
+            /** Format: date-time */
+            requestedAt: string;
+        };
+        GuestDto: {
+            id: string;
+            name: string;
+            partySize: number;
+            email?: string;
+            phone?: string;
+            organizerNotes?: string;
+            /** @description The ceremonies they are invited to, in the wedding's order. */
+            invitations: components["schemas"]["GuestInvitationDto"][];
+            link: components["schemas"]["GuestLinkDto"];
+            /** @description Missing if no invitation email was asked for. */
+            lastEmail?: components["schemas"]["GuestEmailDto"];
+            /** @description The last reminder email, by hand or automatic; missing if none. */
+            lastReminder?: components["schemas"]["GuestEmailDto"];
+            /** @description The guest turned reminder emails off from their invitation. */
+            remindersOff: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        EventRsvpTotalsDto: {
+            eventId: string;
+            title: string;
+            /** @description Guest contacts invited. */
+            invitedGuests: number;
+            /** @description People invited: the sum of those contacts' party sizes. */
+            invitedPeople: number;
+            attending: number;
+            notAttending: number;
+            maybe: number;
+            pending: number;
+            /** @description People confirmed: attending counts only; maybe is not included. */
+            confirmedPeople: number;
+        };
+        GuestTotalsDto: {
+            /** @description Guest contacts (families or groups). */
+            contacts: number;
+            /** @description People invited to at least one ceremony, each counted once across the wedding. */
+            invitedPeople: number;
+            /** @description Ceremony invitations answered (attending, not attending or maybe). */
+            answered: number;
+            /** @description Ceremony invitations not answered yet. */
+            pending: number;
+            /** @description Per ceremony, in the wedding's order. */
+            events: components["schemas"]["EventRsvpTotalsDto"][];
+        };
+        GuestListDto: {
+            /** @description By name, A to Z. */
+            guests: components["schemas"]["GuestDto"][];
+            truncated: boolean;
+            totals: components["schemas"]["GuestTotalsDto"];
+        };
+        RsvpChangeDto: {
+            /** @enum {string} */
+            status: "pending" | "attending" | "not_attending" | "maybe";
+            attendingCount?: number;
+            /** Format: date-time */
+            at: string;
+        };
+        GuestDetailInvitationDto: {
+            /** @description The event invitation's ID. */
+            id: string;
+            eventId: string;
+            title: string;
+            /** @description False once the event was deleted. */
+            available: boolean;
+            /** @description The ceremony was cancelled: its RSVP is closed; the last answer stays. */
+            cancelled: boolean;
+            rsvp: components["schemas"]["RsvpDto"];
+            /** @description Earlier answers, newest first. */
+            history: components["schemas"]["RsvpChangeDto"][];
+        };
+        GuestDetailDto: {
+            guest: components["schemas"]["GuestDto"];
+            invitations: components["schemas"]["GuestDetailInvitationDto"][];
+        };
+        CreateGuestDto: {
+            /** @example Rajesh Sharma */
+            name: string;
+            /** @example 5 */
+            partySize: number;
+            /**
+             * Format: email
+             * @description Needed only to send the invitation by email.
+             * @example contact@vendor.in
+             */
+            email?: string;
+            /**
+             * @description For sharing the link on WhatsApp by hand.
+             * @example +91 98200 00000
+             */
+            phone?: string;
+            /**
+             * @description Organizer-only.
+             * @example Needs a ground-floor room.
+             */
+            organizerNotes?: string;
+            /**
+             * @description Ceremonies to invite them to; they can be invited later.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            eventIds?: string[];
+        };
+        ImportRowResultDto: {
+            /** @enum {string} */
+            status: "ready" | "error" | "duplicate";
+            /** @description The row's position in the file's data rows, from 0. */
+            index: number;
+            problems: {
+                field: string;
+                message: string;
+            }[];
+            /** @description For a possible duplicate: the guest already on the list, or an earlier row. */
+            duplicateOf?: string;
+        };
+        ImportPreviewResultDto: {
+            rows: components["schemas"]["ImportRowResultDto"][];
+            ready: number;
+            errors: number;
+            duplicates: number;
+        };
+        ImportRowDto: {
+            /** @example Rajesh Sharma */
+            name: string;
+            /**
+             * @description A whole number of 1 or more; checked per row.
+             * @example 5
+             */
+            partySize?: number | string;
+            email?: string;
+            phone?: string;
+            organizerNotes?: string;
+            /**
+             * @description Ceremony names, matched to the wedding's events ignoring case (decision 0015).
+             * @example [
+             *       "Haldi",
+             *       "Wedding"
+             *     ]
+             */
+            events?: string[];
+        };
+        ImportPreviewDto: {
+            /** @example guest-list.csv */
+            fileName: string;
+            /** @enum {string} */
+            mode: "csv" | "xlsx";
+            rows: components["schemas"]["ImportRowDto"][];
+        };
+        ImportCommitResultDto: {
+            created: number;
+            skipped: number;
+            /** @description Rows not imported because they have problems. */
+            rejected: number;
+        };
+        ImportCommitDto: {
+            rows: components["schemas"]["ImportRowDto"][];
+            /** @description Leave out rows that look like guests already on the list. */
+            skipDuplicates?: boolean;
+            /** @enum {string} */
+            sourceFormat?: "csv" | "xlsx";
+        };
+        UpdateGuestDto: {
+            /** @example Rajesh Sharma */
+            name?: string;
+            /** @example 5 */
+            partySize?: number;
+            /**
+             * Format: email
+             * @example contact@vendor.in
+             */
+            email?: string | null;
+            /** @example +91 98200 00000 */
+            phone?: string | null;
+            /** @example Needs a ground-floor room. */
+            organizerNotes?: string | null;
+        };
+        InvitationSelectionDto: {
+            /**
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            eventIds?: string[];
+        };
+        CreateLinkDto: {
+            /** @description Revoke the current link and create a new one. */
+            reissue?: boolean;
+        };
+        ExchangeTokenDto: {
+            /** @description From the link, after `#t=`. */
+            token: string;
+        };
+        GuestViewEventDto: {
+            /**
+             * Format: date
+             * @example 2027-02-18
+             */
+            startDate?: string;
+            /** @example 10:00 */
+            startTime?: string;
+            /** @description The event invitation's ID, used to answer it. */
+            invitationId: string;
+            title: string;
+            timeZone: string;
+            venueName?: string;
+            venueAddress?: string;
+            /** @description Cancelled: its RSVP is closed; the last answer is shown. */
+            cancelled: boolean;
+            rsvp: components["schemas"]["RsvpDto"];
+        };
+        GuestViewDto: {
+            /**
+             * @description Reminder emails: `on` or `off` (the guest's choice); missing when the
+             *     couple has no email address for them, so there is nothing to turn off.
+             * @enum {string}
+             */
+            reminderEmails?: "on" | "off";
+            /** @description "Ananya & Arjun". */
+            coupleName: string;
+            guestName: string;
+            partySize: number;
+            /** @description False once the wedding is archived: answers can be seen, not changed. */
+            writable: boolean;
+            /** @description In the wedding's order. */
+            events: components["schemas"]["GuestViewEventDto"][];
+        };
+        RsvpPatchDto: {
+            /** @enum {string} */
+            status: "attending" | "not_attending" | "maybe";
+            attendingCount?: number;
+            responseVersion: number;
+        };
+        GuestReminderChoiceDto: {
+            /** @enum {string} */
+            reminderEmails: "on" | "off";
+        };
+        ReminderSettingsDto: {
+            /**
+             * @example [
+             *       30,
+             *       7,
+             *       3
+             *     ]
+             */
+            reminderOffsetsDays: (30 | 7 | 3)[];
+            /**
+             * @description Local time in each ceremony's time zone, `HH:mm`.
+             * @example 09:00
+             */
+            sendTime: string;
+            remindersEnabled: boolean;
+        };
+        UpdateReminderSettingsDto: {
+            remindersEnabled: boolean;
+            /**
+             * @example [
+             *       30,
+             *       7,
+             *       3
+             *     ]
+             */
+            reminderOffsetsDays: (30 | 7 | 3)[];
+        };
+        WebsiteFaqDto: {
+            question: string;
+            answer: string;
+        };
+        WebsiteContentDto: {
+            headline?: string;
+            story?: string;
+            faq: components["schemas"]["WebsiteFaqDto"][];
+        };
+        ReadinessCheckDto: {
+            /** @enum {string} */
+            key: "names" | "address" | "ceremonies";
+            ok: boolean;
+            /** @description What is there, or what to do. */
+            message: string;
+        };
+        WebsiteReadinessDto: {
+            ready: boolean;
+            checks: components["schemas"]["ReadinessCheckDto"][];
+        };
+        WebsiteDto: {
+            /**
+             * @description The draft's template.
+             * @enum {string}
+             */
+            templateId: "traditional" | "modern" | "royal";
+            /** @enum {string} */
+            status: "draft" | "published";
+            /**
+             * @description The template the public sees, while published.
+             * @enum {string}
+             */
+            publishedTemplateId?: "traditional" | "modern" | "royal";
+            content: components["schemas"]["WebsiteContentDto"];
+            /** @description Send it back with the next edit or publication. */
+            contentVersion: number;
+            /** Format: date-time */
+            publishedAt?: string;
+            /** @description Published, and the draft has changed since. */
+            hasUnpublishedChanges: boolean;
+            /** @description The wedding's web address; the public site is at `/w/{slug}`. */
+            slug: string;
+            readiness: components["schemas"]["WebsiteReadinessDto"];
+            /** @description False once the wedding is archived: nothing but unpublishing can change. */
+            writable: boolean;
+            /** @description Whether this member may unpublish now (owners only, once archived). */
+            canUnpublish: boolean;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        WebsiteFaqInputDto: {
+            /** @example What should I wear? */
+            question: string;
+            /** @example Festive Indian wear. */
+            answer: string;
+        };
+        WebsiteContentInputDto: {
+            /** @example We’re getting married in Jaipur */
+            headline?: string | null;
+            /**
+             * @description Plain text; blank lines separate paragraphs.
+             * @example We met in Mumbai…
+             */
+            story?: string | null;
+            /** @description The whole list, in order: it replaces the saved one. */
+            faq?: components["schemas"]["WebsiteFaqInputDto"][];
+        };
+        UpdateWebsiteDto: {
+            /** @enum {string} */
+            templateId?: "traditional" | "modern" | "royal";
+            content?: components["schemas"]["WebsiteContentInputDto"];
+            /** @description The version this edit started from; a newer one on the server is a conflict. */
+            contentVersion: number;
+        };
+        PublicDateRangeDto: {
+            /** Format: date */
+            start: string;
+            /** Format: date */
+            end: string;
+        };
+        PublicEventDto: {
+            /**
+             * Format: date
+             * @example 2027-02-12
+             */
+            startDate?: string;
+            /** @example 10:30 */
+            startTime?: string;
+            /** @example Asia/Kolkata */
+            timeZone: string;
+            title: string;
+            description?: string;
+            venueName?: string;
+            venueAddress?: string;
+            /** @description A checked Google Maps link. */
+            mapsUrl?: string;
+            dressCode?: string;
+            /** @description A YouTube video ID; the site builds the embed and watch links. */
+            livestreamVideoId?: string;
+            cancelled: boolean;
+        };
+        PublicWebsiteDto: {
+            /** @enum {string} */
+            templateId: "traditional" | "modern" | "royal";
+            /** @description The current address: different from the one asked for when it moved. */
+            slug: string;
+            brideName: string;
+            groomName: string;
+            /** @description "Ananya & Arjun". */
+            coupleName: string;
+            city: string;
+            state: string;
+            headline?: string;
+            /** @description Plain text; blank lines separate paragraphs. */
+            story?: string;
+            faq: components["schemas"]["WebsiteFaqDto"][];
+            /** @description The first and last day of the ceremonies with a date, cancelled ones left out. */
+            dateRange?: components["schemas"]["PublicDateRangeDto"];
+            /** @description In date order, those without a date last. */
+            events: components["schemas"]["PublicEventDto"][];
+            /** @description An organizer's preview of the draft, never shown to the public. */
+            preview: boolean;
+        };
+        PublishWebsiteDto: {
+            contentVersion: number;
+        };
+        SlugAvailabilityDto: {
+            slug: string;
+            /** @description A well-formed address. */
+            valid: boolean;
+            /** @description Free for this wedding: unused, or one of its own. */
+            available: boolean;
+            message?: string;
+        };
+        PublicEventListDto: {
+            events: components["schemas"]["PublicEventDto"][];
         };
         FieldErrorDto: {
             /**
@@ -957,6 +2731,46 @@ export interface operations {
             };
         };
     };
+    WeddingsController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
     WeddingsController_update: {
         parameters: {
             query?: never;
@@ -979,6 +2793,46 @@ export interface operations {
                 content: {
                     "application/json": {
                         data: components["schemas"]["WeddingDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WeddingsController_members: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MemberListDto"];
                         requestId: string;
                     };
                 };
@@ -1244,6 +3098,2528 @@ export interface operations {
             };
             /** @description INVITE_INVALID: expired, replaced or withdrawn. */
             410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    EventsController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["EventListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    EventsController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateEventDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["EventDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    EventsController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                eventId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The event is deleted. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description OWNER_REQUIRED: managers cannot delete events. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EVENT_NOT_FOUND: no such event in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    EventsController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                eventId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateEventDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["EventDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EVENT_NOT_FOUND: no such event in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    TasksController_list: {
+        parameters: {
+            query?: {
+                /** @description `mine`: assigned to you. `overdue`: open and past due. `completed`. */
+                view?: "all" | "mine" | "overdue" | "completed";
+                /** @description Words in the title, the description or the assignee's name. */
+                q?: string;
+                /** @description An ID, or `none`. */
+                eventId?: string;
+                /** @description An ID, or `none`. */
+                assigneeId?: string;
+                state?: "todo" | "in_progress" | "completed" | "cancelled";
+                priority?: "low" | "normal" | "high";
+                /** @description Due date (earliest first, the default), latest first, highest priority, or recently updated. */
+                sort?: "due" | "due_desc" | "priority" | "updated";
+            };
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["TaskListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    TasksController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTaskDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["TaskDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    TasksController_summary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["TaskSummaryDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    TasksController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                taskId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateTaskDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["TaskDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. TASK_NOT_FOUND: no such task in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    VendorsController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["VendorListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    VendorsController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateVendorDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["VendorDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    VendorsController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                vendorId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["VendorDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. VENDOR_NOT_FOUND: no such vendor in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    VendorsController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                vendorId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The vendor is deleted. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description OWNER_REQUIRED: managers cannot delete vendors. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. VENDOR_NOT_FOUND: no such vendor in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    VendorsController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                vendorId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateVendorDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["VendorDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. VENDOR_NOT_FOUND: no such vendor in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateExpenseDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_summary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseTotalsDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                expenseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                expenseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The expense is deleted. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description OWNER_REQUIRED: managers cannot delete expenses. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                expenseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateExpenseDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_ledger: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                expenseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseLedgerDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_recordPayment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                expenseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecordPaymentDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_recordAdjustment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                expenseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecordAdjustmentDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_reverse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                expenseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReverseEntryDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it. EXPENSE_ENTRY_NOT_FOUND: no such entry in its history. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. ENTRY_ALREADY_REVERSED, ENTRY_NOT_REVERSIBLE, REVERSAL_BELOW_PAID. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_previewReminders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReminderScopeDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ReminderPreviewDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_remindAll: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendReminderDto"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ReminderResultDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description EMAIL_DAILY_LIMIT: says how many are left today. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateGuestDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_previewImport: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportPreviewDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ImportPreviewResultDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_commitImport: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportCommitDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ImportCommitResultDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The guest is removed. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description OWNER_REQUIRED: managers cannot remove guests. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateGuestDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. PARTY_SIZE_CONFLICT: answers above it. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_invitations: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_setInvitations: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InvitationSelectionDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_createLink: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateLinkDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestLinkDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_revokeLink: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestLinkDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_remindOne: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendReminderDto"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ReminderResultDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. INVITATION_NOT_SHARED, INVITATION_LINK_OFF or GUEST_REMINDERS_OFF. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description EMAIL_DAILY_LIMIT */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestsController_sendEmail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                guestId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestDetailDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestAccessController_exchange: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExchangeTokenDto"];
+            };
+        };
+        responses: {
+            /** @description The guest cookie is set. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description INVITATION_LINK_UNAVAILABLE: unknown or revoked. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestAccessController_invitation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestViewDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description GUEST_SESSION_REQUIRED: open the link again. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestAccessController_answer: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                invitationId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RsvpPatchDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestViewEventDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description GUEST_SESSION_REQUIRED: open the link again. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description EVENT_INVITATION_NOT_FOUND: not invited to it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description RSVP_VERSION_CONFLICT, RSVP_CLOSED or WEDDING_ARCHIVED. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestAccessController_optOut: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestReminderChoiceDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description GUEST_SESSION_REQUIRED: open the link again. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestAccessController_optIn: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestReminderChoiceDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description GUEST_SESSION_REQUIRED: open the link again. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    GuestAccessController_logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Signed out of the invitation. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ReminderSettingsController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ReminderSettingsDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ReminderSettingsController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateReminderSettingsDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ReminderSettingsDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WebsiteController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WebsiteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WebsiteController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateWebsiteDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WebsiteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEBSITE_VERSION_CONFLICT: changed elsewhere; reload. WEDDING_ARCHIVED: read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WebsiteController_preview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicWebsiteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WebsiteController_publish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublishWebsiteDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WebsiteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEBSITE_VERSION_CONFLICT: changed elsewhere; reload. WEDDING_ARCHIVED: read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEBSITE_NOT_READY: says what is missing. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WebsiteController_unpublish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WebsiteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description OWNER_REQUIRED: archived weddings, owners only. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WebsiteController_address: {
+        parameters: {
+            query: {
+                slug: unknown;
+            };
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["SlugAvailabilityDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PublicWebsiteController_wedding: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicWebsiteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEBSITE_NOT_FOUND: missing, unpublished or unpublished again — never which. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PublicWebsiteController_events: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicEventListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEBSITE_NOT_FOUND: missing, unpublished or unpublished again — never which. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

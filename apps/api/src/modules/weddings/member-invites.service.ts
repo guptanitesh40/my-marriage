@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Types, type ClientSession, type Connection, type Model } from 'mongoose';
+import { Types, type Connection, type Model } from 'mongoose';
 import { sha256 } from '../../platform/crypto.js';
 import { parseObjectId } from '../../platform/mongo.js';
 import { RateLimiter } from '../../platform/rate-limit.js';
@@ -110,7 +110,7 @@ export class MemberInvitesService {
     };
     const invite = await this.limiter.spend([emailBudget], () =>
       this.connection.transaction(async (session) => {
-        await this.raiseWriteFence(wedding._id, session);
+        await this.access.raiseWriteFence(wedding._id, session);
         const now = new Date();
         // One partner seat, so one pending invitation: the new one replaces it.
         await this.invites.updateMany(
@@ -168,7 +168,7 @@ export class MemberInvitesService {
     ];
     const invite = await this.limiter.spend(hits, () =>
       this.connection.transaction(async (session) => {
-        await this.raiseWriteFence(wedding._id, session);
+        await this.access.raiseWriteFence(wedding._id, session);
         const notificationId = new Types.ObjectId();
         const renewed = await this.invites
           .findOneAndUpdate(
@@ -393,21 +393,6 @@ export class MemberInvitesService {
 
   private async findByToken(token: string): Promise<StoredInvite | null> {
     return this.invites.findOne({ tokenHashes: sha256(token) }).lean();
-  }
-
-  /**
-   * Raises the wedding's archive write fence (schema document §6.3) in the
-   * caller's transaction, or answers 409 if the wedding is no longer active.
-   * An archive committing at the same time writes the same document, so one
-   * of the two transactions is retried and then sees the other.
-   */
-  private async raiseWriteFence(weddingId: Types.ObjectId, session: ClientSession): Promise<void> {
-    const fenced = await this.weddings.updateOne(
-      { _id: weddingId, status: 'active' },
-      { $inc: { writeFenceVersion: 1 } },
-      { session },
-    );
-    if (fenced.matchedCount === 0) throw weddingArchived();
   }
 
   /** Inviting is pointless, and accepting impossible, once two owners exist. */

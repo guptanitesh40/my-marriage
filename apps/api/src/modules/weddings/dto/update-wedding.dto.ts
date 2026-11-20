@@ -1,3 +1,7 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { ValidateBy, ValidateIf } from 'class-validator';
+import { isValidSlug, SLUG_MESSAGE, SLUG_PATTERN } from '../slug.js';
 import { OptionalDateField, TextLineField } from './fields.js';
 
 /** Changes to a wedding's details (PRD WED-04). Fields left out stay as they are. */
@@ -28,6 +32,21 @@ export class UpdateWeddingDto {
     optional: true,
   })
   state?: string;
+
+  /**
+   * A new web address for the wedding website (decision 0017). The old one
+   * stays reserved for this wedding and redirects to the new one.
+   */
+  @ApiProperty({ required: false, pattern: SLUG_PATTERN.source, example: 'ananya-arjun' })
+  @ValidateIf((_: unknown, value: unknown) => value !== undefined)
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.trim().toLowerCase() : value,
+  )
+  @ValidateBy(
+    { name: 'isValidSlug', validator: { validate: isValidSlug } },
+    { message: SLUG_MESSAGE },
+  )
+  slug?: string;
 
   /** The wedding day; `null` removes it. A new date must not be in the past. */
   @OptionalDateField({ nullable: true })

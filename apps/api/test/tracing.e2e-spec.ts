@@ -4,6 +4,8 @@ import request from 'supertest';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthEmailComposer } from '../src/modules/auth/auth-email.composer.js';
 import { AuthModule } from '../src/modules/auth/auth.module.js';
+import { GuestReminderComposer } from '../src/modules/guests/guest-reminder.composer.js';
+import { GuestsModule } from '../src/modules/guests/guests.module.js';
 import { configureTracing } from '../src/platform/tracing.js';
 import { createTestApp } from './support/app.js';
 import {
@@ -83,6 +85,264 @@ describe('Request tracing (integration)', () => {
     expect(text).not.toMatch(/\$argon2id\$/);
   });
 
+  it('traces adding an event: the access check, the write fence and the insert', async () => {
+    configureTracing('full');
+    const { cookie } = await signupVerified(app);
+    const wedding = await request(app.getHttpServer())
+      .post('/api/v1/weddings')
+      .set('Cookie', cookie)
+      .send(couple());
+    const weddingId = (wedding.body as { data: { id: string } }).data.id;
+
+    const traces = captureTraces();
+    const res = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/events`)
+      .set('Cookie', cookie)
+      .send({ title: 'Haldi', startDate: '2099-12-12', startTime: '10:00' });
+    expect(res.status).toBe(201);
+
+    const trace = traces.find((entry) =>
+      entry.startsWith(`POST /api/v1/weddings/${weddingId}/events → 201`),
+    );
+    expect(trace).toBeDefined();
+    const text = trace ?? '';
+    const steps = [
+      'EventsController.create(',
+      'EventsService.create(',
+      'WeddingAccessService.require(',
+      'WeddingAccessService.raiseWriteFence(',
+      'db weddings.updateOne',
+      'db events.insertOne',
+    ];
+    let at = -1;
+    for (const step of steps) {
+      const next = text.indexOf(step, at + 1);
+      expect(next, `${step} after the previous step`).toBeGreaterThan(at);
+      at = next;
+    }
+    expect(text).toContain("title: 'Haldi'");
+  });
+
+  it('traces editing and deleting an event, in order', async () => {
+    configureTracing('full');
+    const { cookie } = await signupVerified(app);
+    const wedding = await request(app.getHttpServer())
+      .post('/api/v1/weddings')
+      .set('Cookie', cookie)
+      .send(couple());
+    const weddingId = (wedding.body as { data: { id: string } }).data.id;
+    const created = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/events`)
+      .set('Cookie', cookie)
+      .send({ title: 'Haldi' });
+    const eventId = (created.body as { data: { id: string } }).data.id;
+    const path = `/api/v1/weddings/${weddingId}/events/${eventId}`;
+
+    const traces = captureTraces();
+    expect(
+      (
+        await request(app.getHttpServer())
+          .patch(path)
+          .set('Cookie', cookie)
+          .send({ title: 'Mehendi' })
+      ).status,
+    ).toBe(200);
+    expect((await request(app.getHttpServer()).delete(path).set('Cookie', cookie)).status).toBe(
+      204,
+    );
+
+    const expectSteps = (trace: string | undefined, steps: string[]) => {
+      expect(trace).toBeDefined();
+      let at = -1;
+      for (const step of steps) {
+        const next = (trace ?? '').indexOf(step, at + 1);
+        expect(next, `${step} after the previous step`).toBeGreaterThan(at);
+        at = next;
+      }
+    };
+    expectSteps(
+      traces.find((entry) => entry.startsWith(`PATCH ${path} → 200`)),
+      [
+        'EventsController.update(',
+        'EventsService.update(',
+        'WeddingAccessService.require(',
+        'db events.findOne',
+        'WeddingAccessService.raiseWriteFence(',
+        'db weddings.updateOne',
+        'db events.findOneAndUpdate',
+      ],
+    );
+    expectSteps(
+      traces.find((entry) => entry.startsWith(`DELETE ${path} → 204`)),
+      [
+        'EventsController.remove(',
+        'EventsService.remove(',
+        'WeddingAccessService.require(',
+        'WeddingAccessService.raiseWriteFence(',
+        'db weddings.updateOne',
+        'db events.updateOne',
+      ],
+    );
+  });
+
+  it('traces adding a task: the access check, the event and assignee checks, the fence and the insert', async () => {
+    configureTracing('full');
+    const { cookie, userId } = await signupVerified(app);
+    const wedding = await request(app.getHttpServer())
+      .post('/api/v1/weddings')
+      .set('Cookie', cookie)
+      .send(couple());
+    const weddingId = (wedding.body as { data: { id: string } }).data.id;
+    const event = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/events`)
+      .set('Cookie', cookie)
+      .send({ title: 'Haldi' });
+    const eventId = (event.body as { data: { id: string } }).data.id;
+
+    const traces = captureTraces();
+    const res = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/tasks`)
+      .set('Cookie', cookie)
+      .send({ title: 'Book decorator', eventId, assigneeId: userId });
+    expect(res.status).toBe(201);
+
+    const trace =
+      traces.find((entry) => entry.startsWith(`POST /api/v1/weddings/${weddingId}/tasks → 201`)) ??
+      '';
+    let at = -1;
+    for (const step of [
+      'TasksController.create(',
+      'TasksService.create(',
+      'WeddingAccessService.require(',
+      'EventsService.exists(',
+      'WeddingAccessService.isActiveMember(',
+      'WeddingAccessService.raiseWriteFence(',
+      'db tasks.insertOne',
+    ]) {
+      const next = trace.indexOf(step, at + 1);
+      expect(next, `${step} after the previous step`).toBeGreaterThan(at);
+      at = next;
+    }
+  });
+
+  it('traces adding a vendor: the access check, the event check, the fence and the insert', async () => {
+    configureTracing('full');
+    const { cookie } = await signupVerified(app);
+    const wedding = await request(app.getHttpServer())
+      .post('/api/v1/weddings')
+      .set('Cookie', cookie)
+      .send(couple());
+    const weddingId = (wedding.body as { data: { id: string } }).data.id;
+    const event = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/events`)
+      .set('Cookie', cookie)
+      .send({ title: 'Sangeet' });
+    const eventId = (event.body as { data: { id: string } }).data.id;
+
+    const traces = captureTraces();
+    const res = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/vendors`)
+      .set('Cookie', cookie)
+      .send({ name: 'Rhythm Collective', category: 'Music & DJ', eventIds: [eventId] });
+    expect(res.status).toBe(201);
+
+    const trace =
+      traces.find((entry) =>
+        entry.startsWith(`POST /api/v1/weddings/${weddingId}/vendors → 201`),
+      ) ?? '';
+    let at = -1;
+    for (const step of [
+      'VendorsController.create(',
+      'VendorsService.create(',
+      'WeddingAccessService.require(',
+      'EventsService.countExisting(',
+      'WeddingAccessService.raiseWriteFence(',
+      'db vendors.insertOne',
+    ]) {
+      const next = trace.indexOf(step, at + 1);
+      expect(next, `${step} after the previous step`).toBeGreaterThan(at);
+      at = next;
+    }
+  });
+
+  it('traces recording a payment: the access check, the expense read, the fence, the entry and the totals', async () => {
+    configureTracing('full');
+    const { cookie } = await signupVerified(app);
+    const wedding = await request(app.getHttpServer())
+      .post('/api/v1/weddings')
+      .set('Cookie', cookie)
+      .send(couple());
+    const weddingId = (wedding.body as { data: { id: string } }).data.id;
+    const expense = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/expenses`)
+      .set('Cookie', cookie)
+      .send({ title: 'Catering', category: 'Catering', amountPaise: 5000000 });
+    const expenseId = (expense.body as { data: { id: string } }).data.id;
+
+    const traces = captureTraces();
+    const res = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/expenses/${expenseId}/payments`)
+      .set('Cookie', cookie)
+      .send({ amountPaise: 1000000, paidAt: '2026-11-01', method: 'cash' });
+    expect(res.status).toBe(201);
+
+    const path = `POST /api/v1/weddings/${weddingId}/expenses/${expenseId}/payments → 201`;
+    const trace = traces.find((entry) => entry.startsWith(path)) ?? '';
+    let at = -1;
+    for (const step of [
+      'ExpensesController.recordPayment(',
+      'ExpensesService.recordPayment(',
+      'WeddingAccessService.require(',
+      'db expenses.findOne',
+      'WeddingAccessService.raiseWriteFence(',
+      'db expense_payments.insertOne',
+      'db expenses.findOneAndUpdate',
+    ]) {
+      const next = trace.indexOf(step, at + 1);
+      expect(next, `${step} after the previous step`).toBeGreaterThan(at);
+      at = next;
+    }
+  });
+
+  it('never logs a guest’s private link, even with full traces', async () => {
+    configureTracing('full');
+    const { cookie } = await signupVerified(app);
+    const wedding = await request(app.getHttpServer())
+      .post('/api/v1/weddings')
+      .set('Cookie', cookie)
+      .send(couple());
+    const weddingId = (wedding.body as { data: { id: string } }).data.id;
+    const guest = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/guests`)
+      .set('Cookie', cookie)
+      .send({ name: 'Rajesh Sharma', partySize: 5 });
+    const guestId = (guest.body as { data: { guest: { id: string } } }).data.guest.id;
+
+    const traces = captureTraces();
+    const link = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/guests/${guestId}/invitation-links`)
+      .set('Cookie', cookie)
+      .send({});
+    const url = (link.body as { data: { secretUrl: string } }).data.secretUrl;
+    const token = url.split('#t=')[1] ?? '';
+    expect(token).toHaveLength(43);
+    const opened = await request(app.getHttpServer())
+      .post('/api/v1/guest-access/exchange')
+      .send({ token });
+    expect(opened.status).toBe(204);
+    const guestCookie = String(opened.headers['set-cookie']).split(';')[0] ?? '';
+    await request(app.getHttpServer())
+      .get('/api/v1/guest-access/invitation')
+      .set('Cookie', guestCookie)
+      .expect(200);
+
+    const logged = traces.join('\n');
+    expect(logged).toContain('GuestAccessService.exchange(');
+    expect(logged).toContain('db invitation_tokens.findOne');
+    expect(logged).not.toContain(token);
+    expect(logged).not.toContain(guestCookie.split('=')[1] ?? 'missing');
+  });
+
   it('shows where a failed request stopped, with the error and the response', async () => {
     configureTracing('full');
     const { cookie } = await signupVerified(app);
@@ -157,6 +417,58 @@ describe('Request tracing (integration)', () => {
       expect(trace).toMatch(/EmailDeliveryHandler\.handle\(/);
       expect(trace).toMatch(/AuthEmailComposer\.compose\(/);
       expect(trace).not.toContain(tokenFromEmail(email));
+    } finally {
+      await worker.context.close();
+    }
+  });
+
+  it('traces a guest reminder being written, without the guest’s private link', async () => {
+    const worker = await createTestWorker({
+      imports: [GuestsModule],
+      composers: [GuestReminderComposer],
+    });
+    try {
+      const { cookie } = await signupVerified(app);
+      const wedding = await request(app.getHttpServer())
+        .post('/api/v1/weddings')
+        .set('Cookie', cookie)
+        .send(couple());
+      const weddingId = (wedding.body as { data: { id: string } }).data.id;
+      const event = await request(app.getHttpServer())
+        .post(`/api/v1/weddings/${weddingId}/events`)
+        .set('Cookie', cookie)
+        .send({ title: 'Haldi', startDate: '2031-02-18' });
+      const eventId = (event.body as { data: { id: string } }).data.id;
+      const to = `rajesh.${Date.now()}@example.com`;
+      const guest = await request(app.getHttpServer())
+        .post(`/api/v1/weddings/${weddingId}/guests`)
+        .set('Cookie', cookie)
+        .send({ name: 'Rajesh Sharma', partySize: 5, email: to, eventIds: [eventId] });
+      const guestId = (guest.body as { data: { guest: { id: string } } }).data.guest.id;
+      const link = await request(app.getHttpServer())
+        .post(`/api/v1/weddings/${weddingId}/guests/${guestId}/invitation-links`)
+        .set('Cookie', cookie)
+        .send({});
+      const token = (link.body as { data: { secretUrl: string } }).data.secretUrl.split('#t=')[1];
+
+      configureTracing('full');
+      const traces = captureTraces();
+      await request(app.getHttpServer())
+        .post(`/api/v1/weddings/${weddingId}/guests/${guestId}/reminder`)
+        .set('Cookie', cookie)
+        .send({ note: 'Please reply soon.' })
+        .expect(202);
+      const email = await waitFor(() => worker.mail.sent.find((sent) => sent.to === to), {
+        what: 'the reminder',
+      });
+      expect(email.text).toContain(token ?? 'missing');
+      const trace = await waitFor(
+        () => traces.find((entry) => entry.includes('GuestReminderComposer.compose(')),
+        { what: 'the job trace' },
+      );
+      expect(traces.join('\n')).toContain('GuestRemindersService.remindOne(');
+      expect(trace).not.toContain(token ?? 'missing');
+      expect(traces.join('\n')).not.toContain(token ?? 'missing');
     } finally {
       await worker.context.close();
     }

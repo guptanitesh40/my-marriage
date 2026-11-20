@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { apiClientAsVisitor } from '@/lib/api/as-visitor';
 import { safeNextPath } from '@/lib/auth/safe-next-path';
 import { SESSION_COOKIE } from '@/lib/auth/session-cookie';
-import { loginThenReturnTo, routes } from '@/lib/routes';
+import { loginThenReturnTo, routes, workspacePath } from '@/lib/routes';
+import { landingWedding } from '@/lib/weddings/choose';
 
 // Long enough for a healthy API; short enough that a struggling one only
 // delays the sign-in page instead of hanging it.
@@ -23,9 +24,9 @@ async function sessionOf(request: NextRequest): Promise<Session> {
   }
 }
 
-type WeddingsAnswer = { count: number } | 'none' | 'unverified' | 'unknown';
+type WeddingsAnswer = { landingId: string | undefined } | 'none' | 'unverified' | 'unknown';
 
-/** How many weddings the cookie's account belongs to, if the API can say. */
+/** Which wedding `/dashboard` opens for the cookie's account, if the API can say. */
 async function weddingsOf(request: NextRequest): Promise<WeddingsAnswer> {
   try {
     const { data, response } = await apiClientAsVisitor(request.headers).GET('/api/v1/weddings', {
@@ -33,7 +34,7 @@ async function weddingsOf(request: NextRequest): Promise<WeddingsAnswer> {
     });
     if (response.status === 401) return 'none';
     if (response.status === 403) return 'unverified';
-    return data ? { count: data.data.length } : 'unknown';
+    return data ? { landingId: landingWedding(data.data)?.id } : 'unknown';
   } catch {
     return 'unknown';
   }
@@ -53,8 +54,9 @@ function withoutSessionCookie(response: NextResponse): NextResponse {
  *
  * - /login and /signup: someone signed in goes straight on — like the login
  *   form, to a safe `?next=` path or the dashboard, or to verify their email.
- * - /dashboard: someone signed in without a wedding goes to create one, and
- *   an unverified account to verification.
+ * - /dashboard: someone signed in goes to their wedding's workspace (their
+ *   own active one, or else the newest), or to create one if they have none;
+ *   an unverified account goes to verification.
  * - Signed-in pages: a visitor with no session cookie at all is sent to sign
  *   in.
  *
@@ -81,8 +83,8 @@ export async function proxy(request: NextRequest) {
     const goTo = (path: string) => NextResponse.redirect(new URL(path, request.url));
     if (weddings === 'none') return withoutSessionCookie(goTo(loginThenReturnTo(routes.dashboard)));
     if (weddings === 'unverified') return goTo(routes.verifyEmail);
-    if (weddings !== 'unknown' && weddings.count === 0) return goTo(routes.onboarding);
-    return NextResponse.next();
+    if (weddings === 'unknown') return NextResponse.next();
+    return goTo(weddings.landingId ? workspacePath(weddings.landingId) : routes.onboarding);
   }
 
   if (hasCookie) return NextResponse.next();
@@ -90,5 +92,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/login', '/signup', '/dashboard/:path*', '/onboarding/:path*'],
+  matcher: ['/login', '/signup', '/dashboard/:path*', '/onboarding/:path*', '/weddings/:path*'],
 };

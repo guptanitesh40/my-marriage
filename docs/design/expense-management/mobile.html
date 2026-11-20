@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "primary-fixed-dim": "#a2d0c0", "on-primary": "#ffffff", "surface": "#fdf9f0", "secondary-fixed": "#ffddb0", "on-surface": "#1c1c16", "secondary-container": "#fddaac", "surface-container-high": "#ece8df", "error-container": "#ffdad6", "on-primary-fixed-variant": "#224e42", "on-secondary-fixed-variant": "#594320", "outline": "#717975", "primary-fixed": "#bdeddb", "surface-variant": "#e6e2d9", "surface-container-highest": "#e6e2d9", "on-error": "#ffffff", "surface-container": "#f2ede4", "tertiary-fixed-dim": "#bcc9c5", "surface-tint": "#3b6759", "on-surface-variant": "#404845", "on-secondary": "#ffffff", "on-tertiary-fixed-variant": "#3d4946", "on-secondary-fixed": "#281800", "outline-variant": "#c0c8c4", "tertiary": "#34413d", "inverse-primary": "#a2d0c0", "surface-container-lowest": "#ffffff", "on-tertiary-fixed": "#121e1b", "on-secondary-container": "#785e39", "on-primary-fixed": "#002018", "surface-container-low": "#f7f3ea", "secondary-fixed-dim": "#e2c195", "primary-container": "#315d50", "on-primary-container": "#a5d4c3", "surface-bright": "#fdf9f0", "error": "#ba1a1a", "tertiary-fixed": "#d8e5e1", "on-tertiary-container": "#c0cdc9", "on-tertiary": "#ffffff", "secondary": "#735a35", "inverse-surface": "#32302b", "primary": "#184539", "on-background": "#1c1c16", "on-error-container": "#93000a", "background": "#fdf9f0", "inverse-on-surface": "#f5f0e7", "surface-dim": "#dddad1", "tertiary-container": "#4b5854" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "space-sm": "0.5rem", "margin-mobile": "1.25rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "space-xl": "2.25rem", "gutter": "1.5rem", "margin": "2.5rem", "space-lg": "1.5rem" }, "fontFamily": { "display-lg-mobile": ["Newsreader"], "title-sm": ["Manrope"], "body-md": ["Manrope"], "label-sm": ["Manrope"], "label-md": ["Manrope"], "headline-lg": ["Newsreader"], "title-md": ["Manrope"], "display-lg": ["Newsreader"], "headline-md": ["Newsreader"], "body-sm": ["Manrope"], "headline-lg-mobile": ["Newsreader"], "headline-sm": ["Newsreader"], "body-lg": ["Manrope"] }, "fontSize": { "display-lg-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.015em", "fontWeight": "400" }], "title-sm": ["0.9375rem", { "lineHeight": "1.375rem", "fontWeight": "600" }], "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" }], "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }], "label-md": ["0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "400" }], "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display-lg": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.025em", "fontWeight": "400" }], "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "500" }], "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" }], "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "fontWeight": "500" }], "body-lg": ["1.0625rem", { "lineHeight": "1.65rem", "fontWeight": "400" }] } } } }</script><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#fdf9f0;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 0.5rem);}.pt-safe{padding-top:env(safe-area-inset-top, 0px);}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-full antialiased"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-14 px-4 flex items-center justify-between gap-2 max-w-[430px] mx-auto"><div class="flex items-center gap-2"><button aria-label="Menu" class="w-11 h-11 flex items-center justify-center -ml-2 rounded-lg text-tertiary active:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[22px]">menu</span></button><div class="flex items-center gap-1.5"><div class="w-6 h-6 rounded-md bg-primary-container flex items-center justify-center"><span class="text-on-primary font-headline-sm text-headline-sm leading-none italic">M</span></div><span class="font-title-sm text-title-sm text-primary tracking-tight hidden xs:inline">My Marriage</span></div></div><div class="flex-1 flex justify-center"><button class="h-9 px-3 max-w-[170px] flex items-center gap-1.5 rounded-full bg-surface-container-low hover:bg-surface-container active:scale-[0.98] transition-all shadow-[0_1px_3px_rgba(36,48,45,0.05)]"><span class="material-symbols-outlined text-[15px] text-secondary">favorite</span><span class="font-label-md text-label-md text-on-surface truncate">Ananya &amp; Arjun</span><span class="material-symbols-outlined text-[16px] text-on-surface-variant flex-shrink-0">expand_more</span></button></div><div class="flex items-center gap-1"><button aria-label="Notifications" class="w-11 h-11 flex items-center justify-center rounded-lg text-tertiary relative active:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-secondary"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-14 pb-24 px-4 bg-surface max-w-[430px] mx-auto min-h-screen"><div class="flex flex-col w-full relative">
+<!-- Interactive Prototype States Pill Bar -->
+<div class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md pt-1 pb-3 -mx-4 px-4 overflow-x-auto no-scrollbar shadow-sm">
+<div class="flex items-center gap-1.5 min-w-max">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mr-1">View state:</span>
+<button class="proto-tab px-3 py-1.5 rounded-full font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all" id="tab-list" onclick="setPrototypeState('list')">List</button>
+<button class="proto-tab px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" id="tab-details" onclick="setPrototypeState('details')">Details</button>
+<button class="proto-tab px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" id="tab-add" onclick="setPrototypeState('add')">Add expense</button>
+<button class="proto-tab px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" id="tab-record" onclick="setPrototypeState('record')">Record payment</button>
+<button class="proto-tab px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" id="tab-reverse" onclick="setPrototypeState('reverse')">Reverse payment</button>
+<button class="proto-tab px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" id="tab-empty" onclick="setPrototypeState('empty')">Empty</button>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 1. LIST STATE                              -->
+<!-- ========================================== -->
+<div class="prototype-view flex flex-col space-y-4 pt-2" id="state-list">
+<!-- Header info -->
+<div class="flex flex-col space-y-1">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Wedding Finances</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Expenses</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Track wedding costs, payments, and what's still due.</p>
+</div>
+<!-- Primary action -->
+<button class="w-full h-11 bg-primary active:bg-primary-container text-on-primary font-title-sm text-title-sm rounded-lg flex items-center justify-center gap-2 shadow-sm transition-colors" onclick="setPrototypeState('add')">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Add expense</span>
+</button>
+<!-- Financial Summary Card (Stacked 3 Rows) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-3.5 shadow-sm">
+<!-- Row 1: Total Recorded -->
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Recorded</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Across 4 expenses</div>
+</div>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold tabular-nums">₹2,95,000</div>
+</div>
+<!-- Divider -->
+<div class="h-[1px] w-full bg-surface-container"></div>
+<!-- Row 2: Total Paid -->
+<div class="space-y-1.5">
+<div class="flex items-start justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Paid</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">42% of recorded balance</div>
+</div>
+<div class="font-headline-sm text-headline-sm text-primary font-semibold tabular-nums">₹1,25,000</div>
+</div>
+<!-- Progress bar -->
+<div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 42.3%"></div>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-[1px] w-full bg-surface-container"></div>
+<!-- Row 3: Outstanding -->
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-error-container/40 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Outstanding</div>
+<div class="font-body-sm text-body-sm text-error font-medium">1 expense overdue</div>
+</div>
+</div>
+<div class="font-headline-sm text-headline-sm text-secondary font-semibold tabular-nums">₹1,70,000</div>
+</div>
+</div>
+<!-- Search & Filter Controls -->
+<div class="flex items-center gap-2">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+<input class="w-full h-10 pl-9 pr-3 rounded-lg bg-surface-container-lowest font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-low transition-colors" placeholder="Search expenses" type="text"/>
+</div>
+<button class="h-10 px-3 rounded-lg bg-surface-container-lowest flex items-center gap-1.5 text-on-surface active:bg-surface-container shadow-sm transition-colors" onclick="toggleFilterDrawer(true)">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span class="font-title-sm text-title-sm">Filters</span>
+<span class="w-4 h-4 rounded-full bg-primary text-on-primary font-label-sm text-label-sm flex items-center justify-center">4</span>
+</button>
+</div>
+<!-- Status Chips Row -->
+<div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar -mx-4 px-4 py-0.5">
+<button class="px-3 py-1 rounded-full font-label-md text-label-md bg-primary text-on-primary whitespace-nowrap shadow-sm">All (4)</button>
+<button class="px-3 py-1 rounded-full font-label-md text-label-md bg-surface-container-lowest text-on-surface-variant whitespace-nowrap active:bg-surface-container">Unpaid (1)</button>
+<button class="px-3 py-1 rounded-full font-label-md text-label-md bg-surface-container-lowest text-on-surface-variant whitespace-nowrap active:bg-surface-container">Partially paid (1)</button>
+<button class="px-3 py-1 rounded-full font-label-md text-label-md bg-surface-container-lowest text-on-surface-variant whitespace-nowrap active:bg-surface-container">Overdue (1)</button>
+<button class="px-3 py-1 rounded-full font-label-md text-label-md bg-surface-container-lowest text-on-surface-variant whitespace-nowrap active:bg-surface-container">Paid (1)</button>
+</div>
+<!-- Results Counter -->
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Showing 4 expenses</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">Sorted by Due date</span>
+</div>
+<!-- Expenses List Cards -->
+<div class="flex flex-col space-y-3">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-3 shadow-sm hover:shadow transition-shadow">
+<div class="space-y-1">
+<h2 class="font-title-md text-title-md text-on-surface leading-snug">Wedding photography package</h2>
+<div class="flex items-center flex-wrap gap-1.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Photography &amp; Videography</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Wedding</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">The Marigold Studio</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low rounded-lg p-2.5">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Total</div>
+<div class="font-title-sm text-title-sm text-on-surface tabular-nums">₹80,000</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Paid</div>
+<div class="font-title-sm text-title-sm text-primary tabular-nums">₹30,000</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-on-surface-variant">Outstanding</div>
+<div class="font-title-sm text-title-sm text-secondary tabular-nums">₹50,000</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              Partially paid
+            </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[12px]">Due 10 Feb 2027</span>
+</div>
+<button class="font-title-sm text-title-sm text-primary hover:text-primary-container flex items-center gap-0.5" onclick="setPrototypeState('details')">
+<span>Details</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Overdue -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-3 shadow-sm hover:shadow transition-shadow">
+<div class="space-y-1">
+<h2 class="font-title-md text-title-md text-on-surface leading-snug">Wedding catering</h2>
+<div class="flex items-center flex-wrap gap-1.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Catering</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Wedding</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Saffron Table Catering</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low rounded-lg p-2.5">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Total</div>
+<div class="font-title-sm text-title-sm text-on-surface tabular-nums">₹1,50,000</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Paid</div>
+<div class="font-title-sm text-title-sm text-primary tabular-nums">₹50,000</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-on-surface-variant">Outstanding</div>
+<div class="font-title-sm text-title-sm text-error tabular-nums">₹1,00,000</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">error</span>
+              Overdue
+            </span>
+<span class="font-body-sm text-body-sm text-error text-[12px] font-medium">Due 5 Jan 2027</span>
+</div>
+<button class="font-title-sm text-title-sm text-primary hover:text-primary-container flex items-center gap-0.5" onclick="setPrototypeState('details')">
+<span>Details</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Paid -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-3 shadow-sm hover:shadow transition-shadow">
+<div class="space-y-1">
+<h2 class="font-title-md text-title-md text-on-surface leading-snug">Haldi decoration</h2>
+<div class="flex items-center flex-wrap gap-1.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Decoration</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Haldi</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Royal Bloom Decor</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low rounded-lg p-2.5">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Total</div>
+<div class="font-title-sm text-title-sm text-on-surface tabular-nums">₹45,000</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Paid</div>
+<div class="font-title-sm text-title-sm text-primary tabular-nums">₹45,000</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-on-surface-variant">Outstanding</div>
+<div class="font-title-sm text-title-sm text-on-surface-variant tabular-nums">₹0</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+              Paid
+            </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[12px]">Settled in full</span>
+</div>
+<button class="font-title-sm text-title-sm text-primary hover:text-primary-container flex items-center gap-0.5" onclick="setPrototypeState('details')">
+<span>Details</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 4: Unpaid -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-3 shadow-sm hover:shadow transition-shadow">
+<div class="space-y-1">
+<h2 class="font-title-md text-title-md text-on-surface leading-snug">Mehendi artist booking</h2>
+<div class="flex items-center flex-wrap gap-1.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Makeup &amp; Mehendi</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Mehendi</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Meera Bridal Artistry</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low rounded-lg p-2.5">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Total</div>
+<div class="font-title-sm text-title-sm text-on-surface tabular-nums">₹20,000</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Paid</div>
+<div class="font-title-sm text-title-sm text-on-surface-variant tabular-nums">₹0</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-on-surface-variant">Outstanding</div>
+<div class="font-title-sm text-title-sm text-secondary tabular-nums">₹20,000</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+              Unpaid
+            </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[12px]">No due date</span>
+</div>
+<button class="font-title-sm text-title-sm text-primary hover:text-primary-container flex items-center gap-0.5" onclick="setPrototypeState('details')">
+<span>Details</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Privacy Banner -->
+<div class="bg-surface-container-low rounded-xl p-3.5 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[20px] flex-shrink-0 mt-0.5">lock</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+<strong class="font-semibold text-on-surface">Private to your planning team.</strong> Expenses and payments never appear on your public wedding website or guest invites.
+      </p>
+</div>
+</div>
+<!-- Filter Bottom Drawer / Modal (List State support) -->
+<div class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex flex-col justify-end" id="filter-drawer">
+<div class="bg-surface rounded-t-2xl p-5 max-w-[430px] mx-auto w-full space-y-4 max-h-[751px] overflow-y-auto">
+<div class="flex items-center justify-between">
+<h3 class="font-title-md text-title-md text-on-surface">Filter expenses</h3>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" onclick="toggleFilterDrawer(false)">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="space-y-3">
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1.5">Category</label>
+<div class="grid grid-cols-2 gap-1.5">
+<span class="p-2 rounded-lg bg-surface-container-lowest text-center font-body-sm text-body-sm font-medium">All categories</span>
+<span class="p-2 rounded-lg bg-primary-fixed text-center font-body-sm text-body-sm text-on-primary-fixed-variant font-medium">Photography</span>
+</div>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1.5">Event</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2.5 py-1 rounded-full bg-primary text-on-primary font-label-md text-label-md">Wedding</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-lowest font-label-md text-label-md">Haldi</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-lowest font-label-md text-label-md">Sangeet</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-lowest font-label-md text-label-md">Reception</span>
+</div>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1.5">Payment Status</label>
+<div class="grid grid-cols-2 gap-1.5">
+<span class="p-2 rounded-lg bg-surface-container-lowest text-center font-body-sm text-body-sm">Unpaid</span>
+<span class="p-2 rounded-lg bg-surface-container-lowest text-center font-body-sm text-body-sm">Overdue</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-2">
+<button class="flex-1 h-10 rounded-lg bg-surface-container font-title-sm text-title-sm text-on-surface" onclick="toggleFilterDrawer(false)">Reset</button>
+<button class="flex-1 h-10 rounded-lg bg-primary font-title-sm text-title-sm text-on-primary" onclick="toggleFilterDrawer(false)">Apply filters</button>
+</div>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 2. DETAILS STATE                           -->
+<!-- ========================================== -->
+<div class="prototype-view hidden flex-col space-y-4 pt-1" id="state-details">
+<!-- Top action nav -->
+<div class="flex items-center justify-between">
+<button class="flex items-center gap-1 text-primary font-title-sm text-title-sm hover:underline py-1" onclick="setPrototypeState('list')">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Expenses</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" onclick="setPrototypeState('list')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Title & Meta -->
+<div class="space-y-2">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Wedding photography package</h1>
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Photography &amp; Videography</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">The Marigold Studio</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/50 font-label-sm text-label-sm text-on-secondary-container">Wedding ceremony</span>
+</div>
+</div>
+<!-- Financial summary block -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-3 shadow-sm">
+<div class="grid grid-cols-3 gap-2">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Total agreed</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold tabular-nums mt-0.5">₹80,000</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Paid so far</div>
+<div class="font-headline-sm text-headline-sm text-primary font-semibold tabular-nums mt-0.5">₹30,000</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-on-surface-variant">Remaining</div>
+<div class="font-headline-sm text-headline-sm text-secondary font-semibold tabular-nums mt-0.5">₹50,000</div>
+</div>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 37.5%"></div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          Partially paid
+        </span>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Due 10 Feb 2027</span>
+</div>
+</div>
+</div>
+<!-- Private Notes Box -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-1.5 shadow-sm">
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span>Internal Notes</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+        Covers 3 drone cinematographers and 4 candid shooters across Haldi, Sangeet &amp; Pheras. Raw deliverables on 1TB SSD within 30 days.
+      </p>
+</div>
+<!-- Attachment Card -->
+<div class="bg-surface-container-lowest rounded-xl p-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
+</div>
+<div>
+<div class="font-title-sm text-title-sm text-on-surface truncate max-w-[190px]">marigold-quote.pdf</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">2.4 MB · Uploaded 1 Dec</div>
+</div>
+</div>
+<button class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary active:bg-surface-container-high">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- Payment history Section -->
+<div class="space-y-3 pt-2">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Payment history</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 payments recorded</span>
+</div>
+<button class="h-8 px-3 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm flex items-center gap-1 shadow-sm" onclick="setPrototypeState('record')">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Record payment</span>
+</button>
+</div>
+<!-- Payment Rows Stack -->
+<div class="bg-surface-container-lowest rounded-xl divide-y divide-surface-container overflow-hidden shadow-sm">
+<!-- Row 1 -->
+<div class="p-3.5 space-y-1.5">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold tabular-nums">₹20,000</span>
+<span class="mx-1 text-outline-variant">·</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Cash</span>
+</div>
+<button class="font-label-md text-label-md text-secondary hover:underline" onclick="setPrototypeState('reverse')">Reverse</button>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface italic">"Second instalment after pre-wedding video preview"</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-0.5">
+<span>5 Dec 2026</span>
+<span>Recorded by Ananya Sharma</span>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="p-3.5 space-y-1.5">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold tabular-nums">₹10,000</span>
+<span class="mx-1 text-outline-variant">·</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Bank transfer</span>
+</div>
+<button class="font-label-md text-label-md text-secondary hover:underline" onclick="setPrototypeState('reverse')">Reverse</button>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface italic">"Advance token booking amount"</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-0.5">
+<span>1 Dec 2026</span>
+<span>Recorded by Arjun Mehta</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Sheet Actions -->
+<div class="pt-3 pb-2 grid grid-cols-2 gap-2">
+<button class="h-11 rounded-lg bg-surface-container font-title-sm text-title-sm text-on-surface flex items-center justify-center" onclick="setPrototypeState('list')">Close</button>
+<button class="h-11 rounded-lg bg-primary font-title-sm text-title-sm text-on-primary flex items-center justify-center shadow-sm" onclick="setPrototypeState('add')">Edit expense</button>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 3. ADD EXPENSE STATE                       -->
+<!-- ========================================== -->
+<div class="prototype-view hidden flex-col space-y-4 pt-1" id="state-add">
+<div class="flex items-center justify-between">
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Add expense</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Record a wedding cost. You can add payments later.</p>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" onclick="setPrototypeState('list')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Form Fields Container -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-3.5 shadow-sm">
+<!-- Name -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Expense name <span class="text-error">*</span></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Required</span>
+</label>
+<input class="w-full h-10 px-3 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container transition-colors" type="text" value="Wedding photography package"/>
+</div>
+<!-- Category -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Category <span class="text-error">*</span></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Required</span>
+</label>
+<div class="relative">
+<select class="w-full h-10 px-3 pr-8 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface appearance-none focus:outline-none">
+<option selected="">Photography &amp; Videography</option>
+<option>Catering &amp; Food</option>
+<option>Decoration &amp; Florals</option>
+<option>Venue Rental</option>
+<option>Makeup &amp; Mehendi</option>
+<option>Music &amp; Entertainment</option>
+<option>Attire &amp; Jewelry</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Total Amount -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Total agreed amount (₹) <span class="text-error">*</span></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Required</span>
+</label>
+<div class="relative">
+<span class="absolute left-3 top-2 font-headline-sm text-headline-sm text-on-surface-variant">₹</span>
+<input class="w-full h-11 pl-8 pr-3 rounded-lg bg-surface-container-low font-headline-sm text-headline-sm text-on-surface tabular-nums font-medium focus:outline-none focus:bg-surface-container" type="text" value="80,000"/>
+</div>
+</div>
+<!-- Event -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Wedding event</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</label>
+<div class="relative">
+<select class="w-full h-10 px-3 pr-8 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface appearance-none focus:outline-none">
+<option>General / No event</option>
+<option selected="">Wedding ceremony</option>
+<option>Haldi</option>
+<option>Mehendi</option>
+<option>Sangeet</option>
+<option>Reception</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Vendor -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Vendor partner</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</label>
+<div class="relative">
+<select class="w-full h-10 px-3 pr-8 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface appearance-none focus:outline-none">
+<option>No vendor linked</option>
+<option selected="">The Marigold Studio</option>
+<option>Saffron Table Catering</option>
+<option>Royal Bloom Decor</option>
+<option>Meera Bridal Artistry</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Due Date -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Final payment due date</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</label>
+<input class="w-full h-10 px-3 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none" type="date" value="2027-02-10"/>
+</div>
+<!-- Private Notes -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Notes (Private)</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</label>
+<textarea class="w-full p-3 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none" rows="2">Covers 3 drone cinematographers and 4 candid shooters across Haldi, Sangeet &amp; Pheras.</textarea>
+</div>
+<!-- Attach Receipt -->
+<div class="space-y-1.5 pt-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Receipt or Invoice</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</label>
+<div class="p-3 rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">attach_file</span>
+<div>
+<div class="font-title-sm text-title-sm text-on-surface">marigold-quote.pdf</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">2.4 MB</div>
+</div>
+</div>
+<button class="font-label-md text-label-md text-error hover:underline">Remove</button>
+</div>
+<p class="font-label-sm text-label-sm text-outline">Supports PDF, JPG or PNG up to 10 MB.</p>
+</div>
+</div>
+<!-- Strictly NO payment fields in Add Expense modal -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">You will be able to record offline instalments after saving.</span>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 gap-2 pt-1">
+<button class="h-11 rounded-lg bg-surface-container font-title-sm text-title-sm text-on-surface flex items-center justify-center" onclick="setPrototypeState('list')">Cancel</button>
+<button class="h-11 rounded-lg bg-primary font-title-sm text-title-sm text-on-primary flex items-center justify-center shadow-sm" onclick="setPrototypeState('details')">Save expense</button>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 4. RECORD PAYMENT STATE                    -->
+<!-- ========================================== -->
+<div class="prototype-view hidden flex-col space-y-4 pt-1" id="state-record">
+<div class="flex items-center justify-between">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Record payment</h1>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" onclick="setPrototypeState('details')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Context helper -->
+<div class="p-3 rounded-xl bg-surface-container-low flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px] mt-0.5">handshake</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        This records money already paid outside My Marriage (via your bank, cash, or vendor direct transfer).
+      </p>
+</div>
+<!-- Outstanding Highlight Box -->
+<div class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-sm">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Target Expense</span>
+<div class="font-title-md text-title-md text-on-surface">Wedding photography package</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Outstanding</span>
+<div class="font-headline-sm text-headline-sm text-secondary font-semibold tabular-nums">₹50,000</div>
+</div>
+</div>
+<!-- Form Container -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-3.5 shadow-sm">
+<!-- Amount Paid -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Amount paid (₹) <span class="text-error">*</span></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Required</span>
+</label>
+<div class="relative">
+<span class="absolute left-3 top-2 font-headline-sm text-headline-sm text-on-surface-variant">₹</span>
+<input class="w-full h-11 pl-8 pr-3 rounded-lg bg-surface-container-low font-headline-sm text-headline-sm text-on-surface tabular-nums font-semibold focus:outline-none focus:bg-surface-container" type="text" value="20,000"/>
+</div>
+<p class="font-label-sm text-label-sm text-outline">Amount can't be more than the outstanding ₹50,000.</p>
+</div>
+<!-- Payment Date -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Payment date <span class="text-error">*</span></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Required</span>
+</label>
+<input class="w-full h-10 px-3 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none" type="date" value="2026-12-05"/>
+</div>
+<!-- Payment Method -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Payment method</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</label>
+<div class="relative">
+<select class="w-full h-10 px-3 pr-8 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface appearance-none focus:outline-none">
+<option>Cash</option>
+<option selected="">Bank transfer</option>
+<option>Cheque / Draft</option>
+<option>Credit / Debit Card</option>
+<option>Other offline mode</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Note -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Reference / Notes</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</label>
+<input class="w-full h-10 px-3 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none" placeholder="e.g. Second instalment, IMPS ref #89201" type="text" value="Second instalment"/>
+</div>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 gap-2 pt-2">
+<button class="h-11 rounded-lg bg-surface-container font-title-sm text-title-sm text-on-surface flex items-center justify-center" onclick="setPrototypeState('details')">Cancel</button>
+<button class="h-11 rounded-lg bg-primary font-title-sm text-title-sm text-on-primary flex items-center justify-center shadow-sm" onclick="setPrototypeState('details')">Record payment</button>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 5. REVERSE PAYMENT STATE                   -->
+<!-- ========================================== -->
+<div class="prototype-view hidden flex-col space-y-4 pt-1" id="state-reverse">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-error uppercase tracking-wider font-semibold">Ledger Correction</span>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" onclick="setPrototypeState('details')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="space-y-1">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Reverse this payment?</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        This marks the entry as cancelled and recalculates your remaining balance.
+      </p>
+</div>
+<!-- Payment Target Card -->
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-1 shadow-sm">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Payment To Be Reversed</div>
+<div class="font-title-md text-title-md text-on-surface font-semibold tabular-nums">₹10,000 · Bank transfer</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Recorded on 1 Dec 2026 by Arjun Mehta</div>
+</div>
+<!-- Arithmetic Effect Box -->
+<div class="bg-surface-container-low rounded-xl p-4 space-y-2.5">
+<div class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">Calculated Impact</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Total Paid</span>
+<div class="flex items-center gap-1.5 font-body-sm text-body-sm tabular-nums">
+<span class="line-through text-outline">₹30,000</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">arrow_forward</span>
+<span class="font-semibold text-primary">₹20,000</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Outstanding</span>
+<div class="flex items-center gap-1.5 font-body-sm text-body-sm tabular-nums">
+<span class="line-through text-outline">₹50,000</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">arrow_forward</span>
+<span class="font-semibold text-secondary">₹60,000</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Audit Reassurance -->
+<div class="p-3 rounded-lg bg-surface-container-lowest flex items-start gap-2 shadow-sm">
+<span class="material-symbols-outlined text-outline text-[18px] mt-0.5">history_edu</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        The original payment remains in the audit history with a reversal badge, ensuring accurate bookkeeping with your family and partner.
+      </p>
+</div>
+<!-- Reason field -->
+<div class="space-y-1">
+<label class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span>Reason for reversal</span>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</label>
+<input class="w-full h-10 px-3 rounded-lg bg-surface-container-lowest font-body-md text-body-md text-on-surface focus:outline-none shadow-sm" placeholder="e.g. Entered twice by mistake" type="text" value="Duplicate entry recorded by Arjun"/>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 gap-2 pt-2">
+<button class="h-11 rounded-lg bg-surface-container font-title-sm text-title-sm text-on-surface flex items-center justify-center" onclick="setPrototypeState('details')">Cancel</button>
+<button class="h-11 rounded-lg bg-error active:bg-error/90 text-on-error font-title-sm text-title-sm flex items-center justify-center shadow-sm" onclick="setPrototypeState('details')">Reverse payment</button>
+</div>
+</div>
+<!-- ========================================== -->
+<!-- 6. EMPTY STATE                             -->
+<!-- ========================================== -->
+<div class="prototype-view hidden flex-col items-center justify-center text-center py-12 px-2 space-y-4" id="state-empty">
+<!-- Icon Container -->
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-secondary mb-1">
+<span class="material-symbols-outlined text-[32px]">account_balance_wallet</span>
+</div>
+<!-- Content -->
+<div class="space-y-1.5 max-w-[280px]">
+<h2 class="font-headline-md text-headline-md text-on-surface">Start tracking your wedding expenses</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+        Keep all your wedding costs and payments organized in one place. Add an expense now and record payments as they happen.
+      </p>
+</div>
+<!-- Primary CTA -->
+<button class="w-full max-w-[260px] h-11 bg-primary active:bg-primary-container text-on-primary font-title-sm text-title-sm rounded-lg flex items-center justify-center gap-1.5 shadow-sm transition-colors mt-2" onclick="setPrototypeState('add')">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add your first expense</span>
+</button>
+<!-- Context reassurance -->
+<p class="font-label-sm text-label-sm text-outline max-w-[240px]">
+      You can link expenses to an event or vendor later at any time.
+    </p>
+</div>
+</div>
+<script>
+  function setPrototypeState(stateName) {
+    // Hide all view panels
+    const views = document.querySelectorAll('.prototype-view');
+    views.forEach(v => {
+      v.classList.add('hidden');
+      v.classList.remove('flex');
+    });
+
+    // Reveal target view
+    const target = document.getElementById('state-' + stateName);
+    if (target) {
+      target.classList.remove('hidden');
+      target.classList.add('flex');
+    }
+
+    // Update pill tabs active styling
+    const tabs = document.querySelectorAll('.proto-tab');
+    tabs.forEach(t => {
+      t.className = 'proto-tab px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all';
+    });
+
+    const activeTab = document.getElementById('tab-' + stateName);
+    if (activeTab) {
+      activeTab.className = 'proto-tab px-3 py-1.5 rounded-full font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all';
+    }
+
+    // Scroll smoothly to top on mobile state swap
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleFilterDrawer(open) {
+    const drawer = document.getElementById('filter-drawer');
+    if (open) {
+      drawer.classList.remove('hidden');
+    } else {
+      drawer.classList.add('hidden');
+    }
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.03)]" data-active-classes="text-primary font-title-sm"><div class="flex items-center justify-around h-16 max-w-[430px] mx-auto px-2"><a class="flex flex-col items-center justify-center w-14 h-11 gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm">Overview</span></a><a class="flex flex-col items-center justify-center w-14 h-11 gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="itinerary" href="#"><span class="material-symbols-outlined text-[22px]">calendar_month</span><span class="font-label-sm text-label-sm">Itinerary</span></a><a class="flex flex-col items-center justify-center w-14 h-11 gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="guests" href="#"><span class="material-symbols-outlined text-[22px]">group</span><span class="font-label-sm text-label-sm">Guests</span></a><a aria-current="page" class="flex flex-col items-center justify-center w-14 h-11 gap-0.5 transition-colors text-primary font-title-sm" data-path="budget" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm">Budget</span></a><a class="flex flex-col items-center justify-center w-14 h-11 gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="vendors" href="#"><span class="material-symbols-outlined text-[22px]">handshake</span><span class="font-label-sm text-label-sm">Vendors</span></a></div></nav></body></html>
