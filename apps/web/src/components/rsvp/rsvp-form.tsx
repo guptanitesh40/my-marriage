@@ -5,16 +5,45 @@ import { useState, type FormEvent } from 'react';
 import { Icon } from '@/components/ui/icon';
 import { api } from '@/lib/api/browser';
 import { networkFailure, toFailure } from '@/lib/api/errors';
+import { partOfDay } from '@/lib/events/format';
 import type { GuestView } from '@/lib/guests/guests';
+import { RSVP_SKINS, type RsvpSkin } from './rsvp-theme';
 
 type ViewEvent = GuestView['events'][number];
 type Choice = 'attending' | 'not_attending' | 'maybe';
+type Theme = GuestView['templateId'];
 
-const CHOICES: { value: Choice; label: string }[] = [
-  { value: 'attending', label: 'Attending' },
-  { value: 'not_attending', label: 'Not attending' },
-  { value: 'maybe', label: 'Maybe' },
+// The designs' words (Stitch "Private Guest RSVP"): Decline and Tentative
+// are the guest's words for "not attending" and "maybe".
+const CHOICES: { value: Choice; label: string; icon: 'check-circle' | 'cancel' | 'help' }[] = [
+  { value: 'attending', label: 'Attending', icon: 'check-circle' },
+  { value: 'not_attending', label: 'Decline', icon: 'cancel' },
+  { value: 'maybe', label: 'Tentative', icon: 'help' },
 ];
+
+/** The saved answer, for the badge on each ceremony. */
+function statusLabel(answer: Answer | undefined, partySize: number, theme: Theme): string {
+  switch (answer?.status) {
+    case 'attending':
+      return theme === 'modern'
+        ? `Attending · ${answer.count} of ${partySize}`
+        : `Attending (${answer.count})`;
+    case 'not_attending':
+      return 'Declined';
+    case 'maybe':
+      return 'Tentative';
+    default:
+      return 'Awaiting reply';
+  }
+}
+
+/** The small picture on a ceremony's tag, by the time of day it starts. */
+function tagIcon(event: ViewEvent): 'wb-sunny' | 'local-fire-department' | 'celebration' {
+  const part = partOfDay(event.startTime);
+  if (part === 'Morning' || part === 'Afternoon') return 'wb-sunny';
+  if (part) return 'local-fire-department';
+  return 'celebration';
+}
 
 interface Answer {
   status: Choice | 'pending';
@@ -65,6 +94,9 @@ export function RsvpForm({
   const [notice, setNotice] = useState<Notice | null>(null);
   const [pending, setPending] = useState(false);
   const writable = view.writable;
+  const theme = view.templateId;
+  const skin = RSVP_SKINS[theme];
+  const firstName = view.guestName.trim().split(/\s+/)[0] ?? view.guestName;
 
   function set(id: string, change: Partial<Answer>) {
     setAnswers((current) => {
@@ -175,25 +207,214 @@ export function RsvpForm({
     setPending(false);
   }
 
+  const counter = (
+    id: string,
+    answer: Pick<Answer, 'count'>,
+    onChange: (n: number) => void,
+    uniform = true,
+  ) => (
+    <Counter
+      id={id}
+      count={uniform ? answer.count : undefined}
+      base={answer.count}
+      partySize={view.partySize}
+      firstName={firstName}
+      onChange={onChange}
+      skin={skin}
+      theme={theme}
+    />
+  );
+
   return (
     <form noValidate onSubmit={submit} className="flex flex-col gap-4">
       {!writable && (
-        <p
-          role="status"
-          className="rounded-xl bg-secondary-container/50 px-4 py-3 text-body-sm text-on-secondary-container"
-        >
+        <p role="status" className={`${skin.note} not-italic`}>
           RSVPs for this wedding are closed. Your answers are shown below.
         </p>
       )}
-      {notice?.kind === 'saved' && (
-        <p
-          role="status"
-          className="flex items-start gap-2 rounded-xl bg-primary-fixed/60 px-4 py-3 text-body-sm text-on-primary-fixed"
-        >
-          <Icon name="check-circle" className="mt-0.5 size-4.5 shrink-0" />
-          Your responses have been saved. You can change them any time before the wedding.
-        </p>
+
+      {open.length > 1 && (
+        <section aria-labelledby="rsvp-all-title" className={`flex flex-col gap-3 ${skin.card}`}>
+          <div className={theme === 'modern' ? 'border-b border-minimal-line-soft pb-2.5' : ''}>
+            <p className={skin.tag}>
+              <Icon name="done-all" className={skin.tagIcon} />
+              {theme === 'modern' ? '00 / All celebrations' : 'Every celebration'}
+            </p>
+          </div>
+          <div>
+            <h2 id="rsvp-all-title" className={skin.title}>
+              All celebrations
+            </h2>
+            <p className={`mt-1 ${skin.body}`}>
+              Answer once for all {open.length} celebrations. You can still change any one of them
+              below.
+            </p>
+          </div>
+          <fieldset className="flex flex-col gap-3">
+            <legend className="mb-1.5">
+              <span aria-hidden="true" className={skin.question}>
+                {theme === 'modern' ? 'Attendance confirmation' : 'Will your family join?'}
+              </span>
+              <span className="sr-only">Will you attend all celebrations?</span>
+            </legend>
+            <ChoiceGroup
+              name="rsvp-all"
+              value={allStatus}
+              onChange={(status) => setAll({ status })}
+              skin={skin}
+            />
+            {allStatus === 'attending' &&
+              counter(
+                'rsvp-all-count',
+                { count: allCount },
+                (count) => setAll({ count }),
+                sameCount,
+              )}
+            {!shared && openAnswers.some((answer) => answer.status !== 'pending') && (
+              <p className={skin.body}>
+                Your answers are different for some celebrations. Choosing here changes all of them.
+              </p>
+            )}
+          </fieldset>
+        </section>
       )}
+
+      {view.events.map((event, index) => {
+        const answer = answers[event.invitationId];
+        if (!answer) return null;
+        const error = errors[event.invitationId];
+        const groupId = `rsvp-${event.invitationId}`;
+        const closed = event.cancelled || !writable;
+        const venue = [event.venueName, event.venueAddress].filter(Boolean).join(', ');
+        const time = when(event) ?? 'Date to be announced';
+        const place = venue || 'Venue to be announced';
+        const status = event.cancelled
+          ? 'Cancelled'
+          : statusLabel(saved[event.invitationId], view.partySize, theme);
+        return (
+          <section
+            key={event.invitationId}
+            aria-labelledby={`${groupId}-title`}
+            className={`text-left ${skin.card}`}
+          >
+            {theme === 'modern' ? (
+              <>
+                <div className="mb-3 flex items-baseline justify-between gap-2 border-b border-minimal-line-soft pb-2.5">
+                  <p className="flex min-w-0 items-center gap-2">
+                    <span className={`truncate ${skin.tag}`}>
+                      {String(index + 1).padStart(2, '0')} / {event.title}
+                    </span>
+                    {partOfDay(event.startTime) && (
+                      <>
+                        <span aria-hidden="true" className="text-minimal-line">
+                          •
+                        </span>
+                        <span className="shrink-0 font-mono text-[10px] text-minimal-muted uppercase">
+                          {partOfDay(event.startTime)} function
+                        </span>
+                      </>
+                    )}
+                  </p>
+                  <p className={skin.status}>{status}</p>
+                </div>
+                <h2 id={`${groupId}-title`} className={`wrap-break-word ${skin.title}`}>
+                  {event.title}
+                </h2>
+                <dl className={`mt-2.5 mb-4 ${skin.details}`}>
+                  {[
+                    ['When', time, true],
+                    ['Where', place, false],
+                    ...(event.dressCode ? [['Attire', event.dressCode, false] as const] : []),
+                  ].map(([label, text, strong]) => (
+                    <div key={String(label)} className="flex items-start gap-2">
+                      <dt className="mt-0.5 w-14 shrink-0 font-mono text-[10px] text-minimal-muted uppercase">
+                        {label}
+                      </dt>
+                      <dd className={strong ? skin.detailStrong : skin.detailText}>{text}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </>
+            ) : (
+              <>
+                <div className="mb-2 flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className={`mb-1.5 ${skin.tag}`}>
+                      <Icon name={tagIcon(event)} className={skin.tagIcon} />
+                      Function {index + 1} of {view.events.length}
+                    </p>
+                    <h2 id={`${groupId}-title`} className={`wrap-break-word ${skin.title}`}>
+                      {event.title}
+                    </h2>
+                  </div>
+                  <p className={skin.status}>{status}</p>
+                </div>
+                <dl className={`mb-4 ${skin.details}`}>
+                  <div className="flex items-start gap-2">
+                    <dt>
+                      <Icon name="schedule" className={`mt-0.5 shrink-0 ${skin.detailIcon}`} />
+                      <span className="sr-only">When</span>
+                    </dt>
+                    <dd className={skin.detailStrong}>{time}</dd>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <dt>
+                      <Icon name="location-on" className={`mt-0.5 shrink-0 ${skin.detailIcon}`} />
+                      <span className="sr-only">Where</span>
+                    </dt>
+                    <dd className={skin.detailText}>
+                      {place}
+                      {event.dressCode ? ` · Attire: ${event.dressCode}` : ''}
+                    </dd>
+                  </div>
+                </dl>
+              </>
+            )}
+
+            {event.cancelled ? (
+              <p className={`${skin.note} not-italic`}>
+                This celebration has been cancelled. RSVP is closed.
+              </p>
+            ) : (
+              <fieldset disabled={closed} className="flex flex-col gap-3">
+                <legend className="mb-1.5">
+                  <span aria-hidden="true" className={skin.question}>
+                    {theme === 'modern' ? 'Attendance confirmation' : 'Will your family join?'}
+                  </span>
+                  <span className="sr-only">Will you attend {event.title}?</span>
+                </legend>
+                <ChoiceGroup
+                  name={groupId}
+                  value={answer.status}
+                  onChange={(status) => set(event.invitationId, { status })}
+                  skin={skin}
+                />
+                {answer.status === 'attending' &&
+                  counter(`${groupId}-count`, answer, (count) =>
+                    set(event.invitationId, { count }),
+                  )}
+                {answer.status === 'not_attending' && (
+                  <p className={`flex items-center gap-1.5 ${skin.note}`}>
+                    <Icon name="favorite" className="size-4 shrink-0" />
+                    We will miss you at the {event.title}. No one from your family will attend.
+                  </p>
+                )}
+                {answer.status === 'maybe' && (
+                  <p className={skin.note}>
+                    Tentative isn’t counted as confirmed. You can update it once you know.
+                  </p>
+                )}
+                {error && (
+                  <p role="alert" className="text-body-sm text-error">
+                    {error}
+                  </p>
+                )}
+              </fieldset>
+            )}
+          </section>
+        );
+      })}
+
       {notice?.kind === 'changed' && (
         <div
           role="alert"
@@ -229,139 +450,48 @@ export function RsvpForm({
         </p>
       )}
 
-      {open.length > 1 && (
-        <section
-          aria-labelledby="rsvp-all-title"
-          className="flex flex-col gap-4 rounded-2xl border border-primary/25 bg-primary-fixed/20 p-5"
-        >
-          <div>
-            <p id="rsvp-all-title" className="font-serif text-headline-sm text-on-surface">
-              All celebrations
-            </p>
-            <p className="mt-1 text-body-sm text-on-surface-variant">
-              Answer once for all {open.length} celebrations. You can still change any one of them
-              below.
-            </p>
-          </div>
-          <fieldset className="flex flex-col gap-3">
-            <legend className="mb-2 text-title-sm text-on-surface">
-              Will you attend all celebrations?
-            </legend>
-            <ChoiceGroup
-              name="rsvp-all"
-              value={allStatus}
-              onChange={(status) => setAll({ status })}
-            />
-            {allStatus === 'attending' && (
-              <Counter
-                id="rsvp-all-count"
-                question="How many people will attend each?"
-                count={sameCount ? allCount : undefined}
-                partySize={view.partySize}
-                onChange={(count) => setAll({ count })}
-                base={allCount}
-              />
-            )}
-            {!shared && openAnswers.some((answer) => answer.status !== 'pending') && (
-              <p className="text-body-sm text-on-surface-variant">
-                Your answers are different for some celebrations. Choosing here changes all of them.
-              </p>
-            )}
-          </fieldset>
-        </section>
-      )}
-
-      {view.events.map((event) => {
-        const answer = answers[event.invitationId];
-        if (!answer) return null;
-        const error = errors[event.invitationId];
-        const groupId = `rsvp-${event.invitationId}`;
-        const closed = event.cancelled || !writable;
-        return (
-          <section
-            key={event.invitationId}
-            aria-labelledby={`${groupId}-title`}
-            className="flex flex-col gap-4 rounded-2xl bg-surface-container-lowest p-5 shadow-xs"
-          >
-            <div>
-              <h2 id={`${groupId}-title`} className="font-serif text-headline-md text-on-surface">
-                {event.title}
-              </h2>
-              <p className="mt-1 flex items-center gap-1.5 text-body-sm text-on-surface-variant">
-                <Icon name="calendar-month" className="size-4" />
-                {when(event) ?? 'Date to be announced'}
-              </p>
-              <p className="flex items-center gap-1.5 text-body-sm text-on-surface-variant">
-                <Icon name="location-on" className="size-4" />
-                {[event.venueName, event.venueAddress].filter(Boolean).join(', ') ||
-                  'Venue to be announced'}
-              </p>
-            </div>
-
-            {event.cancelled ? (
-              <p className="rounded-lg bg-surface-container-low px-4 py-3 text-body-sm text-on-surface-variant">
-                This celebration has been cancelled. RSVP is closed.
-              </p>
-            ) : (
-              <fieldset disabled={closed} className="flex flex-col gap-3">
-                <legend className="mb-2 text-title-sm text-on-surface">
-                  Will you attend {event.title}?
-                </legend>
-                <ChoiceGroup
-                  name={groupId}
-                  value={answer.status}
-                  onChange={(status) => set(event.invitationId, { status })}
-                />
-                {answer.status === 'attending' && (
-                  <Counter
-                    id={`${groupId}-count`}
-                    question="How many people will attend?"
-                    count={answer.count}
-                    partySize={view.partySize}
-                    onChange={(count) => set(event.invitationId, { count })}
-                    base={answer.count}
-                  />
-                )}
-                {answer.status === 'not_attending' && (
-                  <p className="text-body-sm text-on-surface-variant">
-                    No one from your family will attend.
-                  </p>
-                )}
-                {answer.status === 'maybe' && (
-                  <p className="text-body-sm text-on-surface-variant">
-                    Maybe isn’t counted as confirmed. You can update it once you know.
-                  </p>
-                )}
-                {error && (
-                  <p role="alert" className="text-body-sm text-error">
-                    {error}
-                  </p>
-                )}
-              </fieldset>
-            )}
-          </section>
-        );
-      })}
-
       {writable && (
-        <div className="fixed inset-x-0 bottom-0 border-t border-surface-container-high bg-surface/95 px-4 py-3 backdrop-blur">
-          <div className="mx-auto max-w-xl">
-            <button
-              type="submit"
-              disabled={pending || changed.length === 0}
-              aria-busy={pending || undefined}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-4 text-title-sm text-on-primary shadow-md transition-colors hover:bg-primary-container disabled:opacity-60"
-            >
-              {pending
-                ? 'Saving…'
-                : changed.length > 0
-                  ? answeredAll
-                    ? 'Update RSVP'
-                    : 'Save my RSVP'
-                  : answeredAll
-                    ? 'Your RSVP is saved'
-                    : 'Choose your answers above'}
-            </button>
+        <div className="flex flex-col gap-2.5 pt-2">
+          {notice?.kind === 'saved' ? (
+            <p role="status" className={skin.saved}>
+              <SavedMark skin={skin} theme={theme} />
+              Your responses have been saved. You can change them any time before the wedding.
+            </p>
+          ) : (
+            changed.length === 0 &&
+            answeredAll && (
+              <p className={skin.saved}>
+                <SavedMark skin={skin} theme={theme} />
+                Your responses are currently saved
+              </p>
+            )
+          )}
+          <button
+            type="submit"
+            disabled={pending || changed.length === 0}
+            aria-busy={pending || undefined}
+            className={skin.submit}
+          >
+            <Icon name={theme === 'modern' ? 'done' : 'task-alt'} className={skin.submitIcon} />
+            {pending
+              ? 'Saving…'
+              : changed.length > 0
+                ? answeredAll
+                  ? 'Update my RSVP'
+                  : 'Save my RSVP'
+                : answeredAll
+                  ? 'Your RSVP is saved'
+                  : 'Choose your answers above'}
+          </button>
+          <div className="px-2 pt-3 text-center">
+            <p className={`flex items-center justify-center gap-1.5 ${skin.privacy}`}>
+              <Icon name="lock" className={skin.privacyIcon} />
+              Private invitation link
+            </p>
+            <p className={`mt-1 ${skin.body}`}>
+              Anyone with this private link can update your family’s answers. Please don’t share it
+              outside your immediate family.
+            </p>
           </div>
         </div>
       )}
@@ -369,17 +499,27 @@ export function RsvpForm({
   );
 }
 
+function SavedMark({ skin, theme }: { skin: RsvpSkin; theme: Theme }) {
+  return theme === 'modern' ? (
+    <span aria-hidden="true" className={skin.savedIcon} />
+  ) : (
+    <Icon name={theme === 'royal' ? 'verified' : 'check-circle'} className={skin.savedIcon} />
+  );
+}
+
 function ChoiceGroup({
   name,
   value,
   onChange,
+  skin,
 }: {
   name: string;
   value: Answer['status'] | undefined;
   onChange: (status: Choice) => void;
+  skin: RsvpSkin;
 }) {
   return (
-    <div className="grid grid-cols-3 gap-1 rounded-xl bg-surface-container-low p-1">
+    <div className={skin.choices}>
       {CHOICES.map((choice) => (
         <label key={choice.value} className="cursor-pointer">
           <input
@@ -390,7 +530,10 @@ function ChoiceGroup({
             onChange={() => onChange(choice.value)}
             className="peer sr-only"
           />
-          <span className="flex min-h-12 items-center justify-center rounded-lg px-2 py-2 text-center text-label-md font-semibold text-on-surface-variant transition-colors peer-checked:bg-primary peer-checked:text-on-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-container">
+          <span
+            className={`flex min-h-10 items-center justify-center gap-1 px-1 py-2 text-center transition-all peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-container ${skin.choice} ${skin.choiceOn}`}
+          >
+            <Icon name={choice.icon} className={`shrink-0 ${skin.choiceIcon}`} />
             {choice.label}
           </span>
         </label>
@@ -402,55 +545,78 @@ function ChoiceGroup({
 /** How many will attend, 1 to the party size; `count` is absent when the ceremonies differ. */
 function Counter({
   id,
-  question,
   count,
   base,
   partySize,
+  firstName,
   onChange,
+  skin,
+  theme,
 }: {
   id: string;
-  question: string;
   count: number | undefined;
   base: number;
   partySize: number;
+  /** The guest's first name, for "Rajesh + 2 guests". */
+  firstName: string;
   onChange: (count: number) => void;
+  skin: RsvpSkin;
+  theme: Theme;
 }) {
-  const people = partySize === 1 ? 'person' : 'people';
+  const everyone = count === partySize && partySize > 1;
+  const who =
+    count === undefined
+      ? 'Different for each celebration'
+      : count === 1
+        ? `Just ${firstName}`
+        : everyone
+          ? `All ${partySize} members attending`
+          : `${firstName} + ${count - 1} ${count - 1 === 1 ? 'guest' : 'guests'}`;
+  const confirmed = `${count ?? '–'} of ${partySize} confirmed`;
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl bg-surface-container-low px-4 py-3">
-      <div>
-        <p id={`${id}-label`} className="text-title-sm text-on-surface">
-          {question}
-        </p>
-        <p aria-live="polite" className="text-body-sm text-on-surface-variant">
-          {count === undefined
-            ? 'Different for each celebration'
-            : `${count} of ${partySize} ${people}${count === partySize && partySize > 1 ? ' (everyone)' : ''}`}
-        </p>
+    <div className={skin.counter}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <p id={`${id}-label`} className={skin.counterQuestion}>
+              {theme === 'modern' ? 'Reserved headcount' : 'How many people will attend?'}
+            </p>
+            {everyone && <span className={skin.fullFamily}>Full family</span>}
+          </div>
+          <p className={skin.counterWho}>{who}</p>
+        </div>
+        <div role="group" aria-labelledby={`${id}-label`} className={`shrink-0 ${skin.stepper}`}>
+          <button
+            type="button"
+            onClick={() => onChange(Math.max(1, base - 1))}
+            disabled={base <= 1}
+            className={skin.stepperButton}
+          >
+            <Icon name="remove" className="size-4.5" />
+            <span className="sr-only">One fewer</span>
+          </button>
+          <span className={skin.stepperCount}>{count ?? '–'}</span>
+          <button
+            type="button"
+            onClick={() => onChange(Math.min(partySize, base + 1))}
+            disabled={base >= partySize}
+            className={skin.stepperButton}
+          >
+            <Icon name="add" className="size-4.5" />
+            <span className="sr-only">One more</span>
+          </button>
+        </div>
       </div>
-      <div role="group" aria-labelledby={`${id}-label`} className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => onChange(Math.max(1, base - 1))}
-          disabled={base <= 1}
-          className="flex size-12 items-center justify-center rounded-full bg-surface-container-lowest text-title-md text-on-surface shadow-xs disabled:opacity-40"
-        >
-          <span aria-hidden="true">−</span>
-          <span className="sr-only">One fewer</span>
-        </button>
-        <span className="w-6 text-center font-serif text-headline-sm text-on-surface tabular-nums">
-          {count ?? '–'}
+      <p className={skin.counterFoot}>
+        <span>
+          {theme === 'modern'
+            ? `Max allocation: ${String(partySize).padStart(2, '0')}`
+            : `Up to ${partySize} ${partySize === 1 ? 'person' : 'people'} in your family`}
         </span>
-        <button
-          type="button"
-          onClick={() => onChange(Math.min(partySize, base + 1))}
-          disabled={base >= partySize}
-          className="flex size-12 items-center justify-center rounded-full bg-surface-container-lowest text-title-md text-on-surface shadow-xs disabled:opacity-40"
-        >
-          <span aria-hidden="true">+</span>
-          <span className="sr-only">One more</span>
-        </button>
-      </div>
+        <span aria-live="polite" className={skin.counterFootStrong}>
+          {confirmed}
+        </span>
+      </p>
     </div>
   );
 }

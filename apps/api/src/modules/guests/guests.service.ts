@@ -39,6 +39,7 @@ import {
   partySizeConflict,
   unknownEvents,
 } from './guest-errors.js';
+import { WebsiteService } from '../website/website.service.js';
 import { GuestLinks } from './guest-links.js';
 import { GUEST_LIMITS, GUEST_LIST_LIMIT, GUEST_RATE_LIMITS } from './guest-policy.js';
 import { EventInvitation } from './schemas/event-invitation.schema.js';
@@ -104,6 +105,7 @@ export class GuestsService {
     private readonly notifications: NotificationsService,
     private readonly links: GuestLinks,
     private readonly limiter: RateLimiter,
+    private readonly website: WebsiteService,
   ) {}
 
   /**
@@ -315,7 +317,7 @@ export class GuestsService {
       if (reissue) await this.revokeLinks(wedding._id, id, new Date(), session);
       return this.activeLink(wedding._id, id, userId, session);
     });
-    return this.linkDto(token);
+    return this.linkDto(token, await this.website.publishedAddress(wedding._id));
   }
 
   /** Revokes every link of the guest and signs out their browsers (PRD INV-09). */
@@ -721,7 +723,7 @@ export class GuestsService {
   }
 
   private async detailOf(guest: StoredGuest): Promise<GuestDetailDto> {
-    const [invitations, token, emailStates] = await Promise.all([
+    const [invitations, token, emailStates, site] = await Promise.all([
       this.invitations
         .find({ weddingId: guest.weddingId, guestId: guest._id, isInvited: true })
         .lean(),
@@ -730,10 +732,11 @@ export class GuestsService {
         .sort({ status: 1, createdAt: -1 })
         .lean(),
       this.notifications.states(this.emailIds(guest)),
+      this.website.publishedAddress(guest.weddingId),
     ]);
     const known = await this.withDeletedEvents(guest.weddingId, [], invitations);
     const dto = this.toDto(guest, invitations, known, {
-      link: token ? this.linkDto(token) : { status: 'none' },
+      link: token ? this.linkDto(token, site) : { status: 'none' },
       emailState: this.stateOf(emailStates, guest.lastInviteEmailId),
       reminderState: this.stateOf(emailStates, guest.lastReminderId),
     });
@@ -754,11 +757,11 @@ export class GuestsService {
   }
 
   /** Revoked links say so; an active one gives its URL (single guests only). */
-  private linkDto(token: StoredToken): GuestLinkDto {
+  private linkDto(token: StoredToken, site: string | null): GuestLinkDto {
     if (token.status !== 'active') return { status: 'revoked' };
     return {
       status: 'active',
-      secretUrl: this.links.url(token._id),
+      secretUrl: this.links.url(token._id, site),
       createdAt: token.createdAt,
       ...(token.lastUsedAt ? { lastUsedAt: token.lastUsedAt } : {}),
     };

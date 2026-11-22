@@ -17,6 +17,7 @@ export function contentDto(content: WebsiteContent | undefined): WebsiteContentD
     ...(content?.headline ? { headline: content.headline } : {}),
     ...(content?.story ? { story: content.story } : {}),
     faq: (content?.faq ?? []).map((item) => ({ question: item.question, answer: item.answer })),
+    ...(content?.coverAssetId ? { coverImageId: content.coverAssetId.toHexString() } : {}),
   };
 }
 
@@ -47,6 +48,8 @@ export function projectWebsite(input: {
   content: WebsiteContent | undefined;
   events: readonly EventBrief[];
   preview: boolean;
+  /** Where the cover photo is served, for this audience. */
+  coverUrl?: string;
 }): PublicWebsiteDto {
   const events = publicEvents(input.events);
   const days = events
@@ -55,7 +58,7 @@ export function projectWebsite(input: {
     .sort();
   const first = days[0];
   const last = days.at(-1);
-  const content = contentDto(input.content);
+  const { headline, story, faq } = contentDto(input.content);
   return {
     slug: input.wedding.slug,
     templateId: input.templateId,
@@ -64,7 +67,10 @@ export function projectWebsite(input: {
     coupleName: `${input.wedding.brideName} & ${input.wedding.groomName}`,
     city: input.wedding.city,
     state: input.wedding.state,
-    ...content,
+    ...(headline ? { headline } : {}),
+    ...(story ? { story } : {}),
+    faq,
+    ...(input.coverUrl ? { coverUrl: input.coverUrl } : {}),
     ...(first && last ? { dateRange: { start: first, end: last } } : {}),
     events,
     preview: input.preview,

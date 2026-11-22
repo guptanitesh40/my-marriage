@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="mobile_tab" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#FDFBF7",
+            "surface-subtle": "#F7F5F0",
+            "surface-card": "#FFFFFF",
+            "surface-border": "#E8E3DA",
+            "surface-border-subtle": "#F0EBE1",
+            "primary": "#1A3D34",           /* Deep spruce green */
+            "primary-light": "#E8EFEA",
+            "on-primary": "#FFFFFF",
+            "primary-container": "#244F43",
+            "accent-tan": "#8C7355",
+            "accent-sand": "#D9C9B6",
+            "on-surface": "#1A1A18",
+            "on-surface-variant": "#686560",
+            "on-surface-muted": "#96928C",
+            "error": "#9E2A2B",
+            "error-container": "#FDF2F2"
+          },
+          fontFamily: {
+            "editorial": ["Newsreader", "Georgia", "serif"],
+            "sans": ["Plus Jakarta Sans", "Helvetica Neue", "sans-serif"],
+            "mono": ["JetBrains Mono", "SF Mono", "monospace"]
+          },
+          borderRadius: {
+            "subtle": "0.375rem",
+            "card": "0.875rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter": "1.25rem"
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: #FDFBF7;
+        color: #1A1A18;
+      }
+      body {
+        overscroll-behavior: none;
+        min-height: max(884px, 100dvh);
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-surface font-sans text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary/10 selection:text-primary">
+<!-- Minimal Editorial Top Bar -->
+<header class="fixed top-0 w-full z-50 bg-[#FDFBF7]/90 backdrop-blur-md border-b border-surface-border/60 pt-safe">
+<div class="h-14 px-gutter flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-primary shrink-0"></span>
+<div class="flex flex-col">
+<span class="font-editorial text-[1.125rem] leading-none tracking-tight text-on-surface">Ananya &amp; Arjun</span>
+<span class="font-mono text-[9px] uppercase tracking-widest text-on-surface-muted mt-0.5">Private RSVP Registry</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] tracking-wider text-accent-tan border border-surface-border px-2 py-0.5 rounded-full bg-surface-subtle">EST. DEC 2027</span>
+<div class="w-7 h-7 rounded-full border border-surface-border flex items-center justify-center text-on-surface-variant hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[15px]">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col relative w-full pt-16 pb-28 min-h-screen">
+<div class="flex flex-col w-full max-w-md mx-auto">
+<!-- QA State Switcher (Minimalist Wire Monospace Drawer) -->
+<div class="px-gutter pt-3 pb-1">
+<div class="border border-surface-border/80 bg-surface-card rounded-card p-3 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+<div class="flex items-center justify-between mb-2">
+<span class="font-mono text-[10px] tracking-widest uppercase text-on-surface-muted flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+              QA State Preview
+            </span>
+<span class="font-mono text-[9px] text-primary/80 uppercase">Simulate Flow</span>
+</div>
+<div class="grid grid-cols-2 gap-1.5 font-mono text-[10px]">
+<button class="qa-tab px-2.5 py-1.5 rounded-subtle text-left border border-primary bg-primary text-on-primary transition-all flex items-center justify-between" id="btn-state-default" onclick="setQaState('default')" type="button">
+<span>01. Active (3 &amp; 5)</span>
+<span class="material-symbols-outlined text-[12px]">check</span>
+</button>
+<button class="qa-tab px-2.5 py-1.5 rounded-subtle text-left border border-surface-border bg-surface-subtle text-on-surface-variant hover:text-on-surface transition-all" id="btn-state-declined" onclick="setQaState('declined')" type="button">
+<span>02. Declined All</span>
+</button>
+<button class="qa-tab px-2.5 py-1.5 rounded-subtle text-left border border-surface-border bg-surface-subtle text-on-surface-variant hover:text-on-surface transition-all" id="btn-state-error" onclick="setQaState('error')" type="button">
+<span>03. Error Alert</span>
+</button>
+<button class="qa-tab px-2.5 py-1.5 rounded-subtle text-left border border-surface-border bg-surface-subtle text-on-surface-variant hover:text-on-surface transition-all" id="btn-state-archived" onclick="setQaState('archived')" type="button">
+<span>04. Read-Only</span>
+</button>
+</div>
+<button class="qa-tab w-full mt-1.5 px-2.5 py-1 rounded-subtle text-left border border-surface-border bg-surface-subtle text-on-surface-muted hover:text-on-surface transition-all flex items-center justify-between font-mono text-[10px]" id="btn-state-revoked" onclick="setQaState('revoked')" type="button">
+<span>05. Revoked Bearer Token</span>
+<span class="material-symbols-outlined text-[13px]">link_off</span>
+</button>
+</div>
+</div>
+<!-- State: Incomplete Error Alert -->
+<div class="hidden px-gutter py-2" id="alert-error">
+<div class="border border-error/20 bg-error-container/60 text-error rounded-card p-3 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[18px] shrink-0 mt-0.5">error_outline</span>
+<div class="flex-1 text-left font-sans">
+<p class="font-medium text-[13px] text-error leading-tight">Incomplete Guest Selection</p>
+<p class="text-[12px] text-error/85 mt-0.5 leading-relaxed">Please indicate a valid headcount (1–5) for all accepted ceremonies prior to submitting.</p>
+</div>
+</div>
+</div>
+<!-- State: Revoked Token View -->
+<div class="hidden px-gutter py-8" id="alert-revoked">
+<div class="border border-surface-border bg-surface-card rounded-card p-6 text-center">
+<div class="w-10 h-10 mx-auto rounded-full border border-surface-border flex items-center justify-center text-on-surface-muted mb-3">
+<span class="material-symbols-outlined text-[20px]">link_off</span>
+</div>
+<span class="font-mono text-[10px] uppercase tracking-widest text-on-surface-muted">Security Notice</span>
+<h2 class="font-editorial text-[22px] text-on-surface mt-1">Invitation Link Inactive</h2>
+<p class="font-sans text-[13px] text-on-surface-variant mt-2 leading-relaxed">This private RSVP link has expired or was regenerated by the host family. Arjun &amp; Ananya have been informed. Please request a refreshed access URL directly.</p>
+<div class="mt-4 pt-3 border-t border-surface-border/60">
+<span class="font-mono text-[9px] uppercase tracking-wider text-on-surface-muted block">Direct Concierge Desk</span>
+<span class="font-mono text-[11px] text-primary mt-0.5 block">concierge@my-marriage.com</span>
+</div>
+</div>
+</div>
+<!-- Primary RSVP Content Wrapper -->
+<div class="flex flex-col w-full pb-4" id="rsvp-main-content">
+<!-- Editorial Hero Invitation Header -->
+<section class="px-gutter pt-3 pb-3">
+<div class="border border-surface-border bg-surface-card rounded-card p-5 relative overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.015)]">
+<div class="flex items-center justify-between pb-3 border-b border-surface-border-subtle">
+<span class="font-mono text-[10px] tracking-widest uppercase text-accent-tan flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[13px]">lock</span>
+                Confidential Invitation
+              </span>
+<span class="font-mono text-[10px] tracking-wide text-on-surface-variant bg-surface-subtle border border-surface-border px-2 py-0.5 rounded-full">
+                CAPACITY: 05 GUESTS
+              </span>
+</div>
+<div class="mt-4 text-left">
+<p class="font-mono text-[10px] uppercase tracking-widest text-on-surface-muted">We Request The Honor Of Your Presence</p>
+<h1 class="font-editorial text-[30px] sm:text-[32px] text-on-surface mt-1 leading-[1.15] font-normal tracking-tight">
+                Ananya &amp; Arjun
+              </h1>
+<div class="mt-3 pt-3 border-t border-surface-border-subtle/80 flex flex-col gap-1.5 text-[12.5px] text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-muted w-14 shrink-0">Dates</span>
+<span class="text-on-surface font-medium">11–13 December 2027</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-muted w-14 shrink-0">Venue</span>
+<span class="text-on-surface truncate">The Oberoi Rajvilas, Jaipur</span>
+</div>
+</div>
+</div>
+<!-- Architectural Venue Photo Frame -->
+<div class="mt-4 rounded-subtle overflow-hidden border border-surface-border/70 relative">
+<div class="h-28 bg-cover bg-center grayscale-[15%] contrast-[1.02]" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCea1Fkkln-sz2Q8-p4tKpAI9Z4kNRGqlgnrdvnjO8SrupvQx1x88w_iyzsVVYNU9rto9CTPOGj8t7BiuKz2A6oQmceVPva67m4ZTZmm86unx-YUlGfO7tbFmUOOK2hgpzMOyC2lrmGts7RjVho7g-zhwuawBAEyZWCwW6CiUFoPzRG6VzyAb4midmlIeCtgA7n8ZEe4-qsGCrsNXRzVra7eFgcod8tJd8Bjmb0FHk')"></div>
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-2 flex justify-between items-end">
+<span class="font-mono text-[9px] uppercase tracking-wider text-white/90">Jaipur Heritage Sanctuary · Courtyard</span>
+<span class="font-mono text-[9px] text-white/70">FIG. 01</span>
+</div>
+</div>
+<!-- Personalized Salutation Box -->
+<div class="mt-4 p-3.5 bg-surface-subtle border border-surface-border/70 rounded-subtle text-left">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full border border-surface-border bg-surface-card flex items-center justify-center font-mono text-[11px] font-medium text-primary">
+                    RS
+                  </div>
+<div>
+<h3 class="text-[13.5px] font-semibold text-on-surface leading-snug">Namaste, Rajesh Sharma</h3>
+<p class="font-mono text-[10px] text-on-surface-muted">PRIMARY GUEST · HOUSEHOLD OF 5</p>
+</div>
+</div>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+</div>
+<p class="font-sans text-[12.5px] text-on-surface-variant mt-2.5 leading-relaxed">
+                We eagerly look forward to sharing these cherished moments with you. Please review and indicate who from your household will join us for each celebration below.
+              </p>
+</div>
+</div>
+</section>
+<!-- Ceremony RSVP Cards Stack -->
+<div class="px-gutter flex flex-col gap-3.5 mt-1">
+<!-- Card 1: Haldi Ceremony -->
+<article class="border border-surface-border bg-surface-card rounded-card p-5 text-left transition-all" id="card-haldi">
+<!-- Header Meta -->
+<div class="flex items-baseline justify-between border-b border-surface-border-subtle pb-2.5 mb-3">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] font-medium tracking-widest text-accent-tan">01 / HALDI</span>
+<span class="text-surface-border">•</span>
+<span class="font-mono text-[10px] text-on-surface-muted">MORNING FUNCTION</span>
+</div>
+<span class="font-mono text-[10px] font-medium px-2 py-0.5 rounded-full border border-primary/20 bg-primary/5 text-primary" id="badge-haldi-status">
+                ATTENDING · 3 OF 5
+              </span>
+</div>
+<h2 class="font-editorial text-[22px] text-on-surface font-normal leading-snug">Haldi Ceremony</h2>
+<!-- Event Details Grid -->
+<div class="mt-2.5 mb-4 p-3 bg-surface-subtle border border-surface-border/60 rounded-subtle text-[12px] space-y-1.5">
+<div class="flex items-start gap-2 text-on-surface">
+<span class="font-mono text-[10px] uppercase text-on-surface-muted w-14 shrink-0 mt-0.5">When</span>
+<span class="font-medium">Saturday, 11 Dec 2027 · 10:00 AM</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="font-mono text-[10px] uppercase text-on-surface-muted w-14 shrink-0 mt-0.5">Where</span>
+<span>Poolside Courtyard</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="font-mono text-[10px] uppercase text-on-surface-muted w-14 shrink-0 mt-0.5">Attire</span>
+<span>Sunflower Yellow / Ivory Kurta</span>
+</div>
+</div>
+<!-- Segmented Control (Geometric Understated) -->
+<div class="mb-4">
+<label class="block font-mono text-[10px] uppercase tracking-wider text-on-surface-muted mb-2">Attendance Confirmation</label>
+<div class="grid grid-cols-3 gap-1 p-1 bg-surface-subtle border border-surface-border rounded-subtle">
+<button class="py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide bg-primary text-on-primary transition-all font-medium" id="btn-haldi-yes" onclick="selectAttendance('haldi', 'yes')" type="button">
+                  Attending
+                </button>
+<button class="py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide text-on-surface-variant hover:text-on-surface transition-all" id="btn-haldi-no" onclick="selectAttendance('haldi', 'no')" type="button">
+                  Decline
+                </button>
+<button class="py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide text-on-surface-variant hover:text-on-surface transition-all" id="btn-haldi-maybe" onclick="selectAttendance('haldi', 'maybe')" type="button">
+                  Tentative
+                </button>
+</div>
+</div>
+<!-- Minimal Stepper Box (Attending Active) -->
+<div class="p-3.5 bg-surface-subtle border border-surface-border rounded-subtle transition-all" id="headcount-haldi">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-mono text-[9px] uppercase tracking-widest text-on-surface-muted block">Reserved Headcount</span>
+<p class="text-[13px] font-medium text-on-surface mt-0.5" id="label-haldi-names">Rajesh + 2 guests</p>
+</div>
+<!-- Precision Circular Steppers -->
+<div class="flex items-center gap-2.5">
+<button aria-label="Decrease Haldi guests" class="w-8 h-8 rounded-full border border-surface-border bg-surface-card text-on-surface flex items-center justify-center hover:border-primary active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none" id="btn-haldi-dec" onclick="changeCount('haldi', -1)" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="font-mono text-[15px] font-medium text-on-surface w-6 text-center" id="display-haldi-count">3</span>
+<button aria-label="Increase Haldi guests" class="w-8 h-8 rounded-full border border-surface-border bg-surface-card text-on-surface flex items-center justify-center hover:border-primary active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none" id="btn-haldi-inc" onclick="changeCount('haldi', 1)" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+<div class="mt-2.5 pt-2 border-t border-surface-border/60 flex items-center justify-between font-mono text-[10px] text-on-surface-muted">
+<span>MAX ALLOCATION: 05</span>
+<span class="text-primary font-medium">3 OF 5 CONFIRMED</span>
+</div>
+</div>
+<!-- Declined Note -->
+<div class="hidden p-3 bg-surface-subtle border border-surface-border/70 rounded-subtle font-sans text-[12px] text-on-surface-variant" id="declined-note-haldi">
+<p class="flex items-center gap-1.5 italic text-on-surface-variant">
+                We will warmly miss your company at the morning Haldi ritual.
+              </p>
+</div>
+</article>
+<!-- Card 2: Wedding Ceremony (Pheras & Feast) -->
+<article class="border border-surface-border bg-surface-card rounded-card p-5 text-left transition-all" id="card-wedding">
+<!-- Header Meta -->
+<div class="flex items-baseline justify-between border-b border-surface-border-subtle pb-2.5 mb-3">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] font-medium tracking-widest text-accent-tan">02 / WEDDING</span>
+<span class="text-surface-border">•</span>
+<span class="font-mono text-[10px] text-on-surface-muted">MAIN CEREMONY</span>
+</div>
+<span class="font-mono text-[10px] font-medium px-2 py-0.5 rounded-full border border-primary/20 bg-primary/5 text-primary" id="badge-wedding-status">
+                ATTENDING · 5 OF 5
+              </span>
+</div>
+<h2 class="font-editorial text-[22px] text-on-surface font-normal leading-snug">Wedding Ceremony (Pheras &amp; Feast)</h2>
+<!-- Event Details Grid -->
+<div class="mt-2.5 mb-4 p-3 bg-surface-subtle border border-surface-border/60 rounded-subtle text-[12px] space-y-1.5">
+<div class="flex items-start gap-2 text-on-surface">
+<span class="font-mono text-[10px] uppercase text-on-surface-muted w-14 shrink-0 mt-0.5">When</span>
+<span class="font-medium">Monday, 13 Dec 2027 · 6:30 PM</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="font-mono text-[10px] uppercase text-on-surface-muted w-14 shrink-0 mt-0.5">Where</span>
+<span>Main Mandapam Lawn</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant">
+<span class="font-mono text-[10px] uppercase text-on-surface-muted w-14 shrink-0 mt-0.5">Attire</span>
+<span>Traditional Festive / Sherwani &amp; Sarees</span>
+</div>
+</div>
+<!-- Segmented Control (Geometric Understated) -->
+<div class="mb-4">
+<label class="block font-mono text-[10px] uppercase tracking-wider text-on-surface-muted mb-2">Attendance Confirmation</label>
+<div class="grid grid-cols-3 gap-1 p-1 bg-surface-subtle border border-surface-border rounded-subtle">
+<button class="py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide bg-primary text-on-primary transition-all font-medium" id="btn-wedding-yes" onclick="selectAttendance('wedding', 'yes')" type="button">
+                  Attending
+                </button>
+<button class="py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide text-on-surface-variant hover:text-on-surface transition-all" id="btn-wedding-no" onclick="selectAttendance('wedding', 'no')" type="button">
+                  Decline
+                </button>
+<button class="py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide text-on-surface-variant hover:text-on-surface transition-all" id="btn-wedding-maybe" onclick="selectAttendance('wedding', 'maybe')" type="button">
+                  Tentative
+                </button>
+</div>
+</div>
+<!-- Minimal Stepper Box (Attending Active) -->
+<div class="p-3.5 bg-surface-subtle border border-surface-border rounded-subtle transition-all" id="headcount-wedding">
+<div class="flex items-center justify-between">
+<div>
+<div class="flex items-center gap-1.5 mb-0.5">
+<span class="font-mono text-[9px] uppercase tracking-widest text-on-surface-muted">Reserved Headcount</span>
+<span class="font-mono text-[9px] border border-accent-tan/30 text-accent-tan px-1.5 rounded">FULL FAMILY</span>
+</div>
+<p class="text-[13px] font-medium text-on-surface" id="label-wedding-names">All 5 members attending</p>
+</div>
+<!-- Precision Circular Steppers -->
+<div class="flex items-center gap-2.5">
+<button aria-label="Decrease Wedding guests" class="w-8 h-8 rounded-full border border-surface-border bg-surface-card text-on-surface flex items-center justify-center hover:border-primary active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none" id="btn-wedding-dec" onclick="changeCount('wedding', -1)" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="font-mono text-[15px] font-medium text-on-surface w-6 text-center" id="display-wedding-count">5</span>
+<button aria-label="Increase Wedding guests" class="w-8 h-8 rounded-full border border-surface-border bg-surface-card text-on-surface flex items-center justify-center hover:border-primary active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none" disabled="" id="btn-wedding-inc" onclick="changeCount('wedding', 1)" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+<div class="mt-2.5 pt-2 border-t border-surface-border/60 flex items-center justify-between font-mono text-[10px] text-on-surface-muted">
+<span>SEATING: MANDAPAM RESERVED</span>
+<span class="text-primary font-medium">5 OF 5 CONFIRMED</span>
+</div>
+</div>
+<!-- Declined Note -->
+<div class="hidden p-3 bg-surface-subtle border border-surface-border/70 rounded-subtle font-sans text-[12px] text-on-surface-variant" id="declined-note-wedding">
+<p class="flex items-center gap-1.5 italic text-on-surface-variant">
+                Marked as unable to attend. We send warm blessings your way.
+              </p>
+</div>
+</article>
+<!-- Card 3: Dietary & Hospitality Requests -->
+<article class="border border-surface-border bg-surface-card rounded-card p-5 text-left">
+<div class="flex items-center justify-between border-b border-surface-border-subtle pb-2.5 mb-3">
+<span class="font-mono text-[10px] font-medium tracking-widest text-accent-tan">03 / HOSPITALITY</span>
+<span class="font-mono text-[10px] text-on-surface-muted">PREFERENCES</span>
+</div>
+<h3 class="font-editorial text-[20px] text-on-surface font-normal">Dietary &amp; Hospitality Requests</h3>
+<p class="font-sans text-[12.5px] text-on-surface-variant mt-1.5 mb-3 leading-relaxed">
+              Let the hosting team know of any allergies, Jain/vegan dietary preferences, or accessibility needs (e.g. golf carts / buggy transport within the resort).
+            </p>
+<div class="relative">
+<textarea class="w-full bg-surface-subtle border border-surface-border rounded-subtle p-3 text-[13px] text-on-surface font-sans focus:outline-none focus:border-primary focus:bg-surface-card transition-colors resize-none leading-relaxed placeholder:text-on-surface-muted/60" id="dietary-notes" placeholder="e.g., Pure vegetarian meal preferences; wheelchair or buggy pickup requested from villa for grandmother." rows="3">Vegetarian meals only; elderly family member requires buggy assistance between guest rooms and courtyard.</textarea>
+<div class="mt-1 flex justify-end">
+<span class="font-mono text-[9px] text-on-surface-muted">SAVED TO GUEST PROFILE</span>
+</div>
+</div>
+</article>
+<!-- Card 4: Stay & Arrival Context (Clean Architectural Monospace Pill) -->
+<div class="border border-surface-border/80 bg-surface-card rounded-card p-4 text-left flex items-start justify-between">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full border border-surface-border bg-surface-subtle flex items-center justify-center text-primary mt-0.5 shrink-0">
+<span class="material-symbols-outlined text-[16px]">hotel</span>
+</div>
+<div>
+<span class="font-mono text-[9px] uppercase tracking-wider text-on-surface-muted block">Accommodations</span>
+<p class="text-[13.5px] font-semibold text-on-surface leading-tight mt-0.5">Resort Check-in Reserved</p>
+<p class="font-sans text-[12px] text-on-surface-variant mt-0.5">Oberoi Rajvilas Villa Cluster · Check-in 11 Dec, 12:00 PM</p>
+</div>
+</div>
+<span class="font-mono text-[10px] text-primary border border-surface-border px-2 py-0.5 rounded bg-surface-subtle shrink-0">CONFIRMED</span>
+</div>
+</div>
+<!-- Sticky Action & Privacy Footer -->
+<div class="px-gutter pt-4 pb-2">
+<!-- Subtle Status Confirmation Pill -->
+<div class="mb-2.5 p-2 rounded-subtle border border-primary/20 bg-primary/5 text-primary flex items-center justify-center gap-1.5 transition-all" id="saved-toast">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-mono text-[10px] tracking-wide uppercase font-medium">Your responses are currently saved</span>
+</div>
+<!-- Primary Confirmation Button (Deep Spruce Green, Geometric Minimal) -->
+<button class="w-full h-12 bg-primary text-on-primary font-mono text-[12px] uppercase tracking-widest rounded-subtle flex items-center justify-center gap-2 hover:bg-primary-container active:scale-[0.99] transition-all shadow-[0_2px_8px_rgba(26,61,52,0.15)]" id="btn-submit-rsvp" onclick="triggerSaveRsvp()" type="button">
+<span class="material-symbols-outlined text-[18px]">done</span>
+<span id="btn-submit-label">Update My RSVP</span>
+</button>
+<!-- Security Assurance & Token Monospace Metadata -->
+<div class="mt-4 pt-3 border-t border-surface-border/60 text-center px-2">
+<div class="flex items-center justify-center gap-1 text-on-surface-muted font-mono text-[10px]">
+<span class="material-symbols-outlined text-[13px]">shield</span>
+<span>TOKEN: #SHARMA-RAJ-Jaipur27</span>
+</div>
+<p class="font-sans text-[11.5px] text-on-surface-variant/80 mt-1 leading-relaxed">
+              Anyone with this private URL can update your party's headcount. Please avoid sharing outside your immediate family.
+            </p>
+<div class="mt-2">
+<a class="font-mono text-[10px] text-primary underline hover:text-accent-tan transition-colors" href="mailto:support@my-marriage.com">
+                Need assistance? Reach the Wedding Concierge
+              </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Modern Minimal Bottom Tab Bar -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-[#FDFBF7]/95 backdrop-blur-md border-t border-surface-border">
+<div class="flex justify-around items-center h-14 max-w-md mx-auto px-4">
+<a class="flex flex-col items-center justify-center min-w-[50px] min-h-[44px] text-on-surface-muted hover:text-on-surface transition-colors gap-0.5" data-path="invitation-overview" href="#">
+<span class="material-symbols-outlined text-[20px]">drafts</span>
+<span class="font-mono text-[9px] uppercase tracking-wider">Invite</span>
+</a>
+<a class="flex flex-col items-center justify-center min-w-[50px] min-h-[44px] text-on-surface-muted hover:text-on-surface transition-colors gap-0.5" data-path="events-schedule" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+<span class="font-mono text-[9px] uppercase tracking-wider">Events</span>
+</a>
+<a aria-current="page" class="flex flex-col items-center justify-center min-w-[50px] min-h-[44px] text-primary transition-colors gap-0.5 font-semibold" data-path="rsvp-response" href="#">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span class="font-mono text-[9px] uppercase tracking-wider">RSVP</span>
+</a>
+<a class="flex flex-col items-center justify-center min-w-[50px] min-h-[44px] text-on-surface-muted hover:text-on-surface transition-colors gap-0.5" data-path="guest-logistics" href="#">
+<span class="material-symbols-outlined text-[20px]">near_me</span>
+<span class="font-mono text-[9px] uppercase tracking-wider">Travel</span>
+</a>
+</div>
+</nav>
+<!-- Interaction Logic Preserved 100% -->
+<script>
+    const rsvpState = {
+      haldi: { status: 'yes', count: 3, max: 5 },
+      wedding: { status: 'yes', count: 5, max: 5 },
+      notes: 'Vegetarian meals only; elderly family member requires buggy assistance between guest rooms and courtyard.'
+    };
+
+    function updateStepperUI(ceremony) {
+      const data = rsvpState[ceremony];
+      const display = document.getElementById(`display-${ceremony}-count`);
+      const decBtn = document.getElementById(`btn-${ceremony}-dec`);
+      const incBtn = document.getElementById(`btn-${ceremony}-inc`);
+      const badge = document.getElementById(`badge-${ceremony}-status`);
+      const labelNames = document.getElementById(`label-${ceremony}-names`);
+
+      if (display) display.textContent = data.count;
+      if (decBtn) decBtn.disabled = (data.count <= 1);
+      if (incBtn) incBtn.disabled = (data.count >= data.max);
+
+      if (badge && data.status === 'yes') {
+        badge.textContent = `ATTENDING · ${data.count} OF ${data.max}`;
+      }
+
+      if (labelNames) {
+        if (data.count === 1) {
+          labelNames.textContent = 'Rajesh only';
+        } else if (data.count === data.max) {
+          labelNames.textContent = (ceremony === 'wedding') ? 'All 5 members attending' : 'All 5 family members';
+        } else {
+          labelNames.textContent = `Rajesh + ${data.count - 1} guests`;
+        }
+      }
+    }
+
+    function changeCount(ceremony, delta) {
+      const current = rsvpState[ceremony].count;
+      const next = current + delta;
+      if (next >= 1 && next <= rsvpState[ceremony].max) {
+        rsvpState[ceremony].count = next;
+        updateStepperUI(ceremony);
+        indicateUnsavedChanges();
+      }
+    }
+
+    function selectAttendance(ceremony, val) {
+      rsvpState[ceremony].status = val;
+      const btnYes = document.getElementById(`btn-${ceremony}-yes`);
+      const btnNo = document.getElementById(`btn-${ceremony}-no`);
+      const btnMaybe = document.getElementById(`btn-${ceremony}-maybe`);
+      const headcountBox = document.getElementById(`headcount-${ceremony}`);
+      const declinedNote = document.getElementById(`declined-note-${ceremony}`);
+      const badge = document.getElementById(`badge-${ceremony}-status`);
+
+      // Reset segmented buttons
+      [btnYes, btnNo, btnMaybe].forEach(btn => {
+        btn.className = "py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide text-on-surface-variant hover:text-on-surface transition-all";
+      });
+
+      if (val === 'yes') {
+        btnYes.className = "py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide bg-primary text-on-primary transition-all font-medium";
+        if (headcountBox) headcountBox.classList.remove('hidden');
+        if (declinedNote) declinedNote.classList.add('hidden');
+        if (badge) {
+          badge.className = "font-mono text-[10px] font-medium px-2 py-0.5 rounded-full border border-primary/20 bg-primary/5 text-primary";
+          badge.textContent = `ATTENDING · ${rsvpState[ceremony].count} OF ${rsvpState[ceremony].max}`;
+        }
+      } else if (val === 'no') {
+        btnNo.className = "py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide bg-on-surface text-surface transition-all font-medium";
+        if (headcountBox) headcountBox.classList.add('hidden');
+        if (declinedNote) declinedNote.classList.remove('hidden');
+        if (badge) {
+          badge.className = "font-mono text-[10px] font-medium px-2 py-0.5 rounded-full border border-surface-border bg-surface-subtle text-on-surface-muted";
+          badge.textContent = "DECLINED";
+        }
+      } else {
+        btnMaybe.className = "py-2 px-1 text-center rounded-[3px] font-mono text-[11px] tracking-wide bg-accent-tan text-white transition-all font-medium";
+        if (headcountBox) headcountBox.classList.remove('hidden');
+        if (declinedNote) declinedNote.classList.add('hidden');
+        if (badge) {
+          badge.className = "font-mono text-[10px] font-medium px-2 py-0.5 rounded-full border border-accent-tan/30 bg-accent-tan/10 text-accent-tan";
+          badge.textContent = `TENTATIVE · ${rsvpState[ceremony].count} OF ${rsvpState[ceremony].max}`;
+        }
+      }
+
+      indicateUnsavedChanges();
+    }
+
+    function indicateUnsavedChanges() {
+      const toast = document.getElementById('saved-toast');
+      const submitBtnLabel = document.getElementById('btn-submit-label');
+      if (toast) {
+        toast.className = "mb-2.5 p-2 rounded-subtle border border-accent-tan/30 bg-accent-tan/10 text-accent-tan flex items-center justify-center gap-1.5 transition-all";
+        toast.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-accent-tan animate-pulse"></span><span class="font-mono text-[10px] tracking-wide uppercase font-medium">Unsaved RSVP changes pending</span>`;
+      }
+      if (submitBtnLabel) {
+        submitBtnLabel.textContent = "Save Updated RSVP";
+      }
+    }
+
+    function triggerSaveRsvp() {
+      const toast = document.getElementById('saved-toast');
+      const submitBtnLabel = document.getElementById('btn-submit-label');
+      const submitBtn = document.getElementById('btn-submit-rsvp');
+      
+      submitBtn.classList.add('scale-[0.98]');
+      setTimeout(() => {
+        submitBtn.classList.remove('scale-[0.98]');
+        if (toast) {
+          toast.className = "mb-2.5 p-2 rounded-subtle border border-primary/20 bg-primary/5 text-primary flex items-center justify-center gap-1.5 transition-all";
+          toast.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-mono text-[10px] tracking-wide uppercase font-medium">All changes saved successfully</span>`;
+        }
+        if (submitBtnLabel) {
+          submitBtnLabel.textContent = "RSVP Confirmed";
+        }
+      }, 260);
+    }
+
+    function resetQaPillStyles() {
+      document.querySelectorAll('.qa-tab').forEach(el => {
+        el.className = "qa-tab px-2.5 py-1.5 rounded-subtle text-left border border-surface-border bg-surface-subtle text-on-surface-variant hover:text-on-surface transition-all";
+        const icon = el.querySelector('.material-symbols-outlined');
+        if (icon && icon.textContent === 'check') icon.remove();
+      });
+      const revoked = document.getElementById('btn-state-revoked');
+      if (revoked) {
+        revoked.className = "qa-tab w-full mt-1.5 px-2.5 py-1 rounded-subtle text-left border border-surface-border bg-surface-subtle text-on-surface-muted hover:text-on-surface transition-all flex items-center justify-between font-mono text-[10px]";
+      }
+    }
+
+    function markActiveTab(tabId) {
+      resetQaPillStyles();
+      const active = document.getElementById(tabId);
+      if (active) {
+        active.className = "qa-tab px-2.5 py-1.5 rounded-subtle text-left border border-primary bg-primary text-on-primary transition-all flex items-center justify-between font-mono text-[10px]";
+      }
+    }
+
+    function setQaState(state) {
+      const mainContent = document.getElementById('rsvp-main-content');
+      const errorAlert = document.getElementById('alert-error');
+      const revokedAlert = document.getElementById('alert-revoked');
+      const submitBtn = document.getElementById('btn-submit-rsvp');
+      const textarea = document.getElementById('dietary-notes');
+
+      errorAlert.classList.add('hidden');
+      revokedAlert.classList.add('hidden');
+      mainContent.classList.remove('hidden');
+      if (submitBtn) submitBtn.disabled = false;
+      if (textarea) textarea.disabled = false;
+
+      if (state === 'default') {
+        markActiveTab('btn-state-default');
+        selectAttendance('haldi', 'yes');
+        rsvpState.haldi.count = 3;
+        updateStepperUI('haldi');
+
+        selectAttendance('wedding', 'yes');
+        rsvpState.wedding.count = 5;
+        updateStepperUI('wedding');
+
+        const toast = document.getElementById('saved-toast');
+        if (toast) {
+          toast.className = "mb-2.5 p-2 rounded-subtle border border-primary/20 bg-primary/5 text-primary flex items-center justify-center gap-1.5 transition-all";
+          toast.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-mono text-[10px] tracking-wide uppercase font-medium">Your responses are currently saved</span>`;
+        }
+        document.getElementById('btn-submit-label').textContent = "Update My RSVP";
+      } 
+      else if (state === 'declined') {
+        markActiveTab('btn-state-declined');
+        selectAttendance('haldi', 'no');
+        selectAttendance('wedding', 'no');
+        const toast = document.getElementById('saved-toast');
+        if (toast) {
+          toast.className = "mb-2.5 p-2 rounded-subtle border border-surface-border bg-surface-subtle text-on-surface-variant flex items-center justify-center gap-1.5 transition-all";
+          toast.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-on-surface-muted"></span><span class="font-mono text-[10px] tracking-wide uppercase font-medium">Marked as unable to attend both events</span>`;
+        }
+        document.getElementById('btn-submit-label').textContent = "Save Regrets Response";
+      }
+      else if (state === 'error') {
+        markActiveTab('btn-state-error');
+        errorAlert.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      else if (state === 'archived') {
+        markActiveTab('btn-state-archived');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('opacity-40', 'pointer-events-none');
+          document.getElementById('btn-submit-label').textContent = "RSVP Window Closed (Read Only)";
+        }
+        if (textarea) textarea.disabled = true;
+        const toast = document.getElementById('saved-toast');
+        if (toast) {
+          toast.className = "mb-2.5 p-2 rounded-subtle border border-surface-border bg-surface-subtle text-on-surface-muted flex items-center justify-center gap-1.5";
+          toast.innerHTML = `<span class="material-symbols-outlined text-[14px]">lock</span><span class="font-mono text-[10px] tracking-wide uppercase font-medium">Submissions finalized on 1 Dec 2027</span>`;
+        }
+      }
+      else if (state === 'revoked') {
+        const revoked = document.getElementById('btn-state-revoked');
+        resetQaPillStyles();
+        if (revoked) {
+          revoked.className = "qa-tab w-full mt-1.5 px-2.5 py-1 rounded-subtle text-left border border-primary bg-primary text-on-primary transition-all flex items-center justify-between font-mono text-[10px]";
+        }
+        mainContent.classList.add('hidden');
+        revokedAlert.classList.remove('hidden');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateStepperUI('haldi');
+      updateStepperUI('wedding');
+    });
+  </script>
+</body></html>

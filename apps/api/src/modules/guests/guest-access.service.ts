@@ -8,6 +8,7 @@ import { Traced } from '../../platform/tracing.js';
 import type { ClientContext } from '../auth/auth-errors.js';
 import { EventsService, type EventBrief } from '../events/events.service.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
+import { WebsiteService } from '../website/website.service.js';
 import type { RsvpPatchDto } from './dto/guest-access-input.dto.js';
 import type {
   GuestReminderChoiceDto,
@@ -60,6 +61,7 @@ export class GuestAccessService {
     @InjectModel(GuestSession.name) private readonly sessions: Model<GuestSession>,
     private readonly access: WeddingAccessService,
     private readonly events: EventsService,
+    private readonly website: WebsiteService,
     private readonly links: GuestLinks,
     private readonly limiter: RateLimiter,
   ) {}
@@ -152,6 +154,7 @@ export class GuestAccessService {
         .lean(),
     ]);
     if (!couple || !guest) throw linkUnavailable();
+    const look = await this.website.designFor(context.weddingId, couple.slug);
     const briefs = await this.events.briefs(
       context.weddingId,
       invitations.map((invitation) => invitation.eventId),
@@ -161,6 +164,8 @@ export class GuestAccessService {
     );
     return {
       coupleName: couple.coupleName,
+      place: couple.place,
+      slug: couple.slug,
       guestName: guest.name,
       partySize: guest.partySize,
       writable: couple.active,
@@ -171,6 +176,8 @@ export class GuestAccessService {
       ...(guest.emailNormalized
         ? { reminderEmails: guest.reminderOptOutAt ? ('off' as const) : ('on' as const) }
         : {}),
+      templateId: look.templateId,
+      ...(look.coverUrl ? { coverUrl: look.coverUrl } : {}),
     };
   }
 
@@ -318,6 +325,7 @@ export class GuestAccessService {
       timeZone: event.timeZone,
       ...(event.venueName ? { venueName: event.venueName } : {}),
       ...(event.venueAddress ? { venueAddress: event.venueAddress } : {}),
+      ...(event.dressCode ? { dressCode: event.dressCode } : {}),
       cancelled: event.cancelled,
       rsvp: {
         status: invitation.rsvp.status,

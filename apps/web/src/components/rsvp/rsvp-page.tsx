@@ -10,22 +10,32 @@ import type { GuestView } from '@/lib/guests/guests';
 import { invitationPath } from '@/lib/routes';
 import { ReminderChoice } from './reminder-choice';
 import { RsvpForm } from './rsvp-form';
+import { RsvpHeader, RsvpHero } from './rsvp-chrome';
+import { RSVP_SKINS, type RsvpSkin } from './rsvp-theme';
 
-/** The page around the invitation: brand, no organizer navigation, no sign-in. */
-function Shell({ children }: { children: React.ReactNode }) {
+/**
+ * The page around the invitation: no organizer navigation, no sign-in. In
+ * the wedding website's design once the invitation is known; the brand
+ * until then.
+ */
+function Shell({
+  children,
+  view,
+}: {
+  children: React.ReactNode;
+  view?: Pick<GuestView, 'coupleName' | 'templateId' | 'events'>;
+}) {
+  const theme = view?.templateId ?? 'traditional';
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-5 bg-surface px-4 py-6 sm:py-10">
-      <p className="flex items-center gap-2 font-serif text-title-md text-primary italic">
-        <span
-          aria-hidden="true"
-          className="flex size-8 items-center justify-center rounded-full bg-primary font-serif text-body-md text-on-primary not-italic"
-        >
-          M
-        </span>
-        My Marriage
-      </p>
-      {children}
-    </main>
+    <div
+      data-rsvp-theme={theme}
+      className={`flex flex-1 flex-col font-sans antialiased ${RSVP_SKINS[theme].page}`}
+    >
+      <RsvpHeader {...(view ? { view } : {})} />
+      <main className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-4 px-4 pt-3 pb-10">
+        {children}
+      </main>
+    </div>
   );
 }
 
@@ -128,7 +138,7 @@ export function RsvpPage({ view, unreachable }: { view: GuestView | null; unreac
 
   if (phase === 'ready' && view) {
     return (
-      <Shell>
+      <Shell view={view}>
         {/* A different guest's invitation starts afresh, answers and all. */}
         <Invitation key={invitationKey(view)} view={view} toReminders={toReminders} />
       </Shell>
@@ -167,39 +177,37 @@ function invitationKey(view: GuestView): string {
 }
 
 function Invitation({ view, toReminders }: { view: GuestView; toReminders: boolean }) {
+  const skin = RSVP_SKINS[view.templateId];
   return (
     <>
-      <header className="flex flex-col gap-2 rounded-2xl bg-surface-container-lowest p-5 shadow-xs">
-        <p className="text-label-sm font-semibold tracking-widest text-secondary uppercase">
-          You’re invited
-        </p>
-        <h1 className="font-serif text-headline-lg-mobile text-on-surface">
-          {view.coupleName}’s wedding
-        </h1>
-        <span aria-hidden="true" className="my-1 h-px w-24 bg-secondary-fixed-dim" />
-        <p className="text-title-md text-on-surface">Hello, {view.guestName}</p>
-        <p className="text-body-md text-on-surface">
-          This invitation is for up to{' '}
-          <b>{view.partySize === 1 ? '1 person' : `${view.partySize} people`}</b> in your family.
-        </p>
-        <p className="text-body-sm text-on-surface-variant">
-          Please let us know who’s coming to each celebration.
-        </p>
-      </header>
+      <RsvpHero view={view} />
       {view.events.length === 0 ? (
-        <p className="rounded-2xl bg-surface-container-lowest p-5 text-body-md text-on-surface-variant shadow-xs">
+        <p className={`${skin.card} ${skin.body}`}>
           There are no celebrations on your invitation right now. The couple may add some soon.
         </p>
       ) : (
         <RsvpForm view={view} when={(event) => eventWhen(event)} />
       )}
-      {view.reminderEmails && <ReminderChoice initial={view.reminderEmails} focus={toReminders} />}
-      <p className="flex items-start gap-2 text-body-sm text-on-surface-variant">
-        <Icon name="lock" className="mt-0.5 size-4 shrink-0" />
-        This invitation link is private. Anyone with this link can update these responses.
-      </p>
-      {/* Room for the fixed save bar, so nothing ends up under it. */}
-      {view.writable && view.events.length > 0 && <div aria-hidden="true" className="h-20" />}
+      {view.reminderEmails && (
+        <ReminderChoice initial={view.reminderEmails} focus={toReminders} skin={skin} />
+      )}
+      {(view.events.length === 0 || !view.writable) && <PrivateNote skin={skin} />}
     </>
+  );
+}
+
+/** Why the link must stay in the family. */
+export function PrivateNote({ skin }: { skin: RsvpSkin }) {
+  return (
+    <div className="px-2 pt-3 text-center">
+      <p className={`flex items-center justify-center gap-1.5 ${skin.privacy}`}>
+        <Icon name="lock" className={skin.privacyIcon} />
+        Private invitation link
+      </p>
+      <p className={`mt-1 ${skin.body}`}>
+        Anyone with this private link can update your family’s answers. Please don’t share it
+        outside your immediate family.
+      </p>
+    </div>
   );
 }

@@ -48,11 +48,15 @@ interface ViewBody {
   guestName: string;
   partySize: number;
   writable: boolean;
+  templateId: string;
+  place: string;
+  slug: string;
   events: {
     invitationId: string;
     title: string;
     cancelled: boolean;
     venueName?: string;
+    dressCode?: string;
     rsvp: { status: string; attendingCount?: number; responseVersion: number };
   }[];
 }
@@ -440,6 +444,45 @@ describe('Guests and RSVP (integration)', () => {
         `/api/v1/weddings/${owner.weddingId}/events/${wedding}`,
       ).expect(204);
       expect((await viewed(cookie)).events.map((e) => e.title)).toEqual(['Haldi']);
+    });
+
+    it('wears the published website’s design, and the standard one while it isn’t published', async () => {
+      const { owner, rajesh, haldi } = await plannedWedding();
+      await send('patch', owner.cookie, `/api/v1/weddings/${owner.weddingId}/events/${haldi}`, {
+        dressCode: 'Yellow and floral',
+      }).expect(200);
+      const { cookie } = await open((await linkOf(owner.cookie, owner.weddingId, rajesh.id)).url);
+      const first = await viewed(cookie);
+      expect(first.templateId).toBe('traditional');
+      expect(first.place).toBe('Jaipur, Rajasthan');
+      expect(first.events[0]?.dressCode).toBe('Yellow and floral');
+
+      const site = `/api/v1/weddings/${owner.weddingId}/website`;
+      await send('patch', owner.cookie, site, { templateId: 'royal', contentVersion: 0 }).expect(
+        200,
+      );
+      // A design chosen in an unpublished website doesn't reach guests.
+      expect((await viewed(cookie)).templateId).toBe('traditional');
+      await send('post', owner.cookie, `${site}/publish`, { contentVersion: 1 }).expect(200);
+      expect((await viewed(cookie)).templateId).toBe('royal');
+      // A draft change waits for "Publish changes", on the RSVP page as on the site.
+      await send('patch', owner.cookie, site, { templateId: 'modern', contentVersion: 1 }).expect(
+        200,
+      );
+      expect((await viewed(cookie)).templateId).toBe('royal');
+
+      // Once published, the private link opens the website, where they answer.
+      const slug = (await viewed(cookie)).slug;
+      expect(slug).toMatch(/^ananya-/);
+      const onSite = await linkOf(owner.cookie, owner.weddingId, rajesh.id);
+      expect(onSite.url).toMatch(new RegExp(`/w/${slug}#t=[A-Za-z0-9_-]{43}$`));
+      expect((await open(onSite.url)).res.status).toBe(204);
+      await send('post', owner.cookie, `${site}/unpublish`).expect(200);
+      // Taken down: back to the standard RSVP page.
+      expect((await viewed(cookie)).templateId).toBe('traditional');
+      expect((await linkOf(owner.cookie, owner.weddingId, rajesh.id)).url).toMatch(
+        /\/invitation#t=/,
+      );
     });
   });
 

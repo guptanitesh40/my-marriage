@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { EventsModule } from '../events/events.module.js';
 import { NotificationsModule } from '../notifications/notifications.module.js';
 import { WeddingsModule } from '../weddings/weddings.module.js';
+import { WebsiteModule } from '../website/website.module.js';
 import { GuestAccessService } from './guest-access.service.js';
 import { GuestInviteComposer } from './guest-invite.composer.js';
 import { GuestReminderComposer } from './guest-reminder.composer.js';
@@ -34,6 +35,7 @@ import { InvitationToken, InvitationTokenSchema } from './schemas/invitation-tok
     NotificationsModule,
     WeddingsModule,
     EventsModule,
+    WebsiteModule,
   ],
   providers: [
     GuestsService,

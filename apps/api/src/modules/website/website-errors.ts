@@ -25,3 +25,19 @@ export function websiteNotReady(problems: string[]): UnprocessableEntityExceptio
     message: problems.join(' '),
   });
 }
+
+export function imageNotFound(): NotFoundException {
+  return new NotFoundException({ code: 'IMAGE_NOT_FOUND', message: 'That image isn’t available.' });
+}
+
+/** The upload never arrived, was too large, or isn’t a JPEG, PNG or WebP photo. */
+export function uploadRejected(
+  code: 'UPLOAD_NOT_FOUND' | 'UPLOAD_TOO_LARGE' | 'UPLOAD_NOT_IMAGE',
+): UnprocessableEntityException {
+  const messages = {
+    UPLOAD_NOT_FOUND: 'The photo didn’t finish uploading. Please try again.',
+    UPLOAD_TOO_LARGE: 'That photo is too large. Choose one under 10 MB.',
+    UPLOAD_NOT_IMAGE: 'That file isn’t a photo. Choose a JPEG, PNG or WebP image.',
+  };
+  return new UnprocessableEntityException({ code, message: messages[code] });
+}

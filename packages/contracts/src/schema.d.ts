@@ -941,6 +941,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/weddings/{weddingId}/website/cover-uploads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start a cover photo upload */
+        post: operations["WebsiteController_requestCoverUpload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/website/cover-uploads/{uploadId}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Finish a cover photo upload */
+        post: operations["WebsiteController_completeCoverUpload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/website/images/{imageId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read a website photo (members only) */
+        get: operations["WebsiteController_image"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/weddings/{weddingId}/website/address": {
         parameters: {
             query?: never;
@@ -984,6 +1035,23 @@ export interface paths {
         };
         /** List published event information */
         get: operations["PublicWebsiteController_events"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/weddings/{slug}/cover": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read the published cover photo */
+        get: operations["PublicWebsiteController_cover"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2128,6 +2196,7 @@ export interface components {
             timeZone: string;
             venueName?: string;
             venueAddress?: string;
+            dressCode?: string;
             /** @description Cancelled: its RSVP is closed; the last answer is shown. */
             cancelled: boolean;
             rsvp: components["schemas"]["RsvpDto"];
@@ -2139,14 +2208,26 @@ export interface components {
              * @enum {string}
              */
             reminderEmails?: "on" | "off";
+            /**
+             * @description The published wedding website's design, which the RSVP page follows;
+             *     the standard (Traditional) page while the website isn't published.
+             * @enum {string}
+             */
+            templateId: "traditional" | "modern" | "royal";
             /** @description "Ananya & Arjun". */
             coupleName: string;
+            /** @description Where the wedding is: "Jaipur, Rajasthan". */
+            place: string;
+            /** @description The wedding website's address, so the website can tell the invitation is its own. */
+            slug: string;
             guestName: string;
             partySize: number;
             /** @description False once the wedding is archived: answers can be seen, not changed. */
             writable: boolean;
             /** @description In the wedding's order. */
             events: components["schemas"]["GuestViewEventDto"][];
+            /** @description The published website's cover photo, served by the API, when there is one. */
+            coverUrl?: string;
         };
         RsvpPatchDto: {
             /** @enum {string} */
@@ -2193,6 +2274,8 @@ export interface components {
             headline?: string;
             story?: string;
             faq: components["schemas"]["WebsiteFaqDto"][];
+            /** @description The cover photo's ID, when there is one. */
+            coverImageId?: string;
         };
         ReadinessCheckDto: {
             /** @enum {string} */
@@ -2219,6 +2302,8 @@ export interface components {
              */
             publishedTemplateId?: "traditional" | "modern" | "royal";
             content: components["schemas"]["WebsiteContentDto"];
+            /** @description The draft's cover photo, for the wedding's members: `/api/v1/weddings/{id}/website/images/{imageId}`. */
+            coverUrl?: string;
             /** @description Send it back with the next edit or publication. */
             contentVersion: number;
             /** Format: date-time */
@@ -2251,6 +2336,8 @@ export interface components {
             story?: string | null;
             /** @description The whole list, in order: it replaces the saved one. */
             faq?: components["schemas"]["WebsiteFaqInputDto"][];
+            /** @description Only `null` (or empty). */
+            coverImageId?: string | null;
         };
         UpdateWebsiteDto: {
             /** @enum {string} */
@@ -2298,6 +2385,11 @@ export interface components {
             city: string;
             state: string;
             headline?: string;
+            /**
+             * @description The cover photo, served by the API: the published one for anyone, the
+             *     draft's in an organizer's preview. Never a storage address.
+             */
+            coverUrl?: string;
             /** @description Plain text; blank lines separate paragraphs. */
             story?: string;
             faq: components["schemas"]["WebsiteFaqDto"][];
@@ -2310,6 +2402,21 @@ export interface components {
         };
         PublishWebsiteDto: {
             contentVersion: number;
+        };
+        CoverUploadDto: {
+            fields: {
+                [key: string]: string;
+            };
+            uploadId: string;
+            url: string;
+            maxBytes: number;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        CoverUploadRequestDto: {
+            /** @enum {string} */
+            contentType: "image/jpeg" | "image/png" | "image/webp";
+            bytes: number;
         };
         SlugAvailabilityDto: {
             slug: string;
@@ -5514,6 +5621,153 @@ export interface operations {
             };
         };
     };
+    WebsiteController_requestCoverUpload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CoverUploadRequestDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CoverUploadDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WebsiteController_completeCoverUpload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                uploadId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublishWebsiteDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WebsiteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEBSITE_VERSION_CONFLICT: changed elsewhere; reload. WEDDING_ARCHIVED: read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description UPLOAD_NOT_FOUND, UPLOAD_TOO_LARGE or UPLOAD_NOT_IMAGE. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WebsiteController_image: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                imageId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The photo. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description IMAGE_NOT_FOUND or WEDDING_NOT_FOUND. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
     WebsiteController_address: {
         parameters: {
             query: {
@@ -5619,6 +5873,42 @@ export interface operations {
                 };
             };
             /** @description WEBSITE_NOT_FOUND: missing, unpublished or unpublished again — never which. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PublicWebsiteController_cover: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The photo. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEBSITE_NOT_FOUND or IMAGE_NOT_FOUND. */
             404: {
                 headers: {
                     [name: string]: unknown;

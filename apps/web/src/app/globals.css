@@ -13,6 +13,9 @@
 @theme inline {
   --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  /* The RSVP page's Modern Minimal labels and Royal headings only. */
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-display: var(--font-cinzel), var(--font-newsreader), ui-serif, serif;
 }
 
 @theme {
@@ -49,6 +52,52 @@
 
   /* The second ring of the logo (docs/design/brand/logo.svg). Logo only. */
   --color-brand-gold: #b89a70;
+
+  /*
+   * The guest RSVP page in Modern Minimal (Stitch "Private Guest RSVP —
+   * Modern Minimal"). Muted and tan are a shade darker than the export so
+   * their small text passes WCAG AA.
+   */
+  --color-minimal-surface: #fdfbf7;
+  --color-minimal-subtle: #f7f5f0;
+  --color-minimal-line: #e8e3da;
+  --color-minimal-line-soft: #f0ebe1;
+  --color-minimal-ink: #1a3d34;
+  --color-minimal-ink-hover: #244f43;
+  --color-minimal-tan: #7f6649;
+  --color-minimal-text: #1a1a18;
+  --color-minimal-body: #686560;
+  --color-minimal-muted: #6b6760;
+
+  /* The guest RSVP page in Royal / Elegant (Stitch "Private Guest RSVP — Royal Elegant"). */
+  --color-regal-ink: #15392f;
+  --color-regal-hero: #184539;
+  --color-regal-deep: #0f2c24;
+  --color-regal-gold: #c5a880;
+  --color-regal-gold-light: #dfc399;
+  --color-regal-gold-ink: #593f18;
+  --color-regal-emboss-line: #d4b88f;
+  --color-regal-surface: #fbf8f2;
+  --color-regal-card: #fdfaf5;
+  --color-regal-parchment: #fbf6ec;
+  --color-regal-parchment-line: #dfcaa7;
+  --color-regal-line: #dfd0ba;
+  --color-regal-line-strong: #d6c7b0;
+  --color-regal-header-line: #e7dbc9;
+  --color-regal-sand: #f6f0e4;
+  --color-regal-sand-deep: #ede4d4;
+  --color-regal-pill: #f4ebdc;
+  --color-regal-bronze: #7d5d2b;
+  --color-regal-bronze-soft: #997746;
+  --color-regal-label: #6d5c48;
+  --color-regal-text: #1e1b16;
+  --color-regal-body: #4d4439;
+  --color-regal-muted: #6a5e4e;
+  --color-regal-mint: #ddede6;
+  --color-regal-mint-line: #a8d3c1;
+  --color-regal-cream: #f7eedf;
+  --color-regal-ivory: #fcf8f2;
+  --color-regal-sub: #e2d5c3;
 
   --color-error: #ba1a1a;
   --color-on-error: #ffffff;
@@ -137,4 +186,45 @@
       animation-duration: 0.01ms !important;
     }
   }
+}
+
+/*
+ * The jali (lattice) dots of the Royal / Elegant design (Stitch site and
+ * RSVP screens), behind its photo-less welcome panel and livestream.
+ */
+@utility bg-jali {
+  background-image:
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--color-regal-gold) 12%, transparent) 1.5px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--color-regal-gold) 6%, transparent) 1px,
+      transparent 1px
+    );
+  background-size:
+    28px 28px,
+    14px 14px;
+  background-position:
+    0 0,
+    14px 14px;
+}
+
+/* Royal RSVP: the embossed gold chips and the emerald fills (site-royal RSVP export). */
+@utility bg-regal-emboss {
+  background: linear-gradient(135deg, #f7eedf 0%, #ecd8bd 100%);
+}
+
+@utility bg-regal-emerald {
+  background: linear-gradient(145deg, #184539 0%, #0d2821 100%);
+}
+
+/*
+ * The RSVP page's Modern Minimal design sets Plus Jakarta Sans as its sans
+ * serif. The wrapper also sets font-sans, so it applies below it.
+ */
+[data-rsvp-theme='modern'] {
+  --font-manrope: var(--font-jakarta);
 }

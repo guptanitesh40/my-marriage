@@ -1,5 +1,11 @@
-import { Controller, Get, Header, Param } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Header, Param, StreamableFile } from '@nestjs/common';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiProduces,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ApiDataResponse } from '../../platform/response-envelope.js';
 import { Public } from '../auth/auth.decorators.js';
 import { PublicEventListDto, PublicWebsiteDto } from './dto/public-website.dto.js';
@@ -33,5 +39,21 @@ export class PublicWebsiteController {
   @ApiNotFoundResponse({ description: NOT_FOUND })
   events(@Param('slug') slug: string): Promise<PublicEventListDto> {
     return this.site.eventList(slug);
+  }
+
+  /**
+   * The published site's cover photo. Its address carries the photo's ID
+   * (`?v=`), so a new photo is a new address and this one may be cached.
+   */
+  @Get(':slug/cover')
+  @Header('Cache-Control', 'public, max-age=300')
+  @Header('X-Content-Type-Options', 'nosniff')
+  @ApiOperation({ summary: 'Read the published cover photo' })
+  @ApiProduces('image/jpeg', 'image/png', 'image/webp')
+  @ApiOkResponse({ description: 'The photo.' })
+  @ApiNotFoundResponse({ description: 'WEBSITE_NOT_FOUND or IMAGE_NOT_FOUND.' })
+  async cover(@Param('slug') slug: string): Promise<StreamableFile> {
+    const file = await this.site.cover(slug);
+    return new StreamableFile(file.body, { type: file.contentType, length: file.bytes });
   }
 }

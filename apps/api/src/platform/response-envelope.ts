@@ -1,6 +1,7 @@
 import {
   applyDecorators,
   Injectable,
+  StreamableFile,
   type CallHandler,
   type ExecutionContext,
   type NestInterceptor,
@@ -21,13 +22,14 @@ import { getRequestId } from './request-context.js';
 export class ResponseEnvelopeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const res = context.switchToHttp().getResponse<Response>();
-    return next
-      .handle()
-      .pipe(
-        map((data: unknown) =>
-          data === undefined ? undefined : { data, requestId: getRequestId(res) },
-        ),
-      );
+    return next.handle().pipe(
+      map((data: unknown) =>
+        // Files (images) are sent as themselves.
+        data === undefined || data instanceof StreamableFile
+          ? data
+          : { data, requestId: getRequestId(res) },
+      ),
+    );
   }
 }
 

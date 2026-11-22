@@ -133,6 +133,23 @@ export class Env {
   @IsOptional()
   @MinLength(32, { message: 'GUEST_LINK_SECRET must be at least 32 characters' })
   GUEST_LINK_SECRET?: string;
+
+  /**
+   * The one S3 bucket for every uploaded file; each kind has its own folder
+   * in it (decision 0018). When empty, development and tests keep files on
+   * this machine in MEDIA_LOCAL_DIR instead; production requires it.
+   */
+  @IsOptional()
+  @Matches(/^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/, { message: 'S3_BUCKET must be an S3 bucket name' })
+  S3_BUCKET?: string;
+
+  /** The bucket's region. Credentials come from the standard AWS chain (profile, role). */
+  @IsString()
+  AWS_REGION: string = 'ap-south-1';
+
+  /** Where development keeps uploaded files when S3_BUCKET is empty. */
+  @IsString()
+  MEDIA_LOCAL_DIR: string = '.media';
 }
 
 const DEFAULT_TRACE_MODE: Record<string, TraceMode> = {
@@ -157,6 +174,9 @@ const ENV_KEYS = [
   'MAIL_FROM',
   'LOG_TRACE',
   'GUEST_LINK_SECRET',
+  'S3_BUCKET',
+  'AWS_REGION',
+  'MEDIA_LOCAL_DIR',
 ] as const satisfies (keyof Env)[];
 
 /** Rules that span several variables, which class-validator cannot express. */
@@ -170,6 +190,10 @@ function crossFieldProblems(env: Env): string[] {
   // Without it, anyone who read the code could rebuild guests' links.
   if (env.NODE_ENV === 'production' && env.GUEST_LINK_SECRET === undefined) {
     problems.push('GUEST_LINK_SECRET is required when NODE_ENV is production');
+  }
+  // Files kept on one server's disk would vanish with it.
+  if (env.NODE_ENV === 'production' && env.S3_BUCKET === undefined) {
+    problems.push('S3_BUCKET is required when NODE_ENV is production');
   }
   return problems;
 }

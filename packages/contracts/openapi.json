@@ -4683,6 +4683,215 @@
         ]
       }
     },
+    "/api/v1/weddings/{weddingId}/website/cover-uploads": {
+      "post": {
+        "operationId": "WebsiteController_requestCoverUpload",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CoverUploadRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/CoverUploadDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Start a cover photo upload",
+        "tags": [
+          "Website"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/website/cover-uploads/{uploadId}/complete": {
+      "post": {
+        "operationId": "WebsiteController_completeCoverUpload",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uploadId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublishWebsiteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WebsiteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEBSITE_VERSION_CONFLICT: changed elsewhere; reload. WEDDING_ARCHIVED: read-only."
+          },
+          "422": {
+            "description": "UPLOAD_NOT_FOUND, UPLOAD_TOO_LARGE or UPLOAD_NOT_IMAGE."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Finish a cover photo upload",
+        "tags": [
+          "Website"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/website/images/{imageId}": {
+      "get": {
+        "operationId": "WebsiteController_image",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The photo."
+          },
+          "404": {
+            "description": "IMAGE_NOT_FOUND or WEDDING_NOT_FOUND."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read a website photo (members only)",
+        "tags": [
+          "Website"
+        ]
+      }
+    },
     "/api/v1/weddings/{weddingId}/website/address": {
       "get": {
         "operationId": "WebsiteController_address",
@@ -4859,6 +5068,43 @@
           }
         },
         "summary": "List published event information",
+        "tags": [
+          "Public website"
+        ]
+      }
+    },
+    "/api/v1/public/weddings/{slug}/cover": {
+      "get": {
+        "operationId": "PublicWebsiteController_cover",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The photo."
+          },
+          "404": {
+            "description": "WEBSITE_NOT_FOUND or IMAGE_NOT_FOUND."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Read the published cover photo",
         "tags": [
           "Public website"
         ]
@@ -7675,6 +7921,9 @@
           "venueAddress": {
             "type": "string"
           },
+          "dressCode": {
+            "type": "string"
+          },
           "cancelled": {
             "type": "boolean",
             "description": "Cancelled: its RSVP is closed; the last answer is shown."
@@ -7702,9 +7951,26 @@
             ],
             "type": "string"
           },
+          "templateId": {
+            "description": "The published wedding website's design, which the RSVP page follows;\nthe standard (Traditional) page while the website isn't published.",
+            "enum": [
+              "traditional",
+              "modern",
+              "royal"
+            ],
+            "type": "string"
+          },
           "coupleName": {
             "type": "string",
             "description": "\"Ananya & Arjun\"."
+          },
+          "place": {
+            "type": "string",
+            "description": "Where the wedding is: \"Jaipur, Rajasthan\"."
+          },
+          "slug": {
+            "type": "string",
+            "description": "The wedding website's address, so the website can tell the invitation is its own."
           },
           "guestName": {
             "type": "string"
@@ -7722,10 +7988,17 @@
             "items": {
               "$ref": "#/components/schemas/GuestViewEventDto"
             }
+          },
+          "coverUrl": {
+            "type": "string",
+            "description": "The published website's cover photo, served by the API, when there is one."
           }
         },
         "required": [
+          "templateId",
           "coupleName",
+          "place",
+          "slug",
           "guestName",
           "partySize",
           "writable",
@@ -7865,6 +8138,10 @@
             "items": {
               "$ref": "#/components/schemas/WebsiteFaqDto"
             }
+          },
+          "coverImageId": {
+            "type": "string",
+            "description": "The cover photo's ID, when there is one."
           }
         },
         "required": [
@@ -7944,6 +8221,10 @@
           },
           "content": {
             "$ref": "#/components/schemas/WebsiteContentDto"
+          },
+          "coverUrl": {
+            "type": "string",
+            "description": "The draft's cover photo, for the wedding's members: `/api/v1/weddings/{id}/website/images/{imageId}`."
           },
           "contentVersion": {
             "type": "number",
@@ -8033,6 +8314,11 @@
             "items": {
               "$ref": "#/components/schemas/WebsiteFaqInputDto"
             }
+          },
+          "coverImageId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Only `null` (or empty)."
           }
         }
       },
@@ -8160,6 +8446,10 @@
           "headline": {
             "type": "string"
           },
+          "coverUrl": {
+            "type": "string",
+            "description": "The cover photo, served by the API: the published one for anyone, the\ndraft's in an organizer's preview. Never a storage address."
+          },
           "story": {
             "type": "string",
             "description": "Plain text; blank lines separate paragraphs."
@@ -8213,6 +8503,59 @@
         },
         "required": [
           "contentVersion"
+        ]
+      },
+      "CoverUploadDto": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "uploadId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "maxBytes": {
+            "type": "number"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fields",
+          "uploadId",
+          "url",
+          "maxBytes",
+          "expiresAt"
+        ]
+      },
+      "CoverUploadRequestDto": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/webp"
+            ],
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10485760
+          }
+        },
+        "required": [
+          "contentType",
+          "bytes"
         ]
       },
       "SlugAvailabilityDto": {

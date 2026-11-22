@@ -10,6 +10,7 @@ import type {
 } from '../notifications/email-composer.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
 import { guestInviteMessage } from './guest-emails.js';
+import { WebsiteService } from '../website/website.service.js';
 import { GuestLinks } from './guest-links.js';
 import { EventInvitation } from './schemas/event-invitation.schema.js';
 import { GuestContact } from './schemas/guest-contact.schema.js';
@@ -34,6 +35,7 @@ export class GuestInviteComposer implements EmailComposer {
     private readonly access: WeddingAccessService,
     private readonly events: EventsService,
     private readonly links: GuestLinks,
+    private readonly website: WebsiteService,
   ) {}
 
   async compose(email: EmailToCompose): Promise<ComposedEmail | null> {
@@ -62,7 +64,7 @@ export class GuestInviteComposer implements EmailComposer {
       guestName: guest.name,
       partySize: guest.partySize,
       events,
-      link: this.links.url(link._id),
+      link: this.links.url(link._id, await this.website.publishedAddress(guest.weddingId)),
     });
   }
 }

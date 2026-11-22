@@ -7,25 +7,56 @@ belong in `docs/decisions/`; requirements stay in `docs/reference/`.
 
 ## Where things stand
 
-| Area                  | State                                                      |
-| --------------------- | ---------------------------------------------------------- |
-| Repository foundation | Done                                                       |
-| Public homepage       | Done (privacy and terms are drafts, pending legal review)  |
-| Authentication        | Done (profile editing and session management not started)  |
-| Wedding management    | Onboarding steps 1–2 done; ceremony step waits for events  |
-| Wedding workspace     | Shell started (M4.1a); switcher and overview next          |
-| Events                | Listing, adding, editing and deleting ceremonies (M5.1)    |
-| Tasks                 | List, filters, add, edit, quick completion (M6)            |
-| Vendors               | Directory, filters, add, details, edit, delete (M7)        |
-| Expenses              | Ledger, payments, discounts/extras, reversals, delete (M8) |
-| Guests & RSVP         | Guest list, private links, RSVP, CSV, reminders (M9)       |
-| Wedding website       | M10.1: draft, publish API, address, theme choice           |
-| Photos                | Not started                                                |
+| Area                  | State                                                       |
+| --------------------- | ----------------------------------------------------------- |
+| Repository foundation | Done                                                        |
+| Public homepage       | Done (privacy and terms are drafts, pending legal review)   |
+| Authentication        | Done (profile editing and session management not started)   |
+| Wedding management    | Onboarding steps 1–2 done; ceremony step waits for events   |
+| Wedding workspace     | Shell started (M4.1a); switcher and overview next           |
+| Events                | Listing, adding, editing and deleting ceremonies (M5.1)     |
+| Tasks                 | List, filters, add, edit, quick completion (M6)             |
+| Vendors               | Directory, filters, add, details, edit, delete (M7)         |
+| Expenses              | Ledger, payments, discounts/extras, reversals, delete (M8)  |
+| Guests & RSVP         | Guest list, private links, RSVP, CSV, reminders (M9)        |
+| Wedding website       | Builder, three designs, preview, publish, public `/w/` page |
+| Photos                | Website cover photo (0018); gallery not started             |
 
 Open questions waiting on the owner are listed in
 [0002 — Foundation for Phase 1](decisions/0002-phase-1-foundation.md#still-open--needs-the-owner).
 
 ## Log
+
+### Wedding website: builder, three designs, public page (M10.2–M10.4) — 2026-11-22
+
+Decisions in [0017](decisions/0017-wedding-website.md#the-builder-and-the-public-page-2026-11-22).
+
+- **The public site in all three designs** (Traditional Serene, Modern
+  Minimal, Royal Heritage), from the Stitch screens, on phones and
+  desktops: welcome, story, ceremonies with directions, dress code and a
+  YouTube livestream that loads only when played, cancelled ceremonies
+  marked, and questions.
+- **The Wedding Website page is the Stitch builder**: editor tabs (Basics,
+  Ceremonies, FAQ, Appearance & Styles), web address with availability
+  check, save bar, live preview (desktop and phone), publish and unpublish
+  dialogs, live banner, archived mode.
+- **Full-page preview** of the saved draft for the wedding's members, with a
+  switch to compare designs.
+- **`/w/{slug}`**: the published site for anyone; old addresses move to the
+  new one; otherwise the "not available" page.
+- **The guest's RSVP page follows the website's design**, built from the
+  Stitch RSVP screens, with each ceremony's dress code and the wedding's
+  place.
+- **Guests RSVP on the website**: once it is published, invitation and
+  reminder emails (and the WhatsApp link) open the website, where each
+  family answers through its private link. Visitors without a link see how
+  to answer; nothing about the guest list is public.
+- **Cover photo** ([0018](decisions/0018-uploaded-files.md)): uploaded in the
+  builder, shrunk in the browser, checked by the API, kept in the one S3
+  bucket (or a local folder in development), shown in all three designs
+  and on the RSVP page once published.
+- Still missing: link previews (Open Graph) for shared addresses, the
+  M10.5 hardening pass, and creating the S3 bucket in AWS.
 
 ### Wedding website (M10.1) — 2026-11-20
 
@@ -45,10 +76,8 @@ Decisions in [0017](decisions/0017-wedding-website.md); designs in
   - website address
   - what publishing needs
   - the three-template picker (saves the draft only)
-- Still missing:
-  - the three public-site templates and the preview (M10.2)
-  - the editor tabs, live preview and Events form fields (M10.3)
-  - publish/unpublish buttons, `/w/{slug}` and link previews (M10.4)
+- Still missing (at the time): the three designs and preview (built in
+  M10.2, above), the editor (M10.3), publishing and `/w/{slug}` (M10.4)
 
 ### Guest reminders — 2026-11-20
 

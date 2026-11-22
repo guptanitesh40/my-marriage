@@ -119,12 +119,13 @@ test('a family is invited, answers per ceremony through its private link, and th
   });
   const phone = await family.newPage();
   await phone.goto(link);
-  await expect(phone.getByRole('heading', { name: /Ananya & Arjun’s wedding/ })).toBeVisible();
-  await expect(phone.getByText('Hello, Rajesh Sharma')).toBeVisible();
+  await expect(phone.getByRole('heading', { name: /Ananya & Arjun’s Wedding/ })).toBeVisible();
+  await expect(phone.getByText('Namaste, Rajesh Sharma')).toBeVisible();
   // The secret is gone from the address at once.
   await expect(phone).toHaveURL(/\/invitation$/);
   // Their ceremonies, then the reminder-email choice (they have an email address).
   await expect(phone.getByRole('heading', { level: 2 })).toHaveText([
+    'All celebrations',
     'Haldi',
     'Wedding',
     'Reminder emails',
@@ -138,19 +139,19 @@ test('a family is invited, answers per ceremony through its private link, and th
     .getByRole('group', { name: 'Will you attend all celebrations?' })
     .getByText('Attending', { exact: true })
     .click();
-  await expect(phone.getByRole('region', { name: 'Wedding' })).toContainText('5 of 5 people');
+  await expect(phone.getByRole('region', { name: 'Wedding' })).toContainText('5 of 5 confirmed');
   for (let i = 0; i < 2; i++) {
     await phone
       .getByRole('region', { name: 'Haldi' })
       .getByRole('button', { name: 'One fewer' })
       .click();
   }
-  await expect(phone.getByRole('region', { name: 'Haldi' })).toContainText('3 of 5 people');
+  await expect(phone.getByRole('region', { name: 'Haldi' })).toContainText('3 of 5 confirmed');
   await expect(phone.getByRole('region', { name: 'All celebrations' })).toContainText(
     'Different for each celebration',
   );
   await phone.getByRole('button', { name: 'Save my RSVP' }).click();
-  await expect(phone.getByText('Your responses have been saved.')).toBeVisible();
+  await expect(phone.getByText(/Your responses have been saved\./)).toBeVisible();
   await testInfo.attach('guest-rsvp-390', {
     body: await phone.screenshot({ fullPage: true }),
     contentType: 'image/png',
@@ -158,7 +159,7 @@ test('a family is invited, answers per ceremony through its private link, and th
 
   // A return visit, without the link, shows the saved answers.
   await phone.reload();
-  await expect(phone.getByRole('region', { name: 'Haldi' })).toContainText('3 of 5 people');
+  await expect(phone.getByRole('region', { name: 'Haldi' })).toContainText('3 of 5 confirmed');
   await expect(phone.getByRole('button', { name: 'Your RSVP is saved' })).toBeDisabled();
 
   // The organizer sees confirmed people per ceremony, the family counted once.
@@ -318,8 +319,9 @@ test('a browser that opened one family’s link shows the next link’s family, 
   });
   const phone = await family.newPage();
   await phone.goto(first);
-  await expect(phone.getByText('Hello, Geeta Devi')).toBeVisible();
+  await expect(phone.getByText('Namaste, Geeta Devi')).toBeVisible();
   await expect(phone.getByRole('heading', { level: 2 })).toHaveText([
+    'All celebrations',
     'Haldi',
     'Wedding',
     'Reception',
@@ -328,15 +330,23 @@ test('a browser that opened one family’s link shows the next link’s family, 
   // The same browser opens another family's link, in a new tab as from an email…
   const tab = await family.newPage();
   await tab.goto(second);
-  await expect(tab.getByText('Hello, Rajesh Sharma')).toBeVisible();
-  await expect(tab.getByRole('heading', { level: 2 })).toHaveText(['Wedding', 'Reception']);
+  await expect(tab.getByText('Namaste, Rajesh Sharma')).toBeVisible();
+  await expect(tab.getByRole('heading', { level: 2 })).toHaveText([
+    'All celebrations',
+    'Wedding',
+    'Reception',
+  ]);
   await expect(tab.getByText('Geeta Devi')).toHaveCount(0);
   await tab.close();
 
   // …or pasted into the tab already open.
   await phone.goto(second);
-  await expect(phone.getByText('Hello, Rajesh Sharma')).toBeVisible();
-  await expect(phone.getByRole('heading', { level: 2 })).toHaveText(['Wedding', 'Reception']);
+  await expect(phone.getByText('Namaste, Rajesh Sharma')).toBeVisible();
+  await expect(phone.getByRole('heading', { level: 2 })).toHaveText([
+    'All celebrations',
+    'Wedding',
+    'Reception',
+  ]);
   await expect(phone.getByText('Geeta Devi')).toHaveCount(0);
   await expect(phone.getByRole('button', { name: 'Choose your answers above' })).toBeDisabled();
   await phone
@@ -344,7 +354,7 @@ test('a browser that opened one family’s link shows the next link’s family, 
     .getByText('Attending', { exact: true })
     .click();
   await phone.getByRole('button', { name: 'Save my RSVP' }).click();
-  await expect(phone.getByText('Your responses have been saved.')).toBeVisible();
+  await expect(phone.getByText(/Your responses have been saved\./)).toBeVisible();
   await family.close();
 });
 
@@ -465,4 +475,146 @@ test('the couple reminds everyone with a note; a family turns reminders off from
   await settings.getByRole('button', { name: 'Save' }).click();
   await expect(page.getByRole('button', { name: 'Automatic reminders: On' })).toBeVisible();
   expect(errors).toEqual([]);
+});
+
+test('a family’s RSVP page wears the published website’s design, and fits and reads well in each', async ({
+  page,
+  browser,
+}, testInfo) => {
+  const { weddingId } = await ownerAtGuests(page);
+  const haldi = await apiPost(page, `/weddings/${weddingId}/events`, {
+    title: 'Haldi',
+    startDate: '2031-02-12',
+    startTime: '10:00',
+    venue: { name: 'Poolside Courtyard' },
+    dressCode: 'Sunflower yellow',
+  });
+  const wedding = await apiPost(page, `/weddings/${weddingId}/events`, {
+    title: 'Wedding Ceremony (Pheras & Feast)',
+    startDate: '2031-02-14',
+  });
+  const guest = await apiPost(page, `/weddings/${weddingId}/guests`, {
+    name: 'Rajesh Sharma',
+    partySize: 5,
+    eventIds: [haldi.data.id, wedding.data.id],
+  });
+  const guestId = String((guest.data.guest as { id: string }).id);
+  const link = await privateLink(page, weddingId, guestId);
+  const family = await newVisitor(browser, {
+    viewport: { width: PHONE.width, height: PHONE.height },
+  });
+  const phone = await family.newPage();
+  const errors = collectErrors(phone);
+  await phone.goto(link);
+  await expect(phone.getByText('Namaste, Rajesh Sharma')).toBeVisible();
+
+  let version = 0;
+  let shown: 'traditional' | 'modern' | 'royal' = 'traditional';
+  for (const theme of ['traditional', 'modern', 'royal'] as const) {
+    if (theme !== 'traditional') {
+      const res = await page.request.patch(`/api/v1/weddings/${weddingId}/website`, {
+        data: { templateId: theme, contentVersion: version },
+      });
+      expect(res.status(), await res.text()).toBe(200);
+      version += 1;
+      // Chosen but not published: guests still see what was published (at
+      // first, the standard page).
+      await phone.reload();
+      await expect(phone.locator(`[data-rsvp-theme="${shown}"]`)).toHaveCount(1);
+      const published = await page.request.post(`/api/v1/weddings/${weddingId}/website/publish`, {
+        data: { contentVersion: version },
+      });
+      expect(published.status(), await published.text()).toBe(200);
+      shown = theme;
+      await phone.reload();
+    }
+    await expect(phone.locator(`[data-rsvp-theme="${theme}"]`)).toHaveCount(1);
+    const haldiCard = phone.getByRole('region', { name: 'Haldi' });
+    await expect(haldiCard).toContainText(theme === 'modern' ? '01 / Haldi' : 'Function 1 of 2');
+    await expect(haldiCard).toContainText('Sunflower yellow');
+    await haldiCard
+      .getByRole('group', { name: 'Will you attend Haldi?' })
+      .getByText('Attending', {
+        exact: true,
+      })
+      .click();
+    await expect(haldiCard).toContainText('All 5 members attending');
+    for (const viewport of [PHONE, DESKTOP]) {
+      await phone.setViewportSize({ width: viewport.width, height: viewport.height });
+      await expectNoHorizontalScroll(phone);
+      await testInfo.attach(`rsvp-${theme}-${viewport.width}`, {
+        body: await phone.screenshot({ fullPage: true, animations: 'disabled' }),
+        contentType: 'image/png',
+      });
+    }
+    await expectNoSeriousA11yIssues(phone);
+    await phone.setViewportSize({ width: PHONE.width, height: PHONE.height });
+  }
+  expect(errors).toEqual([]);
+  await family.close();
+});
+
+test('once the website is published, a family’s link opens it and they answer there', async ({
+  page,
+  browser,
+}, testInfo) => {
+  const { weddingId } = await ownerAtGuests(page);
+  const haldi = await apiPost(page, `/weddings/${weddingId}/events`, {
+    title: 'Haldi',
+    startDate: '2031-02-12',
+    startTime: '10:00',
+    venue: { name: 'Poolside Courtyard' },
+  });
+  const wedding = await apiPost(page, `/weddings/${weddingId}/events`, {
+    title: 'Wedding',
+    startDate: '2031-02-14',
+  });
+  const published = await page.request.post(`/api/v1/weddings/${weddingId}/website/publish`, {
+    data: { contentVersion: 0 },
+  });
+  expect(published.status(), await published.text()).toBe(200);
+  const guest = await apiPost(page, `/weddings/${weddingId}/guests`, {
+    name: 'Rajesh Sharma',
+    partySize: 5,
+    eventIds: [haldi.data.id, wedding.data.id],
+  });
+  const link = await privateLink(page, weddingId, String((guest.data.guest as { id: string }).id));
+  expect(link).toMatch(/^\/w\/[a-z0-9-]+#t=/);
+
+  const family = await newVisitor(browser, {
+    viewport: { width: PHONE.width, height: PHONE.height },
+  });
+  const phone = await family.newPage();
+  const errors = collectErrors(phone);
+  await phone.goto(link);
+  // The secret leaves the address at once; their invitation appears on the website.
+  await expect(phone).toHaveURL(/\/w\/[a-z0-9-]+$/);
+  const rsvp = phone.getByRole('region', { name: 'RSVP' });
+  await expect(rsvp.getByText(/Namaste, Rajesh Sharma/)).toBeVisible();
+  await rsvp
+    .getByRole('group', { name: 'Will you attend all celebrations?' })
+    .getByText('Attending', { exact: true })
+    .click();
+  await rsvp.getByRole('button', { name: 'Save my RSVP' }).click();
+  await expect(rsvp.getByText(/Your responses have been saved\./)).toBeVisible();
+  await expectNoHorizontalScroll(phone);
+  await expectNoSeriousA11yIssues(phone);
+  await testInfo.attach('site-rsvp-360', {
+    body: await phone.screenshot({ fullPage: true, animations: 'disabled' }),
+    contentType: 'image/png',
+  });
+
+  // Coming back later, without the link, still shows their answers.
+  await phone.goto(link.split('#')[0] ?? link);
+  await expect(rsvp.getByText('Attending (5)').first()).toBeVisible();
+  expect(errors).toEqual([]);
+
+  // Anyone else sees how to answer, and nothing about the guests.
+  const stranger = await newVisitor(browser);
+  const tab = await stranger.newPage();
+  await tab.goto(link.split('#')[0] ?? link);
+  await expect(tab.getByText('Invited? Open your private invitation link')).toBeVisible();
+  await expect(tab.getByText('Rajesh Sharma')).toHaveCount(0);
+  await stranger.close();
+  await family.close();
 });

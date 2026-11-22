@@ -12,6 +12,9 @@ the PRD, schema and API documents remain the functional one (decision 0017).
 | `site-royal.html`, `site-royal-*.png` | `27aacd41e74c418ab2f3e964acc71c30` "Public Wedding Site — Royal Elegant (Desktop)" | Public site, Royal / Elegant theme |
 | `site-unavailable.html`, `site-unavailable-mobile.png` | `dd856c2f5dc04bf48297492a45b3aa6a` "Public Wedding Site — Not Available (Mobile)" | Missing, unpublished or unpublished-again address: reveals nothing |
 
+The guest's RSVP page in each design is in
+`docs/design/guest-management-rsvp/themes/`.
+
 The three public-site screens were generated for M10 from one shared content
 brief, so they differ in presentation only. Their `*-mobile.png` captures are
 the same responsive HTML rendered at 390px: the dedicated mobile generations

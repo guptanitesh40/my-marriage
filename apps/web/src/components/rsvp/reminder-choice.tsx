@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@/components/ui/icon';
 import { api } from '@/lib/api/browser';
 import { networkFailure, toFailure } from '@/lib/api/errors';
+import type { RsvpSkin } from './rsvp-theme';
 
 /**
  * The guest's own choice about reminder emails (PRD §5.10 consent). Turning
@@ -13,10 +14,13 @@ import { networkFailure, toFailure } from '@/lib/api/errors';
 export function ReminderChoice({
   initial,
   focus,
+  skin,
 }: {
   initial: 'on' | 'off';
   /** Opened from a reminder's "turn them off" link. */
   focus: boolean;
+  /** The page's design. */
+  skin: Pick<RsvpSkin, 'card' | 'cardHeading' | 'body' | 'stepperButton'>;
 }) {
   const section = useRef<HTMLElement>(null);
   const [choice, setChoice] = useState(initial);
@@ -57,21 +61,16 @@ export function ReminderChoice({
     <section
       ref={section}
       aria-labelledby="reminder-choice-title"
-      className={`flex flex-col gap-3 rounded-2xl bg-surface-container-lowest p-5 shadow-xs ${
-        focus ? 'ring-2 ring-secondary' : ''
-      }`}
+      className={`flex flex-col gap-3 ${skin.card} ${focus ? 'ring-2 ring-secondary' : ''}`}
     >
-      <h2
-        id="reminder-choice-title"
-        className="flex items-center gap-2 text-title-md text-on-surface"
-      >
+      <h2 id="reminder-choice-title" className={`flex items-center gap-2 ${skin.cardHeading}`}>
         <Icon
           name={choice === 'on' ? 'notifications' : 'notifications-off'}
           className="size-5 text-secondary"
         />
         Reminder emails
       </h2>
-      <p className="text-body-md text-on-surface-variant">
+      <p className={skin.body}>
         {choice === 'on'
           ? 'The couple may email you a reminder before each celebration.'
           : 'Reminder emails are off. Your invitation and your answers stay as they are.'}

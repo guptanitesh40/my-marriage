@@ -111,13 +111,15 @@ export class WeddingAccessService {
    */
   async coupleOf(
     weddingId: Types.ObjectId,
-  ): Promise<{ coupleName: string; active: boolean } | null> {
+  ): Promise<{ coupleName: string; place: string; slug: string; active: boolean } | null> {
     const wedding = await this.weddings
-      .findById(weddingId, { brideName: 1, groomName: 1, status: 1 })
+      .findById(weddingId, { brideName: 1, groomName: 1, city: 1, state: 1, slug: 1, status: 1 })
       .lean();
     if (!wedding) return null;
     return {
       coupleName: `${wedding.brideName} & ${wedding.groomName}`,
+      place: [wedding.city, wedding.state].filter(Boolean).join(', '),
+      slug: wedding.slug,
       active: wedding.status === 'active',
     };
   }
