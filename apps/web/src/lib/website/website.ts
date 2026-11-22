@@ -22,3 +22,22 @@ export async function getWebsite(weddingId: string): Promise<WebsiteResult> {
     return { kind: 'unavailable' };
   }
 }
+
+export type PreviewResult =
+  | { kind: 'ok'; site: components['schemas']['PublicWebsiteDto'] }
+  | { kind: 'not-found' }
+  | { kind: 'unavailable' };
+
+/** The saved draft as guests would see it, for the wedding's members. */
+export async function getWebsitePreview(weddingId: string): Promise<PreviewResult> {
+  try {
+    const api = await serverApi();
+    const { data, response } = await api.GET('/api/v1/weddings/{weddingId}/website/preview', {
+      params: { path: { weddingId } },
+    });
+    if (data) return { kind: 'ok', site: data.data };
+    return response.status === 404 ? { kind: 'not-found' } : { kind: 'unavailable' };
+  } catch {
+    return { kind: 'unavailable' };
+  }
+}

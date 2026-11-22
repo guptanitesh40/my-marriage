@@ -147,7 +147,7 @@ it got. See `docs/decisions/0006-request-tracing.md`.
   automatically. Services read it with `currentRequestId()` for audit events.
 - **Never let a secret reach a log.** The tracer masks values under keys
   containing `password`, `token`, `secret`, `cookie`, `authorization`,
-  `apikey` or `hash`, as well as the email bodies `html` and `text`. It shows
+  `apikey`, `hash`, `signature`, `credential` or `policy`, as well as the email bodies `html` and `text`. It shows
   strings passed on their own only by length. Keep secrets under those key
   names and never interpolate one into a log message, an error message or
   a key with another name. Never log a raw token, session cookie, presigned

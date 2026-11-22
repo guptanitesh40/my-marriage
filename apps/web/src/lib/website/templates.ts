@@ -3,38 +3,41 @@ import type { components } from '@my-marriage/contracts';
 export type TemplateId = components['schemas']['WebsiteDto']['templateId'];
 
 /**
- * The three templates (PRD SITE-02), as the Appearance tab describes them
- * (Stitch "Wedding Website Builder"). Labels follow decision 0017.
+ * The three templates (PRD SITE-02), named and described as the builder's
+ * "Appearance & Styles" tab shows them (Stitch "Wedding Website Builder &
+ * Management").
  */
 export const TEMPLATES: readonly {
   id: TemplateId;
   label: string;
   description: string;
-  /** Colours of the design, for the small swatch: background, ink, accent. */
-  swatch: readonly [string, string, string];
+  /** The dot beside the name. */
+  dot: string;
   tags: readonly string[];
 }[] = [
   {
     id: 'traditional',
-    label: 'Traditional',
-    description: 'Warm ivory, elegant serif type, an arched welcome and fine floral dividers.',
-    swatch: ['#fdf9f0', '#184539', '#b89a70'],
-    tags: ['Warm ivory', 'Gold accents', 'Serif'],
+    label: 'Traditional Serene',
+    description:
+      'Warm ivory canvas, elegant Newsreader typography, classic archway motifs, and subtle floral borders.',
+    dot: 'bg-secondary',
+    tags: ['Warm Ivory', 'Gold Accent', 'Newsreader Serif'],
   },
   {
     id: 'modern',
     label: 'Modern Minimal',
-    description: 'A clean editorial grid, crisp type, high contrast and generous white space.',
-    swatch: ['#ffffff', '#1f2a2e', '#184539'],
-    tags: ['Studio white', 'Deep slate', 'Grid'],
+    description:
+      'Clean architectural grid, crisp Manrope sans typography, high contrast, and generous negative space.',
+    dot: 'bg-outline',
+    tags: ['Studio White', 'Deep Slate', 'Pure Grid'],
   },
   {
     id: 'royal',
-    label: 'Royal / Elegant',
+    label: 'Royal Heritage',
     description:
-      'Deep forest green and charcoal, restrained antique gold and a jali-framed welcome.',
-    swatch: ['#13362d', '#fbf7ee', '#c9a86a'],
-    tags: ['Forest green', 'Antique gold', 'Jali'],
+      'Deep Jaipur forest green accents, regal gold foiled headers, symmetrical jali lattice banners, and majestic tone.',
+    dot: 'bg-primary',
+    tags: ['Forest Tint', 'Jaipur Emerald', 'Antique Gold'],
   },
 ];
 

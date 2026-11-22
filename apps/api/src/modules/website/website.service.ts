@@ -10,8 +10,13 @@ import { isValidSlug, SLUG_MESSAGE } from '../weddings/slug.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
 import { ownersOnly, weddingArchived } from '../weddings/wedding-errors.js';
 import type { PublicWebsiteDto } from './dto/public-website.dto.js';
-import type { PublishWebsiteDto, UpdateWebsiteDto } from './dto/website-input.dto.js';
 import type {
+  CoverUploadRequestDto,
+  PublishWebsiteDto,
+  UpdateWebsiteDto,
+} from './dto/website-input.dto.js';
+import type {
+  CoverUploadDto,
   ReadinessCheckDto,
   SlugAvailabilityDto,
   WebsiteDto,
@@ -19,7 +24,9 @@ import type {
 } from './dto/website.dto.js';
 import { WebsiteConfig, type WebsiteContent } from './schemas/website-config.schema.js';
 import { websiteChanged, websiteNotReady } from './website-errors.js';
-import { DEFAULT_TEMPLATE } from './website-policy.js';
+import { COVER_MAX_BYTES, DEFAULT_TEMPLATE, type WebsiteTemplate } from './website-policy.js';
+import { draftCoverUrl, publicCoverUrl, WebsiteImagesService } from './website-images.service.js';
+import type { StoredObject } from '../../platform/storage/object-storage.js';
 import { contentDto, projectWebsite } from './website-projection.js';
 
 type StoredWedding = Wedding & { _id: Types.ObjectId };
@@ -48,6 +55,7 @@ export class WebsiteService {
     @InjectModel(WebsiteConfig.name) private readonly configs: Model<WebsiteConfig>,
     private readonly access: WeddingAccessService,
     private readonly events: EventsService,
+    private readonly images: WebsiteImagesService,
   ) {}
 
   /** The draft, what is published, and whether it can be published. A new site is an empty draft. */
@@ -105,7 +113,42 @@ export class WebsiteService {
       if (isDuplicateKey(error)) throw websiteChanged();
       throw error;
     }
+    await this.tidyCovers(wedding._id, saved);
     return this.toDto(wedding, role, saved, await this.events.briefs(wedding._id));
+  }
+
+  /**
+   * The website's address when it is published, so invitation and reminder
+   * links can open it (guests answer there with their private link); null
+   * while it is a draft.
+   */
+  async publishedAddress(weddingId: Types.ObjectId): Promise<string | null> {
+    const [config, couple] = await Promise.all([
+      this.configs.exists({ weddingId, published: true }),
+      this.access.coupleOf(weddingId),
+    ]);
+    return config && couple ? couple.slug : null;
+  }
+
+  /**
+   * How a guest's private RSVP page looks: like the published website,
+   * with its design and cover photo. While the website is a draft (never
+   * published, or taken down) guests see the standard RSVP page, so nothing
+   * from an unpublished website reaches them.
+   */
+  async designFor(
+    weddingId: Types.ObjectId,
+    slug: string,
+  ): Promise<{ templateId: WebsiteTemplate; coverUrl?: string }> {
+    const config = await this.configs
+      .findOne({ weddingId, published: true }, { publishedTemplateId: 1, publishedContent: 1 })
+      .lean();
+    if (!config?.publishedTemplateId) return { templateId: DEFAULT_TEMPLATE };
+    const cover = config.publishedContent?.coverAssetId;
+    return {
+      templateId: config.publishedTemplateId,
+      ...(cover ? { coverUrl: publicCoverUrl(slug, cover) } : {}),
+    };
   }
 
   /**
@@ -118,12 +161,14 @@ export class WebsiteService {
       this.configs.findOne({ weddingId: wedding._id }).lean(),
       this.events.briefs(wedding._id),
     ]);
+    const cover = config?.content.coverAssetId;
     return projectWebsite({
       wedding,
       templateId: config?.templateId ?? DEFAULT_TEMPLATE,
       content: config?.content,
       events,
       preview: true,
+      ...(cover ? { coverUrl: draftCoverUrl(wedding._id, cover) } : {}),
     });
   }
 
@@ -190,7 +235,103 @@ export class WebsiteService {
       by: userId.toHexString(),
       version: published?.publishedVersion,
     });
+    await this.tidyCovers(wedding._id, published);
     return this.toDto(wedding, role, published, await this.events.briefs(wedding._id));
+  }
+
+  /**
+   * A form to upload a new cover photo to (decision 0018). The photo
+   * becomes the draft's cover only once it is uploaded and checked.
+   */
+  async requestCoverUpload(
+    user: AuthenticatedUser,
+    weddingId: string,
+    input: CoverUploadRequestDto,
+  ): Promise<CoverUploadDto> {
+    const { wedding, userId } = await this.access.require(user, weddingId);
+    if (wedding.status !== 'active') throw weddingArchived();
+    const { asset, target, expiresAt } = await this.images.createUpload(
+      wedding._id,
+      userId,
+      input.contentType,
+    );
+    return {
+      uploadId: asset._id.toHexString(),
+      url: target.url,
+      fields: target.fields,
+      maxBytes: COVER_MAX_BYTES,
+      expiresAt,
+    };
+  }
+
+  /**
+   * Checks the uploaded photo and makes it the draft's cover, as a draft
+   * edit at `contentVersion`: guests see it once it is published.
+   */
+  async completeCoverUpload(
+    user: AuthenticatedUser,
+    weddingId: string,
+    uploadId: string,
+    input: PublishWebsiteDto,
+  ): Promise<WebsiteDto> {
+    const { wedding, role, userId } = await this.access.require(user, weddingId);
+    if (wedding.status !== 'active') throw weddingArchived();
+    const asset = await this.images.acceptUpload(wedding._id, uploadId);
+
+    let saved: StoredConfig | null;
+    try {
+      saved = await this.connection.transaction(async (session) => {
+        const existing = await this.configs
+          .findOne({ weddingId: wedding._id })
+          .session(session)
+          .lean();
+        const version = existing?.contentVersion ?? 0;
+        if (input.contentVersion !== version) throw websiteChanged();
+        await this.access.raiseWriteFence(wedding._id, session);
+        return this.configs
+          .findOneAndUpdate(
+            { weddingId: wedding._id, contentVersion: version },
+            {
+              $set: {
+                templateId: existing?.templateId ?? DEFAULT_TEMPLATE,
+                content: { ...this.mergeContent(existing?.content, {}), coverAssetId: asset._id },
+                contentVersion: version + 1,
+                updatedBy: userId,
+              },
+              $setOnInsert: { weddingId: wedding._id, published: false },
+            },
+            { upsert: true, returnDocument: 'after', session },
+          )
+          .lean();
+      });
+    } catch (error) {
+      // The photo is checked but unused: the next tidy-up removes it.
+      await this.tidyCovers(
+        wedding._id,
+        await this.configs.findOne({ weddingId: wedding._id }).lean(),
+      );
+      if (isDuplicateKey(error)) throw websiteChanged();
+      throw error;
+    }
+    await this.tidyCovers(wedding._id, saved);
+    return this.toDto(wedding, role, saved, await this.events.briefs(wedding._id));
+  }
+
+  /** A photo of this wedding's website, for its members (the draft's cover). */
+  async image(user: AuthenticatedUser, weddingId: string, imageId: string): Promise<StoredObject> {
+    const { wedding } = await this.access.require(user, weddingId);
+    return this.images.read(wedding._id, imageId);
+  }
+
+  /** Keeps the covers the draft and the published site use; removes the rest. */
+  private async tidyCovers(
+    weddingId: Types.ObjectId,
+    config: Pick<StoredConfig, 'content' | 'publishedContent'> | null,
+  ): Promise<void> {
+    await this.images.tidy(weddingId, [
+      config?.content.coverAssetId,
+      config?.publishedContent?.coverAssetId,
+    ]);
   }
 
   /**
@@ -283,10 +424,14 @@ export class WebsiteService {
     const headline = pick(edit?.headline, saved?.headline);
     const story = pick(edit?.story, saved?.story);
     const faq = edit?.faq ?? saved?.faq ?? [];
+    // Only null (or empty) is accepted: a new cover comes from an upload.
+    const cover =
+      edit?.coverImageId === null || edit?.coverImageId === '' ? undefined : saved?.coverAssetId;
     return {
       ...(headline ? { headline } : {}),
       ...(story ? { story } : {}),
       faq: faq.map((item) => ({ question: item.question, answer: item.answer })),
+      ...(cover ? { coverAssetId: cover } : {}),
     };
   }
 
@@ -301,6 +446,9 @@ export class WebsiteService {
     return {
       templateId: config?.templateId ?? DEFAULT_TEMPLATE,
       content: contentDto(config?.content),
+      ...(config?.content.coverAssetId
+        ? { coverUrl: draftCoverUrl(wedding._id, config.content.coverAssetId) }
+        : {}),
       contentVersion: config?.contentVersion ?? 0,
       status: published ? 'published' : 'draft',
       ...(published && config?.publishedTemplateId

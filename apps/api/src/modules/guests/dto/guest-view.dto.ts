@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { WEBSITE_TEMPLATES, type WebsiteTemplate } from '../../website/website-policy.js';
 import { RsvpDto } from './guest.dto.js';
 
 /**
@@ -24,6 +25,8 @@ export class GuestViewEventDto {
 
   venueAddress?: string;
 
+  dressCode?: string;
+
   /** Cancelled: its RSVP is closed; the last answer is shown. */
   cancelled: boolean;
 
@@ -33,6 +36,12 @@ export class GuestViewEventDto {
 export class GuestViewDto {
   /** "Ananya & Arjun". */
   coupleName: string;
+
+  /** Where the wedding is: "Jaipur, Rajasthan". */
+  place: string;
+
+  /** The wedding website's address, so the website can tell the invitation is its own. */
+  slug: string;
 
   guestName: string;
 
@@ -50,6 +59,16 @@ export class GuestViewDto {
    */
   @ApiProperty({ required: false, enum: ['on', 'off'] })
   reminderEmails?: 'on' | 'off';
+
+  /**
+   * The published wedding website's design, which the RSVP page follows;
+   * the standard (Traditional) page while the website isn't published.
+   */
+  @ApiProperty({ enum: WEBSITE_TEMPLATES })
+  templateId: WebsiteTemplate;
+
+  /** The published website's cover photo, served by the API, when there is one. */
+  coverUrl?: string;
 }
 
 /** The guest's choice about reminder emails. */

@@ -10,6 +10,7 @@ import { WebsiteHttpModule } from './modules/website/website-http.module.js';
 import { NotificationsModule } from './modules/notifications/notifications.module.js';
 import { WeddingsHttpModule } from './modules/weddings/weddings-http.module.js';
 import { IndexCheckModule } from './platform/index-check.js';
+import { StorageHttpModule } from './platform/storage/storage-http.module.js';
 import { PlatformModule } from './platform/platform.module.js';
 
 /** Root module of the HTTP API. Domain modules are added here as they are built. */
@@ -27,6 +28,7 @@ import { PlatformModule } from './platform/platform.module.js';
     ExpensesHttpModule,
     GuestsHttpModule,
     WebsiteHttpModule,
+    StorageHttpModule,
   ],
 })
 export class AppModule {}

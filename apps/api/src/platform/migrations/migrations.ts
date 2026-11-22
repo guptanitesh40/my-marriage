@@ -250,6 +250,17 @@ const websiteIndexes: Migration = {
   },
 };
 
+const fileAssetIndexes: Migration = {
+  id: '0013-file-asset-indexes',
+  description: 'file_assets indexes for uploaded website covers',
+  up: async (db) => {
+    // Schema document §4.22 and decision 0018.
+    const assets = db.collection('file_assets');
+    await assets.createIndex({ weddingId: 1, kind: 1, state: 1 });
+    await assets.createIndex({ state: 1, createdAt: 1 });
+  },
+};
+
 /** Every migration, oldest first. Append here as each collection is introduced. */
 export const MIGRATIONS: readonly Migration[] = [
   identityIndexes,
@@ -264,4 +275,5 @@ export const MIGRATIONS: readonly Migration[] = [
   guestIndexes,
   reminderIndexes,
   websiteIndexes,
+  fileAssetIndexes,
 ];

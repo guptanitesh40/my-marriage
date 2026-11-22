@@ -45,6 +45,8 @@ Thumbs.db
 
 # Emails written by the API during browser tests
 .e2e-mail/
+# Uploaded files kept locally when no S3 bucket is set (development, tests).
+.media/
 
 # graphify: the graph is shared; its local cache is not.
 graphify-out/cache/

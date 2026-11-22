@@ -94,6 +94,12 @@ export function websitePath(weddingId: string): string {
   return `${workspacePath(weddingId)}/website`;
 }
 
+/** The organizers' full-page preview of the website's saved draft, in one design or another. */
+export function websitePreviewPath(weddingId: string, templateId?: string): string {
+  const path = `${websitePath(weddingId)}/preview`;
+  return templateId ? `${path}?${new URLSearchParams({ template: templateId }).toString()}` : path;
+}
+
 /** A published wedding website, public at its address. */
 export function publicSitePath(slug: string): string {
   return `/w/${slug}`;

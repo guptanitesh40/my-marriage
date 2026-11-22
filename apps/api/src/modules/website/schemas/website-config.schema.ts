@@ -16,9 +16,12 @@ export class WebsiteContent {
   headline?: string;
   story?: string;
   faq: WebsiteFaq[];
+  /** The cover photo, a `file_assets` record; never a raw storage key or URL. */
+  coverAssetId?: Types.ObjectId;
 }
 
 const contentShape = {
+  coverAssetId: { type: Types.ObjectId },
   headline: { type: String },
   story: { type: String },
   faq: {

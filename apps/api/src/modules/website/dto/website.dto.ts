@@ -13,6 +13,27 @@ export class WebsiteContentDto {
   story?: string;
 
   faq: WebsiteFaqDto[];
+
+  /** The cover photo's ID, when there is one. */
+  coverImageId?: string;
+}
+
+/**
+ * Where the browser uploads the cover photo: a form POST of `fields` with
+ * the file last, as `file`, before it expires. Then
+ * `POST …/cover-uploads/{uploadId}/complete`.
+ */
+export class CoverUploadDto {
+  uploadId: string;
+
+  url: string;
+
+  @ApiProperty({ type: 'object', additionalProperties: { type: 'string' } })
+  fields: Record<string, string>;
+
+  maxBytes: number;
+
+  expiresAt: Date;
 }
 
 export const READINESS_KEYS = ['names', 'address', 'ceremonies'] as const;
@@ -42,6 +63,9 @@ export class WebsiteDto {
   templateId: WebsiteTemplate;
 
   content: WebsiteContentDto;
+
+  /** The draft's cover photo, for the wedding's members: `/api/v1/weddings/{id}/website/images/{imageId}`. */
+  coverUrl?: string;
 
   /** Send it back with the next edit or publication. */
   contentVersion: number;

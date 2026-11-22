@@ -32,7 +32,12 @@ export class GuestLinks {
     return sha256(token);
   }
 
-  url(tokenId: Types.ObjectId): string {
-    return `${this.webOrigin}/invitation#t=${this.token(tokenId)}`;
+  /**
+   * The link a guest opens: the published wedding website at `site`, which
+   * shows their RSVP, or the private RSVP page while there is none.
+   */
+  url(tokenId: Types.ObjectId, site: string | null): string {
+    const page = site ? `/w/${encodeURIComponent(site)}` : '/invitation';
+    return `${this.webOrigin}${page}#t=${this.token(tokenId)}`;
   }
 }

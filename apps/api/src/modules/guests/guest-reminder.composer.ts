@@ -10,6 +10,7 @@ import type {
 } from '../notifications/email-composer.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
 import { guestReminderMessage, type ReminderEvent } from './guest-emails.js';
+import { WebsiteService } from '../website/website.service.js';
 import { GuestLinks } from './guest-links.js';
 import { isUpcoming } from './reminder-schedule.js';
 import { EventInvitation } from './schemas/event-invitation.schema.js';
@@ -40,6 +41,7 @@ export class GuestReminderComposer implements EmailComposer {
     private readonly access: WeddingAccessService,
     private readonly events: EventsService,
     private readonly links: GuestLinks,
+    private readonly website: WebsiteService,
   ) {}
 
   async compose(email: EmailToCompose): Promise<ComposedEmail | null> {
@@ -102,7 +104,7 @@ export class GuestReminderComposer implements EmailComposer {
       guestName: guest.name,
       partySize: guest.partySize,
       items,
-      link: this.links.url(link._id),
+      link: this.links.url(link._id, await this.website.publishedAddress(guest.weddingId)),
       ...(reminder.offsetDays !== undefined ? { daysBefore: reminder.offsetDays } : {}),
       ...(reminder.note ? { note: reminder.note } : {}),
     });

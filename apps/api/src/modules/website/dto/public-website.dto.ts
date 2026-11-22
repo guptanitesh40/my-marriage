@@ -68,6 +68,12 @@ export class PublicWebsiteDto {
 
   headline?: string;
 
+  /**
+   * The cover photo, served by the API: the published one for anyone, the
+   * draft's in an organizer's preview. Never a storage address.
+   */
+  coverUrl?: string;
+
   /** Plain text; blank lines separate paragraphs. */
   story?: string;
 

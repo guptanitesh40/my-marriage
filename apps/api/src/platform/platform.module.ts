@@ -7,6 +7,7 @@ import { BackgroundTasks } from './background-tasks.js';
 import { MigrationRunner } from './migrations/migration-runner.js';
 import { RateLimiter } from './rate-limit.js';
 import { REDIS, redisProviders } from './redis.js';
+import { ObjectStorage, objectStorageProvider } from './storage/object-storage.js';
 
 // Defaults for every schema. A misspelt field must fail loudly: with the
 // Mongoose defaults a typo in a write is silently dropped, and a typo in a
@@ -17,7 +18,8 @@ mongoose.set('strictQuery', 'throw');
 /**
  * Cross-cutting infrastructure shared by the HTTP API, the worker and the
  * migration runner: validated config, the MongoDB connection, the Redis
- * connection, the rate limiter built on it, and background tasks. Domain
+ * connection, the rate limiter built on it, background tasks and file
+ * storage (S3, or a local folder in development). Domain
  * modules must not open their own connections.
  */
 @Global()
@@ -36,7 +38,13 @@ mongoose.set('strictQuery', 'throw');
       }),
     }),
   ],
-  providers: [...redisProviders, MigrationRunner, RateLimiter, BackgroundTasks],
-  exports: [REDIS, MigrationRunner, RateLimiter, BackgroundTasks],
+  providers: [
+    ...redisProviders,
+    MigrationRunner,
+    RateLimiter,
+    BackgroundTasks,
+    objectStorageProvider,
+  ],
+  exports: [REDIS, MigrationRunner, RateLimiter, BackgroundTasks, ObjectStorage],
 })
 export class PlatformModule {}

@@ -6,7 +6,9 @@ import { EventsService } from '../events/events.service.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
 import type { PublicEventListDto, PublicWebsiteDto } from './dto/public-website.dto.js';
 import { WebsiteConfig } from './schemas/website-config.schema.js';
-import { websiteNotFound } from './website-errors.js';
+import { imageNotFound, websiteNotFound } from './website-errors.js';
+import { publicCoverUrl, WebsiteImagesService } from './website-images.service.js';
+import type { StoredObject } from '../../platform/storage/object-storage.js';
 import { projectWebsite, publicEvents } from './website-projection.js';
 
 /**
@@ -23,17 +25,28 @@ export class PublicWebsiteService {
     @InjectModel(WebsiteConfig.name) private readonly configs: Model<WebsiteConfig>,
     private readonly access: WeddingAccessService,
     private readonly eventsService: EventsService,
+    private readonly images: WebsiteImagesService,
   ) {}
 
   async site(slug: string): Promise<PublicWebsiteDto> {
     const { wedding, config } = await this.published(slug);
+    const cover = config.content?.coverAssetId;
     return projectWebsite({
       wedding,
       templateId: config.templateId,
       content: config.content,
       events: await this.eventsService.briefs(wedding._id),
       preview: false,
+      ...(cover ? { coverUrl: publicCoverUrl(wedding.slug, cover) } : {}),
     });
+  }
+
+  /** The published site's cover photo; not found when there is none, or no site. */
+  async cover(slug: string): Promise<StoredObject> {
+    const { wedding, config } = await this.published(slug);
+    const cover = config.content?.coverAssetId;
+    if (!cover) throw imageNotFound();
+    return this.images.read(wedding._id, cover);
   }
 
   async eventList(slug: string): Promise<PublicEventListDto> {

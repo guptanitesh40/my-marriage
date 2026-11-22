@@ -343,6 +343,30 @@ describe('Request tracing (integration)', () => {
     expect(logged).not.toContain(guestCookie.split('=')[1] ?? 'missing');
   });
 
+  it('never logs a photo upload form’s signature, even with full traces', async () => {
+    configureTracing('full');
+    const { cookie } = await signupVerified(app);
+    const wedding = await request(app.getHttpServer())
+      .post('/api/v1/weddings')
+      .set('Cookie', cookie)
+      .send(couple());
+    const weddingId = (wedding.body as { data: { id: string } }).data.id;
+
+    const traces = captureTraces();
+    const form = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/website/cover-uploads`)
+      .set('Cookie', cookie)
+      .send({ contentType: 'image/png', bytes: 100 });
+    expect(form.status).toBe(201);
+    const signature = (form.body as { data: { fields: { signature: string } } }).data.fields
+      .signature;
+    expect(signature.length).toBeGreaterThan(20);
+
+    const logged = traces.join('\n');
+    expect(logged).toContain('WebsiteImagesService.createUpload(');
+    expect(logged).not.toContain(signature);
+  });
+
   it('shows where a failed request stopped, with the error and the response', async () => {
     configureTracing('full');
     const { cookie } = await signupVerified(app);

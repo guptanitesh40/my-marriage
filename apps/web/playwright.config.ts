@@ -45,6 +45,8 @@ export default defineConfig({
         REDIS_URL: process.env.BROWSER_TEST_REDIS_URL ?? 'redis://localhost:6379/2',
         WEB_ORIGIN,
         MAIL_TRANSPORT: 'file',
+        // Uploads stay in a local folder: tests never touch the real S3 bucket.
+        S3_BUCKET: '',
         MAIL_FILE_DIR: MAIL_DIR,
         // The web app's /api forwarding is the one hop in front of the API,
         // so each test's own address (e2e/support/visitor.ts) counts.

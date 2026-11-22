@@ -15,9 +15,12 @@ function reply(status: number, body?: unknown) {
 
 const view: GuestView = {
   coupleName: 'Ananya & Arjun',
+  place: 'Jaipur, Rajasthan',
+  slug: 'ananya-arjun',
   guestName: 'Rajesh Sharma',
   partySize: 5,
   writable: true,
+  templateId: 'traditional',
   events: [
     {
       invitationId: 'h',
@@ -70,16 +73,16 @@ describe('RsvpForm', () => {
     ).toBeTruthy();
 
     fireEvent.click(within(card('Haldi')).getByLabelText('Attending'));
-    expect(within(card('Haldi')).getByText(/5 of 5 people/)).toBeTruthy();
+    expect(within(card('Haldi')).getByText(/5 of 5 confirmed/)).toBeTruthy();
     expect(within(card('Haldi')).getByRole('button', { name: 'One more' })).toHaveProperty(
       'disabled',
       true,
     );
     fireEvent.click(within(card('Haldi')).getByRole('button', { name: 'One fewer' }));
     fireEvent.click(within(card('Haldi')).getByRole('button', { name: 'One fewer' }));
-    expect(within(card('Haldi')).getByText(/3 of 5 people/)).toBeTruthy();
-    fireEvent.click(within(card('Wedding')).getByLabelText('Not attending'));
-    expect(within(card('Wedding')).getByText('No one from your family will attend.')).toBeTruthy();
+    expect(within(card('Haldi')).getByText(/3 of 5 confirmed/)).toBeTruthy();
+    fireEvent.click(within(card('Wedding')).getByLabelText('Decline'));
+    expect(within(card('Wedding')).getByText(/No one from your family will attend\./)).toBeTruthy();
 
     await save();
     expect(
@@ -103,12 +106,12 @@ describe('RsvpForm', () => {
 
     fireEvent.click(within(all).getByLabelText('Attending'));
     fireEvent.click(within(all).getByRole('button', { name: 'One fewer' }));
-    expect(within(all).getByText(/4 of 5 people/)).toBeTruthy();
-    expect(within(card('Haldi')).getByText(/4 of 5 people/)).toBeTruthy();
-    expect(within(card('Wedding')).getByText(/4 of 5 people/)).toBeTruthy();
+    expect(within(all).getByText(/4 of 5 confirmed/)).toBeTruthy();
+    expect(within(card('Haldi')).getByText(/4 of 5 confirmed/)).toBeTruthy();
+    expect(within(card('Wedding')).getByText(/4 of 5 confirmed/)).toBeTruthy();
 
     // One ceremony changed on its own: the card shows the answers now differ.
-    fireEvent.click(within(card('Wedding')).getByLabelText('Maybe'));
+    fireEvent.click(within(card('Wedding')).getByLabelText('Tentative'));
     expect((within(all).getByLabelText('Attending') as HTMLInputElement).checked).toBe(false);
     expect(within(all).getByText(/different for some celebrations/)).toBeTruthy();
 
@@ -126,7 +129,7 @@ describe('RsvpForm', () => {
       reply(409, { error: { code: 'RSVP_VERSION_CONFLICT', message: 'Changed.' } }),
     );
     render(<RsvpForm view={view} when={() => undefined} />);
-    fireEvent.click(within(card('Haldi')).getByLabelText('Maybe'));
+    fireEvent.click(within(card('Haldi')).getByLabelText('Tentative'));
     await save();
     expect(screen.getByRole('alert').textContent).toContain('These responses have changed');
     expect(screen.getByRole('button', { name: 'Refresh' })).toBeTruthy();
@@ -136,12 +139,31 @@ describe('RsvpForm', () => {
     patch.mockRejectedValueOnce(new TypeError('offline'));
     patch.mockResolvedValueOnce(reply(200, { data: { rsvp: { responseVersion: 1 } } }));
     render(<RsvpForm view={view} when={() => undefined} />);
-    fireEvent.click(within(card('Haldi')).getByLabelText('Maybe'));
+    fireEvent.click(within(card('Haldi')).getByLabelText('Tentative'));
     await save();
     expect(screen.getByRole('alert').textContent).toContain('Your choices are still here');
-    expect((within(card('Haldi')).getByLabelText('Maybe') as HTMLInputElement).checked).toBe(true);
+    expect((within(card('Haldi')).getByLabelText('Tentative') as HTMLInputElement).checked).toBe(
+      true,
+    );
     await save();
     expect(screen.getByText(/Your responses have been saved/)).toBeTruthy();
+  });
+
+  it('wears the website’s design without changing the questions', () => {
+    const { unmount } = render(<RsvpForm view={view} when={() => undefined} />);
+    expect(within(card('Haldi')).getByText('Function 1 of 3')).toBeTruthy();
+    expect(within(card('Haldi')).getByText('Awaiting reply')).toBeTruthy();
+    expect(within(card('Reception')).getByText('Cancelled')).toBeTruthy();
+    unmount();
+
+    render(<RsvpForm view={{ ...view, templateId: 'modern' }} when={() => undefined} />);
+    expect(within(card('Haldi')).getByText('01 / Haldi')).toBeTruthy();
+    expect(
+      within(card('Haldi')).getByRole('group', { name: 'Will you attend Haldi?' }),
+    ).toBeTruthy();
+    fireEvent.click(within(card('Haldi')).getByLabelText('Attending'));
+    fireEvent.click(within(card('Haldi')).getByRole('button', { name: 'One fewer' }));
+    expect(within(card('Haldi')).getByText('Rajesh + 3 guests')).toBeTruthy();
   });
 
   it('shows saved answers read-only once RSVPs are closed', () => {

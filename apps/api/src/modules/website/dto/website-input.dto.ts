@@ -7,6 +7,8 @@ import {
   IsInt,
   IsObject,
   IsOptional,
+  IsEmpty,
+  Max,
   IsString,
   Matches,
   MaxLength,
@@ -16,7 +18,14 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { OptionalTextBlockField } from '../../events/dto/fields.js';
-import { WEBSITE_LIMITS, WEBSITE_TEMPLATES, type WebsiteTemplate } from '../website-policy.js';
+import {
+  COVER_MAX_BYTES,
+  COVER_TYPES,
+  WEBSITE_LIMITS,
+  WEBSITE_TEMPLATES,
+  type CoverType,
+  type WebsiteTemplate,
+} from '../website-policy.js';
 
 const lineText = Transform(({ value }: { value: unknown }) =>
   typeof value === 'string' ? value.normalize('NFC').replace(/\s+/g, ' ').trim() : value,
@@ -85,6 +94,18 @@ export class WebsiteContentInputDto {
   @ValidateNested({ each: true })
   @Type(() => WebsiteFaqInputDto)
   faq?: WebsiteFaqInputDto[];
+
+  /** `null` takes the cover photo off; a new one is added by uploading it. */
+  @ApiProperty({
+    required: false,
+    nullable: true,
+    type: String,
+    description: 'Only `null` (or empty).',
+  })
+  @IsOptional()
+  @IsOptional()
+  @IsEmpty({ message: 'Upload a photo to set the cover; send null to remove it.' })
+  coverImageId?: string | null;
 }
 
 /** A draft edit; never changes the public site until it is published. */
@@ -114,4 +135,17 @@ export class PublishWebsiteDto {
   @IsInt({ message: 'Reload the page and try again.' })
   @Min(0, { message: 'Reload the page and try again.' })
   contentVersion: number;
+}
+
+/** Asks for a form to upload the cover photo to (decision 0018). */
+export class CoverUploadRequestDto {
+  @ApiProperty({ enum: COVER_TYPES })
+  @IsIn(COVER_TYPES, { message: 'Choose a JPEG, PNG or WebP photo.' })
+  contentType: CoverType;
+
+  @ApiProperty({ type: 'integer', minimum: 1, maximum: COVER_MAX_BYTES })
+  @IsInt({ message: 'Choose a photo.' })
+  @Min(1, { message: 'Choose a photo.' })
+  @Max(COVER_MAX_BYTES, { message: 'That photo is too large. Choose one under 10 MB.' })
+  bytes: number;
 }

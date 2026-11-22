@@ -496,4 +496,142 @@ describe('Wedding website (integration)', () => {
     expect(cleared.dressCode).toBeUndefined();
     expect(cleared.livestream).toBeUndefined();
   });
+
+  describe('cover photo', () => {
+    // A PNG's signature is all the check reads; the rest stands in for pixels.
+    const png = Buffer.concat([
+      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+      Buffer.alloc(200, 7),
+    ]);
+
+    async function uploadCover(
+      cookie: string,
+      weddingId: string,
+      body: Buffer,
+      type = 'image/png',
+    ) {
+      const site = `/weddings/${weddingId}/website`;
+      const form = await ok<{
+        uploadId: string;
+        url: string;
+        fields: Record<string, string>;
+      }>(
+        send('post', cookie, `${site}/cover-uploads`, { contentType: type, bytes: body.length }),
+        201,
+      );
+      // Without S3_BUCKET the browser posts to the API's local stand-in.
+      expect(form.url).toBe('/api/v1/local-uploads');
+      let req = request(server()).post(form.url);
+      for (const [key, value] of Object.entries(form.fields)) req = req.field(key, value);
+      const uploaded = await req.attach('file', body, { filename: 'cover.png', contentType: type });
+      expect(uploaded.status, JSON.stringify(uploaded.body)).toBe(204);
+      return form;
+    }
+
+    it('uploads, checks and shows a cover; guests see it only once published', async () => {
+      const w = await ownerWithWedding();
+      const form = await uploadCover(w.cookie, w.weddingId, png);
+      const saved = await ok<
+        WebsiteBody & { coverUrl?: string; content: { coverImageId?: string } }
+      >(
+        send('post', w.cookie, `${w.site}/cover-uploads/${form.uploadId}/complete`, {
+          contentVersion: 0,
+        }),
+      );
+      expect(saved.content.coverImageId).toBe(form.uploadId);
+      expect(saved.coverUrl).toBe(`/api/v1${w.site}/images/${form.uploadId}`);
+
+      const image = await request(server())
+        .get(saved.coverUrl ?? '')
+        .set('Cookie', w.cookie);
+      expect(image.status).toBe(200);
+      expect(image.headers['content-type']).toBe('image/png');
+      expect(Buffer.compare(image.body as Buffer, png)).toBe(0);
+
+      // Another wedding's member, and anyone else, gets nothing.
+      const other = await ownerWithWedding();
+      expect(
+        (
+          await request(server())
+            .get(saved.coverUrl ?? '')
+            .set('Cookie', other.cookie)
+        ).status,
+      ).toBe(404);
+      expect((await request(server()).get(saved.coverUrl ?? '')).status).toBe(401);
+      expect((await send('get', undefined, `/public/weddings/${w.slug}/cover`)).status).toBe(404);
+
+      await event(w.cookie, w.weddingId, { title: 'Haldi' });
+      await ok(send('post', w.cookie, `${w.site}/publish`, { contentVersion: 1 }));
+      const pub = await ok<PublicBody & { coverUrl?: string }>(
+        send('get', undefined, `/public/weddings/${w.slug}`),
+      );
+      expect(pub.coverUrl).toBe(`/api/v1/public/weddings/${w.slug}/cover?v=${form.uploadId}`);
+      const shown = await request(server()).get(pub.coverUrl ?? '');
+      expect(shown.status).toBe(200);
+      expect(shown.headers['cache-control']).toBe('public, max-age=300');
+
+      // Taking it off the draft keeps the published one until it is republished.
+      await ok(
+        send('patch', w.cookie, w.site, { content: { coverImageId: null }, contentVersion: 1 }),
+      );
+      expect((await request(server()).get(pub.coverUrl ?? '')).status).toBe(200);
+      await ok(send('post', w.cookie, `${w.site}/publish`, { contentVersion: 2 }));
+      expect((await request(server()).get(pub.coverUrl ?? '')).status).toBe(404);
+    });
+
+    it('refuses a file that isn’t a photo, one too large, and a form that was altered', async () => {
+      const w = await ownerWithWedding();
+      const fake = await uploadCover(
+        w.cookie,
+        w.weddingId,
+        Buffer.from('<html>not a photo</html>'),
+      );
+      expect(
+        await codeOf(
+          send('post', w.cookie, `${w.site}/cover-uploads/${fake.uploadId}/complete`, {
+            contentVersion: 0,
+          }),
+        ),
+      ).toEqual([422, 'UPLOAD_NOT_IMAGE']);
+
+      expect(
+        await codeOf(
+          send('post', w.cookie, `${w.site}/cover-uploads`, {
+            contentType: 'image/png',
+            bytes: 11 * 1024 * 1024,
+          }),
+        ),
+      ).toEqual([400, 'VALIDATION_ERROR']);
+      expect(
+        await codeOf(
+          send('post', w.cookie, `${w.site}/cover-uploads`, {
+            contentType: 'image/svg+xml',
+            bytes: 10,
+          }),
+        ),
+      ).toEqual([400, 'VALIDATION_ERROR']);
+
+      const form = await ok<{ url: string; fields: Record<string, string> }>(
+        send('post', w.cookie, `${w.site}/cover-uploads`, { contentType: 'image/png', bytes: 100 }),
+        201,
+      );
+      let req = request(server()).post(form.url);
+      for (const [key, value] of Object.entries({ ...form.fields, key: 'weddings/elsewhere/x' })) {
+        req = req.field(key, value);
+      }
+      expect((await req.attach('file', png, 'cover.png')).status).toBe(403);
+      expect(
+        await codeOf(
+          send(
+            'post',
+            w.cookie,
+            `${w.site}/cover-uploads/${new Types.ObjectId().toHexString()}/complete`,
+            {
+              contentVersion: 0,
+            },
+          ),
+        ),
+      ).toEqual([422, 'UPLOAD_NOT_FOUND']);
+    });
+  });
 });

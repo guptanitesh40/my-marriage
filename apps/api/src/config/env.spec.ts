@@ -42,6 +42,7 @@ describe('validateEnv', () => {
       NODE_ENV: 'production',
       MAIL_TRANSPORT: 'smtp',
       GUEST_LINK_SECRET: 'a'.repeat(48),
+      S3_BUCKET: 'my-marriage-app',
     };
     const smtp = { SMTP_USER: 'hello@gmail.com', SMTP_PASSWORD: 'x' };
     expect(validateEnv({ ...production, ...smtp }).LOG_TRACE).toBe('errors');
@@ -120,5 +121,22 @@ describe('validateEnv', () => {
       /at least 32 characters/,
     );
     expect(validateEnv(valid).GUEST_LINK_SECRET).toBeUndefined();
+  });
+
+  it('keeps files in S3 in production, and allows a local folder elsewhere', () => {
+    const production = {
+      ...valid,
+      NODE_ENV: 'production',
+      MAIL_TRANSPORT: 'smtp',
+      SMTP_USER: 'hello@gmail.com',
+      SMTP_PASSWORD: 'x',
+      GUEST_LINK_SECRET: 'a'.repeat(48),
+    };
+    expect(() => validateEnv(production)).toThrow(/S3_BUCKET is required/);
+    expect(validateEnv({ ...production, S3_BUCKET: 'my-marriage-app' }).AWS_REGION).toBe(
+      'ap-south-1',
+    );
+    expect(() => validateEnv({ ...valid, S3_BUCKET: 'My Bucket!' })).toThrow(/S3_BUCKET/);
+    expect(validateEnv(valid).S3_BUCKET).toBeUndefined();
   });
 });

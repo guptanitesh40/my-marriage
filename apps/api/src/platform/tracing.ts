@@ -255,6 +255,11 @@ const SECRET_KEY_PARTS = [
   'authorization',
   'apikey',
   'hash',
+  // Upload forms (decision 0018): S3's X-Amz-Signature, X-Amz-Credential
+  // and Policy, and the local form's signature.
+  'signature',
+  'credential',
+  'policy',
 ];
 const SECRET_KEYS = new Set(['html', 'text']);
 
