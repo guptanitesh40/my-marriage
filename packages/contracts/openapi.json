@@ -5109,6 +5109,2133 @@
           "Public website"
         ]
       }
+    },
+    "/api/v1/weddings/{weddingId}/albums": {
+      "get": {
+        "operationId": "AlbumsController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AlbumListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List albums",
+        "tags": [
+          "Albums"
+        ]
+      },
+      "post": {
+        "operationId": "AlbumsController_create",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAlbumDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AlbumDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only. ALBUM_LIMIT: too many albums."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Create custom album",
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/albums/{albumId}": {
+      "patch": {
+        "operationId": "AlbumsController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "albumId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAlbumDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AlbumDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "VALIDATION_ERROR: an event album keeps its ceremony’s name."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to. ALBUM_NOT_FOUND: no such album in it."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Edit album settings",
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/quota": {
+      "get": {
+        "operationId": "AlbumsController_getQuota",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/QuotaDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read current 5 GB photo storage",
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/albums/{albumId}/photos": {
+      "get": {
+        "operationId": "PhotosController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "albumId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PhotoListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or ALBUM_NOT_FOUND."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List all photos for moderation",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/image/{size}": {
+      "get": {
+        "operationId": "PhotosController_image",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "size",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The image."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or PHOTO_NOT_FOUND."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Read a photo’s display copy",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/review": {
+      "get": {
+        "operationId": "PhotosController_queue",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ReviewQueueDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List photos pending review",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/moderation": {
+      "post": {
+        "operationId": "PhotosController_bulk",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkModerationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/BulkModerationResultDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Approve, reject or delete several photos",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/approve": {
+      "post": {
+        "operationId": "PhotosController_approve",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PhotoDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or PHOTO_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Approve photo for public display",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/reject": {
+      "post": {
+        "operationId": "PhotosController_reject",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PhotoDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or PHOTO_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Reject pending photo",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/hide": {
+      "post": {
+        "operationId": "PhotosController_hide",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PhotoDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: only owners, once archived."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or PHOTO_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Hide public photo (owner safety exception after archive)",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/restore": {
+      "post": {
+        "operationId": "PhotosController_restore",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PhotoDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or PHOTO_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Show a hidden photo again",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/{photoId}": {
+      "delete": {
+        "operationId": "PhotosController_remove",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The photo and its files are gone."
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: only owners, once archived."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or PHOTO_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Delete photo",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/media/uploads/initiate": {
+      "post": {
+        "operationId": "UploadsController_initiate",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUploadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UploadDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "ALBUM_NOT_FOUND: not an album of a wedding you belong to."
+          },
+          "409": {
+            "description": "STORAGE_FULL: the 5 GB are used. WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Reserve storage and get a short-lived upload form",
+        "tags": [
+          "Media"
+        ]
+      }
+    },
+    "/api/v1/media/uploads/{uploadId}/complete": {
+      "post": {
+        "operationId": "UploadsController_complete",
+        "parameters": [
+          {
+            "name": "uploadId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UploadDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "UPLOAD_NOT_FOUND"
+          },
+          "409": {
+            "description": "UPLOAD_NOT_RECEIVED: try again once the file is sent."
+          },
+          "410": {
+            "description": "UPLOAD_EXPIRED: start again."
+          },
+          "413": {
+            "description": "UPLOAD_TOO_LARGE"
+          },
+          "422": {
+            "description": "UPLOAD_NOT_IMAGE: not the photo type it said."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Verify the uploaded file and queue processing",
+        "tags": [
+          "Media"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/upload-links": {
+      "get": {
+        "operationId": "UploadLinksController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UploadLinksDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List active upload links",
+        "tags": [
+          "Albums"
+        ]
+      },
+      "post": {
+        "operationId": "UploadLinksController_general",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUploadLinkDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UploadLinkDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Get or rotate the general upload link",
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/albums/{albumId}/upload-links": {
+      "post": {
+        "operationId": "UploadLinksController_forAlbum",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "albumId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUploadLinkDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UploadLinkDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or ALBUM_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Create or rotate an album’s QR/upload link",
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/upload-links/{linkId}/revoke": {
+      "post": {
+        "operationId": "UploadLinksController_revoke",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "linkId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The link no longer works."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or UPLOAD_LINK_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Revoke QR/upload capability",
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/upload-links/email-audiences": {
+      "get": {
+        "operationId": "UploadLinksController_audiences",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PhotoInviteAudienceDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Count guests each email choice would reach",
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/upload-links/email": {
+      "post": {
+        "operationId": "UploadLinksController_email",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailUploadLinkDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/EmailUploadLinkResultDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Email the general upload link to guests",
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/upload-access/exchange": {
+      "post": {
+        "operationId": "UploadAccessController_exchange",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExchangeUploadTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestUploadDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "UPLOAD_LINK_UNAVAILABLE: unknown, revoked or expired."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Exchange QR upload token for scoped upload cookie",
+        "tags": [
+          "Guest uploads"
+        ]
+      }
+    },
+    "/api/v1/upload-access/current": {
+      "get": {
+        "operationId": "UploadAccessController_current",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GuestUploadDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UPLOAD_SESSION_REQUIRED: open the link again."
+          },
+          "410": {
+            "description": "UPLOAD_LINK_UNAVAILABLE"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_upload_session": []
+          }
+        ],
+        "summary": "What the guest upload page shows",
+        "tags": [
+          "Guest uploads"
+        ]
+      }
+    },
+    "/api/v1/upload-access/uploads": {
+      "post": {
+        "operationId": "UploadAccessController_initiate",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUploadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UploadDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UPLOAD_SESSION_REQUIRED"
+          },
+          "409": {
+            "description": "ALBUM_CLOSED, STORAGE_FULL or WEDDING_ARCHIVED."
+          },
+          "410": {
+            "description": "UPLOAD_LINK_UNAVAILABLE"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_upload_session": []
+          }
+        ],
+        "summary": "Reserve storage and get an upload form, as a guest",
+        "tags": [
+          "Guest uploads"
+        ]
+      }
+    },
+    "/api/v1/upload-access/uploads/{uploadId}/complete": {
+      "post": {
+        "operationId": "UploadAccessController_complete",
+        "parameters": [
+          {
+            "name": "uploadId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/UploadDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UPLOAD_SESSION_REQUIRED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_upload_session": []
+          }
+        ],
+        "summary": "Verify a guest’s uploaded file and queue processing",
+        "tags": [
+          "Guest uploads"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/media-exports": {
+      "post": {
+        "operationId": "MediaExportsController_start",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMediaExportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MediaExportDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or ALBUM_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Start photo export job",
+        "tags": [
+          "Photos"
+        ]
+      },
+      "get": {
+        "operationId": "MediaExportsController_list",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MediaExportListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "List recent photo exports",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/media-exports/{exportId}": {
+      "get": {
+        "operationId": "MediaExportsController_get",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "exportId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MediaExportDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or EXPORT_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Get export status and download address",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/media-exports/{exportId}/download": {
+      "get": {
+        "operationId": "MediaExportsController_download",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "exportId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The ZIP."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or EXPORT_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Download a ready export ZIP",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/original": {
+      "get": {
+        "operationId": "MediaExportsController_original",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The original file."
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND or PHOTO_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Download a photo’s original",
+        "tags": [
+          "Photos"
+        ]
+      }
+    },
+    "/api/v1/public/weddings/{slug}/albums": {
+      "get": {
+        "operationId": "PublicGalleryController_albums",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicGalleryDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List publicly visible approved galleries",
+        "tags": [
+          "Public website"
+        ]
+      }
+    },
+    "/api/v1/public/weddings/{slug}/albums/{albumId}/photos": {
+      "get": {
+        "operationId": "PublicGalleryController_photos",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "albumId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicPhotoListDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "ALBUM_NOT_FOUND: no such album on a published site."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Browse approved public photos only",
+        "tags": [
+          "Public website"
+        ]
+      }
+    },
+    "/api/v1/public/weddings/{slug}/photos/{photoId}/{size}": {
+      "get": {
+        "operationId": "PublicGalleryController_image",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "size",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The image."
+          },
+          "404": {
+            "description": "PHOTO_NOT_FOUND"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Read an approved photo",
+        "tags": [
+          "Public website"
+        ]
+      }
     }
   },
   "info": {
@@ -8594,6 +10721,822 @@
         },
         "required": [
           "events"
+        ]
+      },
+      "AlbumEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "`YYYY-MM-DD` in the ceremony's time zone."
+          },
+          "startTime": {
+            "type": "string",
+            "description": "`HH:mm` in the ceremony's time zone."
+          },
+          "venueName": {
+            "type": "string"
+          },
+          "cancelled": {
+            "type": "boolean"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "cancelled",
+          "completed"
+        ]
+      },
+      "AlbumCountsDto": {
+        "type": "object",
+        "properties": {
+          "pending": {
+            "type": "number"
+          },
+          "approved": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number",
+            "description": "Every photo not deleted or rejected."
+          }
+        },
+        "required": [
+          "pending",
+          "approved",
+          "total"
+        ]
+      },
+      "AlbumDto": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "event",
+              "general",
+              "custom"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Album ID."
+          },
+          "title": {
+            "type": "string",
+            "description": "For an event album, its ceremony's current name."
+          },
+          "event": {
+            "description": "For an event album only.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AlbumEventDto"
+              }
+            ]
+          },
+          "isUploadEnabled": {
+            "type": "boolean",
+            "description": "Whether guests' upload links for it work."
+          },
+          "counts": {
+            "$ref": "#/components/schemas/AlbumCountsDto"
+          },
+          "coverUrl": {
+            "type": "string",
+            "description": "The newest photo's small copy, for the album's card."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "title",
+          "isUploadEnabled",
+          "counts",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "AlbumListDto": {
+        "type": "object",
+        "properties": {
+          "albums": {
+            "description": "Event albums in the Events page's order, then the general album, then the couple's own.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlbumDto"
+            }
+          }
+        },
+        "required": [
+          "albums"
+        ]
+      },
+      "CreateAlbumDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "example": "Pre-Wedding Shoot"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "UpdateAlbumDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Not for an event album, which takes its ceremony's name.",
+            "minLength": 1,
+            "maxLength": 80,
+            "example": "Pre-Wedding Shoot"
+          },
+          "isUploadEnabled": {
+            "type": "boolean",
+            "description": "Pauses or resumes guests' upload links for this album."
+          }
+        }
+      },
+      "QuotaDto": {
+        "type": "object",
+        "properties": {
+          "limitBytes": {
+            "type": "number",
+            "description": "5,000,000,000: decimal 5 GB."
+          },
+          "usedBytes": {
+            "type": "number",
+            "description": "Photos kept: originals and their display copies."
+          },
+          "reservedBytes": {
+            "type": "number",
+            "description": "Set aside for uploads in progress."
+          }
+        },
+        "required": [
+          "limitBytes",
+          "usedBytes",
+          "reservedBytes"
+        ]
+      },
+      "PhotoDto": {
+        "type": "object",
+        "properties": {
+          "moderation": {
+            "enum": [
+              "pending",
+              "approved",
+              "rejected",
+              "hidden",
+              "deleted"
+            ],
+            "type": "string"
+          },
+          "source": {
+            "enum": [
+              "organizer",
+              "link"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Photo ID."
+          },
+          "albumId": {
+            "type": "string"
+          },
+          "uploaderName": {
+            "type": "string",
+            "description": "A guest's name, when given."
+          },
+          "uploadedByName": {
+            "type": "string",
+            "description": "The member who uploaded it."
+          },
+          "originalName": {
+            "type": "string"
+          },
+          "width": {
+            "type": "number",
+            "description": "Upright size, in pixels."
+          },
+          "height": {
+            "type": "number"
+          },
+          "bytes": {
+            "type": "number",
+            "description": "The original's size."
+          },
+          "thumbUrl": {
+            "type": "string",
+            "description": "Small copy for grids, from the API."
+          },
+          "displayUrl": {
+            "type": "string",
+            "description": "Large copy for viewing, from the API."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "moderation",
+          "source",
+          "id",
+          "albumId",
+          "originalName",
+          "width",
+          "height",
+          "bytes",
+          "thumbUrl",
+          "displayUrl",
+          "createdAt"
+        ]
+      },
+      "PhotoListDto": {
+        "type": "object",
+        "properties": {
+          "photos": {
+            "description": "Newest first.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhotoDto"
+            }
+          },
+          "processing": {
+            "type": "number",
+            "description": "Uploads received and still being checked; they appear here when done."
+          },
+          "truncated": {
+            "type": "boolean",
+            "description": "True when the album has more photos than the list returns."
+          }
+        },
+        "required": [
+          "photos",
+          "processing",
+          "truncated"
+        ]
+      },
+      "ReviewQueueDto": {
+        "type": "object",
+        "properties": {
+          "photos": {
+            "description": "Oldest first, so the earliest uploads are reviewed first.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhotoDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "All photos waiting, which may be more than listed."
+          },
+          "processing": {
+            "type": "number",
+            "description": "Uploads received and still being checked; they join the queue when done."
+          }
+        },
+        "required": [
+          "photos",
+          "total",
+          "processing"
+        ]
+      },
+      "BulkModerationResultDto": {
+        "type": "object",
+        "properties": {
+          "changed": {
+            "type": "number",
+            "description": "Photos changed; others were already reviewed or are gone."
+          }
+        },
+        "required": [
+          "changed"
+        ]
+      },
+      "BulkModerationDto": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "enum": [
+              "approve",
+              "reject",
+              "remove"
+            ],
+            "type": "string"
+          },
+          "photoIds": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "action",
+          "photoIds"
+        ]
+      },
+      "UploadFormDto": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fields",
+          "url"
+        ]
+      },
+      "UploadDto": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "enum": [
+              "initiated",
+              "uploaded",
+              "processing",
+              "complete",
+              "failed",
+              "expired"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Upload ID."
+          },
+          "albumId": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The form stops working then."
+          },
+          "upload": {
+            "description": "Only when the upload was just started.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UploadFormDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "state",
+          "id",
+          "albumId",
+          "expiresAt"
+        ]
+      },
+      "CreateUploadDto": {
+        "type": "object",
+        "properties": {
+          "albumId": {
+            "type": "string",
+            "example": "65f000000000000000000401"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "As on the guest's device; shown to the couple only.",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[^\\p{Cc}\\p{Cf}/\\\\]*$",
+            "example": "haldi-01.jpg"
+          },
+          "contentType": {
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/webp"
+            ],
+            "type": "string"
+          },
+          "declaredBytes": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 25000000,
+            "example": 4820000
+          },
+          "uploaderName": {
+            "type": "string",
+            "description": "A guest's name, optional; shown to the couple only.",
+            "maxLength": 60,
+            "pattern": "^[^\\p{Cc}\\p{Cf}]*$",
+            "example": "Priya D."
+          }
+        },
+        "required": [
+          "albumId",
+          "fileName",
+          "contentType",
+          "declaredBytes"
+        ]
+      },
+      "UploadLinkDto": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "enum": [
+              "album",
+              "wedding"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Link ID."
+          },
+          "albumId": {
+            "type": "string",
+            "description": "The album of an album link."
+          },
+          "url": {
+            "type": "string",
+            "description": "The page guests open; scan or share it."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope",
+          "id",
+          "url",
+          "createdAt"
+        ]
+      },
+      "UploadLinksDto": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "description": "The wedding's general link, where guests choose the album.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UploadLinkDto"
+              }
+            ]
+          },
+          "albums": {
+            "description": "Each album's own link, for those that have one.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadLinkDto"
+            }
+          }
+        },
+        "required": [
+          "albums"
+        ]
+      },
+      "CreateUploadLinkDto": {
+        "type": "object",
+        "properties": {
+          "replace": {
+            "type": "boolean",
+            "description": "Revoke the current link and make a new one: the old link and QR code stop working."
+          }
+        }
+      },
+      "PhotoInviteAudienceDto": {
+        "type": "object",
+        "properties": {
+          "all": {
+            "type": "number"
+          },
+          "attending": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "all",
+          "attending"
+        ]
+      },
+      "EmailUploadLinkResultDto": {
+        "type": "object",
+        "properties": {
+          "queued": {
+            "type": "number",
+            "description": "Emails queued."
+          }
+        },
+        "required": [
+          "queued"
+        ]
+      },
+      "EmailUploadLinkDto": {
+        "type": "object",
+        "properties": {
+          "audience": {
+            "description": "Every guest with an email address, or those attending at least one ceremony.",
+            "enum": [
+              "all",
+              "attending"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "audience"
+        ]
+      },
+      "GuestAlbumDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "`YYYY-MM-DD`, for a ceremony's album."
+          },
+          "venueName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
+      },
+      "GuestUploadDto": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "enum": [
+              "album",
+              "wedding"
+            ],
+            "type": "string"
+          },
+          "closedReason": {
+            "enum": [
+              "archived",
+              "paused",
+              "storage_full"
+            ],
+            "type": "string"
+          },
+          "coupleName": {
+            "type": "string",
+            "description": "\"Ananya & Arjun\"."
+          },
+          "album": {
+            "description": "For an album link: its album, open or not.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GuestAlbumDto"
+              }
+            ]
+          },
+          "albums": {
+            "description": "Albums open to uploads now: the link's album, or every open album for a general link.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuestAlbumDto"
+            }
+          },
+          "open": {
+            "type": "boolean",
+            "description": "False when nothing can be uploaded; `closedReason` says why."
+          },
+          "websitePath": {
+            "type": "string",
+            "description": "The published wedding website, if there is one."
+          }
+        },
+        "required": [
+          "scope",
+          "coupleName",
+          "albums",
+          "open"
+        ]
+      },
+      "ExchangeUploadTokenDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "MediaExportDto": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "enum": [
+              "approved",
+              "all"
+            ],
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "queued",
+              "processing",
+              "ready",
+              "failed",
+              "expired"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "Export ID."
+          },
+          "albumId": {
+            "type": "string"
+          },
+          "photoCount": {
+            "type": "number"
+          },
+          "bytes": {
+            "type": "number"
+          },
+          "downloadUrl": {
+            "type": "string",
+            "description": "When ready: the API route that streams the ZIP to the wedding's members."
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the ZIP is removed."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope",
+          "state",
+          "id",
+          "createdAt"
+        ]
+      },
+      "CreateMediaExportDto": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "description": "Approved photos only, or every photo you can see (pending and hidden too).",
+            "enum": [
+              "approved",
+              "all"
+            ],
+            "type": "string"
+          },
+          "albumId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope"
+        ]
+      },
+      "MediaExportListDto": {
+        "type": "object",
+        "properties": {
+          "exports": {
+            "description": "Newest first, at most five.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaExportDto"
+            }
+          }
+        },
+        "required": [
+          "exports"
+        ]
+      },
+      "PublicAlbumDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "`YYYY-MM-DD`, for a ceremony's album."
+          },
+          "photoCount": {
+            "type": "number",
+            "description": "Approved photos in it."
+          },
+          "coverUrl": {
+            "type": "string",
+            "description": "Its newest approved photo, small."
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "photoCount",
+          "coverUrl"
+        ]
+      },
+      "PublicGalleryDto": {
+        "type": "object",
+        "properties": {
+          "albums": {
+            "description": "Albums with at least one approved photo, in the website's order.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicAlbumDto"
+            }
+          }
+        },
+        "required": [
+          "albums"
+        ]
+      },
+      "PublicPhotoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "thumbUrl": {
+            "type": "string"
+          },
+          "displayUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "width",
+          "height",
+          "thumbUrl",
+          "displayUrl"
+        ]
+      },
+      "PublicPhotoListDto": {
+        "type": "object",
+        "properties": {
+          "photos": {
+            "description": "Newest first.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicPhotoDto"
+            }
+          }
+        },
+        "required": [
+          "photos"
         ]
       },
       "FieldErrorDto": {

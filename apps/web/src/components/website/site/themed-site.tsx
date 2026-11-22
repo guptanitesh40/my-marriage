@@ -24,6 +24,7 @@ import {
   sectionsOf,
   type SectionId,
 } from './sections';
+import { SiteGallery, type GalleryAlbum } from './site-gallery';
 import { SiteRsvp } from './site-rsvp';
 import { SITE_SKINS, type SiteSkin } from './site-skins';
 
@@ -32,6 +33,7 @@ type Theme = Site['templateId'];
 const NAV_LABELS: Record<SectionId, string> = {
   story: 'Our Story',
   celebrations: 'Celebrations',
+  gallery: 'Gallery',
   rsvp: 'RSVP',
   faq: 'FAQ',
 };
@@ -779,10 +781,18 @@ function Celebration({
  * with the couple's photo, quick facts, the story beside the days at a
  * glance, ceremony cards two to a row, the RSVP and the questions.
  */
-export function ThemedSite({ site }: { site: Site }) {
+export function ThemedSite({
+  site,
+  gallery = [],
+}: {
+  site: Site;
+  /** Albums with approved photos; only the published website has them. */
+  gallery?: readonly GalleryAlbum[];
+}) {
   const theme = site.templateId;
   const skin = SITE_SKINS[theme];
-  const sections = sectionsOf(site);
+  const sections = sectionsOf(site, gallery.length > 0);
+  const photoCount = gallery.reduce((sum, album) => sum + album.photoCount, 0);
   const count = celebrationCount(site.events);
   const wide = fullRows(site.events);
   return (
@@ -836,6 +846,23 @@ export function ThemedSite({ site }: { site: Site }) {
             </ol>
           )}
         </section>
+
+        {gallery.length > 0 && (
+          <section
+            id={SECTION_ANCHORS.gallery}
+            aria-labelledby="site-gallery"
+            className="scroll-mt-24"
+          >
+            <SectionTitle
+              skin={skin}
+              overline="Moments shared by family & friends"
+              title="Gallery"
+              id="site-gallery"
+              aside={photoCount === 1 ? '1 photo' : `${photoCount} photos`}
+            />
+            <SiteGallery slug={site.slug} albums={gallery} skin={skin} />
+          </section>
+        )}
 
         <section
           id={SECTION_ANCHORS.rsvp}

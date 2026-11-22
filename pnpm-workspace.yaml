@@ -27,6 +27,9 @@ allowBuilds:
   # Optional native speed-up for msgpackr (pulled in by bullmq); its pure
   # JavaScript fallback is used instead, so no native build is needed.
   'msgpackr-extract': false
+  # Its script only checks for the prebuilt libvips binary, which pnpm
+  # installs as an @img/sharp-* optional dependency; nothing is compiled.
+  sharp: false
 
 # Peer ranges that lag behind releases we have verified to work (lint and
 # contract generation both run in CI). Remove each entry once upstream

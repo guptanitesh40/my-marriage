@@ -61,8 +61,9 @@ describe('WorkspaceShell', () => {
       ['Expenses & Budget', '/weddings/6740a1b2c3d4e5f601234567/expenses'],
       ['Vendors', '/weddings/6740a1b2c3d4e5f601234567/vendors'],
       ['Wedding Website', '/weddings/6740a1b2c3d4e5f601234567/website'],
+      ['Photos & QR Drive', '/weddings/6740a1b2c3d4e5f601234567/photos'],
     ]);
-    for (const section of ['Photos & QR Drive', 'Settings']) {
+    for (const section of ['Settings']) {
       const item = within(nav).getByText(section).closest('li');
       expect(item?.textContent).toContain('Soon');
       expect(item?.querySelector('a')).toBeNull();

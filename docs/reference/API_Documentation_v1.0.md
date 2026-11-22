@@ -18,7 +18,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 
 - Organizer: `mm_session` HttpOnly cookie, first-party NestJS auth.
 - Guest: `mm_guest_session`, scoped to one private invitation contact.
-- Upload: `mm_upload_session`, scoped to one album.
+- Upload: `mm_upload_session`, scoped to one upload link: one album, or a wedding's open albums for its general link (decision 0019).
 - Public API: only published allowlisted wedding fields and approved photos.
 
 ## 4. Endpoint catalog
@@ -174,6 +174,7 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | GET | `/public/weddings/{slug}/events` | List published event information | Public |
 | GET | `/public/weddings/{slug}/albums` | List publicly visible approved galleries | Public |
 | GET | `/public/weddings/{slug}/albums/{albumId}/photos` | Browse approved public photos only | Public |
+| GET | `/public/weddings/{slug}/photos/{photoId}/{size}` | Stream an approved photo while published (decision 0019) | Public |
 
 ### Albums
 
@@ -183,7 +184,11 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | POST | `/weddings/{weddingId}/albums` | Create custom/general or event album | Organizer |
 | PATCH | `/weddings/{weddingId}/albums/{albumId}` | Edit album settings | Organizer |
 | POST | `/weddings/{weddingId}/albums/{albumId}/upload-links` | Create new QR/upload capability link | Organizer |
-| POST | `/weddings/{weddingId}/albums/{albumId}/upload-links/{capabilityId}/revoke` | Revoke QR/upload capability | Organizer |
+| POST | `/weddings/{weddingId}/upload-links/{capabilityId}/revoke` | Revoke QR/upload capability, album or general (decision 0019) | Organizer |
+| GET | `/weddings/{weddingId}/upload-links` | Active upload links, with their URLs (decision 0019) | Organizer |
+| POST | `/weddings/{weddingId}/upload-links` | Get or rotate the general upload link (decision 0019) | Organizer |
+| GET | `/weddings/{weddingId}/upload-links/email-audiences` | Guests each email choice would reach (decision 0019) | Organizer |
+| POST | `/weddings/{weddingId}/upload-links/email` | Email the general link to all or attending guests (decision 0019) | Organizer |
 | GET | `/weddings/{weddingId}/albums/{albumId}/photos` | List all photos for moderation | Organizer |
 
 ### Media
@@ -191,15 +196,22 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | Method | Endpoint | Purpose | Access |
 |---|---|---|---|
 | POST | `/upload-access/exchange` | Exchange QR upload token for scoped upload cookie | Public |
-| POST | `/media/uploads/initiate` | Reserve quota and issue short-lived presigned S3 request | Organizer / QR |
-| POST | `/media/uploads/{uploadIntentId}/complete` | Verify S3 object and enqueue processing | Organizer / QR |
+| GET | `/upload-access/current` | What the guest upload page shows (decision 0019) | QR |
+| POST | `/upload-access/uploads`, `/upload-access/uploads/{uploadIntentId}/complete` | A guest's uploads, as `/media/uploads/*` (decision 0019) | QR |
+| POST | `/media/uploads/initiate` | Reserve quota and issue a short-lived presigned S3 POST form | Organizer |
+| POST | `/media/uploads/{uploadIntentId}/complete` | Verify S3 object and enqueue processing | Organizer |
+| GET | `/weddings/{weddingId}/photos/review` | Photos pending review across albums (decision 0019) | Organizer |
+| POST | `/weddings/{weddingId}/photos/moderation` | Approve, reject or delete up to 100 photos (decision 0019) | Organizer |
+| POST | `/weddings/{weddingId}/photos/{photoId}/restore` | Show a hidden photo again (decision 0019) | Organizer |
+| GET | `/weddings/{weddingId}/photos/{photoId}/image/{size}`, `/original` | Stream a photo's copy or original (decision 0019) | Organizer |
 | GET | `/weddings/{weddingId}/photos/{photoId}` | Read private photo metadata | Organizer |
 | POST | `/weddings/{weddingId}/photos/{photoId}/approve` | Approve photo for eventual public publication | Organizer |
 | POST | `/weddings/{weddingId}/photos/{photoId}/reject` | Reject pending photo | Organizer |
 | POST | `/weddings/{weddingId}/photos/{photoId}/hide` | Hide public photo (owner safety exception after archive) | Organizer |
 | DELETE | `/weddings/{weddingId}/photos/{photoId}` | Request protected photo deletion | Organizer |
 | POST | `/weddings/{weddingId}/media-exports` | Start photo export job | Organizer |
-| GET | `/weddings/{weddingId}/media-exports/{exportId}` | Get export status and signed download URL | Organizer |
+| GET | `/weddings/{weddingId}/media-exports/{exportId}` | Get export status and download address | Organizer |
+| GET | `/weddings/{weddingId}/media-exports/{exportId}/download` | Stream a ready ZIP (decision 0019) | Organizer |
 | POST | `/weddings/{weddingId}/file-assets/uploads/initiate` | Create protected file upload for cover, receipt or profile | Organizer |
 | POST | `/weddings/{weddingId}/file-assets/uploads/{uploadIntentId}/complete` | Complete protected asset upload | Organizer |
 

@@ -13,6 +13,7 @@ export const NOTIFICATION_KINDS = [
   'member_invite',
   'guest_invite',
   'guest_reminder',
+  'photo_upload_invite',
 ] as const;
 export type NotificationKind = (typeof NOTIFICATION_KINDS)[number];
 

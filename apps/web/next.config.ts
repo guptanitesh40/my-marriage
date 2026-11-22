@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
       { source: '/:path*', headers: securityHeaders },
       // Pages opened from emailed links. The secret is in the URL fragment,
       // which browsers never send, but send no referrer from them at all.
-      ...['/verify-email', '/reset-password', '/invitations/accept'].map((source) => ({
+      ...['/verify-email', '/reset-password', '/invitations/accept', '/u'].map((source) => ({
         source,
         headers: [{ key: 'Referrer-Policy', value: 'no-referrer' }],
       })),

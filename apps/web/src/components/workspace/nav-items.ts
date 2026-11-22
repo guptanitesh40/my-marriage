@@ -3,6 +3,7 @@ import {
   eventsPath,
   expensesPath,
   guestsPath,
+  photosPath,
   tasksPath,
   vendorsPath,
   websitePath,
@@ -35,7 +36,7 @@ export const WORKSPACE_NAV: readonly NavItem[] = [
   },
   { label: 'Vendors', icon: 'storefront', href: (weddingId) => vendorsPath(weddingId) },
   { label: 'Wedding Website', icon: 'language', href: websitePath },
-  { label: 'Photos & QR Drive', icon: 'photo-library' },
+  { label: 'Photos & QR Drive', icon: 'photo-library', href: (weddingId) => photosPath(weddingId) },
   { label: 'Team & Family', icon: 'supervisor-account' },
   { label: 'Settings', icon: 'settings' },
 ];

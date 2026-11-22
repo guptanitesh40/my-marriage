@@ -132,4 +132,109 @@ export class WeddingAccessService {
     );
     if (fenced.matchedCount === 0) throw weddingArchived();
   }
+
+  /**
+   * Sets aside `bytes` of the wedding's photo storage for an upload, in the
+   * caller's transaction, and raises the write fence (schema document
+   * §6.6). One conditional update, so uploads at the same time can never
+   * together pass the limit. False when the storage would overflow; 409
+   * WEDDING_ARCHIVED when the wedding is no longer active.
+   */
+  async reserveStorage(
+    weddingId: Types.ObjectId,
+    bytes: number,
+    session: ClientSession,
+  ): Promise<boolean> {
+    const reserved = await this.weddings.updateOne(
+      {
+        _id: weddingId,
+        status: 'active',
+        $expr: {
+          $lte: [
+            { $add: ['$quota.usedBytes', '$quota.reservedBytes', bytes] },
+            '$quota.limitBytes',
+          ],
+        },
+      },
+      { $inc: { 'quota.reservedBytes': bytes, writeFenceVersion: 1 } },
+      { session },
+    );
+    if (reserved.matchedCount === 1) return true;
+    await this.raiseWriteFence(weddingId, session);
+    return false;
+  }
+
+  /**
+   * Turns an upload's reservation into the bytes it really keeps, which may
+   * be more or less. False, changing nothing, when the extra would pass the
+   * limit. Not fenced: the upload was accepted while the wedding was active.
+   */
+  async settleStorage(
+    weddingId: Types.ObjectId,
+    reservedBytes: number,
+    keptBytes: number,
+    session: ClientSession,
+  ): Promise<boolean> {
+    const settled = await this.weddings.updateOne(
+      {
+        _id: weddingId,
+        'quota.reservedBytes': { $gte: reservedBytes },
+        $expr: {
+          $lte: [
+            {
+              $add: [
+                '$quota.usedBytes',
+                { $subtract: ['$quota.reservedBytes', reservedBytes] },
+                keptBytes,
+              ],
+            },
+            '$quota.limitBytes',
+          ],
+        },
+      },
+      { $inc: { 'quota.reservedBytes': -reservedBytes, 'quota.usedBytes': keptBytes } },
+      { session },
+    );
+    return settled.matchedCount === 1;
+  }
+
+  /** Frees the space of photos whose files were removed. */
+  async freeStorage(
+    weddingId: Types.ObjectId,
+    bytes: number,
+    session: ClientSession,
+  ): Promise<void> {
+    await this.weddings.updateOne(
+      { _id: weddingId },
+      [
+        {
+          $set: {
+            'quota.usedBytes': { $max: [0, { $subtract: ['$quota.usedBytes', bytes] }] },
+          },
+        },
+      ],
+      { session, updatePipeline: true },
+    );
+  }
+
+  /** Photo storage not yet used or set aside, in bytes; 0 when full. */
+  async storageLeft(weddingId: Types.ObjectId): Promise<number> {
+    const wedding = await this.weddings.findById(weddingId, { quota: 1 }).lean();
+    if (!wedding) return 0;
+    const { limitBytes, usedBytes, reservedBytes } = wedding.quota;
+    return Math.max(0, limitBytes - usedBytes - reservedBytes);
+  }
+
+  /** Gives back an upload's reservation; the caller makes sure it happens once. */
+  async releaseStorage(
+    weddingId: Types.ObjectId,
+    reservedBytes: number,
+    session: ClientSession,
+  ): Promise<void> {
+    await this.weddings.updateOne(
+      { _id: weddingId, 'quota.reservedBytes': { $gte: reservedBytes } },
+      { $inc: { 'quota.reservedBytes': -reservedBytes } },
+      { session },
+    );
+  }
 }

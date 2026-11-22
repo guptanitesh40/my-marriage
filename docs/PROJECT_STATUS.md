@@ -7,25 +7,55 @@ belong in `docs/decisions/`; requirements stay in `docs/reference/`.
 
 ## Where things stand
 
-| Area                  | State                                                       |
-| --------------------- | ----------------------------------------------------------- |
-| Repository foundation | Done                                                        |
-| Public homepage       | Done (privacy and terms are drafts, pending legal review)   |
-| Authentication        | Done (profile editing and session management not started)   |
-| Wedding management    | Onboarding steps 1–2 done; ceremony step waits for events   |
-| Wedding workspace     | Shell started (M4.1a); switcher and overview next           |
-| Events                | Listing, adding, editing and deleting ceremonies (M5.1)     |
-| Tasks                 | List, filters, add, edit, quick completion (M6)             |
-| Vendors               | Directory, filters, add, details, edit, delete (M7)         |
-| Expenses              | Ledger, payments, discounts/extras, reversals, delete (M8)  |
-| Guests & RSVP         | Guest list, private links, RSVP, CSV, reminders (M9)        |
-| Wedding website       | Builder, three designs, preview, publish, public `/w/` page |
-| Photos                | Website cover photo (0018); gallery not started             |
+| Area                  | State                                                        |
+| --------------------- | ------------------------------------------------------------ |
+| Repository foundation | Done                                                         |
+| Public homepage       | Done (privacy and terms are drafts, pending legal review)    |
+| Authentication        | Done (profile editing and session management not started)    |
+| Wedding management    | Onboarding steps 1–2 done; ceremony step waits for events    |
+| Wedding workspace     | Shell started (M4.1a); switcher and overview next            |
+| Events                | Listing, adding, editing and deleting ceremonies (M5.1)      |
+| Tasks                 | List, filters, add, edit, quick completion (M6)              |
+| Vendors               | Directory, filters, add, details, edit, delete (M7)          |
+| Expenses              | Ledger, payments, discounts/extras, reversals, delete (M8)   |
+| Guests & RSVP         | Guest list, private links, RSVP, CSV, reminders (M9)         |
+| Wedding website       | Builder, three designs, preview, publish, public `/w/` page  |
+| Photos                | Albums, uploads, guest QR links, review, gallery, ZIPs (M11) |
 
 Open questions waiting on the owner are listed in
 [0002 — Foundation for Phase 1](decisions/0002-phase-1-foundation.md#still-open--needs-the-owner).
 
 ## Log
+
+### Photos, guest uploads and gallery (M11) — 2026-11-22
+
+Decisions in [0019](decisions/0019-photos.md); designs in
+`docs/design/photos-gallery/`.
+
+- **Photos page** (Stitch "Photos & Albums Workspace"): 5 GB storage,
+  photos waiting for review and the website gallery at a glance; albums
+  with covers, counts and kind filters; every ceremony has an album, plus
+  a General Collection and albums of the couple's own.
+- **Uploads**: several photos at once with progress and retry per photo;
+  space set aside atomically before upload, so the 5 GB limit holds under
+  concurrent uploads; files checked, turned upright and re-encoded without
+  metadata by the worker; originals kept privately; abandoned uploads
+  give their space back.
+- **Guest QR links**: a link and QR code per album and one general link
+  (guests choose the album); copy, download, WhatsApp share, new link,
+  turn off; email the link to all guests or only those attending. The
+  guest page `/u` (Stitch guest upload screens) needs no account.
+- **Review**: guests' uploads start Pending; the couple's and managers'
+  own uploads are approved at once. Approve or reject one by one,
+  selected or all; hide, show again, delete. In an album, select photos (or all) and delete them together. Archived weddings: owners can
+  still hide and delete.
+- **Website gallery**: approved photos only, in all three designs, while
+  published.
+- **Downloads**: a photo's original, or a ZIP of approved or all photos,
+  a folder per album, kept seven days.
+- Still missing: the sidebar storage meter, CloudFront for public images,
+  and the AWS production settings (CORS origin, `exports/` expiry rule,
+  least-privilege IAM user).
 
 ### Wedding website: builder, three designs, public page (M10.2–M10.4) — 2026-11-22
 

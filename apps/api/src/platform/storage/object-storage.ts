@@ -1,16 +1,19 @@
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
-import { createReadStream } from 'node:fs';
+import { createReadStream, createWriteStream } from 'node:fs';
 import { mkdir, readFile, rename, rm, stat, writeFile, open } from 'node:fs/promises';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import type { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import {
   CopyObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
   HeadObjectCommand,
+  PutObjectCommand,
   S3Client,
   S3ServiceException,
 } from '@aws-sdk/client-s3';
+import { Upload } from '@aws-sdk/lib-storage';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -50,6 +53,15 @@ export abstract class ObjectStorage {
   abstract start(key: string, bytes: number): Promise<Uint8Array>;
 
   abstract move(from: string, to: string, contentType: string): Promise<void>;
+
+  /** Writes a file the API made itself (a photo's display copies). */
+  abstract put(key: string, data: Uint8Array, contentType: string): Promise<void>;
+
+  /** Writes a stream the API makes (an export ZIP), in parts; returns its size. */
+  abstract putStream(key: string, body: Readable, contentType: string): Promise<number>;
+
+  /** A whole object in memory, or null when there is none. For photos the API checked the size of. */
+  abstract bytes(key: string): Promise<Uint8Array | null>;
 
   abstract delete(key: string): Promise<void>;
 
@@ -118,6 +130,32 @@ export class S3ObjectStorage extends ObjectStorage {
       }),
     );
     await this.delete(from);
+  }
+
+  async put(key: string, data: Uint8Array, contentType: string): Promise<void> {
+    await this.client.send(
+      new PutObjectCommand({ Bucket: this.bucket, Key: key, Body: data, ContentType: contentType }),
+    );
+  }
+
+  async putStream(key: string, body: Readable, contentType: string): Promise<number> {
+    await new Upload({
+      client: this.client,
+      params: { Bucket: this.bucket, Key: key, Body: body, ContentType: contentType },
+    }).done();
+    return (await this.size(key)) ?? 0;
+  }
+
+  async bytes(key: string): Promise<Uint8Array | null> {
+    try {
+      const { Body } = await this.client.send(
+        new GetObjectCommand({ Bucket: this.bucket, Key: key }),
+      );
+      return Body ? await Body.transformToByteArray() : null;
+    } catch (error) {
+      if (notFound(error)) return null;
+      throw error;
+    }
   }
 
   async delete(key: string): Promise<void> {
@@ -240,6 +278,27 @@ export class LocalObjectStorage extends ObjectStorage {
     await mkdir(dirname(target), { recursive: true });
     await rename(this.path(from), target);
     await writeFile(`${target}.type`, contentType);
+  }
+
+  async put(key: string, data: Uint8Array, contentType: string): Promise<void> {
+    await this.write(key, data);
+    await writeFile(`${this.path(key)}.type`, contentType);
+  }
+
+  async putStream(key: string, body: Readable, contentType: string): Promise<number> {
+    const path = this.path(key);
+    await mkdir(dirname(path), { recursive: true });
+    await pipeline(body, createWriteStream(path));
+    await writeFile(`${path}.type`, contentType);
+    return (await stat(path)).size;
+  }
+
+  async bytes(key: string): Promise<Uint8Array | null> {
+    try {
+      return await readFile(this.path(key));
+    } catch {
+      return null;
+    }
   }
 
   async delete(key: string): Promise<void> {

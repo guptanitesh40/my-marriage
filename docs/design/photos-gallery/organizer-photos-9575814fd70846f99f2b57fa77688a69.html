@@ -1,0 +1,962 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-fixed-dim": "#e2c195", "tertiary-container": "#4b5854", "on-primary-fixed": "#002018", "surface-bright": "#fdf9f0", "error": "#ba1a1a", "on-primary-container": "#a5d4c3", "inverse-on-surface": "#f5f0e7", "surface-container-high": "#ece8df", "surface-container-low": "#f7f3ea", "secondary-fixed": "#ffddb0", "primary-container": "#315d50", "tertiary": "#34413d", "surface": "#fdf9f0", "inverse-primary": "#a2d0c0", "surface-container-highest": "#e6e2d9", "on-secondary": "#ffffff", "error-container": "#ffdad6", "on-error": "#ffffff", "tertiary-fixed-dim": "#bcc9c5", "surface-container": "#f2ede4", "surface-variant": "#e6e2d9", "surface-tint": "#3b6759", "on-primary-fixed-variant": "#224e42", "on-tertiary": "#ffffff", "on-error-container": "#93000a", "on-tertiary-fixed": "#121e1b", "inverse-surface": "#32302b", "tertiary-fixed": "#d8e5e1", "primary": "#184539", "background": "#fdf9f0", "on-surface": "#1c1c16", "primary-fixed": "#bdeddb", "secondary": "#735a35", "on-tertiary-container": "#c0cdc9", "primary-fixed-dim": "#a2d0c0", "secondary-container": "#fddaac", "outline-variant": "#c0c8c4", "on-background": "#1c1c16", "on-secondary-fixed": "#281800", "outline": "#717975", "surface-dim": "#dddad1", "on-tertiary-fixed-variant": "#3d4946", "on-secondary-fixed-variant": "#594320", "on-surface-variant": "#404845", "on-primary": "#ffffff", "surface-container-lowest": "#ffffff", "on-secondary-container": "#785e39" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "gutter-mobile": "1rem", "margin-mobile": "1.25rem", "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1.5rem", "margin": "2.5rem", "space-sm": "0.5rem", "space-xl": "2.25rem" }, "fontFamily": { "title-md": [ "Manrope" ], "body-sm": [ "Manrope" ], "body-lg": [ "Manrope" ], "display-lg-mobile": [ "Newsreader" ], "headline-lg": [ "Newsreader" ], "headline-sm": [ "Newsreader" ], "headline-lg-mobile": [ "Newsreader" ], "body-md": [ "Manrope" ], "label-sm": [ "Manrope" ], "label-md": [ "Manrope" ], "title-sm": [ "Manrope" ], "headline-md": [ "Newsreader" ], "display-lg": [ "Newsreader" ] }, "fontSize": { "title-md": [ "1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "body-sm": [ "0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" } ], "body-lg": [ "1.0625rem", { "lineHeight": "1.65rem", "fontWeight": "400" } ], "display-lg-mobile": [ "2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.015em", "fontWeight": "400" } ], "headline-lg": [ "2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "400" } ], "headline-sm": [ "1.25rem", { "lineHeight": "1.75rem", "fontWeight": "500" } ], "headline-lg-mobile": [ "1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "body-md": [ "0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" } ], "label-sm": [ "0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" } ], "label-md": [ "0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" } ], "title-sm": [ "0.9375rem", { "lineHeight": "1.375rem", "fontWeight": "600" } ], "headline-md": [ "1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "display-lg": [ "3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.025em", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col flex-1 overflow-y-auto"><div class="p-space-md border-b-0"><div class="flex items-center gap-space-sm"><img alt="My Marriage Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrAJ2jlrZjK7mDpfROwlo_ERV86i5kfm_7vBWEbUxxSH26IXu4r4Qu-sc6R27MMlACX03yq6De5-sSTjxLbHoh2Ez8e8Xh6D3lsa-jp-ezlVK1H1eodSuQNwR_Md_not5cMKDI4J1CHgZhDFBBZI7nwMYylMGQ3p_rmjQIiomYCzf707zqYfmYOar5PQdd-g_sGqiZmSL79P5ij-9lf56AyKG2wQprEO9w70ffGiAQ57_TwU03OQ0oclEQ"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-tight font-serif">My Marriage</span><span class="font-label-sm text-[10px] tracking-wider uppercase text-outline font-semibold">WORKSPACE</span></div></div><div class="mt-space-sm"><div class="p-2 rounded-lg bg-surface-container flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors"><div class="overflow-hidden"><p class="font-title-sm text-title-sm text-on-surface truncate font-semibold">Ananya &amp; Arjun</p><p class="font-label-sm text-[10px] text-secondary font-medium tracking-wide uppercase truncate">• JAIPUR 2027</p></div><span class="material-symbols-outlined text-[18px] text-outline">unfold_more</span></div></div></div><nav class="flex flex-col gap-0.5 px-space-md py-space-xs font-body-md"><div class="px-2 pt-2 pb-1"><span class="font-label-sm text-[11px] uppercase tracking-wider text-outline font-semibold">WORKSPACE</span></div><a class="flex items-center gap-space-sm px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><span class="material-symbols-outlined text-[20px]">space_dashboard</span><span>Overview</span></a><div class="flex flex-col"><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">calendar_today</span><span>Events</span></div><span class="material-symbols-outlined text-[16px] text-outline">expand_more</span></a><div class="pl-9 pr-2 py-1 space-y-1 text-body-sm"><a class="block py-1 text-on-surface-variant hover:text-primary transition-colors" href="#">Haldi</a><a class="block py-1 text-on-surface-variant hover:text-primary transition-colors" href="#">Mehendi</a><a class="block py-1 text-on-surface-variant hover:text-primary transition-colors" href="#">Sangeet</a><a class="block py-1 text-on-surface-variant hover:text-primary transition-colors" href="#">Wedding</a><a class="block py-1 text-on-surface-variant hover:text-primary transition-colors" href="#">Reception</a></div></div><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">check_circle</span><span>Tasks</span></div><span class="bg-secondary-container text-on-secondary-container px-1.5 py-0.2 rounded-full text-[10px] font-bold">3 due</span></a><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">group</span><span>Guests &amp; RSVP</span></div><span class="bg-surface-container text-on-surface-variant px-1.5 py-0.2 rounded-full text-[10px] font-bold">126</span></a><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">payments</span><span>Expenses &amp; Budget</span></div><span class="text-[11px] font-semibold text-secondary">₹2.1L due</span></a><a class="flex items-center gap-space-sm px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><span class="material-symbols-outlined text-[20px]">storefront</span><span>Vendors</span></a><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">language</span><span>Wedding Website</span></div><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span></a><a class="flex items-center gap-space-sm px-3 py-2 rounded-lg bg-primary text-on-primary font-title-sm transition-colors shadow-sm" href="#"><span class="material-symbols-outlined text-[20px]">photo_camera</span><span>Photos &amp; QR Drive</span></a><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">diversity_3</span><span>Team &amp; Family</span></div><span class="bg-surface-container text-on-surface-variant px-1.5 py-0.2 rounded-full text-[10px] font-bold">6</span></a><a class="flex items-center gap-space-sm px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span>Settings</span></a></nav></div><div class="p-space-md border-t-0 bg-surface-container-low space-y-3"><div class="p-2.5 rounded-lg bg-surface-container-lowest shadow-xs space-y-1.5"><div class="flex items-center justify-between text-[11px] font-label-sm"><span class="text-outline font-semibold uppercase tracking-wider">Cloud Vault</span><span class="text-on-surface font-semibold">1.6 / 5.0 GB</span></div><div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-primary rounded-full" style="width: 32%;"></div></div></div><div class="flex items-center justify-between pt-1"><div class="flex items-center gap-2 overflow-hidden"><div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-label-sm flex-shrink-0">AS</div><div class="truncate"><p class="font-title-sm text-body-sm text-on-surface font-semibold leading-tight truncate">Ananya Sharma</p><p class="font-label-sm text-[11px] text-outline truncate">ananya@mymarriage.in</p></div></div><button class="text-outline hover:text-on-surface p-1" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/90 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 w-full px-space-lg flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"><span class="material-symbols-outlined text-secondary text-[20px]">favorite</span><span class="font-title-sm text-title-sm text-on-surface">Ananya &amp; Arjun — Jaipur 2027</span><span class="material-symbols-outlined text-outline text-[18px]">expand_more</span></div><div class="hidden xl:flex items-center gap-space-xs text-outline"><span class="material-symbols-outlined text-[16px]">schedule</span><span class="font-body-sm text-body-sm">248 Days Remaining</span></div></div><div class="flex-1 max-w-md mx-space-md hidden md:block"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-3 text-outline text-[20px]">search</span><input class="w-full pl-10 pr-space-md py-1.5 bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary shadow-none" placeholder="Search guests, vendors, rituals, assets..." type="text"></div></div><div class="flex items-center gap-space-sm"><button class="hidden sm:flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm hover:bg-primary-container transition-colors shadow-none" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>Quick Action</span></button><button class="w-9 h-9 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-secondary"></span></button><div class="h-6 w-px bg-outline-variant/40 mx-1"></div><div class="flex items-center gap-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden lg:flex flex-col text-left"><span class="font-title-sm text-title-sm text-on-surface leading-none">Pooja Mehra</span><span class="font-label-sm text-label-sm text-outline mt-0.5">Lead Organizer</span></div></div></div></div></header><main class="w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Interactive View Switcher Bar -->
+<aside aria-label="Prototype switcher" class="bg-surface-container-high px-space-lg py-2.5 shadow-sm sticky top-16 z-30 flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+<span class="font-label-sm text-label-sm uppercase text-secondary tracking-wider mr-1 flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[16px] text-secondary">tune</span> View:
+      </span>
+<button class="proto-btn px-3 py-1 rounded-md text-body-sm font-title-sm transition-all bg-primary text-on-primary shadow-sm" id="tab-overview" onclick="switchProtoView('overview')" type="button">
+        Albums Overview
+      </button>
+<button class="proto-btn px-3 py-1 rounded-md text-body-sm font-title-sm transition-all bg-surface-container hover:bg-surface-container-highest text-on-surface-variant flex items-center gap-1.5" id="tab-moderation" onclick="switchProtoView('moderation')" type="button">
+<span>Moderation Queue</span>
+<span class="bg-secondary text-on-secondary px-1.5 py-0.2 rounded-full text-[10px] font-bold">27</span>
+</button>
+<button class="proto-btn px-3 py-1 rounded-md text-body-sm font-title-sm transition-all bg-surface-container hover:bg-surface-container-highest text-on-surface-variant" id="tab-detail" onclick="switchProtoView('detail')" type="button">
+        Album Detail (Mehendi)
+      </button>
+<button class="proto-btn px-3 py-1 rounded-md text-body-sm font-title-sm transition-all bg-surface-container hover:bg-surface-container-highest text-on-surface-variant flex items-center gap-1" id="tab-qr-modal" onclick="switchProtoView('qr-modal')" type="button">
+<span class="material-symbols-outlined text-[15px]">qr_code_2</span> Share QR &amp; Upload Link
+      </button>
+<button class="proto-btn px-3 py-1 rounded-md text-body-sm font-title-sm transition-all bg-surface-container hover:bg-surface-container-highest text-on-surface-variant" id="tab-empty" onclick="switchProtoView('empty')" type="button">
+        Empty State
+      </button>
+<button class="proto-btn px-3 py-1 rounded-md text-body-sm font-title-sm transition-all bg-surface-container hover:bg-surface-container-highest text-error flex items-center gap-1" id="tab-storage" onclick="switchProtoView('storage')" type="button">
+<span class="material-symbols-outlined text-[15px]">warning</span> Storage (92% Used)
+      </button>
+</div>
+<div class="hidden lg:flex items-center gap-2 text-outline text-label-sm font-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+      Live Drive Sync · Studio Engine v4.2
+    </div>
+</aside>
+<div class="px-space-md sm:px-space-lg lg:px-space-xl py-space-lg space-y-space-lg max-w-[1440px] mx-auto w-full">
+<!-- Screen Header & Actions -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="space-y-1 max-w-2xl">
+<p class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px]">photo_library</span>
+          Wedding Media &amp; Guest Contributions · Jaipur 2027
+        </p>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Photos &amp; Albums</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Collect, review, and curate candid memories from every celebration. Guest uploads route through private review before publishing live to the family portal.
+        </p>
+</div>
+<div class="flex items-center flex-wrap gap-2.5">
+<button class="px-3.5 py-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-title-sm text-title-sm shadow-sm flex items-center gap-1.5 transition-colors" onclick="openShareModal('General')" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">qr_code_2</span>
+<span>Invite Photo Uploads</span>
+</button>
+<button class="px-3 py-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant font-title-sm text-title-sm shadow-sm flex items-center gap-1.5 transition-colors" onclick="alert('Export batch created: All approved high-resolution photos will be packaged into a .ZIP drive archive.')" type="button">
+<span class="material-symbols-outlined text-[18px]">cloud_download</span>
+<span class="hidden sm:inline">Export All</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-title-sm shadow-sm flex items-center gap-1.5 transition-colors" onclick="openCreateAlbumModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">add_photo_alternate</span>
+<span>Create Album</span>
+</button>
+</div>
+</header>
+<!-- Storage & Moderation Hero Banner (State A: Standard 32% Storage) -->
+<section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm" id="banner-standard">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-lg divide-y md:divide-y-0 md:divide-x divide-outline-variant/30">
+<!-- Storage Card Left -->
+<div class="md:col-span-5 pr-0 md:pr-space-md space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase text-outline font-semibold tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">cloud</span> Cloud Space Used
+            </span>
+<span class="font-title-sm text-title-sm text-on-surface">1.6 GB / 5.0 GB <span class="text-secondary">(32%)</span></span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 32%;"></div>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>3.4 GB available space remaining</span>
+<button class="text-primary hover:underline font-title-sm text-label-sm" onclick="switchProtoView('storage')" type="button">Upgrade Plan</button>
+</div>
+</div>
+<!-- Moderation Status Middle -->
+<div class="md:col-span-4 pt-space-md md:pt-0 px-0 md:px-space-md space-y-2 flex flex-col justify-center">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-container font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mr-1.5"></span>
+              27 Photos Pending Review
+            </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Guests uploaded candid photos during Haldi &amp; Pheras. Photos stay private until cleared.
+          </p>
+<a class="font-title-sm text-title-sm text-primary hover:text-primary-container inline-flex items-center gap-1 pt-0.5" href="#moderation" onclick="switchProtoView('moderation')">
+<span>Review Pending Queue</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Public Gallery Status Right -->
+<div class="md:col-span-3 pt-space-md md:pt-0 pl-0 md:pl-space-md flex flex-col justify-center space-y-1.5">
+<span class="font-label-sm text-label-sm uppercase text-outline font-semibold tracking-wider flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+            Public Guest Portal
+          </span>
+<p class="font-title-sm text-title-sm text-on-surface">214 Approved Memories Live</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant truncate">
+            Serving at <span class="font-semibold text-secondary">/w/ananya-arjun</span>
+</p>
+<div class="pt-1">
+<a class="text-primary hover:text-on-primary-fixed-variant text-body-sm font-title-sm inline-flex items-center gap-1" href="#" target="_blank">
+<span>Preview Live Site</span>
+<span class="material-symbols-outlined text-[15px]">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Storage Warning Banner (State F: 92% Used - initially hidden unless switched) -->
+<section class="hidden bg-surface-container-lowest rounded-xl p-space-lg shadow-sm border-l-4 border-error" id="banner-warning">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-lg items-center">
+<div class="md:col-span-8 space-y-2">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-error-container text-on-error-container font-semibold">
+<span class="material-symbols-outlined text-[14px] mr-1">warning</span> Storage Quota Alert (92% Full)
+            </span>
+<span class="font-title-sm text-title-sm text-error">4.6 GB of 5.0 GB Allocated</span>
+</div>
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 92%;"></div>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            High-resolution guest uploads from the Sangeet &amp; Wedding ceremonies will soon be throttled. Expand to Studio Concierge Tier (50 GB) with RAW backup support.
+          </p>
+</div>
+<div class="md:col-span-4 flex md:justify-end gap-2">
+<button class="px-3.5 py-2 rounded-lg bg-surface-container text-on-surface font-title-sm text-body-sm" onclick="switchProtoView('overview')" type="button">
+            Dismiss
+          </button>
+<button class="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm shadow-sm flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">upgrade</span> Upgrade to 50 GB
+          </button>
+</div>
+</div>
+</section>
+<!-- VIEW 1: ALBUMS OVERVIEW (DEFAULT) -->
+<main class="space-y-space-md" id="view-overview">
+<!-- Filter & Search Controls Bar -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm sm:p-space-md shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-sm">
+<!-- Subnav pills -->
+<div class="flex items-center gap-1 overflow-x-auto pb-1 lg:pb-0">
+<button class="px-3 py-1.5 rounded-lg text-body-sm font-title-sm bg-primary text-on-primary whitespace-nowrap shadow-sm" type="button">
+            All Albums (6)
+          </button>
+<button class="px-3 py-1.5 rounded-lg text-body-sm font-title-sm text-on-surface-variant hover:bg-surface-container hover:text-on-surface whitespace-nowrap transition-colors" type="button">
+            Event Albums (5)
+          </button>
+<button class="px-3 py-1.5 rounded-lg text-body-sm font-title-sm text-on-surface-variant hover:bg-surface-container hover:text-on-surface whitespace-nowrap transition-colors" type="button">
+            Custom &amp; Pre-Wedding (1)
+          </button>
+<button class="px-3 py-1.5 rounded-lg text-body-sm font-title-sm text-secondary hover:bg-secondary-container/40 whitespace-nowrap transition-colors flex items-center gap-1" onclick="switchProtoView('moderation')" type="button">
+<span>Pending Review</span>
+<span class="bg-secondary text-on-secondary px-1.5 py-0.2 rounded-full text-[11px] font-bold">27</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg text-body-sm font-title-sm text-outline hover:bg-surface-container hover:text-on-surface whitespace-nowrap transition-colors" type="button">
+            Archived
+          </button>
+</div>
+<!-- Search and Sort dropdowns -->
+<div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+<div class="relative flex-1 min-w-[200px]">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 bg-surface-container-low rounded-lg text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary shadow-none" placeholder="Search albums or tags..." type="text">
+</div>
+<select aria-label="Filter ceremonies" class="px-3 py-1.5 bg-surface-container-low rounded-lg text-body-sm font-title-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+<option>All Ceremonies</option>
+<option>Haldi</option>
+<option>Mehendi</option>
+<option>Sangeet</option>
+<option>Wedding</option>
+<option>Reception</option>
+</select>
+<select aria-label="Sort albums" class="px-3 py-1.5 bg-surface-container-low rounded-lg text-body-sm font-title-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary hidden sm:block">
+<option>Sort: Ceremony Date (Asc)</option>
+<option>Sort: Photo Count (Desc)</option>
+<option>Sort: Pending Review</option>
+</select>
+<!-- Grid/List Switch -->
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5">
+<button aria-label="Grid view" class="p-1.5 rounded bg-surface-container-lowest text-primary shadow-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+<button aria-label="List view" class="p-1.5 rounded text-outline hover:text-on-surface" onclick="alert('Displaying in dense chronological table format.')" type="button">
+<span class="material-symbols-outlined text-[18px]">view_list</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ALBUMS GRID (3 Columns Bento Responsive) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- Album 1: Haldi Ceremony -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
+<div class="relative h-48 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Vibrant Indian Haldi ceremony poolside decor at Jaipur palace with marigold floral garlands, brass urlis with floating yellow petals, warm sunlight filtering through ivory drapes, editorial wedding photography style with rich amber and saffron tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcoJmXmsk-xAykDcMQdl0jh6FD7JdPP5dOUMNh0OwSM2uufD8l0zvSMCHG_SagLUU3RRjfBwAeRyiGr5TBhKz2p2zcAaw5YX1hJBGc7sDieIrHa6dODRz3QPPYusD5GV0KX6opHMPCrQlCKEZEnJBB5hl6LmqiNVEG_4M7k7jZcqpozEj13YfgqBRFWLTLb840OUK4xd8wsY1y3Kx_NCc7GG2ipqt6kkwA0GkNs4A">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-surface/90 text-on-surface backdrop-blur-sm">
+                Day 1 · Ritual
+              </span>
+</div>
+<div class="absolute top-3 right-3 flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-secondary text-on-secondary shadow-sm">
+                6 Pending
+              </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 text-on-secondary flex items-end justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-surface-container-highest tracking-wide uppercase">12 Feb 2027 · Poolside Gardens</p>
+<h2 class="font-headline-sm text-headline-sm text-surface-bright font-serif">Haldi Ceremony</h2>
+</div>
+</div>
+</div>
+<div class="p-space-md flex-1 flex flex-col justify-between space-y-space-md">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[17px] text-primary">check_circle</span>
+<span class="font-title-sm font-semibold">34 Approved</span>
+</div>
+<div class="text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+<span>6 pending review</span>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-between border-t-0 bg-surface-container-low -mx-space-md -mb-space-md p-space-sm px-space-md">
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-body-sm font-title-sm text-on-surface flex items-center gap-1 transition-colors" onclick="openShareModal('Haldi Ceremony')" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">qr_code_2</span>
+<span>QR &amp; Link</span>
+</button>
+<button class="px-2.5 py-1 rounded bg-secondary/15 hover:bg-secondary/25 text-body-sm font-title-sm text-secondary flex items-center gap-1 transition-colors" onclick="switchProtoView('moderation')" type="button">
+<span>Review (6)</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+<button class="text-primary hover:text-primary-container font-title-sm text-body-sm flex items-center gap-0.5" onclick="switchProtoView('detail')" type="button">
+<span>View</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Album 2: Mehendi Celebration -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
+<div class="relative h-48 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Intricate Rajasthani henna design on bride's hands surrounded by festive colorful silk bolsters, bougainvillea blossoms and antique wooden arches in a Royal Courtyard setting, soft diffused afternoon light, editorial wedding photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCl8eEDHr_1W-ebVcJYhA2lMTwWGtAke0Xyok-CXq4JAku_pHsP8-VTPZLQ6qcVjgdOBoEK1mkijnDuvHEmTDZ5xRIZWPw5fOpcfPNr3IAmAnz0g0nH7i6H7Lig7GGJztBAC2KyJIceIV-A99MVmBQioA6ID9pdOMPP_BWEvPm2V263IHF2ZHg8TF0QmkKmaNRrymHPvf_NrLnVueCCk_OF8my03kE1Icnyt-kIu64">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-surface/90 text-on-surface backdrop-blur-sm">
+                Day 1 · Celebration
+              </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-primary text-on-primary shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">done_all</span> All Cleared
+              </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 text-on-secondary">
+<p class="font-label-sm text-label-sm text-surface-container-highest tracking-wide uppercase">12 Feb 2027 · Royal Courtyard</p>
+<h2 class="font-headline-sm text-headline-sm text-surface-bright font-serif">Mehendi Celebration</h2>
+</div>
+</div>
+<div class="p-space-md flex-1 flex flex-col justify-between space-y-space-md">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[17px] text-primary">check_circle</span>
+<span class="font-title-sm font-semibold">22 Approved</span>
+</div>
+<div class="text-outline font-body-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>0 pending</span>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-between bg-surface-container-low -mx-space-md -mb-space-md p-space-sm px-space-md">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-body-sm font-title-sm text-on-surface flex items-center gap-1 transition-colors" onclick="openShareModal('Mehendi Celebration')" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">qr_code_2</span>
+<span>QR &amp; Link</span>
+</button>
+<button class="px-3 py-1 rounded bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm flex items-center gap-1 transition-colors" onclick="switchProtoView('detail')" type="button">
+<span>View Album</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Album 3: Sangeet & Musical Night -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
+<div class="relative h-48 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Grand outdoor Sangeet stage lit by warm fairy light canopies and brass lanterns on Haveli lawn, guests in glittering sherwanis and lehengas dancing, atmospheric night wedding photography with rich deep emerald and gold hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtp4Z26Lxlo8N68VuBBECIa6HGNoDq8EDbDD758EQiJWK-fnGtnyvG5P8Bcqono7te45iEsKmJ_osr86twsKA15SyiwyqNJUQ2CeZvvnaaSmpLZYESzWWVIgGHM29kl0cZ2KoYF60pvA3anxh68bNEtvCkTOoQhp833n-MLQyhNbjVdg32K8ozOxEe64jqC0kKdTh2ircoAAf10SCRYDM-P3DYrde2YW2bkNbjHsQ">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-surface/90 text-on-surface backdrop-blur-sm">
+                Day 2 · Evening
+              </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-secondary text-on-secondary shadow-sm">
+                2 Pending
+              </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 text-on-secondary">
+<p class="font-label-sm text-label-sm text-surface-container-highest tracking-wide uppercase">13 Feb 2027 · Haveli Lawn</p>
+<h2 class="font-headline-sm text-headline-sm text-surface-bright font-serif">Sangeet &amp; Musical Night</h2>
+</div>
+</div>
+<div class="p-space-md flex-1 flex flex-col justify-between space-y-space-md">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[17px] text-primary">check_circle</span>
+<span class="font-title-sm font-semibold">58 Approved</span>
+</div>
+<div class="text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+<span>2 pending review</span>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-between bg-surface-container-low -mx-space-md -mb-space-md p-space-sm px-space-md">
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-body-sm font-title-sm text-on-surface flex items-center gap-1 transition-colors" onclick="openShareModal('Sangeet &amp; Musical Night')" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">qr_code_2</span>
+<span>QR &amp; Link</span>
+</button>
+<button class="px-2.5 py-1 rounded bg-secondary/15 hover:bg-secondary/25 text-body-sm font-title-sm text-secondary flex items-center gap-1 transition-colors" onclick="switchProtoView('moderation')" type="button">
+<span>Review (2)</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+<button class="text-primary hover:text-primary-container font-title-sm text-body-sm flex items-center gap-0.5" onclick="switchProtoView('detail')" type="button">
+<span>View</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Album 4: Wedding Ceremony (Pheras) -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
+<div class="relative h-48 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Majestic open-air Indian wedding Mandap with cascading crimson and pastel rose floral pillars, traditional holy fire havan kund, carved sandstone palace cupolas against twilight sky, high-end editorial wedding photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkU8j0KN3v8CtC4xOpYLKmPB97Bd40wljvA3fddDrjsF888B4TI0sDh0tOMBi6LdfCNck0ZawOfdcOcHZR7svHxczc-wQDmxRVcBA8bhIxtmRFfSrABiWPt95NuriOD16gURVMe2B_a2qnB1j3qjtZEws-0vtHWIdpJ_QDPo7vTwkiEZjIJppjvubY-k1drSwmNHRJrUGTDeCULuqnB-qyIhoohVvnkSc3kVs-wOk">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-surface/90 text-on-surface backdrop-blur-sm">
+                Day 3 · Sacred Pheras
+              </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-secondary text-on-secondary shadow-sm">
+                19 Pending
+              </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 text-on-secondary">
+<p class="font-label-sm text-label-sm text-surface-container-highest tracking-wide uppercase">14 Feb 2027 · Mandapam Lawn</p>
+<h2 class="font-headline-sm text-headline-sm text-surface-bright font-serif">Wedding Ceremony (Pheras)</h2>
+</div>
+</div>
+<div class="p-space-md flex-1 flex flex-col justify-between space-y-space-md">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[17px] text-primary">check_circle</span>
+<span class="font-title-sm font-semibold">122 Approved</span>
+</div>
+<div class="text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">priority_high</span>
+<span>19 pending review</span>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-between bg-surface-container-low -mx-space-md -mb-space-md p-space-sm px-space-md">
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-body-sm font-title-sm text-on-surface flex items-center gap-1 transition-colors" onclick="openShareModal('Wedding Ceremony')" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">qr_code_2</span>
+<span>QR &amp; Link</span>
+</button>
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary hover:bg-primary-container text-body-sm font-title-sm flex items-center gap-1 transition-colors" onclick="switchProtoView('moderation')" type="button">
+<span>Review (19)</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+<button class="text-primary hover:text-primary-container font-title-sm text-body-sm flex items-center gap-0.5" onclick="switchProtoView('detail')" type="button">
+<span>View</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Album 5: Gala Reception -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
+<div class="relative h-48 w-full bg-surface-container flex flex-col items-center justify-center text-center p-space-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[26px]">event_upcoming</span>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Upcoming Function</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Scheduled for 15 Feb 2027</p>
+<div class="absolute bottom-3 left-3 right-3 text-left">
+<p class="font-label-sm text-label-sm text-outline tracking-wide uppercase">15 Feb 2027 · Grand Ballroom</p>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-serif">Gala Reception</h2>
+</div>
+</div>
+<div class="p-space-md flex-1 flex flex-col justify-between space-y-space-md">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="text-outline">
+<span>0 approved photos</span>
+</div>
+<span class="px-2 py-0.5 rounded text-label-sm bg-surface-container text-on-surface-variant font-medium">Pre-Launch QR Active</span>
+</div>
+<div class="pt-2 flex items-center justify-between bg-surface-container-low -mx-space-md -mb-space-md p-space-sm px-space-md">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-body-sm font-title-sm text-on-surface flex items-center gap-1 transition-colors" onclick="openShareModal('Gala Reception')" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">qr_code_2</span>
+<span>Get Table Cards</span>
+</button>
+<button class="px-3 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-primary font-title-sm text-body-sm flex items-center gap-1 transition-colors" onclick="alert('Upload staging prompt opened for team photographers.')" type="button">
+<span class="material-symbols-outlined text-[16px]">upload</span>
+<span>Upload Early</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Album 6: Behind the Scenes & Pre-Wedding -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
+<div class="relative h-48 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Candid behind the scenes wedding preparation in Udaipur palace suite, bride laughing with bridesmaids during makeup styling, sepia and warm film tones, intimate documentary style photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADHfHzkP0b5Y5__cd3MuYt_YKMM4Te3-JOI_pQqOww_RIePyP0-wgVd1LsWVEqx8-hVpKKWwQu4i1aK-y4N9kcuZifEE-bmKAWFVjwe3Cdybykw9XnjkMmTDajyQDl8TEdnOgmDY4gV058n9xRAGxk6YLnDcsn10STNiESJCsDNYsLccfsyuh6IqPP_NSBcAM0Q4f3ReD1G9xotAb32JfPnazC3AVpMz79QglyG-E">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-surface/90 text-on-surface backdrop-blur-sm">
+                Studio Archive
+              </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 text-on-secondary">
+<p class="font-label-sm text-label-sm text-surface-container-highest tracking-wide uppercase">General Wedding Collection</p>
+<h2 class="font-headline-sm text-headline-sm text-surface-bright font-serif">Behind the Scenes &amp; Pre-Wedding</h2>
+</div>
+</div>
+<div class="p-space-md flex-1 flex flex-col justify-between space-y-space-md">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[17px] text-primary">check_circle</span>
+<span class="font-title-sm font-semibold">18 Approved</span>
+</div>
+<div class="text-outline font-body-sm">
+<span>Direct Studio Uploads</span>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-between bg-surface-container-low -mx-space-md -mb-space-md p-space-sm px-space-md">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-body-sm font-title-sm text-on-surface flex items-center gap-1 transition-colors" onclick="openShareModal('Behind the Scenes')" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">share</span>
+<span>Share Link</span>
+</button>
+<button class="px-3 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-title-sm text-body-sm flex items-center gap-1 transition-colors" onclick="switchProtoView('detail')" type="button">
+<span>View Album</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- VIEW 2: MODERATION QUEUE (PENDING REVIEWS) -->
+<main class="hidden space-y-space-md" id="view-moderation">
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-secondary text-on-secondary">
+              27 Photos Pending
+            </span>
+<span class="text-outline text-body-sm font-body-sm">from 9 guests across 3 ceremonies</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface mt-1">Guest Contribution Moderation Desk</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Approved photos immediately render in the public web gallery. Rejected photos are silently discarded without notifying uploaders.
+          </p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-error font-title-sm text-body-sm transition-colors" onclick="rejectAll()" type="button">
+            Reject Selected
+          </button>
+<button class="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm shadow-sm flex items-center gap-1.5 transition-colors" onclick="approveAll()" type="button">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Approve All (27)</span>
+</button>
+</div>
+</div>
+<!-- Moderation Filter Toolbar -->
+<div class="flex items-center justify-between text-body-sm font-body-sm px-1">
+<div class="flex items-center gap-2">
+<input class="rounded text-primary focus:ring-primary w-4 h-4" id="select-all-mod" type="checkbox">
+<label class="font-title-sm text-on-surface cursor-pointer" for="select-all-mod">Select All (27 photos)</label>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-outline">Filter by Ceremony:</span>
+<button class="px-2.5 py-1 rounded-md bg-primary text-on-primary font-title-sm text-label-sm" type="button">All (27)</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-title-sm text-label-sm hover:bg-surface-container-high" type="button">Haldi (6)</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-title-sm text-label-sm hover:bg-surface-container-high" type="button">Sangeet (2)</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-title-sm text-label-sm hover:bg-surface-container-high" type="button">Wedding (19)</button>
+</div>
+</div>
+<!-- Moderation Items Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Photo Item 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm flex flex-col group relative">
+<div class="relative h-60 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Candid portrait of smiling groom in golden sherwani with friends celebrating at Jaipur wedding courtyard with marigold petal showers, warm sunlight, natural joy, documentary wedding photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7WPvFfDwAq8ySH3oO_VZfJbfjUGJZQSD8xKvBMEafDGZi-GTxSlJEGTPuonVgD6n4oNWvIjRzYkldh0uJYxHP8KEynIYDaHUpVorjv-UdOI4h6e6khJih3xPmhuhWphgLETwq34p-BWvTxyccxn9LNPDhZpL1wzqnsA7bTToSKwQseyfiLslRnQOLVbp7kprrdGxjSk9Rf6BlXZUhKlHt8zJywOWhd7nYPPjsd9U">
+<div class="absolute top-2 left-2">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary" type="checkbox">
+</div>
+<div class="absolute top-2 right-2">
+<span class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-black/60 text-white backdrop-blur-sm">
+                Haldi Ceremony
+              </span>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+<button class="p-2 rounded-full bg-surface-bright text-on-surface shadow-md hover:scale-105 transition-transform" onclick="alert('Viewing high-res photo modal')" type="button">
+<span class="material-symbols-outlined text-[20px]">zoom_in</span>
+</button>
+</div>
+</div>
+<div class="p-space-sm space-y-2 flex-1 flex flex-col justify-between">
+<div class="space-y-0.5">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="font-title-sm text-on-surface font-semibold truncate">Priya Deshmukh</span>
+<span class="text-outline text-label-sm">18 mins ago</span>
+</div>
+<p class="text-label-sm text-outline font-label-sm">Uploaded via QR link · 4.2 MB (RAW JPEG)</p>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<button class="w-full py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-error font-title-sm text-body-sm flex items-center justify-center gap-1 transition-colors" onclick="this.closest('.group').remove()" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+<span>Reject</span>
+</button>
+<button class="w-full py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm flex items-center justify-center gap-1 transition-colors shadow-xs" onclick="this.closest('.group').remove()" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Approve</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Photo Item 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm flex flex-col group relative">
+<div class="relative h-60 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Artistic close up of Indian bride's hands touching holy wedding garland, intricate gold bangles and diamond rings, red silk attire with golden zardozi embroidery, natural warm light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZl-BEFutVW61EIYJPlb_Jzcvfk7a_lF_YS2oTWJ-xZfJ6STQbXTeRJX5RINLS31Zrrau_N4QAx-ZYW02vb-YwlLEMp67JIvyiczMG9JByoxTx8hpiUl2q8llvaJkOviYq_sBhRpCIHLdUJuYqHuEQ7m2As4UOcfyhDDsG5HvExm0osxIB9MfGCqBxluRGURdV4CvjTMVpyJ8EnFt8A-x86_vXwQYUvTkVPaj-niE">
+<div class="absolute top-2 left-2">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary" type="checkbox">
+</div>
+<div class="absolute top-2 right-2">
+<span class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-black/60 text-white backdrop-blur-sm">
+                Pheras Ceremony
+              </span>
+</div>
+</div>
+<div class="p-space-sm space-y-2 flex-1 flex flex-col justify-between">
+<div class="space-y-0.5">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="font-title-sm text-on-surface font-semibold truncate">Kavita Singhal</span>
+<span class="text-outline text-label-sm">34 mins ago</span>
+</div>
+<p class="text-label-sm text-outline font-label-sm">Uploaded via QR link · 5.8 MB</p>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<button class="w-full py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-error font-title-sm text-body-sm flex items-center justify-center gap-1" onclick="this.closest('.group').remove()" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+<span>Reject</span>
+</button>
+<button class="w-full py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm flex items-center justify-center gap-1" onclick="this.closest('.group').remove()" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Approve</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Photo Item 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm flex flex-col group relative">
+<div class="relative h-60 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Candid photograph of bride and groom laughing together during Sangeet dance performance, stage lights with golden bokeh sparkles, dynamic expressive motion blur, warm festive mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU-F3CBMCCn9d_BMF_333Zw5a3FB0IayEJOb_7myTRgJ1Da8HjLJYfDEGBzCoHx4QC5HcGcqvQaVyUTg1EjU0w24RSNVE64z-Ps2myZE05ToS5y-9OKYthaMVYw1PIp5yhA4H-8yJb5iihXzZGmhshD59t8BB2idYgwJR0Zu_TOe7_XQbDmUt2TXloVuCy2qRj4CY20hn_X-w_MvgBxhHtsahc3zhs4G3bLiZuUX4">
+<div class="absolute top-2 left-2">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary" type="checkbox">
+</div>
+<div class="absolute top-2 right-2">
+<span class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-black/60 text-white backdrop-blur-sm">
+                Sangeet Night
+              </span>
+</div>
+</div>
+<div class="p-space-sm space-y-2 flex-1 flex flex-col justify-between">
+<div class="space-y-0.5">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="font-title-sm text-on-surface font-semibold truncate">Rohan Malhotra</span>
+<span class="text-outline text-label-sm">1 hour ago</span>
+</div>
+<p class="text-label-sm text-outline font-label-sm">Uploaded via Web portal · 3.1 MB</p>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<button class="w-full py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-error font-title-sm text-body-sm flex items-center justify-center gap-1" onclick="this.closest('.group').remove()" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+<span>Reject</span>
+</button>
+<button class="w-full py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm flex items-center justify-center gap-1" onclick="this.closest('.group').remove()" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Approve</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Photo Item 4 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm flex flex-col group relative">
+<div class="relative h-60 w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Traditional Indian wedding rituals with priest pouring ghee into sacred havan fire, glowing embers, brass ceremonial vessels, serene devotional atmosphere in Jaipur mandap." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY-hNVYBaYuu-0v8CU9HpY-VzEuNxeX24TwPtwVWfNt1X5kdgWkEJW1aquJcTYx2NC6tYcnGUZ9Y_3RqtKtOM0DNkge64w2qFqJCGhFNeNsQ7bifCt0AM4OZseWSttbiLWQ_FZNedMsj0UTUTym87eXuw9e8k9YsIdAM3tsJ-iRwovrogBO5a0Cqlswnta9lrajqYEf7ePSytcLgObJph326aIcvB8t9f5X-lLxoY">
+<div class="absolute top-2 left-2">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary" type="checkbox">
+</div>
+<div class="absolute top-2 right-2">
+<span class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-black/60 text-white backdrop-blur-sm">
+                Pheras Ceremony
+              </span>
+</div>
+</div>
+<div class="p-space-sm space-y-2 flex-1 flex flex-col justify-between">
+<div class="space-y-0.5">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="font-title-sm text-on-surface font-semibold truncate">Amitabh Roy</span>
+<span class="text-outline text-label-sm">2 hours ago</span>
+</div>
+<p class="text-label-sm text-outline font-label-sm">Uploaded via QR link · 6.4 MB</p>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<button class="w-full py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-error font-title-sm text-body-sm flex items-center justify-center gap-1" onclick="this.closest('.group').remove()" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+<span>Reject</span>
+</button>
+<button class="w-full py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm flex items-center justify-center gap-1" onclick="this.closest('.group').remove()" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Approve</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- VIEW 3: ALBUM DETAIL (MEHENDI CELEBRATION) -->
+<main class="hidden space-y-space-md" id="view-detail">
+<!-- Breadcrumb Nav -->
+<nav aria-label="Breadcrumbs" class="flex items-center gap-2 text-body-sm font-body-sm">
+<button class="text-primary hover:underline flex items-center gap-1" onclick="switchProtoView('overview')" type="button">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+<span>Back to All Albums</span>
+</button>
+<span class="text-outline">/</span>
+<span class="text-on-surface font-title-sm">Mehendi Celebration</span>
+</nav>
+<!-- Album Detail Header Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-primary-container/20 text-primary">
+              Day 1 Celebration · Royal Courtyard
+            </span>
+<span class="text-outline text-label-sm">Friday, 12 February 2027</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Mehendi Celebration Album</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+            22 approved photos live. Dedicated QR capability link distributed on 18 table cards across the courtyard seating canopies.
+          </p>
+</div>
+<div class="flex items-center gap-2 flex-wrap">
+<button class="px-3.5 py-2 rounded-lg bg-surface-container text-on-surface font-title-sm text-body-sm flex items-center gap-1.5 hover:bg-surface-container-high transition-colors" onclick="openShareModal('Mehendi Celebration')" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">qr_code_2</span>
+<span>Album QR &amp; Direct Link</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg bg-surface-container text-on-surface font-title-sm text-body-sm flex items-center gap-1.5 hover:bg-surface-container-high transition-colors" onclick="alert('Batch download of Mehendi photos starting...')" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Download All (22)</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm shadow-sm flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add Photos</span>
+</button>
+</div>
+</div>
+<!-- Detail Photo Grid -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-space-md">
+<div class="h-64 rounded-xl overflow-hidden shadow-sm relative group bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Close up of artistic mehendi application on bride's palms with organic herbal henna cone, soft morning natural sunlight, pastel floral decor in background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl9WcgIDNmQ31GafcvBJyEBWSr90jfXEueTXG3mI5BzV0cE9YEv7yXnBmxVemKcR3xl0QR5S1vLJBv_sO_p4Ykntv8nNmF8jwBjzeGBugJp3DcJlc6j1Wd613A4ikCavuHwA_q_vmWgOG9tIP5LV52aH9RpdV7j_Z3YEMB2WKWmVkr-moIGpc33bqwPVr8hCXFiSKlGQnoqwLsswQC8DjczgYAo_FizV0O4v5924I">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between p-3 text-white">
+<span class="text-label-sm">Photo #01 · Approved</span>
+<button class="p-1 rounded bg-black/40 hover:bg-black/60" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</div>
+<div class="h-64 rounded-xl overflow-hidden shadow-sm relative group bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Bride surrounded by laughing sisters in colorful printed anarkalis under a marigold yellow canopy at Jaipur palace courtyard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKif6s-6M6nYj2ysRUR1SdDuB6OWpEl6WRxY6qUvZmFAyhowdAeXLdnVLOKv1WXTGczy6T4rU1mf-cTypENXKRx9ZbiKRv-oRKdTMV7VoFD8asoqUfJgogeqsmIKPoRdRUv_DrO64LsUW9DcWupkTAHZnoFi8B8g3js27ksVNmMWqaXfKUsxEQUXEdqB7ClBoLlxCk4WKPThPZK5MdL6tdzGlBacvxjI9006D2qOE">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between p-3 text-white">
+<span class="text-label-sm">Photo #02 · Approved</span>
+<button class="p-1 rounded bg-black/40 hover:bg-black/60" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</div>
+<div class="h-64 rounded-xl overflow-hidden shadow-sm relative group bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Traditional Rajasthani folk singer with dholak performing for wedding guests at Mehendi celebration, vibrant festive scene." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzXBL5IzCmA_JL3CmSj9A0j2e4MNpknsypOhKzHJ52ytlIeq6zZoQDLkGXMlAZ-jJDXyBiMdLqD8iABWY_6_1XaXae7hXcTDt7APYAQIqv3tnigcejh5h6JEydwJDeKqwj9O2toBcgfro-mD3BydtAlI5id_ITcQaDuxklCL67aLCmrsRwLVlFaV_DJ6M9N4UYfnNdJ0bqObEZPqFdLB4wpCbtCwA_qCYufaK3ttA">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between p-3 text-white">
+<span class="text-label-sm">Photo #03 · Approved</span>
+<button class="p-1 rounded bg-black/40 hover:bg-black/60" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</div>
+<div class="h-64 rounded-xl overflow-hidden shadow-sm relative group bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Artistic flatlay of brass trays with fresh green henna cones, marigold flower garlands, and glass bangles on raw silk fabric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiZP7TWdLMG0UN2dTyLGHNN9ClYAi00Dcp3WnqC7YHsraDABuTOSJsWXZTtLCQ4GNDPL2P3jrKUuLpX3OZy1OLzoMZkbRgm_qofcSuArxB3iwklr2k9J16S7-oYZUSZa6s3QcObXFXYmmJuyaVcIPyWblt75TCJufwowntEtagJPBGTZ1nI5C1JfWx_u_tDjx0OUUuxfb-243heXOsBd0kWausK9vBG7LJrQeDqjs">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between p-3 text-white">
+<span class="text-label-sm">Photo #04 · Approved</span>
+<button class="p-1 rounded bg-black/40 hover:bg-black/60" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</div>
+</div>
+</main>
+<!-- VIEW 4: EMPTY STATE (PROTOTYPE SWITCH) -->
+<main class="hidden" id="view-empty">
+<div class="bg-surface-container-lowest rounded-xl p-space-xl text-center max-w-xl mx-auto space-y-space-md shadow-sm">
+<div class="w-20 h-20 rounded-full bg-secondary-container/40 text-secondary mx-auto flex items-center justify-center">
+<span class="material-symbols-outlined text-[40px]">photo_library</span>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">No albums created yet</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Start by creating ceremony albums (Haldi, Mehendi, Sangeet, Wedding) or print QR upload cards for wedding table placement.
+          </p>
+</div>
+<div class="flex items-center justify-center gap-3 pt-2">
+<button class="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-title-sm text-body-sm shadow-sm flex items-center gap-1.5 transition-colors" onclick="openCreateAlbumModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Create First Album</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-title-sm text-body-sm transition-colors" onclick="openShareModal('General')" type="button">
+<span>Generate QR Drive</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Reassurance & Privacy Policy Notice -->
+<footer class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-start sm:items-center gap-3.5">
+<div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<div class="space-y-0.5 text-body-sm font-body-sm">
+<p class="font-title-sm text-on-surface font-semibold">Privacy Reassurance &amp; Guest Upload Routing</p>
+<p class="text-on-surface-variant">
+          Guest uploads via QR capability links route directly to your private moderation queue. Unapproved photos are never published on the public wedding website or made accessible to other guests. Only approved images stream to your family archive.
+        </p>
+</div>
+</footer>
+</div>
+<!-- MODAL: SHARE QR & UPLOAD CAPABILITY LINK -->
+<div class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="modal-qr">
+<div class="bg-surface-container-lowest rounded-xl max-w-lg w-full p-space-lg shadow-xl space-y-space-md relative">
+<div class="flex items-start justify-between">
+<div class="space-y-0.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Guest Contribution QR Badge</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface" id="modal-qr-title">Share QR &amp; Upload Link</h2>
+</div>
+<button class="text-outline hover:text-on-surface p-1" onclick="closeShareModal()" type="button">
+<span class="material-symbols-outlined text-[22px]">close</span>
+</button>
+</div>
+<!-- QR Visual Mockup -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col items-center justify-center text-center space-y-3">
+<div class="w-48 h-48 bg-surface-container-lowest rounded-lg p-3 shadow-sm flex items-center justify-center">
+<!-- Stylized SVG QR Code Representation -->
+<svg class="w-full h-full text-primary" fill="currentColor" viewBox="0 0 100 100">
+<!-- Corners -->
+<rect fill="#184539" height="26" rx="3" width="26" x="5" y="5"></rect>
+<rect fill="#FFFFFF" height="18" rx="2" width="18" x="9" y="9"></rect>
+<rect fill="#184539" height="10" width="10" x="13" y="13"></rect>
+<rect fill="#184539" height="26" rx="3" width="26" x="69" y="5"></rect>
+<rect fill="#FFFFFF" height="18" rx="2" width="18" x="73" y="9"></rect>
+<rect fill="#184539" height="10" width="10" x="77" y="13"></rect>
+<rect fill="#184539" height="26" rx="3" width="26" x="5" y="69"></rect>
+<rect fill="#FFFFFF" height="18" rx="2" width="18" x="9" y="73"></rect>
+<rect fill="#184539" height="10" width="10" x="13" y="77"></rect>
+<!-- Center Monogram Accent -->
+<rect fill="#B89A70" height="16" rx="3" width="16" x="42" y="42"></rect>
+<circle cx="50" cy="50" fill="#FFFFFF" r="4"></circle>
+<!-- Data Blocks -->
+<rect fill="#184539" height="6" width="6" x="36" y="8"></rect>
+<rect fill="#184539" height="6" width="8" x="46" y="8"></rect>
+<rect fill="#184539" height="6" width="6" x="58" y="8"></rect>
+<rect fill="#184539" height="6" width="8" x="36" y="18"></rect>
+<rect fill="#184539" height="6" width="6" x="48" y="18"></rect>
+<rect fill="#184539" height="6" width="14" x="36" y="28"></rect>
+<rect fill="#184539" height="6" width="8" x="54" y="28"></rect>
+<rect fill="#184539" height="8" width="6" x="8" y="36"></rect>
+<rect fill="#184539" height="6" width="8" x="18" y="36"></rect>
+<rect fill="#184539" height="6" width="8" x="8" y="48"></rect>
+<rect fill="#184539" height="8" width="6" x="20" y="48"></rect>
+<rect fill="#184539" height="6" width="12" x="8" y="58"></rect>
+<rect fill="#184539" height="8" width="8" x="68" y="36"></rect>
+<rect fill="#184539" height="6" width="12" x="80" y="36"></rect>
+<rect fill="#184539" height="6" width="14" x="68" y="48"></rect>
+<rect fill="#184539" height="8" width="6" x="86" y="48"></rect>
+<rect fill="#184539" height="8" width="8" x="36" y="68"></rect>
+<rect fill="#184539" height="6" width="6" x="48" y="68"></rect>
+<rect fill="#184539" height="8" width="8" x="58" y="68"></rect>
+<rect fill="#184539" height="6" width="14" x="36" y="80"></rect>
+<rect fill="#184539" height="12" width="6" x="54" y="80"></rect>
+<rect fill="#184539" height="6" width="12" x="64" y="80"></rect>
+<rect fill="#184539" height="8" width="12" x="80" y="72"></rect>
+<rect fill="#184539" height="8" width="8" x="80" y="84"></rect>
+</svg>
+</div>
+<div class="space-y-0.5">
+<p class="font-title-sm text-title-sm text-on-surface">Scan to upload ceremony photos</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">No mobile app download required for guests</p>
+</div>
+</div>
+<!-- Capability URL -->
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm uppercase text-outline font-semibold" for="capability-link">Capability Upload Link</label>
+<div class="flex items-center gap-2">
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-sm font-body-sm text-on-surface focus:outline-none select-all" id="capability-link" readonly="" type="text" value="https://mymarriage.com/u/m-jaipur27-mehendi">
+<button class="px-3.5 py-2 bg-primary hover:bg-primary-container text-on-primary rounded-lg text-body-sm font-title-sm flex-shrink-0 transition-colors" onclick="navigator.clipboard.writeText('https://mymarriage.com/u/m-jaipur27-mehendi'); alert('Upload link copied to clipboard!');" type="button">
+            Copy
+          </button>
+</div>
+</div>
+<!-- Table Standee Print CTAs -->
+<div class="pt-2 flex items-center justify-between gap-3 border-t-0">
+<button class="flex-1 py-2 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-body-sm font-title-sm flex items-center justify-center gap-1.5 transition-colors" onclick="alert('Downloading high-res print PDF with table standee template (Jaipur Palace theme)')" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">print</span>
+<span>Print Table Cards (PDF)</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-surface-container-lowest border-0 text-on-surface-variant hover:text-on-surface text-body-sm font-title-sm" onclick="closeShareModal()" type="button">
+          Done
+        </button>
+</div>
+</div>
+</div>
+<!-- MODAL: CREATE ALBUM -->
+<div class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="modal-create-album">
+<div class="bg-surface-container-lowest rounded-xl max-w-md w-full p-space-lg shadow-xl space-y-space-md relative">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">New Collection</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Create New Album</h2>
+</div>
+<button class="text-outline hover:text-on-surface p-1" onclick="closeCreateAlbumModal()" type="button">
+<span class="material-symbols-outlined text-[22px]">close</span>
+</button>
+</div>
+<div class="space-y-space-sm text-body-sm font-body-sm">
+<div class="space-y-1">
+<label class="font-title-sm text-on-surface" for="album-name-input">Album Name</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" id="album-name-input" placeholder="e.g. Sufi Night / Poolside Brunch" type="text">
+</div>
+<div class="space-y-1">
+<label class="font-title-sm text-on-surface" for="album-type-select">Type</label>
+<select class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" id="album-type-select">
+<option>Ceremony / Event Album</option>
+<option>General Collection</option>
+<option>VIP / Family Exclusive</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="font-title-sm text-on-surface" for="album-venue-input">Date &amp; Venue Tag</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" id="album-venue-input" placeholder="e.g. 13 Feb 2027 · Zen Garden" type="text">
+</div>
+<div class="flex items-center gap-2 pt-2">
+<input checked="" class="rounded text-primary focus:ring-primary w-4 h-4" id="require-mod" type="checkbox">
+<label class="text-on-surface font-title-sm cursor-pointer" for="require-mod">Require organizer approval before photos appear on site</label>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-end gap-2">
+<button class="px-3.5 py-2 rounded-lg bg-surface-container text-on-surface text-body-sm font-title-sm" onclick="closeCreateAlbumModal()" type="button">Cancel</button>
+<button class="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-body-sm font-title-sm shadow-sm" onclick="closeCreateAlbumModal(); alert('New album successfully initialized with custom QR capability link.');" type="button">
+          Create Album
+        </button>
+</div>
+</div>
+</div>
+<!-- Client-side View Switcher Logic -->
+<script>
+    function switchProtoView(viewName) {
+      const views = ['overview', 'moderation', 'detail', 'empty'];
+      const bannerStandard = document.getElementById('banner-standard');
+      const bannerWarning = document.getElementById('banner-warning');
+      const modalQr = document.getElementById('modal-qr');
+
+      // Handle Storage warning toggle
+      if (viewName === 'storage') {
+        bannerStandard.classList.add('hidden');
+        bannerWarning.classList.remove('hidden');
+        // keep overview visible
+        viewName = 'overview';
+      } else {
+        bannerWarning.classList.add('hidden');
+        bannerStandard.classList.remove('hidden');
+      }
+
+      // Handle QR modal view switch
+      if (viewName === 'qr-modal') {
+        openShareModal('Mehendi Celebration');
+        viewName = 'overview';
+      }
+
+      // Hide all main view containers
+      views.forEach(v => {
+        const el = document.getElementById('view-' + v);
+        if (el) el.classList.add('hidden');
+        const btn = document.getElementById('tab-' + v);
+        if (btn) {
+          btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+          btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+        }
+      });
+
+      // Show selected container
+      const activeEl = document.getElementById('view-' + viewName);
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      const activeBtn = document.getElementById('tab-' + viewName);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        activeBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openShareModal(albumTitle) {
+      const modal = document.getElementById('modal-qr');
+      const title = document.getElementById('modal-qr-title');
+      const linkInput = document.getElementById('capability-link');
+      if (albumTitle) {
+        title.innerText = 'Share ' + albumTitle + ' Upload QR';
+        linkInput.value = 'https://mymarriage.com/u/m-jaipur27-' + albumTitle.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 15);
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeShareModal() {
+      document.getElementById('modal-qr').classList.add('hidden');
+    }
+
+    function openCreateAlbumModal() {
+      document.getElementById('modal-create-album').classList.remove('hidden');
+    }
+
+    function closeCreateAlbumModal() {
+      document.getElementById('modal-create-album').classList.add('hidden');
+    }
+
+    function approveAll() {
+      alert('Approved 27 pending photos! They are now streaming live to the guest gallery.');
+      switchProtoView('overview');
+    }
+
+    function rejectAll() {
+      if (confirm('Discard all pending items from the moderation queue?')) {
+        alert('Items removed.');
+        switchProtoView('overview');
+      }
+    }
+  </script>
+</div></main></div>
+
+</body></html>
