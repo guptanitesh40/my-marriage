@@ -1060,6 +1060,519 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/weddings/{weddingId}/albums": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List albums */
+        get: operations["AlbumsController_list"];
+        put?: never;
+        /** Create custom album */
+        post: operations["AlbumsController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/albums/{albumId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Edit album settings */
+        patch: operations["AlbumsController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/quota": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read current 5 GB photo storage */
+        get: operations["AlbumsController_getQuota"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/albums/{albumId}/photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List all photos for moderation */
+        get: operations["PhotosController_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/image/{size}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read a photo’s display copy */
+        get: operations["PhotosController_image"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List photos pending review */
+        get: operations["PhotosController_queue"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/moderation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve, reject or delete several photos */
+        post: operations["PhotosController_bulk"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve photo for public display */
+        post: operations["PhotosController_approve"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reject pending photo */
+        post: operations["PhotosController_reject"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/hide": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Hide public photo (owner safety exception after archive) */
+        post: operations["PhotosController_hide"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Show a hidden photo again */
+        post: operations["PhotosController_restore"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/{photoId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete photo */
+        delete: operations["PhotosController_remove"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/media/uploads/initiate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reserve storage and get a short-lived upload form */
+        post: operations["UploadsController_initiate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/media/uploads/{uploadId}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify the uploaded file and queue processing */
+        post: operations["UploadsController_complete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/upload-links": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List active upload links */
+        get: operations["UploadLinksController_list"];
+        put?: never;
+        /** Get or rotate the general upload link */
+        post: operations["UploadLinksController_general"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/albums/{albumId}/upload-links": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create or rotate an album’s QR/upload link */
+        post: operations["UploadLinksController_forAlbum"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/upload-links/{linkId}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revoke QR/upload capability */
+        post: operations["UploadLinksController_revoke"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/upload-links/email-audiences": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count guests each email choice would reach */
+        get: operations["UploadLinksController_audiences"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/upload-links/email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Email the general upload link to guests */
+        post: operations["UploadLinksController_email"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/upload-access/exchange": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Exchange QR upload token for scoped upload cookie */
+        post: operations["UploadAccessController_exchange"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/upload-access/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** What the guest upload page shows */
+        get: operations["UploadAccessController_current"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/upload-access/uploads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reserve storage and get an upload form, as a guest */
+        post: operations["UploadAccessController_initiate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/upload-access/uploads/{uploadId}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify a guest’s uploaded file and queue processing */
+        post: operations["UploadAccessController_complete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/media-exports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List recent photo exports */
+        get: operations["MediaExportsController_list"];
+        put?: never;
+        /** Start photo export job */
+        post: operations["MediaExportsController_start"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/media-exports/{exportId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get export status and download address */
+        get: operations["MediaExportsController_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/media-exports/{exportId}/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Download a ready export ZIP */
+        get: operations["MediaExportsController_download"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/photos/{photoId}/original": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Download a photo’s original */
+        get: operations["MediaExportsController_original"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/weddings/{slug}/albums": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List publicly visible approved galleries */
+        get: operations["PublicGalleryController_albums"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/weddings/{slug}/albums/{albumId}/photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Browse approved public photos only */
+        get: operations["PublicGalleryController_photos"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/weddings/{slug}/photos/{photoId}/{size}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read an approved photo */
+        get: operations["PublicGalleryController_image"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2428,6 +2941,275 @@ export interface components {
         };
         PublicEventListDto: {
             events: components["schemas"]["PublicEventDto"][];
+        };
+        AlbumEventDto: {
+            id: string;
+            title: string;
+            /** @description `YYYY-MM-DD` in the ceremony's time zone. */
+            startDate?: string;
+            /** @description `HH:mm` in the ceremony's time zone. */
+            startTime?: string;
+            venueName?: string;
+            cancelled: boolean;
+            completed: boolean;
+        };
+        AlbumCountsDto: {
+            pending: number;
+            approved: number;
+            /** @description Every photo not deleted or rejected. */
+            total: number;
+        };
+        AlbumDto: {
+            /** @enum {string} */
+            kind: "event" | "general" | "custom";
+            /** @description Album ID. */
+            id: string;
+            /** @description For an event album, its ceremony's current name. */
+            title: string;
+            /** @description For an event album only. */
+            event?: components["schemas"]["AlbumEventDto"];
+            /** @description Whether guests' upload links for it work. */
+            isUploadEnabled: boolean;
+            counts: components["schemas"]["AlbumCountsDto"];
+            /** @description The newest photo's small copy, for the album's card. */
+            coverUrl?: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        AlbumListDto: {
+            /** @description Event albums in the Events page's order, then the general album, then the couple's own. */
+            albums: components["schemas"]["AlbumDto"][];
+        };
+        CreateAlbumDto: {
+            /** @example Pre-Wedding Shoot */
+            title: string;
+        };
+        UpdateAlbumDto: {
+            /**
+             * @description Not for an event album, which takes its ceremony's name.
+             * @example Pre-Wedding Shoot
+             */
+            title?: string;
+            /** @description Pauses or resumes guests' upload links for this album. */
+            isUploadEnabled?: boolean;
+        };
+        QuotaDto: {
+            /** @description 5,000,000,000: decimal 5 GB. */
+            limitBytes: number;
+            /** @description Photos kept: originals and their display copies. */
+            usedBytes: number;
+            /** @description Set aside for uploads in progress. */
+            reservedBytes: number;
+        };
+        PhotoDto: {
+            /** @enum {string} */
+            moderation: "pending" | "approved" | "rejected" | "hidden" | "deleted";
+            /** @enum {string} */
+            source: "organizer" | "link";
+            /** @description Photo ID. */
+            id: string;
+            albumId: string;
+            /** @description A guest's name, when given. */
+            uploaderName?: string;
+            /** @description The member who uploaded it. */
+            uploadedByName?: string;
+            originalName: string;
+            /** @description Upright size, in pixels. */
+            width: number;
+            height: number;
+            /** @description The original's size. */
+            bytes: number;
+            /** @description Small copy for grids, from the API. */
+            thumbUrl: string;
+            /** @description Large copy for viewing, from the API. */
+            displayUrl: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        PhotoListDto: {
+            /** @description Newest first. */
+            photos: components["schemas"]["PhotoDto"][];
+            /** @description Uploads received and still being checked; they appear here when done. */
+            processing: number;
+            /** @description True when the album has more photos than the list returns. */
+            truncated: boolean;
+        };
+        ReviewQueueDto: {
+            /** @description Oldest first, so the earliest uploads are reviewed first. */
+            photos: components["schemas"]["PhotoDto"][];
+            /** @description All photos waiting, which may be more than listed. */
+            total: number;
+            /** @description Uploads received and still being checked; they join the queue when done. */
+            processing: number;
+        };
+        BulkModerationResultDto: {
+            /** @description Photos changed; others were already reviewed or are gone. */
+            changed: number;
+        };
+        BulkModerationDto: {
+            /** @enum {string} */
+            action: "approve" | "reject" | "remove";
+            photoIds: string[];
+        };
+        UploadFormDto: {
+            fields: {
+                [key: string]: string;
+            };
+            url: string;
+        };
+        UploadDto: {
+            /** @enum {string} */
+            state: "initiated" | "uploaded" | "processing" | "complete" | "failed" | "expired";
+            /** @description Upload ID. */
+            id: string;
+            albumId: string;
+            /**
+             * Format: date-time
+             * @description The form stops working then.
+             */
+            expiresAt: string;
+            /** @description Only when the upload was just started. */
+            upload?: components["schemas"]["UploadFormDto"];
+        };
+        CreateUploadDto: {
+            /** @example 65f000000000000000000401 */
+            albumId: string;
+            /**
+             * @description As on the guest's device; shown to the couple only.
+             * @example haldi-01.jpg
+             */
+            fileName: string;
+            /** @enum {string} */
+            contentType: "image/jpeg" | "image/png" | "image/webp";
+            /** @example 4820000 */
+            declaredBytes: number;
+            /**
+             * @description A guest's name, optional; shown to the couple only.
+             * @example Priya D.
+             */
+            uploaderName?: string;
+        };
+        UploadLinkDto: {
+            /** @enum {string} */
+            scope: "album" | "wedding";
+            /** @description Link ID. */
+            id: string;
+            /** @description The album of an album link. */
+            albumId?: string;
+            /** @description The page guests open; scan or share it. */
+            url: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        UploadLinksDto: {
+            /** @description The wedding's general link, where guests choose the album. */
+            general?: components["schemas"]["UploadLinkDto"];
+            /** @description Each album's own link, for those that have one. */
+            albums: components["schemas"]["UploadLinkDto"][];
+        };
+        CreateUploadLinkDto: {
+            /** @description Revoke the current link and make a new one: the old link and QR code stop working. */
+            replace?: boolean;
+        };
+        PhotoInviteAudienceDto: {
+            all: number;
+            attending: number;
+        };
+        EmailUploadLinkResultDto: {
+            /** @description Emails queued. */
+            queued: number;
+        };
+        EmailUploadLinkDto: {
+            /**
+             * @description Every guest with an email address, or those attending at least one ceremony.
+             * @enum {string}
+             */
+            audience: "all" | "attending";
+        };
+        GuestAlbumDto: {
+            id: string;
+            title: string;
+            /** @description `YYYY-MM-DD`, for a ceremony's album. */
+            startDate?: string;
+            venueName?: string;
+        };
+        GuestUploadDto: {
+            /** @enum {string} */
+            scope: "album" | "wedding";
+            /** @enum {string} */
+            closedReason?: "archived" | "paused" | "storage_full";
+            /** @description "Ananya & Arjun". */
+            coupleName: string;
+            /** @description For an album link: its album, open or not. */
+            album?: components["schemas"]["GuestAlbumDto"];
+            /** @description Albums open to uploads now: the link's album, or every open album for a general link. */
+            albums: components["schemas"]["GuestAlbumDto"][];
+            /** @description False when nothing can be uploaded; `closedReason` says why. */
+            open: boolean;
+            /** @description The published wedding website, if there is one. */
+            websitePath?: string;
+        };
+        ExchangeUploadTokenDto: {
+            token: string;
+        };
+        MediaExportDto: {
+            /** @enum {string} */
+            scope: "approved" | "all";
+            /** @enum {string} */
+            state: "queued" | "processing" | "ready" | "failed" | "expired";
+            /** @description Export ID. */
+            id: string;
+            albumId?: string;
+            photoCount?: number;
+            bytes?: number;
+            /** @description When ready: the API route that streams the ZIP to the wedding's members. */
+            downloadUrl?: string;
+            /**
+             * Format: date-time
+             * @description When the ZIP is removed.
+             */
+            expiresAt?: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        CreateMediaExportDto: {
+            /**
+             * @description Approved photos only, or every photo you can see (pending and hidden too).
+             * @enum {string}
+             */
+            scope: "approved" | "all";
+            albumId?: string;
+        };
+        MediaExportListDto: {
+            /** @description Newest first, at most five. */
+            exports: components["schemas"]["MediaExportDto"][];
+        };
+        PublicAlbumDto: {
+            id: string;
+            title: string;
+            /** @description `YYYY-MM-DD`, for a ceremony's album. */
+            startDate?: string;
+            /** @description Approved photos in it. */
+            photoCount: number;
+            /** @description Its newest approved photo, small. */
+            coverUrl: string;
+        };
+        PublicGalleryDto: {
+            /** @description Albums with at least one approved photo, in the website's order. */
+            albums: components["schemas"]["PublicAlbumDto"][];
+        };
+        PublicPhotoDto: {
+            id: string;
+            width: number;
+            height: number;
+            thumbUrl: string;
+            displayUrl: string;
+        };
+        PublicPhotoListDto: {
+            /** @description Newest first. */
+            photos: components["schemas"]["PublicPhotoDto"][];
         };
         FieldErrorDto: {
             /**
@@ -5909,6 +6691,1477 @@ export interface operations {
                 content?: never;
             };
             /** @description WEBSITE_NOT_FOUND or IMAGE_NOT_FOUND. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AlbumsController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["AlbumListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AlbumsController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateAlbumDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["AlbumDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. ALBUM_LIMIT: too many albums. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AlbumsController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                albumId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateAlbumDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["AlbumDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description VALIDATION_ERROR: an event album keeps its ceremony’s name. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. ALBUM_NOT_FOUND: no such album in it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    AlbumsController_getQuota: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["QuotaDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                albumId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PhotoListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND or ALBUM_NOT_FOUND. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_image: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                photoId: string;
+                size: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The image. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND or PHOTO_NOT_FOUND. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_queue: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ReviewQueueDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_bulk: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkModerationDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["BulkModerationResultDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_approve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                photoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PhotoDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND or PHOTO_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_reject: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                photoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PhotoDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND or PHOTO_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_hide: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                photoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PhotoDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description OWNER_REQUIRED: only owners, once archived. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND or PHOTO_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                photoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PhotoDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND or PHOTO_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PhotosController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                photoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The photo and its files are gone. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description OWNER_REQUIRED: only owners, once archived. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND or PHOTO_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadsController_initiate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUploadDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UploadDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description ALBUM_NOT_FOUND: not an album of a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description STORAGE_FULL: the 5 GB are used. WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadsController_complete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uploadId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UploadDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description UPLOAD_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description UPLOAD_NOT_RECEIVED: try again once the file is sent. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description UPLOAD_EXPIRED: start again. */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description UPLOAD_TOO_LARGE */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description UPLOAD_NOT_IMAGE: not the photo type it said. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadLinksController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UploadLinksDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadLinksController_general: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUploadLinkDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UploadLinkDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadLinksController_forAlbum: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                albumId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUploadLinkDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UploadLinkDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND or ALBUM_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadLinksController_revoke: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                linkId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The link no longer works. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND or UPLOAD_LINK_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadLinksController_audiences: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PhotoInviteAudienceDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadLinksController_email: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmailUploadLinkDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["EmailUploadLinkResultDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadAccessController_exchange: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExchangeUploadTokenDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestUploadDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description UPLOAD_LINK_UNAVAILABLE: unknown, revoked or expired. */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadAccessController_current: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["GuestUploadDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description UPLOAD_SESSION_REQUIRED: open the link again. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description UPLOAD_LINK_UNAVAILABLE */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadAccessController_initiate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUploadDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UploadDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description UPLOAD_SESSION_REQUIRED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ALBUM_CLOSED, STORAGE_FULL or WEDDING_ARCHIVED. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description UPLOAD_LINK_UNAVAILABLE */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    UploadAccessController_complete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uploadId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UploadDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description UPLOAD_SESSION_REQUIRED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MediaExportsController_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MediaExportListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MediaExportsController_start: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateMediaExportDto"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MediaExportDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND or ALBUM_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MediaExportsController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                exportId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MediaExportDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND or EXPORT_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MediaExportsController_download: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                exportId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The ZIP. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND or EXPORT_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MediaExportsController_original: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                photoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The original file. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_NOT_FOUND or PHOTO_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PublicGalleryController_albums: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicGalleryDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PublicGalleryController_photos: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+                albumId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicPhotoListDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description ALBUM_NOT_FOUND: no such album on a published site. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    PublicGalleryController_image: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+                photoId: string;
+                size: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The image. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description PHOTO_NOT_FOUND */
             404: {
                 headers: {
                     [name: string]: unknown;

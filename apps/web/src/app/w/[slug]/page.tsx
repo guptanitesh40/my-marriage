@@ -30,12 +30,15 @@ export default function PublicWeddingPage({ params }: PageProps<'/w/[slug]'>) {
 async function PublishedSite({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   let site;
+  let gallery;
   try {
     const api = await serverApi();
-    const { data } = await api.GET('/api/v1/public/weddings/{slug}', {
-      params: { path: { slug } },
-    });
-    site = data?.data;
+    const [found, albums] = await Promise.all([
+      api.GET('/api/v1/public/weddings/{slug}', { params: { path: { slug } } }),
+      api.GET('/api/v1/public/weddings/{slug}/albums', { params: { path: { slug } } }),
+    ]);
+    site = found.data?.data;
+    gallery = albums.data?.data.albums;
   } catch {
     site = undefined;
   }
@@ -52,7 +55,7 @@ async function PublishedSite({ params }: { params: Promise<{ slug: string }> }) 
   if (site.slug !== slug) permanentRedirect(publicSitePath(site.slug));
   return (
     <div className={`${rsvpFonts} flex flex-1 flex-col`}>
-      <WeddingSite site={site} />
+      <WeddingSite site={site} {...(gallery ? { gallery } : {})} />
     </div>
   );
 }

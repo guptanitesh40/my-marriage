@@ -261,6 +261,64 @@ const fileAssetIndexes: Migration = {
   },
 };
 
+const albumIndexes: Migration = {
+  id: '0014-album-indexes',
+  description: 'albums indexes: one album per ceremony and one general album per wedding',
+  up: async (db) => {
+    // Schema document §4.18 and decision 0019.
+    const albums = db.collection('albums');
+    await albums.createIndex(
+      { weddingId: 1, eventId: 1 },
+      { unique: true, partialFilterExpression: { kind: 'event' } },
+    );
+    await albums.createIndex(
+      { weddingId: 1, kind: 1 },
+      { unique: true, partialFilterExpression: { kind: 'general' } },
+    );
+    await albums.createIndex({ weddingId: 1, kind: 1, sortOrder: 1 });
+  },
+};
+
+const mediaIndexes: Migration = {
+  id: '0015-media-indexes',
+  description: 'upload_intents and photos indexes',
+  up: async (db) => {
+    // Schema document §4.20–4.21 and decision 0019. No TTL on either.
+    const intents = db.collection('upload_intents');
+    await intents.createIndex({ weddingId: 1, state: 1, expiresAt: 1 });
+    await intents.createIndex({ state: 1, expiresAt: 1 });
+    const photos = db.collection('photos');
+    await photos.createIndex({ weddingId: 1, albumId: 1, moderation: 1, createdAt: -1 });
+    await photos.createIndex({ weddingId: 1, moderation: 1, createdAt: -1 });
+  },
+};
+
+const uploadLinkIndexes: Migration = {
+  id: '0016-upload-link-indexes',
+  description: 'upload_capabilities and upload_link_emails indexes',
+  up: async (db) => {
+    // Schema document §4.19 and decision 0019.
+    const links = db.collection('upload_capabilities');
+    await links.createIndex({ tokenHash: 1 }, { unique: true });
+    await links.createIndex({ weddingId: 1, albumId: 1, status: 1 });
+    await links.createIndex({ weddingId: 1, scope: 1, status: 1 });
+    const emails = db.collection('upload_link_emails');
+    await emails.createIndex({ notificationId: 1 }, { unique: true });
+    await emails.createIndex({ weddingId: 1, createdAt: -1 });
+  },
+};
+
+const mediaExportIndexes: Migration = {
+  id: '0017-media-export-indexes',
+  description: 'media_exports indexes',
+  up: async (db) => {
+    // Schema document §4.23 and decision 0019.
+    const exports = db.collection('media_exports');
+    await exports.createIndex({ weddingId: 1, createdAt: -1 });
+    await exports.createIndex({ state: 1, expiresAt: 1 });
+  },
+};
+
 /** Every migration, oldest first. Append here as each collection is introduced. */
 export const MIGRATIONS: readonly Migration[] = [
   identityIndexes,
@@ -276,4 +334,8 @@ export const MIGRATIONS: readonly Migration[] = [
   reminderIndexes,
   websiteIndexes,
   fileAssetIndexes,
+  albumIndexes,
+  mediaIndexes,
+  uploadLinkIndexes,
+  mediaExportIndexes,
 ];

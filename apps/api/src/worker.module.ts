@@ -9,6 +9,11 @@ import { GuestsModule } from './modules/guests/guests.module.js';
 import { ReminderScheduler } from './modules/guests/reminder-scheduler.js';
 import { InviteEmailComposer } from './modules/weddings/invite-email.composer.js';
 import { WeddingsModule } from './modules/weddings/weddings.module.js';
+import { MediaModule } from './modules/media/media.module.js';
+import { MediaExportsService } from './modules/media/media-exports.service.js';
+import { MediaSweeper } from './modules/media/media-sweeper.js';
+import { PhotoInviteComposer } from './modules/media/photo-invite.composer.js';
+import { PhotoProcessor } from './modules/media/photo-processor.js';
 import { IndexCheckModule } from './platform/index-check.js';
 import { OutboxWorkerModule } from './platform/outbox/outbox-worker.module.js';
 import { PlatformModule } from './platform/platform.module.js';
@@ -27,20 +32,23 @@ import { PlatformModule } from './platform/platform.module.js';
     OutboxWorkerModule.register({
       imports: [
         EmailDeliveryModule.register({
-          imports: [AuthModule, WeddingsModule, GuestsModule],
+          imports: [AuthModule, WeddingsModule, GuestsModule, MediaModule],
           composers: [
             AuthEmailComposer,
             InviteEmailComposer,
             GuestInviteComposer,
             GuestReminderComposer,
+            PhotoInviteComposer,
           ],
         }),
+        MediaModule,
       ],
-      handlers: [EmailDeliveryHandler],
+      handlers: [EmailDeliveryHandler, PhotoProcessor, MediaExportsService],
     }),
     GuestsModule,
+    MediaModule,
   ],
-  // The automatic-reminder check runs in the worker only.
-  providers: [ReminderScheduler],
+  // The automatic-reminder check and the upload sweep run in the worker only.
+  providers: [ReminderScheduler, MediaSweeper],
 })
 export class WorkerModule {}

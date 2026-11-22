@@ -1,256 +1,272 @@
 # Graph Report - my-marriage  (2026-11-22)
 
 ## Corpus Check
-- 496 files · ~403,889 words
+- 564 files · ~462,743 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 8 file(s) not represented in the graph (top: (none) 5, .example 2, .css 1)
 
 ## Summary
-- 3726 nodes · 11802 edges · 149 communities (106 shown, 43 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 328 edges (avg confidence: 0.85)
+- 4457 nodes · 14415 edges · 162 communities (122 shown, 40 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 459 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c14d96e8`
+- Built from commit: `a033976d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - auth.controller.ts
-- FormAlert
+- task-form.tsx
 - builder.tsx
-- ref_vitest
+- auth-password-reset.e2e-spec.ts
 - guests.e2e-spec.ts
 - auth.spec.ts
 - member-invites.controller.ts
-- proxy.ts
-- guest-access.service.ts
+- AlbumsService
+- Traced
 - compilerOptions
-- ExpensesController
+- ref_vitest
 - vendor-directory.tsx
 - Accounts
 - with
 - GuestsController
-- guest.dto.ts
+- guests.service.ts
 - AuthenticatedUser
-- outbox-relay.ts
-- auth-email.composer.ts
+- @nestjs/common
+- Icon
 - event-form.test.tsx
 - web/package.json
 - create-task.dto.ts
-- copy.ts
+- events/server.tsx
 - scripts
 - devDependencies
-- routes.ts
+- media-exports.service.ts
 - events.service.ts
-- events/server.tsx
-- website-images.service.ts
-- WeddingDto
+- photos/server.tsx
+- accept-invitation.tsx
+- workspace/server.tsx
 - catalog
-- website.service.ts
+- parseObjectId
 - healthcheck
-- weddings.service.ts
+- slug.ts
 - contracts/package.json
-- website.module.ts
+- dependencies
 - UpdateWebsiteDto
-- guest-directory.tsx
+- guests/server.tsx
 - .create
-- wedding-access.service.ts
+- mongoose
 - vendors.service.ts
-- tasks/server.tsx
-- rsvp-page.tsx
+- react
+- browser.ts
 - wedding-details-form.test.tsx
 - compilerOptions
-- guests.controller.ts
+- guest-reminders.service.ts
 - .answer
-- @nestjs/mongoose
+- NotificationsService
 - Public
 - themed-site.tsx
-- rsvp-page.tsx
-- .create
+- mongo.ts
+- preview.tsx
 - nest-cli.json
 - tsconfig.build.json
-- public-website.service.ts
+- website-input.dto.ts
 - IndexCheck
-- vendors/server.tsx
+- .consume
 - schema.d.ts
-- workspace-shell.tsx
+- onboarding/server.tsx
 - .create
 - routes.ts
 - auth.service.ts
 - health.controller.ts
-- WebsiteService
+- planning-features.tsx
 - compilerOptions
 - guest-access.controller.ts
 - @nestjs/common
-- @nestjs/swagger
-- @testing-library/react
-- event-card.tsx
-- email-delivery.handler.ts
-- GuestForm
+- expenses.e2e-spec.ts
+- partner-invite.test.tsx
+- networkFailure
+- support/worker.ts
+- GuestRemindersService
 - migrations.ts
 - contracts/tsconfig.json
-- tracing.ts
-- ImportCommitDto
-- expenses/server.tsx
-- [slug]/page.tsx
-- rsvp-theme.ts
-- networkFailure
+- guest-upload.tsx
+- upload-links.controller.ts
+- upload.ts
+- PhotosController
+- @nestjs/swagger
+- accept-invitation.test.tsx
 - RsvpPatchDto
-- event-browser.tsx
-- index.ts
-- auth.decorators.ts
-- expenses.controller.ts
-- local-upload.controller.ts
-- password-policy.ts
-- pending-invitations.tsx
+- album-grid.tsx
+- guest-form.tsx
+- SessionAuthGuard
+- OptionalTextBlockField
+- GuestAccessService
+- password-hasher.ts
+- tasks/server.tsx
 - api/eslint.config.mjs
-- EventBrief
+- .initiate
 - LocalObjectStorage
-- vendors/input.ts
-- dependencies
-- site-footer.tsx
-- tasks/input.ts
-- Vendor
-- scripts
-- events/input.ts
-- validation.test.ts
-- @vitejs/plugin-react
-- ProbeDto
+- review-queue.tsx
+- tasks.e2e-spec.ts
+- media-exports.controller.ts
+- .update
+- .create
+- [slug]/page.tsx
+- upload-links.e2e-spec.ts
+- wedding.schema.ts
+- vendors.e2e-spec.ts
+- ref_vitest
 - TasksService
-- VenueDto
-- vendor-form.test.tsx
+- photo-uploads.e2e-spec.ts
+- ProbeController
+- .complete
 - configure-app.ts
-- site.ts
-- modules/auth/session-cookie.ts
+- vendor-form.test.tsx
+- upload-access.service.ts
 - WebsiteService
 - ledger-dialogs.tsx
 - scripts
 - legal-document.tsx
-- expenses.service.ts
+- event.schema.ts
+- website-projection.ts
+- todayIn
+- AuthenticatedUser
 - ComposedEmail
 - VerifiedProbeController
-- EventActions
+- password-policy.ts
+- dependencies
+- website.controller.ts
+- event-actions.test.tsx
 - pending-invitations.test.tsx
 - .events
-- member-invites.service.ts
+- task-form.test.tsx
+- member-invites.e2e-spec.ts
+- scripts
 - preview-tabs.test.tsx
-- csv.ts
-- ProbeController
-- icon.tsx
+- reminder-schedule.ts
+- guest-form.test.tsx
+- website.dto.ts
+- Vendor
+- app/layout.tsx
+- [albumId]/page.tsx
 
 ## God Nodes (most connected - your core abstractions)
-1. `Icon()` - 174 edges
-2. `AuthenticatedUser` - 147 edges
-3. `@nestjs/common` - 121 edges
-4. `networkFailure()` - 92 edges
-5. `toFailure()` - 89 edges
-6. `react` - 88 edges
-7. `@nestjs/mongoose` - 82 edges
-8. `ApiDataResponse()` - 81 edges
-9. `mongoose` - 80 edges
-10. `Traced()` - 76 edges
+1. `Icon()` - 213 edges
+2. `AuthenticatedUser` - 208 edges
+3. `@nestjs/common` - 144 edges
+4. `ApiDataResponse()` - 115 edges
+5. `networkFailure()` - 112 edges
+6. `toFailure()` - 110 edges
+7. `@nestjs/mongoose` - 104 edges
+8. `CurrentUser` - 103 edges
+9. `Traced()` - 102 edges
+10. `mongoose` - 102 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `signOut()` --calls--> `goTo()`  [EXTRACTED]
-  apps/web/src/components/auth/sign-out-button.tsx → apps/web/src/components/auth/hooks.ts
+- `choose()` --calls--> `photoProblem()`  [EXTRACTED]
+  apps/web/src/components/upload/guest-upload.tsx → apps/web/src/lib/photos/upload.ts
+- `SignedIn` --references--> `AuthenticatedUser`  [EXTRACTED]
+  apps/api/src/modules/auth/auth.service.ts → apps/api/src/modules/auth/sessions.service.ts
+- `EmailRequest` --references--> `NotificationKind`  [EXTRACTED]
+  apps/api/src/modules/notifications/notifications.service.ts → apps/api/src/modules/notifications/notification.schema.ts
 - `renderEdit()` --calls--> `EventForm()`  [EXTRACTED]
   apps/web/src/components/events/event-form.test.tsx → apps/web/src/components/events/event-form.tsx
 - `renderForm()` --calls--> `EventForm()`  [EXTRACTED]
   apps/web/src/components/events/event-form.test.tsx → apps/web/src/components/events/event-form.tsx
-- `commit()` --indirect_call--> `rows()`  [INFERRED]
-  apps/web/src/components/guests/guest-transfer.tsx → apps/web/src/components/vendors/vendor-directory.test.tsx
-- `renderForm()` --calls--> `VendorForm()`  [EXTRACTED]
-  apps/web/src/components/vendors/vendor-form.test.tsx → apps/web/src/components/vendors/vendor-form.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (149 total, 43 thin omitted)
+## Communities (162 total, 40 thin omitted)
 
 ### Community 0 - "auth.controller.ts"
-Cohesion: 0.26
-Nodes (12): CurrentPasswordField(), DisplayNameField(), EmailField(), LinkTokenField(), NewPasswordField(), trim, ForgotPasswordDto, LoginDto (+4 more)
+Cohesion: 0.13
+Nodes (20): CurrentPasswordField(), DisplayNameField(), EmailField(), LinkTokenField(), NewPasswordField(), trim, ForgotPasswordDto, LoginDto (+12 more)
 
-### Community 1 - "FormAlert"
-Cohesion: 0.08
-Nodes (70): goTo, post, ForgotPasswordForm(), goTo(), useFocusFirstProblem(), useLinkToken(), alertFor(), LoginForm() (+62 more)
+### Community 1 - "task-form.tsx"
+Cohesion: 0.06
+Nodes (56): EventForm(), send(), submit(), EventState, Mark(), STALE, STATES, WeddingEvent (+48 more)
 
 ### Community 2 - "builder.tsx"
-Cohesion: 0.10
-Nodes (28): CEREMONY_ICON_TONES, Draft, draftOf(), FaqButton(), LIMITS, moved(), ReadinessRow(), same() (+20 more)
+Cohesion: 0.13
+Nodes (24): CEREMONY_ICON_TONES, Draft, draftOf(), FaqButton(), LIMITS, moved(), ReadinessRow(), same() (+16 more)
 
-### Community 3 - "ref_vitest"
-Cohesion: 0.03
-Nodes (74): AuthActionToken, AuthActionTokenSchema, AuthSession, AuthSessionDocument, AuthSessionSchema, User, USER_STATUSES, UserDocument (+66 more)
+### Community 3 - "auth-password-reset.e2e-spec.ts"
+Cohesion: 0.08
+Nodes (22): AuthEmailComposer, AuthActionToken, AuthSession, User, USER_STATUSES, UserDocument, UserSchema, UserStatus (+14 more)
 
 ### Community 4 - "guests.e2e-spec.ts"
-Cohesion: 0.16
-Nodes (18): added(), answer(), DetailBody, errorOf(), eventIn(), fieldsOf(), GuestBody, InvitationBody (+10 more)
+Cohesion: 0.13
+Nodes (20): GuestsModule, added(), addManager(), answer(), DetailBody, errorOf(), eventIn(), fieldsOf() (+12 more)
 
 ### Community 5 - "auth.spec.ts"
 Cohesion: 0.09
-Nodes (48): app, document, target, children, databaseName, mailDir, migrate, mongoUri (+40 more)
+Nodes (50): app, document, target, children, databaseName, mailDir, migrate, mongoUri (+42 more)
 
 ### Community 6 - "member-invites.controller.ts"
+Cohesion: 0.06
+Nodes (15): MemberListDto, MemberInviteDto, WeddingDto, MemberInvitesController, inviteNotFound(), isExpired(), MemberInvitesService, ownerActiveLimitOnAccept() (+7 more)
+
+### Community 7 - "AlbumsService"
 Cohesion: 0.09
-Nodes (11): CreateMemberInviteDto, INVITABLE_ROLES, InviteTokenDto, MemberInviteDto, MyInviteDto, MemberInvitesController, inviteNotFound(), isExpired() (+3 more)
+Nodes (13): EventBrief, ReminderEvent, AlbumsService, AlbumDto, AlbumEventDto, AlbumListDto, QuotaDto, QuotaService (+5 more)
 
-### Community 7 - "proxy.ts"
-Cohesion: 0.21
-Nodes (11): apiClientAsVisitor(), FORWARDED_HEADERS, SESSION_COOKIE, landingWedding(), config, proxy(), Session, sessionOf() (+3 more)
-
-### Community 8 - "guest-access.service.ts"
-Cohesion: 0.12
-Nodes (17): GuestAccessService, StoredInvitation, countTooLarge(), dailyEmailLimit(), guestRemindersOff(), invitationLinkOff(), invitationNotFound(), invitationNotShared() (+9 more)
+### Community 8 - "Traced"
+Cohesion: 0.04
+Nodes (45): SessionsService, EventsService, StoredInvitation, GuestInviteComposer, GuestLinks, GuestReminderComposer, EventInvitation, EventInvitationDocument (+37 more)
 
 ### Community 9 - "compilerOptions"
 Cohesion: 0.10
 Nodes (19): compilerOptions, declaration, emitDecoratorMetadata, experimentalDecorators, incremental, module, moduleResolution, outDir (+11 more)
 
+### Community 10 - "ref_vitest"
+Cohesion: 0.07
+Nodes (21): ACTIVE_OWNED_INDEX, MEMBERSHIP_STATUSES, MembershipStatus, WeddingMembership, WeddingMembershipDocument, WeddingMembershipSchema, addManager(), AlbumBody (+13 more)
+
 ### Community 11 - "vendor-directory.tsx"
-Cohesion: 0.10
-Nodes (28): avatarOf(), AVATARS, NoResults(), NotAdded(), del, events, refresh, replaceState (+20 more)
+Cohesion: 0.06
+Nodes (64): metadata, VendorsPage(), SearchParams, Stat(), VendorsEmpty(), VendorsLoading(), VendorsSection(), VendorStats() (+56 more)
 
 ### Community 13 - "with"
 Cohesion: 0.07
 Nodes (33): runs-on, steps, timeout-minutes, concurrency, cancel-in-progress, group, API_ORIGIN, jobs (+25 more)
 
 ### Community 14 - "GuestsController"
-Cohesion: 0.23
+Cohesion: 0.21
 Nodes (4): CurrentUser, GuestDetailDto, GuestsController, ApiDataResponse()
 
-### Community 15 - "guest.dto.ts"
-Cohesion: 0.13
-Nodes (18): EventRsvpTotalsDto, GuestDetailInvitationDto, GuestDto, GuestEmailDto, GuestInvitationDto, GuestTotalsDto, ImportRowResultDto, LINK_STATES (+10 more)
+### Community 15 - "guests.service.ts"
+Cohesion: 0.08
+Nodes (31): EventRsvpTotalsDto, GuestDetailInvitationDto, GuestDto, GuestEmailDto, GuestInvitationDto, GuestListDto, GuestTotalsDto, ImportCommitResultDto (+23 more)
 
 ### Community 16 - "AuthenticatedUser"
-Cohesion: 0.08
-Nodes (18): SignedIn, AuthenticatedUser, GuestLinkDto, ImportPreviewResultDto, guestNotFound(), distinctIds(), folded(), GuestsService (+10 more)
+Cohesion: 0.10
+Nodes (12): AuthenticatedUser, EventDto, EventLivestreamDto, eventNotFound(), GuestLinkDto, guestNotFound(), distinctIds(), GuestsService (+4 more)
 
-### Community 17 - "outbox-relay.ts"
-Cohesion: 0.08
-Nodes (15): OUTBOX_STATES, OutboxEvent, OutboxEventSchema, OutboxState, DEFAULT_OUTBOX_RETRY, OUTBOX_HANDLERS, OUTBOX_RETRY, OutboxHandler (+7 more)
+### Community 17 - "@nestjs/common"
+Cohesion: 0.03
+Nodes (61): crossFieldProblems(), DEFAULT_TRACE_MODE, Env, ENV_KEYS, MAIL_TRANSPORTS, MailTransportName, valid, validateEnv() (+53 more)
 
-### Community 18 - "auth-email.composer.ts"
-Cohesion: 0.11
-Nodes (19): AccountsService, AuthEmailComposer, passwordChangedMessage(), passwordResetMessage(), verifyEmailMessage(), GuestInviteComposer, GuestReminderComposer, ComposedEmail (+11 more)
+### Community 18 - "Icon"
+Cohesion: 0.08
+Nodes (43): AcceptButton(), Detail(), Eyebrow(), Heading(), MyInvite, PendingInvitations(), PrivacyNote(), Problem (+35 more)
 
 ### Community 19 - "event-form.test.tsx"
 Cohesion: 0.17
 Nodes (8): haldi, onCancel, onSaved, patch, post, refresh, renderEdit(), renderForm()
 
 ### Community 20 - "web/package.json"
-Cohesion: 0.09
-Nodes (30): devDependencies, @axe-core/playwright@^4.14.0, eslint@catalog:, eslint-config-prettier@catalog:, jsdom@^31.0.1, @playwright/test@^1.65.1, tailwindcss@4.3.5, @tailwindcss/turbopack@4.3.5 (+22 more)
+Cohesion: 0.08
+Nodes (35): devDependencies, @axe-core/playwright@^4.14.0, eslint@catalog:, eslint-config-next@16.4.6, eslint-config-prettier@catalog:, jsdom@^31.0.1, @playwright/test@^1.65.1, tailwindcss@4.3.5 (+27 more)
 
 ### Community 21 - "create-task.dto.ts"
-Cohesion: 0.11
-Nodes (32): CreateTaskDto, PRIORITY_MESSAGE, STATE_MESSAGE, OptionalChoiceField(), OptionalIdField(), OptionalIdOrNoneField(), ListTasksQueryDto, TASK_SORTS (+24 more)
+Cohesion: 0.12
+Nodes (31): OptionalTimeField(), CreateTaskDto, PRIORITY_MESSAGE, STATE_MESSAGE, OptionalChoiceField(), OptionalIdField(), OptionalIdOrNoneField(), ListTasksQueryDto (+23 more)
 
-### Community 22 - "copy.ts"
-Cohesion: 0.06
-Nodes (65): HomePage(), metadata, Celebrations(), CEREMONY_TONE, Closing(), CARD_VISUALS, GuestExperience(), PhotosSnippet() (+57 more)
+### Community 22 - "events/server.tsx"
+Cohesion: 0.09
+Nodes (30): EventsPage(), metadata, EventBrowser(), matches(), AddEventButton(), EventsEmpty(), EventsLoading(), EventsOverview() (+22 more)
 
 ### Community 23 - "scripts"
 Cohesion: 0.07
@@ -258,75 +274,75 @@ Nodes (28): description, devDependencies, prettier@catalog:, engines, node, pnpm
 
 ### Community 24 - "devDependencies"
 Cohesion: 0.09
-Nodes (23): devDependencies, eslint@catalog:, eslint-config-prettier@catalog:, @nestjs/cli@^12.0.13, @nestjs/schematics@^12.0.13, @nestjs/testing@^12.5.0, supertest@^7.3.2, @types/express@^5.0.6 (+15 more)
+Nodes (30): devDependencies, eslint@catalog:, eslint-config-prettier@catalog:, @nestjs/cli@^12.0.13, @nestjs/schematics@^12.0.13, @nestjs/testing@^12.5.0, supertest@^7.3.2, @types/archiver@^6.0.4 (+22 more)
 
-### Community 25 - "routes.ts"
-Cohesion: 0.17
-Nodes (17): ForgotPasswordPage(), metadata, LoginPage(), metadata, metadata, ResetPasswordPage(), metadata, SignupPage() (+9 more)
+### Community 25 - "media-exports.service.ts"
+Cohesion: 0.03
+Nodes (43): CreateMediaExportDto, MediaExportDto, exportNotFound(), ACTIVE, EXPORT_REQUESTED, MediaExportsService, safeName(), StoredExport (+35 more)
 
 ### Community 26 - "events.service.ts"
-Cohesion: 0.07
-Nodes (38): CreateEventDto, EventVenueInputDto, EventDto, EventLivestreamDto, EventVenueDto, OptionalLineField(), OptionalLinkField(), OptionalTimeField() (+30 more)
+Cohesion: 0.10
+Nodes (17): CreateEventDto, EventVenueInputDto, OptionalLineField(), OptionalLinkField(), OptionalTimeZoneField(), UpdateEventDto, EVENT_LIMITS, EVENT_LIST_LIMIT (+9 more)
 
-### Community 27 - "events/server.tsx"
-Cohesion: 0.17
-Nodes (20): EventsPage(), metadata, AddEventButton(), EventsEmpty(), EventsLoading(), EventsOverview(), EventsSection(), EventStats() (+12 more)
+### Community 27 - "photos/server.tsx"
+Cohesion: 0.10
+Nodes (30): metadata, PhotosPage(), RefreshWhileProcessing(), AlbumsEmpty(), GalleryCard(), PendingCard(), PhotosLoading(), PhotosSection() (+22 more)
 
-### Community 28 - "website-images.service.ts"
-Cohesion: 0.11
-Nodes (14): imageNotFound(), uploadRejected(), websiteNotFound(), websiteNotReady(), EXTENSIONS, imageTypeOf(), StoredAsset, WebsiteImagesService (+6 more)
+### Community 28 - "accept-invitation.tsx"
+Cohesion: 0.10
+Nodes (26): ForgotPasswordPage(), metadata, AcceptInvitationPage(), metadata, LoginPage(), metadata, metadata, ResetPasswordPage() (+18 more)
 
-### Community 29 - "WeddingDto"
-Cohesion: 0.13
-Nodes (5): MemberListDto, WeddingDto, toWeddingDto(), WeddingsController, WeddingsService
+### Community 29 - "workspace/server.tsx"
+Cohesion: 0.10
+Nodes (25): DashboardPage(), metadata, OpenWorkspace(), metadata, WeddingWorkspaceLayout(), Workspace(), WorkspaceLoading(), WorkspaceProblem() (+17 more)
 
 ### Community 30 - "catalog"
 Cohesion: 0.09
-Nodes (21): allowBuilds, msgpackr-extract, @scarf/scarf, eslint-plugin-import>eslint, eslint-plugin-jsx-a11y>eslint, eslint-plugin-react>eslint, openapi-typescript>typescript, catalog (+13 more)
+Nodes (22): allowBuilds, msgpackr-extract, @scarf/scarf, sharp, eslint-plugin-import>eslint, eslint-plugin-jsx-a11y>eslint, eslint-plugin-react>eslint, openapi-typescript>typescript (+14 more)
 
-### Community 31 - "website.service.ts"
-Cohesion: 0.15
-Nodes (19): CoverUploadDto, READINESS_KEYS, ReadinessCheckDto, ReadinessKey, SlugAvailabilityDto, WebsiteReadinessDto, contentShape, WebsiteConfigDocument (+11 more)
+### Community 31 - "parseObjectId"
+Cohesion: 0.03
+Nodes (78): AlbumStats, NO_PHOTOS, photoImageUrl(), StoredAlbum, AlbumCountsDto, BulkModerationResultDto, MODERATION_ACTIONS, ModerationAction (+70 more)
 
 ### Community 32 - "healthcheck"
 Cohesion: 0.11
 Nodes (20): interval, retries, start_period, test, timeout, command, healthcheck, image (+12 more)
 
-### Community 33 - "weddings.service.ts"
-Cohesion: 0.10
-Nodes (23): CreateWeddingDto, normalizeText, OptionalDateField(), UpdateWeddingDto, WEDDING_QUOTA_BYTES, isFallbackBase(), isValidSlug(), SLUG_LIMITS (+15 more)
+### Community 33 - "slug.ts"
+Cohesion: 0.36
+Nodes (7): isFallbackBase(), SLUG_LIMITS, SLUG_MESSAGE, SLUG_PATTERN, slugBase(), toWords(), withSuffix()
 
 ### Community 34 - "contracts/package.json"
 Cohesion: 0.14
 Nodes (15): description, devDependencies, openapi-typescript@^7.13.0, typescript@catalog:, exports, ./openapi.json, typescript, name (+7 more)
 
-### Community 35 - "website.module.ts"
-Cohesion: 0.10
-Nodes (8): FILE_ASSET_KINDS, FILE_ASSET_STATES, FileAsset, FileAssetDocument, FileAssetSchema, WebsiteConfig, WebsiteHttpModule, WebsiteModule
+### Community 35 - "dependencies"
+Cohesion: 0.08
+Nodes (26): dependencies, archiver@^7.0.1, @aws-sdk/client-s3@^3.1175.0, @aws-sdk/lib-storage@^3.1175.0, @aws-sdk/s3-presigned-post@^3.1175.0, bullmq@^6.7.7, class-transformer@^0.5.1, class-validator@^0.15.1 (+18 more)
 
 ### Community 36 - "UpdateWebsiteDto"
-Cohesion: 0.13
-Nodes (7): blockText, CoverUploadRequestDto, lineText, PublishWebsiteDto, UpdateWebsiteDto, WebsiteContentInputDto, WebsiteFaqInputDto
+Cohesion: 0.18
+Nodes (4): blockText, lineText, WebsiteContentInputDto, WebsiteFaqInputDto
 
-### Community 37 - "guest-directory.tsx"
-Cohesion: 0.07
-Nodes (63): GuestsPage(), metadata, GuestDetails(), moment(), Filter(), GuestDirectory(), change(), GuestRow() (+55 more)
+### Community 37 - "guests/server.tsx"
+Cohesion: 0.05
+Nodes (79): GuestsPage(), metadata, GuestDetails(), copyLink(), moment(), whatsappUrl(), Filter(), GuestDirectory() (+71 more)
 
-### Community 39 - "wedding-access.service.ts"
-Cohesion: 0.06
-Nodes (28): ACTIVE_OWNED_INDEX, MEMBERSHIP_STATUSES, MembershipStatus, WeddingMembership, WeddingMembershipDocument, WeddingMembershipSchema, Wedding, WeddingDocument (+20 more)
+### Community 39 - "mongoose"
+Cohesion: 0.03
+Nodes (49): RESET_PASSWORD_TTL_MS, SESSION_ABSOLUTE_MS, SESSION_IDLE_MS, SESSION_TOUCH_MS, VERIFY_EMAIL_TTL_MS, NewSession, NOT_DELETED, StoredEvent (+41 more)
 
 ### Community 40 - "vendors.service.ts"
-Cohesion: 0.16
-Nodes (27): OptionalTextBlockField(), CreateExpenseDto, UpdateExpenseDto, PartySizeField(), CreateGuestDto, IMPORT_MODES, UpdateGuestDto, GUEST_LIMITS (+19 more)
+Cohesion: 0.24
+Nodes (18): OptionalTextBlockField(), PartySizeField(), CreateGuestDto, IMPORT_MODES, UpdateGuestDto, CATEGORY_EMPTY, CreateVendorDto, NAME_EMPTY (+10 more)
 
-### Community 41 - "tasks/server.tsx"
+### Community 41 - "react"
 Cohesion: 0.06
-Nodes (52): metadata, TasksPage(), NoResults(), SearchParams, Stat(), TaskPanel(), TasksEmpty(), TasksLoading() (+44 more)
+Nodes (45): nextConfig, securityHeaders, EventActions(), WeddingEvent, Tab, TaskCounts, WeddingEvent, EventCard() (+37 more)
 
-### Community 42 - "rsvp-page.tsx"
-Cohesion: 0.11
-Nodes (18): Answer, answerOf(), Choice, ChoiceGroup(), CHOICES, Counter(), Notice, RsvpForm() (+10 more)
+### Community 42 - "browser.ts"
+Cohesion: 0.06
+Nodes (50): Invitation(), InvitationPage(), metadata, ReminderChoice(), Answer, answerOf(), Choice, ChoiceGroup() (+42 more)
 
 ### Community 43 - "wedding-details-form.test.tsx"
 Cohesion: 0.25
@@ -336,25 +352,33 @@ Nodes (5): fill(), fillRequired(), goTo, patch, post
 Cohesion: 0.17
 Nodes (11): compilerOptions, esModuleInterop, forceConsistentCasingInFileNames, isolatedModules, noFallthroughCasesInSwitch, noImplicitOverride, noUncheckedIndexedAccess, skipLibCheck (+3 more)
 
-### Community 45 - "guests.controller.ts"
-Cohesion: 0.07
-Nodes (15): GuestListDto, ImportCommitResultDto, ReminderPreviewDto, ReminderResultDto, ReminderScopeDto, ReminderSettingsDto, ReminderSkipsDto, SendReminderDto (+7 more)
+### Community 45 - "guest-reminders.service.ts"
+Cohesion: 0.08
+Nodes (29): ReminderPreviewDto, ReminderSkipsDto, SkippedGuestsDto, UpdateReminderSettingsDto, dailyEmailLimit(), guestRemindersOff(), invitationLinkOff(), invitationNotShared() (+21 more)
 
-### Community 47 - "@nestjs/mongoose"
-Cohesion: 0.03
-Nodes (54): AuthModule, EventsModule, ExpensesModule, ExpenseDocument, ExpenseSchema, GuestLinks, DEVELOPMENT_LINK_SECRET, GUEST_LIST_LIMIT (+46 more)
+### Community 46 - ".answer"
+Cohesion: 0.14
+Nodes (3): CurrentGuest, GuestAccessController, GuestContext
+
+### Community 47 - "NotificationsService"
+Cohesion: 0.11
+Nodes (3): NotificationsService, MembershipInvite, OutboxService
 
 ### Community 48 - "Public"
-Cohesion: 0.30
-Nodes (3): AuthController, Public(), readSessionCookie()
+Cohesion: 0.24
+Nodes (3): AuthController, AllowUnverified(), Public()
 
 ### Community 49 - "themed-site.tsx"
-Cohesion: 0.18
-Nodes (21): NO_CELEBRATIONS, PRIVATE_REPLY_NOTE, RSVP_CTA, SECTION_ANCHORS, SectionId, sectionsOf(), byDay(), daysToGo() (+13 more)
+Cohesion: 0.06
+Nodes (53): PublicGalleryController, datesOf(), HeaderView, initials(), RsvpHeader(), RsvpHero(), CeremonyRow(), CoverImage() (+45 more)
 
-### Community 51 - "rsvp-page.tsx"
-Cohesion: 0.18
-Nodes (18): Invitation(), InvitationPage(), metadata, Invitation(), invitationKey(), Phase, PrivateNote(), RsvpOpening() (+10 more)
+### Community 51 - "mongo.ts"
+Cohesion: 0.13
+Nodes (12): duplicateKeyOn(), assertOrdered(), MigrationRecord, MigrationRunner, MIGRATIONS_COLLECTION, Migration, DuplicateKey, duplicateKey() (+4 more)
+
+### Community 52 - "preview.tsx"
+Cohesion: 0.17
+Nodes (18): metadata, WebsitePreviewPage(), metadata, WebsitePage(), isTemplate(), Problem(), WebsitePreview(), WebsitePreviewLoading() (+10 more)
 
 ### Community 54 - "nest-cli.json"
 Cohesion: 0.29
@@ -364,193 +388,201 @@ Nodes (6): collection, compilerOptions, deleteOutDir, plugins, $schema, sourceRo
 Cohesion: 0.29
 Nodes (6): compilerOptions, rootDir, exclude, extends, include, ./tsconfig.json
 
-### Community 56 - "public-website.service.ts"
-Cohesion: 0.19
-Nodes (12): PublicDateRangeDto, PublicEventDto, PublicEventListDto, PublicWebsiteDto, WebsiteContentDto, WebsiteFaqDto, PublicWebsiteService, publicCoverUrl() (+4 more)
-
-### Community 58 - "vendors/server.tsx"
+### Community 56 - "website-input.dto.ts"
 Cohesion: 0.18
-Nodes (19): metadata, VendorsPage(), SearchParams, Stat(), VendorsEmpty(), VendorsLoading(), VendorsSection(), VendorStats() (+11 more)
+Nodes (14): GuestViewDto, contentShape, WebsiteConfigDocument, WebsiteConfigSchema, WebsiteContent, WebsiteFaq, COVER_MAX_BYTES, COVER_TYPES (+6 more)
+
+### Community 58 - ".consume"
+Cohesion: 0.11
+Nodes (5): ActionTokensService, PasswordResetService, AuthActionTokenDocument, AuthTokenPurpose, RateLimitedException
 
 ### Community 59 - "schema.d.ts"
 Cohesion: 0.33
 Nodes (5): components, $defs, operations, paths, webhooks
 
-### Community 60 - "workspace-shell.tsx"
-Cohesion: 0.11
-Nodes (29): metadata, OnboardingLayout(), metadata, WeddingWorkspaceLayout(), SignOutButton(), signOut(), AccountChip(), LogoMark() (+21 more)
+### Community 60 - "onboarding/server.tsx"
+Cohesion: 0.09
+Nodes (39): CreateWeddingPage(), metadata, Step(), InvitePartnerPage(), metadata, metadata, OverviewPage(), accountHome (+31 more)
+
+### Community 61 - ".create"
+Cohesion: 0.09
+Nodes (9): unknownEvents(), VendorDto, VendorEventDto, VendorListDto, unknownVendorEvents(), vendorNotFound(), VendorsController, distinctIds() (+1 more)
 
 ### Community 62 - "routes.ts"
-Cohesion: 0.19
-Nodes (19): PublicLayout(), renderHome(), AccountHome, accountHome, currentUserOrNull, InboxPanel(), HeaderAccount(), HeaderAccountPlaceholder() (+11 more)
+Cohesion: 0.10
+Nodes (37): AppLayout(), metadata, AuthLayout(), metadata, metadata, OnboardingLayout(), PublicLayout(), renderHome() (+29 more)
 
 ### Community 63 - "auth.service.ts"
-Cohesion: 0.05
-Nodes (29): ActionTokensService, ClientContext, invalidLink(), rejectPassword(), RATE_LIMITS, AuthService, invalidCredentials(), normalizeEmail() (+21 more)
+Cohesion: 0.13
+Nodes (10): ClientContext, invalidLink(), rejectPassword(), AuthHttpModule, RATE_LIMITS, SignedIn, normalizeEmail(), EmailVerificationService (+2 more)
 
 ### Community 66 - "health.controller.ts"
-Cohesion: 0.16
-Nodes (5): HealthController, noTerminusDocs, toDto(), HealthDto, RedisHealthIndicator
+Cohesion: 0.13
+Nodes (8): @nestjs/terminus@^12.1.0, HealthController, noTerminusDocs, toDto(), HealthDto, HealthModule, RedisHealthIndicator, @nestjs/terminus
 
-### Community 67 - "WebsiteService"
-Cohesion: 0.21
-Nodes (5): WebsiteDto, websiteChanged(), draftCoverUrl(), isDuplicateKey(), WebsiteService
+### Community 67 - "planning-features.tsx"
+Cohesion: 0.06
+Nodes (59): HomePage(), metadata, Celebrations(), CEREMONY_TONE, Closing(), CARD_VISUALS, GuestExperience(), PhotosSnippet() (+51 more)
 
 ### Community 68 - "compilerOptions"
 Cohesion: 0.12
 Nodes (16): compilerOptions, allowJs, incremental, jsx, lib, module, moduleResolution, noEmit (+8 more)
 
 ### Community 69 - "guest-access.controller.ts"
-Cohesion: 0.24
-Nodes (11): CurrentGuest, GuestContext, clearGuestCookie(), cookieOptions(), GUEST_COOKIE, readGuestCookie(), setGuestCookie(), guestSessionMissing() (+3 more)
+Cohesion: 0.25
+Nodes (9): clearGuestCookie(), cookieOptions(), GUEST_COOKIE, readGuestCookie(), setGuestCookie(), guestSessionMissing(), GuestRequest, GuestSessionGuard (+1 more)
 
 ### Community 70 - "@nestjs/common"
-Cohesion: 0.03
-Nodes (56): dependencies, @aws-sdk/client-s3@^3.1175.0, @aws-sdk/s3-presigned-post@^3.1175.0, bullmq@^6.7.7, class-transformer@^0.5.1, class-validator@^0.15.1, ioredis@^6.0.0, mongoose@^9.12.1 (+48 more)
+Cohesion: 0.05
+Nodes (39): AccountsService, AuthModule, AUTH_TOKEN_PURPOSES, AuthActionTokenSchema, AuthSessionDocument, AuthSessionSchema, EventsHttpModule, EventsModule (+31 more)
 
-### Community 71 - "@nestjs/swagger"
-Cohesion: 0.24
-Nodes (8): InvitePreviewDto, INVITE_EMAIL_STATUSES, INVITE_VIEW_STATUSES, MEMBERSHIP_ROLES, MembershipRole, WEDDING_STATUSES, WeddingStatus, @nestjs/swagger
+### Community 71 - "expenses.e2e-spec.ts"
+Cohesion: 0.14
+Nodes (13): addManager(), created(), detail(), DetailBody, EntryBody, errorOf(), ExpenseBody, fieldsOf() (+5 more)
 
-### Community 72 - "@testing-library/react"
-Cohesion: 0.10
-Nodes (13): base, events, post, INVITE_TOKEN_KEY, answer(), get, me, post (+5 more)
+### Community 73 - "networkFailure"
+Cohesion: 0.07
+Nodes (85): goTo, post, ForgotPasswordForm(), submit(), goTo(), useFocusFirstProblem(), alertFor(), LoginForm() (+77 more)
 
-### Community 73 - "event-card.tsx"
-Cohesion: 0.22
-Nodes (14): EventCard(), STATES, TaskCounts, TaskTiles(), TONES, WeddingEvent, missingDetails(), EVENT_PRESETS (+6 more)
+### Community 74 - "support/worker.ts"
+Cohesion: 0.07
+Nodes (33): EMAIL_COMPOSERS, EmailDeliveryHandler, EmailDeliveryModule, mailTransportProvider, FileMailTransport, MemoryMailTransport, MailTransport, OutgoingEmail (+25 more)
 
-### Community 74 - "email-delivery.handler.ts"
-Cohesion: 0.06
-Nodes (42): ACTIVE, CheckedRow, StoredGuest, StoredInvitation, StoredToken, EMAIL_COMPOSERS, EmailDeliveryHandler, mailTransportProvider (+34 more)
-
-### Community 76 - "GuestForm"
+### Community 76 - "GuestRemindersService"
 Cohesion: 0.20
-Nodes (9): GuestForm(), fail(), submit(), GUEST_INPUT_LIMITS, GuestInput, guestInputErrors(), isEmail(), isPhone() (+1 more)
+Nodes (4): ReminderResultDto, ReminderScopeDto, SendReminderDto, GuestRemindersService
 
 ### Community 77 - "migrations.ts"
-Cohesion: 0.13
-Nodes (14): eventIndexes, expenseEvents, expenseIndexes, fileAssetIndexes, guestIndexes, identityIndexes, inviteIndexes, messagingIndexes (+6 more)
+Cohesion: 0.11
+Nodes (18): albumIndexes, eventIndexes, expenseEvents, expenseIndexes, fileAssetIndexes, guestIndexes, identityIndexes, inviteIndexes (+10 more)
 
 ### Community 79 - "contracts/tsconfig.json"
 Cohesion: 0.25
 Nodes (7): compilerOptions, module, moduleResolution, noEmit, extends, include, ../../tsconfig.base.json
 
-### Community 80 - "tracing.ts"
-Cohesion: 0.04
-Nodes (51): @nestjs/core@^12.5.0, crossFieldProblems(), DEFAULT_TRACE_MODE, Env, ENV_KEYS, MAIL_TRANSPORTS, MailTransportName, valid (+43 more)
+### Community 80 - "guest-upload.tsx"
+Cohesion: 0.13
+Nodes (18): metadata, UploadPage(), albumWhere(), GuestAlbum, GuestUpload(), choose(), send(), update() (+10 more)
 
-### Community 81 - "ImportCommitDto"
-Cohesion: 0.23
-Nodes (5): CreateLinkDto, ImportCommitDto, ImportPreviewDto, ImportRowDto, InvitationSelectionDto
-
-### Community 82 - "expenses/server.tsx"
+### Community 81 - "upload-links.controller.ts"
 Cohesion: 0.08
-Nodes (42): DashboardPage(), metadata, OpenWorkspace(), metadata, WebsitePreviewPage(), metadata, WebsitePage(), onboardingVisitor() (+34 more)
+Nodes (16): GuestAlbumDto, UPLOAD_CLOSED_REASONS, UploadClosedReason, CreateUploadLinkDto, EmailUploadLinkDto, EmailUploadLinkResultDto, ExchangeUploadTokenDto, PHOTO_INVITE_AUDIENCES (+8 more)
 
-### Community 83 - "[slug]/page.tsx"
-Cohesion: 0.23
-Nodes (9): metadata, PublicWeddingPage(), PublishedSite(), cinzel, jakarta, mono, rsvpFonts, ForwardInvitationLink() (+1 more)
+### Community 82 - "upload.ts"
+Cohesion: 0.16
+Nodes (18): Item, PhotoUploader(), choose(), pump(), retry(), update(), Status, UploadRow() (+10 more)
 
-### Community 84 - "rsvp-theme.ts"
-Cohesion: 0.18
-Nodes (12): modern, royal, RSVP_SKINS, RsvpSkin, RsvpThemeId, traditional, modern, royal (+4 more)
+### Community 83 - "PhotosController"
+Cohesion: 0.14
+Nodes (3): BulkModerationDto, PhotoDto, PhotosController
 
-### Community 85 - "networkFailure"
-Cohesion: 0.06
-Nodes (59): AcceptInvitationPage(), metadata, submit(), submit(), DeleteEventDialog(), confirm(), send(), submit() (+51 more)
+### Community 84 - "@nestjs/swagger"
+Cohesion: 0.12
+Nodes (15): ALLOW_UNVERIFIED_KEY, AuthenticatedRequest, PUBLIC_KEY, Authentication, TaskAssigneeDto, CreateMemberInviteDto, INVITABLE_ROLES, InvitePreviewDto (+7 more)
+
+### Community 85 - "accept-invitation.test.tsx"
+Cohesion: 0.33
+Nodes (6): answer(), get, me, post, preview, reply()
 
 ### Community 87 - "RsvpPatchDto"
-Cohesion: 0.17
-Nodes (4): ExchangeTokenDto, GUEST_RSVP_CHOICES, GuestRsvpChoice, RsvpPatchDto
+Cohesion: 0.15
+Nodes (5): ExchangeTokenDto, GUEST_RSVP_CHOICES, GuestRsvpChoice, RsvpPatchDto, GUEST_LIMITS
 
-### Community 88 - "event-browser.tsx"
-Cohesion: 0.23
-Nodes (8): EventBrowser(), EventItem, matches(), Tab, TaskCounts, items, WeddingEvent, isUpcoming()
+### Community 88 - "album-grid.tsx"
+Cohesion: 0.21
+Nodes (16): AlbumCard(), AlbumGrid(), choose(), AlbumSection(), ShareUploadsButton(), Album, ALBUM_FILTERS, AlbumFilter (+8 more)
 
-### Community 89 - "index.ts"
-Cohesion: 0.12
-Nodes (15): WeddingEvent, DrawerContext, EventDrawerApi, useEventDrawer(), WeddingEvent, Audience, OFFSETS, isUpcoming() (+7 more)
+### Community 89 - "guest-form.tsx"
+Cohesion: 0.11
+Nodes (20): GuestForm(), fail(), submit(), STALE, Audience, OFFSETS, GUEST_INPUT_LIMITS, GuestInput (+12 more)
 
-### Community 90 - "auth.decorators.ts"
-Cohesion: 0.20
-Nodes (6): ALLOW_UNVERIFIED_KEY, AllowUnverified(), AuthenticatedRequest, PUBLIC_KEY, MeDto, Authentication
-
-### Community 91 - "expenses.controller.ts"
-Cohesion: 0.22
-Nodes (16): CATEGORY_EMPTY, TITLE_EMPTY, VENDOR_MESSAGE, ChoiceField(), DayField(), IdField(), isCalendarDate(), MoneyPaiseField() (+8 more)
-
-### Community 93 - "password-policy.ts"
-Cohesion: 0.24
-Nodes (9): COMMON_BASE_WORDS, COMMON_PASSWORDS, isCommon(), LEET, lettersOf(), PASSWORD_MAX_LENGTH, PASSWORD_MESSAGES, PASSWORD_MIN_LENGTH (+1 more)
-
-### Community 94 - "pending-invitations.tsx"
+### Community 91 - "OptionalTextBlockField"
 Cohesion: 0.09
-Nodes (44): CreateWeddingPage(), metadata, Step(), InvitePartnerPage(), metadata, metadata, OverviewPage(), OverviewIntro() (+36 more)
+Nodes (33): CATEGORY_EMPTY, CreateExpenseDto, TITLE_EMPTY, VENDOR_MESSAGE, EntryPersonDto, EXPENSE_STATUSES, ExpenseEntryDto, ExpenseEventDto (+25 more)
+
+### Community 92 - "GuestAccessService"
+Cohesion: 0.15
+Nodes (9): GuestReminderChoiceDto, GuestViewEventDto, GuestAccessService, countTooLarge(), invitationNotFound(), linkUnavailable(), rsvpChanged(), rsvpClosed() (+1 more)
+
+### Community 93 - "password-hasher.ts"
+Cohesion: 0.12
+Nodes (11): AuthService, invalidCredentials(), ARGON2_COST, derive(), encode(), normalize(), parse(), ParsedHash (+3 more)
+
+### Community 94 - "tasks/server.tsx"
+Cohesion: 0.07
+Nodes (47): metadata, TasksPage(), NoResults(), SearchParams, Stat(), TaskPanel(), TasksEmpty(), TasksLoading() (+39 more)
 
 ### Community 95 - "api/eslint.config.mjs"
-Cohesion: 0.22
-Nodes (6): @eslint/js@catalog:, typescript-eslint@catalog:, eslint-config-next@16.4.6, eslint-config-next, @eslint/js, typescript-eslint
+Cohesion: 0.29
+Nodes (4): @eslint/js@catalog:, typescript-eslint@catalog:, @eslint/js, typescript-eslint
 
-### Community 96 - "EventBrief"
-Cohesion: 0.47
-Nodes (6): EventBrief, addDays(), dueOffsets(), isUpcoming(), localNow(), haldi
+### Community 96 - ".initiate"
+Cohesion: 0.15
+Nodes (5): UploadAccessController, cookieOptions(), readUploadCookie(), setUploadCookie(), UPLOAD_COOKIE
 
 ### Community 98 - "LocalObjectStorage"
-Cohesion: 0.14
-Nodes (3): LocalObjectStorage, notFound(), S3ObjectStorage
+Cohesion: 0.07
+Nodes (5): LocalUploadController, LocalObjectStorage, notFound(), S3ObjectStorage, StorageHttpModule
 
-### Community 99 - "vendors/input.ts"
-Cohesion: 0.42
-Nodes (7): isEmail(), isPhone(), empty, tooLong(), VENDOR_INPUT_LIMITS, VendorInput, vendorInputErrors()
+### Community 99 - "review-queue.tsx"
+Cohesion: 0.26
+Nodes (14): PhotoGrid(), move(), STATE, ACTIONS, addedBy(), PhotoViewer(), FilterChip(), ReviewQueue() (+6 more)
 
-### Community 101 - "dependencies"
-Cohesion: 0.22
-Nodes (9): dependencies, @my-marriage/contracts@workspace:*, next@16.4.6, openapi-fetch@^0.17.0, react@19.3.1, react-dom@19.3.1, @my-marriage/contracts, openapi-fetch (+1 more)
+### Community 101 - "tasks.e2e-spec.ts"
+Cohesion: 0.18
+Nodes (12): addManager(), create(), created(), errorOf(), eventIn(), fieldsOf(), ListBody, listed() (+4 more)
 
-### Community 102 - "site-footer.tsx"
+### Community 102 - "media-exports.controller.ts"
+Cohesion: 0.17
+Nodes (3): MediaExportListDto, attachment(), MediaExportsController
+
+### Community 106 - "[slug]/page.tsx"
+Cohesion: 0.18
+Nodes (14): metadata, PublicWeddingPage(), PublishedSite(), cinzel, jakarta, mono, rsvpFonts, Device (+6 more)
+
+### Community 107 - "upload-links.e2e-spec.ts"
+Cohesion: 0.17
+Nodes (15): PHOTO_UPLOADED, addPhoto(), dataOf(), PublicAlbum, publishedWedding(), dataOf(), guestUpload(), GuestUploadBody (+7 more)
+
+### Community 108 - "wedding.schema.ts"
 Cohesion: 0.15
-Nodes (15): nextConfig, securityHeaders, AppLayout(), metadata, AuthLayout(), metadata, manrope, metadata (+7 more)
+Nodes (10): Wedding, WEDDING_QUOTA_BYTES, WeddingDocument, WeddingQuota, WeddingQuotaSchema, WeddingSchema, couple(), create() (+2 more)
 
-### Community 103 - "tasks/input.ts"
-Cohesion: 0.38
-Nodes (5): TASK_INPUT_LIMITS, TaskInput, taskInputErrors(), blank, tooLong()
+### Community 109 - "vendors.e2e-spec.ts"
+Cohesion: 0.15
+Nodes (7): addManager(), create(), created(), errorOf(), fieldsOf(), ownerWithWedding(), VendorBody
 
-### Community 106 - "scripts"
-Cohesion: 0.25
-Nodes (8): scripts, build, dev, lint, start, test, test:browser, typecheck
-
-### Community 107 - "events/input.ts"
-Cohesion: 0.36
-Nodes (6): EVENT_INPUT_LIMITS, EventInput, eventInputErrors(), blank, timeZoneChoices(), tooLong()
-
-### Community 108 - "validation.test.ts"
-Cohesion: 0.60
-Nodes (3): OUTSIDE_INDIA, WEDDING_STATES, valid
+### Community 110 - "ref_vitest"
+Cohesion: 0.12
+Nodes (12): ProbeDto, VenueDto, answerHaldi(), asGuest(), ok(), plannedWedding(), PreviewBody, send() (+4 more)
 
 ### Community 111 - "TasksService"
-Cohesion: 0.11
-Nodes (9): WeddingTask, taskNotFound(), timeWithoutDay(), unknownAssignee(), unknownEvent(), Context, literal(), TasksService (+1 more)
+Cohesion: 0.08
+Nodes (11): TaskDto, TaskListDto, WeddingTask, taskNotFound(), timeWithoutDay(), unknownAssignee(), unknownEvent(), TasksController (+3 more)
 
-### Community 114 - "vendor-form.test.tsx"
-Cohesion: 0.17
-Nodes (10): events, field(), onCancel, onSaved, patch, post, refresh, renderForm() (+2 more)
+### Community 112 - "photo-uploads.e2e-spec.ts"
+Cohesion: 0.12
+Nodes (6): OutboxEvent, initiate(), ownerWithAlbum(), PhotoBody, started(), UploadBody
 
 ### Community 115 - "configure-app.ts"
 Cohesion: 0.06
-Nodes (35): rxjs@^7.8.2, API_PREFIX, configureApp(), createOpenApiDocument(), ApiErrorDetailDto, ApiErrorDto, FieldErrorDto, ApiExceptionFilter (+27 more)
+Nodes (44): AppModule, API_PREFIX, configureApp(), createOpenApiDocument(), app, config, ApiErrorDetailDto, ApiErrorDto (+36 more)
 
-### Community 119 - "site.ts"
+### Community 119 - "vendor-form.test.tsx"
 Cohesion: 0.17
-Nodes (21): datesOf(), HeaderView, initials(), RsvpHeader(), RsvpHero(), CeremonyRow(), CoverImage(), Livestream() (+13 more)
+Nodes (10): events, field(), onCancel, onSaved, patch, post, refresh, renderForm() (+2 more)
 
-### Community 120 - "modules/auth/session-cookie.ts"
-Cohesion: 0.38
-Nodes (4): clearSessionCookie(), cookieOptions(), SESSION_COOKIE, setSessionCookie()
+### Community 120 - "upload-access.service.ts"
+Cohesion: 0.12
+Nodes (11): DEVELOPMENT_LINK_SECRET, GuestUploadDto, uploadLinkUnavailable(), uploadSessionMissing(), UPLOAD_LINK_LIMITS, UPLOAD_SESSION_HOURS, GuestUploader, StoredCapability (+3 more)
+
+### Community 121 - "WebsiteService"
+Cohesion: 0.12
+Nodes (7): WebsiteDto, WebsiteReadinessDto, WebsiteController, websiteChanged(), isDuplicateKey(), WebsiteService, isValidSlug()
 
 ### Community 122 - "ledger-dialogs.tsx"
 Cohesion: 0.04
-Nodes (99): ExpensesPage(), metadata, DeleteExpenseDialog(), ENTRY_ICONS, entryAmount(), entryCaption(), ExpenseDetails(), LinkChip() (+91 more)
+Nodes (91): ExpensesPage(), metadata, ENTRY_ICONS, entryAmount(), entryCaption(), ExpenseDetails(), LinkChip(), ExpenseDirectory() (+83 more)
 
 ### Community 124 - "scripts"
 Cohesion: 0.15
@@ -560,57 +592,101 @@ Nodes (13): scripts, build, db:migrate, dev, dev:worker, lint, openapi:export, s
 Cohesion: 0.35
 Nodes (7): metadata, PrivacyPage(), metadata, TermsPage(), LegalDocument(), LegalDocumentProps, readingContainer
 
-### Community 134 - "expenses.service.ts"
-Cohesion: 0.06
-Nodes (47): EntryPersonDto, EXPENSE_STATUSES, ExpenseDetailDto, ExpenseDto, ExpenseEntryDto, ExpenseEventDto, ExpenseLedgerDto, ExpenseListDto (+39 more)
+### Community 126 - "event.schema.ts"
+Cohesion: 0.13
+Nodes (12): EventVenueDto, googleMapsUrl(), parse(), youtubeVideoId(), youtubeWatchUrl(), EVENT_STATES, EventState, EventVenue (+4 more)
+
+### Community 128 - "website-projection.ts"
+Cohesion: 0.30
+Nodes (8): PublicDateRangeDto, PublicEventDto, PublicWebsiteDto, WebsiteFaqDto, contentDto(), projectWebsite(), publicEvent(), publicEvents()
+
+### Community 133 - "todayIn"
+Cohesion: 0.38
+Nodes (9): DEFAULT_EVENT_TIME_ZONE, isTimeZone(), isWallTime(), offsetAt(), todayIn(), WallClock, wallClock(), wallClockAt() (+1 more)
+
+### Community 134 - "AuthenticatedUser"
+Cohesion: 0.08
+Nodes (24): ExpenseDetailDto, ExpenseDto, ExpenseListDto, ExpenseTotalsDto, alreadyReversed(), amountBelowPaid(), discountTooLarge(), entryNotFound() (+16 more)
 
 ### Community 135 - "ComposedEmail"
-Cohesion: 0.22
-Nodes (17): answerNote(), C, card(), celebrationsOf(), eventLines(), eventRow(), eventTable(), guestInviteMessage() (+9 more)
+Cohesion: 0.12
+Nodes (26): passwordChangedMessage(), passwordResetMessage(), verifyEmailMessage(), answerNote(), C, card(), celebrationsOf(), eventLines() (+18 more)
 
-### Community 142 - "EventActions"
-Cohesion: 0.19
-Nodes (10): EventActions(), confirmDelete(), del, event, openMenu(), refresh, renderActions(), EventDrawer() (+2 more)
+### Community 137 - "password-policy.ts"
+Cohesion: 0.27
+Nodes (9): COMMON_BASE_WORDS, COMMON_PASSWORDS, isCommon(), LEET, lettersOf(), PASSWORD_MESSAGES, PASSWORD_MIN_LENGTH, passwordProblems() (+1 more)
+
+### Community 138 - "dependencies"
+Cohesion: 0.18
+Nodes (11): dependencies, @my-marriage/contracts@workspace:*, next@16.4.6, openapi-fetch@^0.17.0, qrcode@^1.5.4, react@19.3.1, react-dom@19.3.1, @my-marriage/contracts (+3 more)
+
+### Community 141 - "website.controller.ts"
+Cohesion: 0.31
+Nodes (3): CoverUploadRequestDto, PublishWebsiteDto, UpdateWebsiteDto
+
+### Community 142 - "event-actions.test.tsx"
+Cohesion: 0.24
+Nodes (9): confirmDelete(), del, event, openMenu(), refresh, renderActions(), EventDrawer(), close() (+1 more)
 
 ### Community 143 - "pending-invitations.test.tsx"
 Cohesion: 0.29
 Nodes (6): failure(), goTo, invite, other, post, reply()
 
-### Community 146 - "member-invites.service.ts"
-Cohesion: 0.06
-Nodes (28): RESET_PASSWORD_TTL_MS, SESSION_ABSOLUTE_MS, SESSION_IDLE_MS, SESSION_TOUCH_MS, VERIFY_EMAIL_TTL_MS, NewSession, StoredInvite, INVITE_STATUSES (+20 more)
+### Community 144 - ".events"
+Cohesion: 0.18
+Nodes (3): PublicEventListDto, PublicWebsiteController, PublicWebsiteService
+
+### Community 145 - "task-form.test.tsx"
+Cohesion: 0.10
+Nodes (12): @testing-library/react@^16.3.3, EventItem, items, base, choices, onCancel, onSaved, patch (+4 more)
+
+### Community 146 - "member-invites.e2e-spec.ts"
+Cohesion: 0.25
+Nodes (5): invitationEmail(), invite(), invited(), ownerWithWedding(), tag()
+
+### Community 147 - "scripts"
+Cohesion: 0.25
+Nodes (8): scripts, build, dev, lint, start, test, test:browser, typecheck
 
 ### Community 148 - "preview-tabs.test.tsx"
 Cohesion: 0.29
 Nodes (3): PreviewTab, PreviewTabs(), tabs
 
-### Community 152 - "csv.ts"
-Cohesion: 0.21
-Nodes (16): ExportGuests(), download(), FORMAT, ImportGuests(), chosen(), Preview, Result, COLUMNS (+8 more)
+### Community 149 - "reminder-schedule.ts"
+Cohesion: 0.54
+Nodes (5): addDays(), dueOffsets(), isUpcoming(), localNow(), haldi
 
-### Community 160 - "icon.tsx"
-Cohesion: 0.09
-Nodes (31): EditTaskButton(), Mark(), QuickComplete(), STALE, patch, refresh, renderActions(), task (+23 more)
+### Community 152 - "website.dto.ts"
+Cohesion: 0.29
+Nodes (6): CoverUploadDto, READINESS_KEYS, ReadinessCheckDto, ReadinessKey, SlugAvailabilityDto, WebsiteContentDto
+
+### Community 158 - "app/layout.tsx"
+Cohesion: 0.33
+Nodes (3): manrope, metadata, newsreader
+
+### Community 159 - "[albumId]/page.tsx"
+Cohesion: 0.67
+Nodes (3): AlbumPage(), metadata, AlbumLoading()
 
 ## Knowledge Gaps
 - **5 isolated node(s):** `RFC-4180`, `./tsconfig.json`, `../../tsconfig.base.json`, `../../tsconfig.base.json`, `../../tsconfig.base.json`
-  These have ≤1 connection - possible missing edges. (Counts symbols only; 1151 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **43 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges. (Counts symbols only; 1372 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **40 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `@nestjs/common` connect `@nestjs/common` to `auth.controller.ts`, `ref_vitest`, `expenses.service.ts`, `member-invites.controller.ts`, `guest-access.service.ts`, `AuthenticatedUser`, `outbox-relay.ts`, `auth-email.composer.ts`, `member-invites.service.ts`, `create-task.dto.ts`, `events.service.ts`, `website-images.service.ts`, `WeddingDto`, `website.service.ts`, `weddings.service.ts`, `website.module.ts`, `wedding-access.service.ts`, `vendors.service.ts`, `guests.controller.ts`, `@nestjs/mongoose`, `public-website.service.ts`, `auth.service.ts`, `health.controller.ts`, `guest-access.controller.ts`, `email-delivery.handler.ts`, `tracing.ts`, `auth.decorators.ts`, `expenses.controller.ts`, `local-upload.controller.ts`, `TasksService`, `configure-app.ts`?**
-  _High betweenness centrality (0.097) - this node is a cross-community bridge._
+- **Why does `AuthenticatedUser` connect `AuthenticatedUser` to `auth.controller.ts`, `website-projection.ts`, `AuthenticatedUser`, `AlbumsService`, `member-invites.controller.ts`, `website.controller.ts`, `GuestsController`, `guests.service.ts`, `create-task.dto.ts`, `media-exports.service.ts`, `events.service.ts`, `parseObjectId`, `.create`, `mongoose`, `vendors.service.ts`, `guest-reminders.service.ts`, `Public`, `.create`, `auth.service.ts`, `@nestjs/common`, `GuestRemindersService`, `upload-links.controller.ts`, `PhotosController`, `@nestjs/swagger`, `OptionalTextBlockField`, `media-exports.controller.ts`, `.update`, `.create`, `TasksService`, `.complete`, `WebsiteService`?**
+  _High betweenness centrality (0.100) - this node is a cross-community bridge._
 - **What connects `RFC-4180`, `./tsconfig.json`, `../../tsconfig.base.json` to the rest of the system?**
   _5 weakly-connected nodes found - possible missing edges._
-- **Should `FormAlert` be split into smaller, more focused modules?**
-  _Cohesion score 0.08319055777650866 - nodes in this community are weakly interconnected._
-- **Why does `AuthenticatedUser` connect `AuthenticatedUser` to `auth.controller.ts`, `expenses.service.ts`, `member-invites.controller.ts`, `ExpensesController`, `GuestsController`, `member-invites.service.ts`, `create-task.dto.ts`, `events.service.ts`, `WeddingDto`, `website.service.ts`, `weddings.service.ts`, `.create`, `wedding-access.service.ts`, `vendors.service.ts`, `guests.controller.ts`, `@nestjs/mongoose`, `.create`, `.create`, `auth.service.ts`, `WebsiteService`, `email-delivery.handler.ts`, `auth.decorators.ts`, `expenses.controller.ts`, `TasksService`, `WebsiteService`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
+- **Should `auth.controller.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.1319073083778966 - nodes in this community are weakly interconnected._
+- **Why does `Icon()` connect `Icon` to `task-form.tsx`, `builder.tsx`, `vendor-directory.tsx`, `events/server.tsx`, `photos/server.tsx`, `guests/server.tsx`, `react`, `browser.ts`, `themed-site.tsx`, `preview.tsx`, `onboarding/server.tsx`, `routes.ts`, `planning-features.tsx`, `networkFailure`, `guest-upload.tsx`, `upload.ts`, `album-grid.tsx`, `guest-form.tsx`, `tasks/server.tsx`, `review-queue.tsx`, `[slug]/page.tsx`, `ledger-dialogs.tsx`, `legal-document.tsx`?**
+  _High betweenness centrality (0.091) - this node is a cross-community bridge._
+- **Should `task-form.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.0578386605783866 - nodes in this community are weakly interconnected._
+- **Why does `@nestjs/common` connect `@nestjs/common` to `auth.controller.ts`, `auth-password-reset.e2e-spec.ts`, `AuthenticatedUser`, `AlbumsService`, `Traced`, `website.controller.ts`, `GuestsController`, `guests.service.ts`, `@nestjs/common`, `member-invites.e2e-spec.ts`, `create-task.dto.ts`, `devDependencies`, `media-exports.service.ts`, `events.service.ts`, `parseObjectId`, `dependencies`, `mongoose`, `vendors.service.ts`, `guest-reminders.service.ts`, `mongo.ts`, `.create`, `auth.service.ts`, `health.controller.ts`, `guest-access.controller.ts`, `support/worker.ts`, `upload-links.controller.ts`, `@nestjs/swagger`, `OptionalTextBlockField`, `password-hasher.ts`, `LocalObjectStorage`, `media-exports.controller.ts`, `wedding.schema.ts`, `ref_vitest`, `TasksService`, `configure-app.ts`, `upload-access.service.ts`?**
+  _High betweenness centrality (0.083) - this node is a cross-community bridge._
 - **Should `builder.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
-- **Why does `Traced()` connect `auth-email.composer.ts` to `ref_vitest`, `expenses.service.ts`, `member-invites.controller.ts`, `guest-access.service.ts`, `Accounts`, `AuthenticatedUser`, `outbox-relay.ts`, `member-invites.service.ts`, `create-task.dto.ts`, `events.service.ts`, `website-images.service.ts`, `WeddingDto`, `website.service.ts`, `weddings.service.ts`, `wedding-access.service.ts`, `vendors.service.ts`, `guests.controller.ts`, `@nestjs/mongoose`, `public-website.service.ts`, `auth.service.ts`, `WebsiteService`, `guest-access.controller.ts`, `@nestjs/common`, `email-delivery.handler.ts`, `tracing.ts`, `LocalObjectStorage`, `TasksService`?**
-  _High betweenness centrality (0.052) - this node is a cross-community bridge._
-- **Should `ref_vitest` be split into smaller, more focused modules?**
-  _Cohesion score 0.03461578563236367 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.12561576354679804 - nodes in this community are weakly interconnected._

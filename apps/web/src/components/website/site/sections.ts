@@ -1,17 +1,18 @@
 import type { Site } from '@/lib/website/site';
 
-export type SectionId = 'story' | 'celebrations' | 'rsvp' | 'faq';
+export type SectionId = 'story' | 'celebrations' | 'gallery' | 'rsvp' | 'faq';
 
 /**
  * The sections a website has, in order. Celebrations and RSVP always show
  * (an empty list says they are coming; RSVP tells visitors how to answer);
- * the story and questions only when the couple wrote them, so no design
+ * the story, gallery and questions only when there is something in them, so no design
  * shows an empty heading.
  */
-export function sectionsOf(site: Pick<Site, 'story' | 'faq'>): SectionId[] {
+export function sectionsOf(site: Pick<Site, 'story' | 'faq'>, hasGallery = false): SectionId[] {
   return [
     ...(site.story?.trim() ? (['story'] as const) : []),
     'celebrations',
+    ...(hasGallery ? (['gallery'] as const) : []),
     'rsvp',
     ...(site.faq.length > 0 ? (['faq'] as const) : []),
   ];
@@ -21,6 +22,7 @@ export function sectionsOf(site: Pick<Site, 'story' | 'faq'>): SectionId[] {
 export const SECTION_ANCHORS: Record<SectionId, string> = {
   story: 'story',
   celebrations: 'celebrations',
+  gallery: 'gallery',
   rsvp: 'rsvp',
   faq: 'faq',
 };

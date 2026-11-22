@@ -15,7 +15,7 @@ import { Public } from '../../modules/auth/auth.decorators.js';
 import { LocalObjectStorage, ObjectStorage } from './object-storage.js';
 
 /** The largest file the local endpoint reads at all; each form sets its own, lower limit. */
-const LOCAL_UPLOAD_CEILING = 20 * 1024 * 1024;
+const LOCAL_UPLOAD_CEILING = 26_000_000;
 
 /**
  * Receives browser uploads when files are kept on this machine

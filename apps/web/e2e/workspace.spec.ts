@@ -53,6 +53,7 @@ for (const viewport of VIEWPORTS) {
         'Expenses & Budget',
         'Vendors',
         'Wedding Website',
+        'Photos & QR Drive',
       ]);
       await expect(page.getByRole('complementary')).toContainText('Owner');
     } else {

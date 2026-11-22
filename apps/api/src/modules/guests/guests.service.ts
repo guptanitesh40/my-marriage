@@ -349,6 +349,45 @@ export class GuestsService {
    * the link is never stored in the queue. Needs an email address and at
    * least one open ceremony.
    */
+  /**
+   * Guests with an email address to ask for photos (decision 0019): every
+   * guest on the list, or those attending at least one ceremony that is
+   * still on. For the photos module; the caller has checked membership.
+   */
+  async photoRecipients(
+    weddingId: Types.ObjectId,
+    audience: 'all' | 'attending',
+  ): Promise<{ guestId: Types.ObjectId; name: string; emailNormalized: string }[]> {
+    let guestIds: Types.ObjectId[] | undefined;
+    if (audience === 'attending') {
+      const live = (await this.events.briefs(weddingId))
+        .filter((event) => !event.cancelled)
+        .map((event) => new Types.ObjectId(event.id));
+      guestIds = await this.invitations.distinct('guestId', {
+        weddingId,
+        eventId: { $in: live },
+        isInvited: true,
+        'rsvp.status': 'attending',
+      });
+    }
+    const guests = await this.guests
+      .find(
+        {
+          weddingId,
+          ...ACTIVE,
+          emailNormalized: { $exists: true, $ne: '' },
+          ...(guestIds ? { _id: { $in: guestIds } } : {}),
+        },
+        { name: 1, emailNormalized: 1 },
+      )
+      .lean();
+    return guests.flatMap((guest) =>
+      guest.emailNormalized
+        ? [{ guestId: guest._id, name: guest.name, emailNormalized: guest.emailNormalized }]
+        : [],
+    );
+  }
+
   async sendEmail(
     user: AuthenticatedUser,
     weddingId: string,

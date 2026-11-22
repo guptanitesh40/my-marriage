@@ -126,6 +126,8 @@ function card(input: {
   action: string;
   actionHint: string;
   footHtml?: string;
+  /** The note under the button; by default, that the link is the family's own. */
+  privacy?: { title: string; body: string };
 }): string {
   const couple = escapeHtml(input.coupleName);
   const link = escapeHtml(input.link);
@@ -162,7 +164,11 @@ function card(input: {
     `<tr><td style="padding:24px 28px 28px;font-family:${SANS}">` +
     `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>` +
     `<td style="background:${C.soft};border-radius:12px;padding:14px 16px;font-size:13px;line-height:20px;color:${C.muted}">` +
-    `<b style="color:${C.ink}">&#128274; Private to your family.</b> Anyone with this link can see and change your responses, so please don’t forward it.` +
+    `<b style="color:${C.ink}">&#128274; ${escapeHtml(input.privacy?.title ?? 'Private to your family.')}</b> ` +
+    escapeHtml(
+      input.privacy?.body ??
+        'Anyone with this link can see and change your responses, so please don’t forward it.',
+    ) +
     `<div style="margin-top:8px">If the button doesn’t work, copy this link into your browser:<br>` +
     `<a href="${link}" style="color:${C.primary};word-break:break-all">${link}</a></div>` +
     (input.footHtml ?? '') +
@@ -369,5 +375,50 @@ export function guestReminderMessage(input: {
     `— Sent with My Marriage on behalf of ${input.coupleName}`,
   ].join('\n');
 
+  return { subject, html, text };
+}
+
+/**
+ * Asks a guest for their photos (decision 0019): the wedding's upload link,
+ * which needs no account. Says plainly that the couple reviews every photo
+ * and that approved ones may appear on the wedding website.
+ */
+export function photoInviteMessage(input: {
+  coupleName: string;
+  guestName: string;
+  link: string;
+}): ComposedEmail {
+  const subject = `Share your photos from ${input.coupleName}’s wedding`;
+  const html = card({
+    title: subject,
+    preview: `${input.coupleName} would love to see the moments you captured.`,
+    eyebrow: 'SHARE YOUR MEMORIES',
+    coupleName: input.coupleName,
+    subline: 'would love to see the moments you captured',
+    bodyHtml:
+      `<div style="font-family:${SERIF};font-size:21px;line-height:28px;margin:0 0 10px">Dear ${escapeHtml(input.guestName)},</div>` +
+      `<div style="margin:0 0 8px">Thank you for celebrating with us. If you took photos, we would love to have them: ` +
+      `add as many as you like, for any of the celebrations.</div>`,
+    link: input.link,
+    action: 'Add your photos',
+    actionHint:
+      'No account or app needed: choose photos from your phone or computer. JPG, PNG or WebP, up to 25 MB each.',
+    privacy: {
+      title: 'Reviewed by the couple.',
+      body: 'Photos go to the couple first. Only the ones they approve may appear on their wedding website, and your name is never shown with them.',
+    },
+  });
+  const text = [
+    `Dear ${input.guestName},`,
+    '',
+    `Thank you for celebrating ${input.coupleName}’s wedding. If you took photos, they would love to have them: add as many as you like, for any of the celebrations.`,
+    '',
+    `Add your photos: ${input.link}`,
+    '',
+    'No account or app needed. JPG, PNG or WebP, up to 25 MB each.',
+    'Photos go to the couple first. Only the ones they approve may appear on their wedding website, and your name is never shown with them.',
+    '',
+    `— Sent with My Marriage on behalf of ${input.coupleName}`,
+  ].join('\n');
   return { subject, html, text };
 }

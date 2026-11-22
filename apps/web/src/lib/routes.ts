@@ -89,6 +89,17 @@ export function guestsPath(weddingId: string, query?: URLSearchParams): string {
   return `${workspacePath(weddingId)}/guests${search ? `?${search}` : ''}`;
 }
 
+/** A wedding's Photos page, with its album filter in the query string. */
+export function photosPath(weddingId: string, query?: URLSearchParams): string {
+  const search = query?.toString();
+  return `${workspacePath(weddingId)}/photos${search ? `?${search}` : ''}`;
+}
+
+/** One album of a wedding. */
+export function albumPath(weddingId: string, albumId: string): string {
+  return `${photosPath(weddingId)}/albums/${albumId}`;
+}
+
 /** A wedding's website editor. */
 export function websitePath(weddingId: string): string {
   return `${workspacePath(weddingId)}/website`;

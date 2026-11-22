@@ -8,28 +8,13 @@ import {
   type StoredObject,
   type UploadTarget,
 } from '../../platform/storage/object-storage.js';
+import { IMAGE_EXTENSIONS, imageTypeOf } from '../../platform/storage/image-type.js';
 import { Traced } from '../../platform/tracing.js';
 import { FileAsset } from './schemas/file-asset.schema.js';
 import { imageNotFound, uploadRejected } from './website-errors.js';
 import { COVER_MAX_BYTES, UPLOAD_FORM_SECONDS, type CoverType } from './website-policy.js';
 
 type StoredAsset = FileAsset & { _id: Types.ObjectId };
-
-const EXTENSIONS: Record<CoverType, string> = {
-  'image/jpeg': 'jpg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-};
-
-/** What a file really is, from its first bytes; never from its name or declared type. */
-export function imageTypeOf(start: Uint8Array): CoverType | null {
-  const at = (offset: number, bytes: number[]) =>
-    bytes.every((byte, index) => start[offset + index] === byte);
-  if (at(0, [0xff, 0xd8, 0xff])) return 'image/jpeg';
-  if (at(0, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) return 'image/png';
-  if (at(0, [0x52, 0x49, 0x46, 0x46]) && at(8, [0x57, 0x45, 0x42, 0x50])) return 'image/webp';
-  return null;
-}
 
 /** The draft's cover, for the wedding's members (the organizer preview and builder). */
 export function draftCoverUrl(weddingId: Types.ObjectId, assetId: Types.ObjectId): string {
@@ -77,7 +62,7 @@ export class WebsiteImagesService {
         wedding,
         'website',
         'cover',
-        `${id.toHexString()}.${EXTENSIONS[contentType]}`,
+        `${id.toHexString()}.${IMAGE_EXTENSIONS[contentType]}`,
       ),
       contentType,
       createdBy: userId,
