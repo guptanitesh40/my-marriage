@@ -227,6 +227,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/weddings/{weddingId}/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get wedding settings and lifecycle state */
+        get: operations["WeddingsController_settings"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/archive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Archive active wedding (owner only) */
+        post: operations["WeddingsController_archive"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/deletion-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request wedding deletion (owner only) */
+        post: operations["WeddingsController_requestDeletion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/deletion-requests/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel a waiting deletion request (owner only) */
+        post: operations["WeddingsController_cancelDeletion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/weddings/{weddingId}/member-invites": {
         parameters: {
             query?: never;
@@ -237,7 +305,7 @@ export interface paths {
         /** List pending/consumed membership invites */
         get: operations["MemberInvitesController_list"];
         put?: never;
-        /** Invite a manager or second co-owner */
+        /** Invite an admin, a manager or the second owner */
         post: operations["MemberInvitesController_create"];
         delete?: never;
         options?: never;
@@ -256,6 +324,23 @@ export interface paths {
         put?: never;
         /** Resend a pending member invitation */
         post: operations["MemberInvitesController_resend"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/member-invites/{inviteId}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revoke pending member invitation */
+        post: operations["MemberInvitesController_revoke"];
         delete?: never;
         options?: never;
         head?: never;
@@ -296,6 +381,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/member-invites/decline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Decline an invitation */
+        post: operations["MemberInvitesController_decline"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/member-invites/mine": {
         parameters: {
             query?: never;
@@ -330,6 +432,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/member-invites/{inviteId}/decline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Decline an invitation sent to my email address */
+        post: operations["MemberInvitesController_declineById"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/weddings/{weddingId}/events": {
         parameters: {
             query?: never;
@@ -358,7 +477,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Delete ceremony (owners only) */
+        /** Delete ceremony (owners and admins) */
         delete: operations["EventsController_remove"];
         options?: never;
         head?: never;
@@ -418,6 +537,41 @@ export interface paths {
         patch: operations["TasksController_update"];
         trace?: never;
     };
+    "/api/v1/weddings/{weddingId}/team": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Team members and invitations, for owners and admins */
+        get: operations["TeamController_view"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/members/{memberId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove manager from a wedding */
+        delete: operations["TeamController_remove"];
+        options?: never;
+        head?: never;
+        /** Change a member’s role or label */
+        patch: operations["TeamController_update"];
+        trace?: never;
+    };
     "/api/v1/weddings/{weddingId}/vendors": {
         parameters: {
             query?: never;
@@ -447,12 +601,63 @@ export interface paths {
         get: operations["VendorsController_get"];
         put?: never;
         post?: never;
-        /** Delete vendor (owners only); the record is kept, marked deleted */
+        /** Delete vendor (owners and admins); the record is kept, marked deleted */
         delete: operations["VendorsController_remove"];
         options?: never;
         head?: never;
         /** Update vendor */
         patch: operations["VendorsController_update"];
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expense-files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start a receipt or document upload */
+        post: operations["ExpensesController_requestFileUpload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expense-files/{fileId}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Finish a receipt or document upload */
+        post: operations["ExpensesController_completeFileUpload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weddings/{weddingId}/expense-files/{fileId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Open or download a receipt or document */
+        get: operations["ExpensesController_file"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/weddings/{weddingId}/expenses": {
@@ -501,7 +706,7 @@ export interface paths {
         get: operations["ExpensesController_get"];
         put?: never;
         post?: never;
-        /** Delete expense (owners only); kept with its history, marked deleted */
+        /** Delete expense (owners and admins); kept with its history, marked deleted */
         delete: operations["ExpensesController_remove"];
         options?: never;
         head?: never;
@@ -1573,6 +1778,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/weddings/{weddingId}/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Wedding overview */
+        get: operations["DashboardController_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1678,6 +1900,11 @@ export interface components {
              */
             password: string;
         };
+        WeddingVenueDto: {
+            name?: string;
+            address?: string;
+            mapsUrl?: string;
+        };
         WeddingDto: {
             /**
              * Format: date
@@ -1688,10 +1915,15 @@ export interface components {
             /** @enum {string} */
             status: "active" | "archived" | "deletion_pending";
             /**
+             * Format: date-time
+             * @description When an owner archived it.
+             */
+            archivedAt?: string;
+            /**
              * @description The signed-in user's role in this wedding.
              * @enum {string}
              */
-            role: "owner" | "manager";
+            role: "owner" | "admin" | "manager";
             /** @description Wedding ID. */
             id: string;
             /** @description Address of the public website, once published. Chosen by the server. */
@@ -1700,6 +1932,8 @@ export interface components {
             groomName: string;
             city: string;
             state: string;
+            mainVenue?: components["schemas"]["WeddingVenueDto"];
+            description?: string;
         };
         CreateWeddingDto: {
             /** @example Ananya */
@@ -1722,13 +1956,26 @@ export interface components {
         };
         MemberDto: {
             /** @enum {string} */
-            role: "owner" | "manager";
+            role: "owner" | "admin" | "manager";
             /** @description User ID; what a task's `assigneeId` names. */
             userId: string;
             displayName: string;
+            /** @description Their label on the team, e.g. "Bride's father". */
+            label?: string;
         };
         MemberListDto: {
             members: components["schemas"]["MemberDto"][];
+        };
+        WeddingVenueInputDto: {
+            /** @example Rambagh Palace */
+            name?: string;
+            /** @example Bhawani Singh Road, Jaipur */
+            address?: string;
+            /**
+             * @description A Google Maps link to the venue.
+             * @example https://maps.app.goo.gl/AbCdEf123
+             */
+            mapsUrl?: string;
         };
         UpdateWeddingDto: {
             /** @example Ananya */
@@ -1751,15 +1998,39 @@ export interface components {
              * @example 2027-12-10
              */
             weddingDate?: string | null;
+            /** @description Replaces the whole main venue; `null` removes it. Private to the team. */
+            mainVenue?: components["schemas"]["WeddingVenueInputDto"] | null;
+            /**
+             * @description A short introduction; `null` or empty removes it. Private to the team.
+             * @example Two families, one celebration in the Pink City.
+             */
+            description?: string | null;
+        };
+        ActorStampDto: {
+            /** Format: date-time */
+            at: string;
+            /** @description Missing when their account is gone. */
+            byName?: string;
+        };
+        DeletionRequestDto: {
+            /** Format: date-time */
+            requestedAt: string;
+            byName?: string;
+        };
+        WeddingSettingsDto: {
+            wedding: components["schemas"]["WeddingDto"];
+            lastSaved?: components["schemas"]["ActorStampDto"];
+            archived?: components["schemas"]["ActorStampDto"];
+            deletionRequest?: components["schemas"]["DeletionRequestDto"];
         };
         MemberInviteDto: {
             /** @enum {string} */
-            role: "owner" | "manager";
+            role: "owner" | "admin" | "manager";
             /**
              * @description `expired` once a pending invitation passes `expiresAt`.
              * @enum {string}
              */
-            status: "pending" | "accepted" | "revoked" | "expired";
+            status: "pending" | "accepted" | "revoked" | "declined" | "expired";
             /**
              * @description Whether the latest email went out: `sent` means the provider accepted
              *     it, never that it arrived. `failed` means it could not be sent; resend it.
@@ -1770,6 +2041,15 @@ export interface components {
             id: string;
             /** @description The address it was sent to. */
             email: string;
+            /**
+             * @description An owner handing over their place (decision 0025): accepting makes the
+             *     invitee an owner and the sender (`invitedByName`) an admin.
+             */
+            handOver: boolean;
+            /** @description Becomes their label once they join. */
+            label?: string;
+            /** @description Who sent it, if their account still exists. */
+            invitedByName?: string;
             /**
              * Format: date-time
              * @description When the link stops working.
@@ -1786,14 +2066,26 @@ export interface components {
              */
             email: string;
             /**
-             * @description `owner`: your partner, with the same rights as you.
+             * @description `owner`: your partner, with the same rights as you (owners only).
+             *     `admin`: runs the team with you. `manager`: helps plan.
              * @enum {string}
              */
-            role: "owner";
+            role: "owner" | "admin" | "manager";
+            /**
+             * @description Becomes their label on the team page once they join.
+             * @example Bride’s father
+             */
+            label?: string;
+            /**
+             * @description With `owner`: hand over your own place (decision 0025). Once they
+             *     accept they are an owner and you an admin; nothing changes before.
+             *     They may already be on the team as an admin or a manager.
+             */
+            handOver?: boolean;
         };
         InvitePreviewDto: {
             /** @enum {string} */
-            role: "owner" | "manager";
+            role: "owner" | "admin" | "manager";
             /** @enum {string} */
             status: "pending" | "accepted";
             brideName: string;
@@ -1804,6 +2096,11 @@ export interface components {
             invitedByName?: string;
             /** @description Only the account with this address can accept. */
             email: string;
+            /**
+             * @description An owner handing over their place (decision 0025): accepting makes the
+             *     invitee an owner and the sender (`invitedByName`) an admin.
+             */
+            handOver: boolean;
             /** Format: date-time */
             expiresAt: string;
         };
@@ -1812,7 +2109,7 @@ export interface components {
         };
         MyInviteDto: {
             /** @enum {string} */
-            role: "owner" | "manager";
+            role: "owner" | "admin" | "manager";
             id: string;
             brideName: string;
             groomName: string;
@@ -1822,6 +2119,11 @@ export interface components {
             weddingDate?: string;
             /** @description The name of the owner who sent it, if their account still exists. */
             invitedByName?: string;
+            /**
+             * @description An owner handing over their place (decision 0025): accepting makes the
+             *     invitee an owner and the sender (`invitedByName`) an admin.
+             */
+            handOver: boolean;
             /** Format: date-time */
             expiresAt: string;
         };
@@ -1976,7 +2278,7 @@ export interface components {
         };
         TaskAssigneeDto: {
             /** @enum {string} */
-            role: "owner" | "manager";
+            role: "owner" | "admin" | "manager";
             userId: string;
             displayName: string;
         };
@@ -2119,6 +2421,39 @@ export interface components {
             /** @enum {string} */
             state?: "todo" | "in_progress" | "completed" | "cancelled";
         };
+        TeamMemberDto: {
+            /** @enum {string} */
+            role: "owner" | "admin" | "manager";
+            /** @description User ID: what removing or changing them names. */
+            userId: string;
+            displayName: string;
+            email: string;
+            label?: string;
+            /** Format: date-time */
+            joinedAt: string;
+            /** @description Tasks assigned to them that are not done yet. */
+            openTaskCount: number;
+            /** @description The member viewing the page. */
+            isYou: boolean;
+        };
+        TeamDto: {
+            /**
+             * @description The viewer's role, which decides what they may change.
+             * @enum {string}
+             */
+            viewerRole: "owner" | "admin" | "manager";
+            members: components["schemas"]["TeamMemberDto"][];
+            invites: components["schemas"]["MemberInviteDto"][];
+        };
+        UpdateMemberDto: {
+            /** @enum {string} */
+            role?: "admin" | "manager";
+            /**
+             * @description `null` or empty clears it.
+             * @example Bride’s father
+             */
+            label?: string | null;
+        };
         VendorEventDto: {
             id: string;
             title: string;
@@ -2204,6 +2539,39 @@ export interface components {
              */
             eventIds?: string[];
         };
+        ExpenseFileUploadDto: {
+            fields: {
+                [key: string]: string;
+            };
+            uploadId: string;
+            url: string;
+            maxBytes: number;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        ExpenseFileUploadRequestDto: {
+            /** @enum {string} */
+            contentType: "application/pdf" | "image/jpeg" | "image/png" | "image/webp" | "image/heic" | "application/msword" | "application/vnd.openxmlformats-officedocument.wordprocessingml.document" | "application/vnd.ms-excel" | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            bytes: number;
+            /**
+             * @description The name on the uploader's device; kept tidied, for showing and downloading.
+             * @example Caterer advance receipt.pdf
+             */
+            fileName: string;
+        };
+        ExpenseFileDto: {
+            /** @enum {string} */
+            contentType: "application/pdf" | "image/jpeg" | "image/png" | "image/webp" | "image/heic" | "application/msword" | "application/vnd.openxmlformats-officedocument.wordprocessingml.document" | "application/vnd.ms-excel" | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            id: string;
+            fileName: string;
+            bytes: number;
+            /** @description Where members open it: `/api/v1/weddings/{weddingId}/expense-files/{id}`. */
+            url: string;
+            /** @description A photo the browser can show; everything else downloads. */
+            viewable: boolean;
+            /** Format: date-time */
+            createdAt: string;
+        };
         ExpenseEventDto: {
             id: string;
             title: string;
@@ -2248,6 +2616,8 @@ export interface components {
             /** @description Something is still to pay and the due day has passed (India time). */
             overdue: boolean;
             notes?: string;
+            /** @description How many receipts or documents it keeps (decision 0023). */
+            receiptCount: number;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
@@ -2309,6 +2679,13 @@ export interface components {
              * @example Covers 3 drone cinematographers and 4 candid shooters.
              */
             notes?: string;
+            /**
+             * @description Files from `POST /weddings/{weddingId}/expense-files`.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            receiptAssetIds?: string[];
         };
         EntryPersonDto: {
             userId: string;
@@ -2334,11 +2711,15 @@ export interface components {
             reversalOfId?: string;
             /** @description For a payment, discount or extra: whether it has been reversed. */
             reversed: boolean;
+            /** @description Receipts kept with this entry. */
+            receipts: components["schemas"]["ExpenseFileDto"][];
             /** Format: date-time */
             createdAt: string;
         };
         ExpenseDetailDto: {
             expense: components["schemas"]["ExpenseDto"];
+            /** @description The expense's own receipts and documents, in the order added. */
+            receipts: components["schemas"]["ExpenseFileDto"][];
             entries: components["schemas"]["ExpenseEntryDto"][];
         };
         UpdateExpenseDto: {
@@ -2370,6 +2751,13 @@ export interface components {
             dueDate?: string | null;
             /** @example Covers 3 drone cinematographers and 4 candid shooters. */
             notes?: string | null;
+            /**
+             * @description Files from `POST /weddings/{weddingId}/expense-files`.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            receiptAssetIds?: string[];
         };
         ExpenseLedgerDto: {
             /** @description Newest first. */
@@ -2391,6 +2779,13 @@ export interface components {
             method?: "cash" | "bank_transfer" | "card" | "cheque" | "other";
             /** @example Advance */
             note?: string;
+            /**
+             * @description Files from `POST /weddings/{weddingId}/expense-files`.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            receiptAssetIds?: string[];
         };
         RecordAdjustmentDto: {
             /** @enum {string} */
@@ -2408,6 +2803,13 @@ export interface components {
             date: string;
             /** @example Agreed 5% off after the final quote. */
             note?: string;
+            /**
+             * @description Files from `POST /weddings/{weddingId}/expense-files`.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            receiptAssetIds?: string[];
         };
         ReverseEntryDto: {
             /** @example 6740a1b2c3d4e5f601234567 */
@@ -2417,6 +2819,13 @@ export interface components {
              * @example Entered twice.
              */
             note?: string;
+            /**
+             * @description Files from `POST /weddings/{weddingId}/expense-files`.
+             * @example [
+             *       "6740a1b2c3d4e5f601234567"
+             *     ]
+             */
+            receiptAssetIds?: string[];
         };
         SkippedGuestsDto: {
             count: number;
@@ -2789,6 +3198,10 @@ export interface components {
             faq: components["schemas"]["WebsiteFaqDto"][];
             /** @description The cover photo's ID, when there is one. */
             coverImageId?: string;
+            /** @description Whether the website shows the main venue from Settings. */
+            showVenue: boolean;
+            /** @description Whether the website shows the approved photos as a gallery. */
+            showGallery: boolean;
         };
         ReadinessCheckDto: {
             /** @enum {string} */
@@ -2823,6 +3236,8 @@ export interface components {
             publishedAt?: string;
             /** @description Published, and the draft has changed since. */
             hasUnpublishedChanges: boolean;
+            /** @description The published website shows the photo gallery now (decision 0024). */
+            galleryLive: boolean;
             /** @description The wedding's web address; the public site is at `/w/{slug}`. */
             slug: string;
             readiness: components["schemas"]["WebsiteReadinessDto"];
@@ -2851,6 +3266,10 @@ export interface components {
             faq?: components["schemas"]["WebsiteFaqInputDto"][];
             /** @description Only `null` (or empty). */
             coverImageId?: string | null;
+            /** @description Show the main venue from Settings on the website, once published. */
+            showVenue?: boolean;
+            /** @description Show the approved photos as a gallery on the website, once published. Off by default. */
+            showGallery?: boolean;
         };
         UpdateWebsiteDto: {
             /** @enum {string} */
@@ -2858,6 +3277,11 @@ export interface components {
             content?: components["schemas"]["WebsiteContentInputDto"];
             /** @description The version this edit started from; a newer one on the server is a conflict. */
             contentVersion: number;
+        };
+        PublicVenueDto: {
+            name?: string;
+            address?: string;
+            mapsUrl?: string;
         };
         PublicDateRangeDto: {
             /** Format: date */
@@ -2906,6 +3330,8 @@ export interface components {
             /** @description Plain text; blank lines separate paragraphs. */
             story?: string;
             faq: components["schemas"]["WebsiteFaqDto"][];
+            /** @description The main venue; missing unless the couple chose to show it. */
+            mainVenue?: components["schemas"]["PublicVenueDto"];
             /** @description The first and last day of the ceremonies with a date, cancelled ones left out. */
             dateRange?: components["schemas"]["PublicDateRangeDto"];
             /** @description In date order, those without a date last. */
@@ -3210,6 +3636,115 @@ export interface components {
         PublicPhotoListDto: {
             /** @description Newest first. */
             photos: components["schemas"]["PublicPhotoDto"][];
+        };
+        DashboardCeremonyDto: {
+            /**
+             * Format: date
+             * @description `YYYY-MM-DD` in the ceremony's time zone.
+             * @example 2027-02-12
+             */
+            startDate: string;
+            /**
+             * @description `HH:mm` in the ceremony's time zone; missing when only the day is known.
+             * @example 10:30
+             */
+            startTime?: string;
+            id: string;
+            title: string;
+            timeZone: string;
+            venueName?: string;
+            dressCode?: string;
+            /**
+             * @description People confirmed (attending counts only). Missing when the guest
+             *     totals could not be loaded, which is not the same as none.
+             */
+            confirmedPeople?: number;
+        };
+        DashboardCeremoniesDto: {
+            /** @description Scheduled ceremonies from today on: not cancelled, not completed. */
+            upcoming: number;
+            /** @description Scheduled ceremonies without a day yet. */
+            undated: number;
+            /** @description The next few, soonest first. */
+            next: components["schemas"]["DashboardCeremonyDto"][];
+        };
+        DashboardTasksDto: {
+            /** @description To do or in progress. */
+            open: number;
+            overdue: number;
+            /** @description Due today or in the next 7 days (India time), and not overdue yet. */
+            dueSoon: number;
+            /** @description The first few open tasks: overdue first, then soonest due, then priority. */
+            attention: components["schemas"]["TaskDto"][];
+        };
+        DashboardCategoryDto: {
+            category: string;
+            /** @description Recorded (final) amount in integer paise. */
+            finalPaise: number;
+            /** @description Expenses in it. */
+            count: number;
+        };
+        DashboardExpensesDto: {
+            /** @description Recorded: agreed − discounts + extras, in integer paise. */
+            finalPaise: number;
+            paidPaise: number;
+            outstandingPaise: number;
+            /** @description Expenses past their due day with something still to pay. */
+            overdue: number;
+            count: number;
+            /** @description The categories with the most recorded spending, largest first. */
+            topCategories: components["schemas"]["DashboardCategoryDto"][];
+        };
+        DashboardGuestsDto: {
+            /** @description Guest contacts (families or groups). */
+            contacts: number;
+            /** @description People invited to at least one ceremony, each counted once. */
+            invitedPeople: number;
+            /** @description Ceremony invitations answered (attending, not attending or maybe). */
+            answered: number;
+            /** @description Ceremony invitations not answered yet. */
+            pending: number;
+            /** @description Per ceremony, in the wedding's order; deleted ceremonies left out. */
+            events: components["schemas"]["EventRsvpTotalsDto"][];
+        };
+        DashboardPhotosDto: {
+            awaitingReview: number;
+            approved: number;
+            /** @description Photos kept, in bytes. */
+            usedBytes: number;
+            /** @description The wedding's storage allowance, in bytes. */
+            limitBytes: number;
+        };
+        DashboardWebsiteDto: {
+            /** @description Published and online. */
+            published: boolean;
+            /** @description The public address's last part, `/w/{slug}`. */
+            slug: string;
+        };
+        DashboardTeamDto: {
+            owners: number;
+            admins: number;
+            managers: number;
+            /** @description Invitations waiting for an answer: only for owners and admins, who manage the team. */
+            pendingInvites?: number;
+        };
+        DashboardDto: {
+            /**
+             * Format: date
+             * @description Today in India (`YYYY-MM-DD`), the day the countdown is measured from.
+             * @example 2026-11-23
+             */
+            today: string;
+            /** @description Sections that could not be loaded this time. */
+            unavailable: ("ceremonies" | "tasks" | "expenses" | "guests" | "photos" | "website" | "team")[];
+            wedding: components["schemas"]["WeddingDto"];
+            ceremonies?: components["schemas"]["DashboardCeremoniesDto"];
+            tasks?: components["schemas"]["DashboardTasksDto"];
+            expenses?: components["schemas"]["DashboardExpensesDto"];
+            guests?: components["schemas"]["DashboardGuestsDto"];
+            photos?: components["schemas"]["DashboardPhotosDto"];
+            website?: components["schemas"]["DashboardWebsiteDto"];
+            team?: components["schemas"]["DashboardTeamDto"];
         };
         FieldErrorDto: {
             /**
@@ -3602,13 +4137,6 @@ export interface operations {
                     };
                 };
             };
-            /** @description OWNER_ACTIVE_LIMIT: you already own an active wedding. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
             /** @description Any failed request, in the standard error envelope. */
             default: {
                 headers: {
@@ -3693,6 +4221,13 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description WEDDING_ARCHIVED or WEDDING_DELETION_PENDING. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             /** @description Any failed request, in the standard error envelope. */
             default: {
                 headers: {
@@ -3728,6 +4263,173 @@ export interface operations {
             };
             /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WeddingsController_settings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingSettingsDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WeddingsController_archive: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description OWNER_REQUIRED: admins and managers cannot archive. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_DELETION_PENDING: deletion is requested. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WeddingsController_requestDeletion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingSettingsDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description OWNER_REQUIRED: admins and managers cannot delete. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    WeddingsController_cancelDeletion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["WeddingSettingsDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description OWNER_REQUIRED: admins and managers cannot cancel. */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3803,6 +4505,20 @@ export interface operations {
                     };
                 };
             };
+            /** @description ADMIN_REQUIRED or OWNER_REQUIRED. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ALREADY_MEMBER, ALREADY_INVITED, OWNER_LIMIT or WEDDING_ARCHIVED. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             /** @description Any failed request, in the standard error envelope. */
             default: {
                 headers: {
@@ -3836,6 +4552,47 @@ export interface operations {
                         requestId: string;
                     };
                 };
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MemberInvitesController_revoke: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                inviteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MemberInviteDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description INVITE_NOT_PENDING or WEDDING_ARCHIVED. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Any failed request, in the standard error envelope. */
             default: {
@@ -3925,6 +4682,44 @@ export interface operations {
             };
         };
     };
+    MemberInvitesController_decline: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InviteTokenDto"];
+            };
+        };
+        responses: {
+            /** @description Declined. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description INVITE_INVALID: expired, replaced or withdrawn. */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
     MemberInvitesController_mine: {
         parameters: {
             query?: never;
@@ -3977,6 +4772,49 @@ export interface operations {
                         requestId: string;
                     };
                 };
+            };
+            /** @description INVITE_NOT_FOUND: no such invitation for this account. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description INVITE_INVALID: expired, replaced or withdrawn. */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    MemberInvitesController_declineById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                inviteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Declined. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description INVITE_NOT_FOUND: no such invitation for this account. */
             404: {
@@ -4113,7 +4951,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description OWNER_REQUIRED: managers cannot delete events. */
+            /** @description ADMIN_REQUIRED: managers cannot delete events. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4393,6 +5231,156 @@ export interface operations {
             };
         };
     };
+    TeamController_view: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["TeamDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description ADMIN_REQUIRED: managers do not manage the team. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    TeamController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                memberId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Removed. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ADMIN_REQUIRED, OWNER_PROTECTED or NOT_YOURSELF. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description MEMBER_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    TeamController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                memberId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateMemberDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["TeamMemberDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description ADMIN_REQUIRED, OWNER_PROTECTED or NOT_YOURSELF. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description MEMBER_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
     VendorsController_list: {
         parameters: {
             query?: never;
@@ -4544,7 +5532,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description OWNER_REQUIRED: managers cannot delete vendors. */
+            /** @description ADMIN_REQUIRED: managers cannot delete vendors. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4612,6 +5600,149 @@ export interface operations {
             };
             /** @description WEDDING_ARCHIVED: the wedding is read-only. */
             409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_requestFileUpload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExpenseFileUploadRequestDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseFileUploadDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_completeFileUpload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                fileId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ExpenseFileDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description WEDDING_ARCHIVED: the wedding is read-only. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description UPLOAD_NOT_FOUND, UPLOAD_TOO_LARGE or UPLOAD_WRONG_TYPE. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    ExpensesController_file: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+                fileId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The file. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description FILE_NOT_FOUND or WEDDING_NOT_FOUND. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4819,7 +5950,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description OWNER_REQUIRED: managers cannot delete expenses. */
+            /** @description ADMIN_REQUIRED: managers cannot delete expenses. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -5455,7 +6586,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description OWNER_REQUIRED: managers cannot remove guests. */
+            /** @description ADMIN_REQUIRED: managers cannot remove guests. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -8162,6 +9293,46 @@ export interface operations {
                 content?: never;
             };
             /** @description PHOTO_NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Any failed request, in the standard error envelope. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorDto"];
+                };
+            };
+        };
+    };
+    DashboardController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                weddingId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["DashboardDto"];
+                        requestId: string;
+                    };
+                };
+            };
+            /** @description WEDDING_NOT_FOUND: not a wedding you belong to. */
             404: {
                 headers: {
                     [name: string]: unknown;

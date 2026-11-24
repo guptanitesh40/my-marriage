@@ -169,14 +169,21 @@ noted. Each needs a test when the feature is built.
 - **Wedding isolation.** Every wedding-owned document carries `weddingId`, and
   every query filters on it. Never authorize by `_id` alone. A resource in
   another wedding returns 404, not 403.
-- **One active owned wedding per user**, enforced by a partial unique index
-  plus a transaction — not by a read-then-write check. Managers may belong to
-  any number of weddings.
-- **At most two owners, equal in power; never zero.** Managers cannot archive,
-  delete, or change ownership.
+- **Any number of weddings per user**, owned or helped with (decision 0020
+  replaced the one-active-owned-wedding rule).
+- **At most two owners, equal in power; never zero.** Owners are protected:
+  nobody removes or changes them through the team. An owner may hand over
+  their own place: the invitee becomes an owner and the sender an admin in
+  one transaction, only on acceptance (decision 0025). Admins manage the team
+  and may delete planning records; managers never manage the team. Only
+  owners archive, delete, or change ownership.
 - **Archived weddings are read-only.** Archive-sensitive writes (RSVP, uploads,
   planning edits) go through the wedding write fence in the same transaction.
   Only the owner safety actions (unpublish, hide photo, request deletion) remain.
+- **A deletion request is a soft delete** (decision 0021). A
+  `deletion_pending` wedding is read-only and gone from every public path
+  (`coupleOf` returns nothing for it); nothing is erased, and an owner can
+  cancel. Never purge data without an approved retention policy.
 - **Party size lives once on the guest contact.** RSVP status and attending
   count are per event and never exceed party size. Never copy party size onto
   an event invitation.

@@ -137,6 +137,8 @@ describe('Wedding website (integration)', () => {
       headline: 'We’re getting married in Jaipur',
       story: 'We met in Mumbai.\n\nNow, Jaipur.',
       faq: content.faq,
+      showVenue: false,
+      showGallery: false,
     });
     for (const templateId of ['modern', 'royal', 'traditional']) {
       saved = await ok<WebsiteBody>(
@@ -147,6 +149,8 @@ describe('Wedding website (integration)', () => {
         headline: 'We’re getting married in Jaipur',
         story: 'We met in Mumbai.\n\nNow, Jaipur.',
         faq: content.faq,
+        showVenue: false,
+        showGallery: false,
       });
     }
     expect(saved.contentVersion).toBe(4);
@@ -182,7 +186,7 @@ describe('Wedding website (integration)', () => {
         contentVersion: 4,
       }),
     );
-    expect(saved.content).toEqual({ faq: [] });
+    expect(saved.content).toEqual({ faq: [], showVenue: false, showGallery: false });
   });
 
   it('publishes only when ready, keeps drafts off the public site, and unpublishes at once', async () => {
@@ -358,6 +362,98 @@ describe('Wedding website (integration)', () => {
         'templateId',
       ].sort(),
     );
+  });
+
+  it('shows the main venue only once the couple turns it on and publishes, never the description', async () => {
+    const w = await ownerWithWedding();
+    await event(w.cookie, w.weddingId, { title: 'Haldi', startDate: '2031-02-12' });
+    await ok(
+      send('patch', w.cookie, `/weddings/${w.weddingId}`, {
+        mainVenue: {
+          name: 'Rambagh Palace',
+          address: 'Bhawani Singh Road, Jaipur',
+          mapsUrl: 'https://maps.app.goo.gl/AbCdEf123',
+        },
+        description: 'Private planning note for the team',
+      }),
+    );
+    const site = () =>
+      ok<{ mainVenue?: object }>(send('get', undefined, `/public/weddings/${w.slug}`));
+    let draft = await ok<{ contentVersion: number; content: { showVenue: boolean } }>(
+      send('get', w.cookie, w.site),
+    );
+    expect(draft.content.showVenue).toBe(false);
+    await ok(send('post', w.cookie, `${w.site}/publish`, { contentVersion: draft.contentVersion }));
+    // Off by default.
+    expect((await site()).mainVenue).toBeUndefined();
+
+    // Turned on in the draft: the preview shows it, the public site not yet.
+    draft = await ok(
+      send('patch', w.cookie, w.site, {
+        content: { showVenue: true },
+        contentVersion: draft.contentVersion,
+      }),
+    );
+    expect(draft.content.showVenue).toBe(true);
+    const preview = await ok<{ mainVenue?: object }>(send('get', w.cookie, `${w.site}/preview`));
+    expect(preview.mainVenue).toEqual({
+      name: 'Rambagh Palace',
+      address: 'Bhawani Singh Road, Jaipur',
+      mapsUrl: 'https://maps.app.goo.gl/AbCdEf123',
+    });
+    expect((await site()).mainVenue).toBeUndefined();
+
+    // Published: shown, with the venue as Settings has it now.
+    await ok(send('post', w.cookie, `${w.site}/publish`, { contentVersion: draft.contentVersion }));
+    expect((await site()).mainVenue).toEqual({
+      name: 'Rambagh Palace',
+      address: 'Bhawani Singh Road, Jaipur',
+      mapsUrl: 'https://maps.app.goo.gl/AbCdEf123',
+    });
+    await ok(
+      send('patch', w.cookie, `/weddings/${w.weddingId}`, {
+        mainVenue: { name: 'Jai Mahal Palace' },
+      }),
+    );
+    expect((await site()).mainVenue).toEqual({ name: 'Jai Mahal Palace' });
+    const raw = JSON.stringify((await send('get', undefined, `/public/weddings/${w.slug}`)).body);
+    expect(raw).not.toContain('Private planning note');
+
+    // Other edits keep the choice; turning it off and publishing hides it.
+    draft = await ok(
+      send('patch', w.cookie, w.site, {
+        content: { headline: 'Welcome' },
+        contentVersion: draft.contentVersion,
+      }),
+    );
+    expect(draft.content.showVenue).toBe(true);
+    draft = await ok(
+      send('patch', w.cookie, w.site, {
+        content: { showVenue: false },
+        contentVersion: draft.contentVersion,
+      }),
+    );
+    await ok(send('post', w.cookie, `${w.site}/publish`, { contentVersion: draft.contentVersion }));
+    expect((await site()).mainVenue).toBeUndefined();
+
+    // Nothing to show when Settings has no venue, even if turned on.
+    draft = await ok(
+      send('patch', w.cookie, w.site, {
+        content: { showVenue: true },
+        contentVersion: draft.contentVersion,
+      }),
+    );
+    await ok(send('patch', w.cookie, `/weddings/${w.weddingId}`, { mainVenue: null }));
+    await ok(send('post', w.cookie, `${w.site}/publish`, { contentVersion: draft.contentVersion }));
+    expect((await site()).mainVenue).toBeUndefined();
+    expect(
+      await codeOf(
+        send('patch', w.cookie, w.site, {
+          content: { showVenue: 'yes' },
+          contentVersion: draft.contentVersion,
+        }),
+      ),
+    ).toEqual([400, 'VALIDATION_ERROR']);
   });
 
   it('keeps each wedding’s website to its own members', async () => {

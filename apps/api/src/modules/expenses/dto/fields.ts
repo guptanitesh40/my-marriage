@@ -1,6 +1,16 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsInt, Matches, Max, Min, ValidateBy, ValidateIf } from 'class-validator';
+import {
+  ArrayMaxSize,
+  IsArray,
+  IsIn,
+  IsInt,
+  Matches,
+  Max,
+  Min,
+  ValidateBy,
+  ValidateIf,
+} from 'class-validator';
 import { MAX_PAISE } from '../expense-policy.js';
 
 /**
@@ -58,4 +68,27 @@ export const IdField = (message: string) =>
   applyDecorators(
     ApiProperty({ pattern: '^[a-f0-9]{24}$', example: '6740a1b2c3d4e5f601234567' }),
     Matches(/^[a-f0-9]{24}$/i, { message }),
+  );
+
+const FILE_ID = /^[a-f0-9]{24}$/i;
+const FILES_MESSAGE = 'Upload the files again.';
+
+/**
+ * Uploaded files to keep with an expense or a ledger entry (decision
+ * 0023), each from `POST …/expense-files`; repeats ignored.
+ */
+export const ReceiptIdsField = (limit: number) =>
+  applyDecorators(
+    ApiProperty({
+      required: false,
+      type: [String],
+      maxItems: limit,
+      items: { type: 'string', pattern: FILE_ID.source },
+      example: ['6740a1b2c3d4e5f601234567'],
+      description: 'Files from `POST /weddings/{weddingId}/expense-files`.',
+    }),
+    ValidateIf((_: unknown, value: unknown) => value !== undefined),
+    IsArray({ message: FILES_MESSAGE }),
+    ArrayMaxSize(limit, { message: `Attach at most ${limit} files.` }),
+    Matches(FILE_ID, { each: true, message: FILES_MESSAGE }),
   );

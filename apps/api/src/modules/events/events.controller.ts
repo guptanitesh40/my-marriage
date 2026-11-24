@@ -75,14 +75,14 @@ export class EventsController {
   }
 
   /**
-   * Deletes a ceremony (owners only). The record is kept, marked as
+   * Deletes a ceremony (owners and admins). The record is kept, marked as
    * deleted, and no longer listed.
    */
   @Delete(':eventId')
   @HttpCode(204)
-  @ApiOperation({ summary: 'Delete ceremony (owners only)' })
+  @ApiOperation({ summary: 'Delete ceremony (owners and admins)' })
   @ApiNoContentResponse({ description: 'The event is deleted.' })
-  @ApiForbiddenResponse({ description: 'OWNER_REQUIRED: managers cannot delete events.' })
+  @ApiForbiddenResponse({ description: 'ADMIN_REQUIRED: managers cannot delete events.' })
   @ApiNotFoundResponse({
     description:
       'WEDDING_NOT_FOUND: not a wedding you belong to. EVENT_NOT_FOUND: no such event in it.',

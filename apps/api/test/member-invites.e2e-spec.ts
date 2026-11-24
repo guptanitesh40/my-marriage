@@ -150,7 +150,7 @@ describe('Partner invitations (integration)', () => {
     expect(listed).toMatchObject({ email, status: 'pending' });
   });
 
-  it('is for owners of the wedding only, never yourself, and only the partner role', async () => {
+  it('is for owners of the wedding only, never yourself, and only a known role', async () => {
     const owner = await ownerWithWedding();
     const stranger = await signupVerified(app);
     const manager = await signupVerified(app);
@@ -164,13 +164,13 @@ describe('Partner invitations (integration)', () => {
     });
     const email = uniqueEmail('partner');
 
-    expect(codeOf(await invite(manager.cookie, owner.weddingId, email))).toBe('OWNER_REQUIRED');
+    expect(codeOf(await invite(manager.cookie, owner.weddingId, email))).toBe('ADMIN_REQUIRED');
     expect(codeOf(await invite(stranger.cookie, owner.weddingId, email))).toBe('WEDDING_NOT_FOUND');
     expect((await invite(owner.cookie, 'not-an-id', email)).status).toBe(404);
     expect((await invite(owner.cookie, new Types.ObjectId().toHexString(), email)).status).toBe(
       404,
     );
-    expect((await invite(owner.cookie, owner.weddingId, email, 'manager')).status).toBe(400);
+    expect((await invite(owner.cookie, owner.weddingId, email, 'guest')).status).toBe(400);
     const self = await http()
       .get('/api/v1/auth/me')
       .set('Cookie', owner.cookie)
@@ -301,7 +301,7 @@ describe('Partner invitations (integration)', () => {
     ).toBe(1);
   });
 
-  it('refuses an invitee who owns another active wedding, and promotes a manager', async () => {
+  it('lets an owner of another wedding join as owner too, and promotes a manager', async () => {
     const owner = await ownerWithWedding();
     const busy = await ownerWithWedding();
     const busyEmail = (
@@ -311,15 +311,12 @@ describe('Partner invitations (integration)', () => {
     ).data.email;
     await invite(owner.cookie, owner.weddingId, busyEmail);
     const token = tokenFromEmail(await invitationEmail(busyEmail));
-    const refused = await accept(busy.cookie, token);
-    expect(refused.status).toBe(409);
-    expect(codeOf(refused)).toBe('OWNER_ACTIVE_LIMIT');
-    expect(await memberships.countDocuments({ userId: new Types.ObjectId(busy.userId) })).toBe(1);
-
-    // Even when the check before the transaction is passed, the index decides.
-    vi.spyOn(memberships, 'exists').mockResolvedValueOnce(null);
-    expect(codeOf(await accept(busy.cookie, token))).toBe('OWNER_ACTIVE_LIMIT');
-    expect((await invites.findOne({ tokenHashes: sha256(token) }).lean())?.status).toBe('pending');
+    // Owning a wedding no longer rules out owning another (decision 0020).
+    expect((await accept(busy.cookie, token)).status).toBe(200);
+    const owned = await memberships.find({ userId: new Types.ObjectId(busy.userId) }).lean();
+    expect(owned).toHaveLength(2);
+    expect(owned.every((membership) => membership.role === 'owner')).toBe(true);
+    expect((await invites.findOne({ tokenHashes: sha256(token) }).lean())?.status).toBe('accepted');
 
     // A manager of the wedding becomes its second owner.
     const other = await ownerWithWedding();
@@ -450,12 +447,16 @@ describe('Partner invitations (integration)', () => {
       const token = tokenFromEmail(await invitationEmail(email));
       const partner = await signupVerified(app, { email });
 
-      // `exists` runs after the link is looked up and before the transaction.
-      const original = memberships.exists.bind(memberships);
-      vi.spyOn(memberships, 'exists').mockImplementationOnce(((
+      // The wedding is read first in the joining transaction, after the
+      // link was looked up: change the invitation just before.
+      const original = weddings.findOne.bind(weddings);
+      vi.spyOn(weddings, 'findOne').mockImplementationOnce(((
         ...args: Parameters<typeof original>
       ) => {
-        return invites.updateOne({ _id: created.data.id }, change).then(() => original(...args));
+        const query = original(...args);
+        const run = query.exec.bind(query);
+        query.exec = () => invites.updateOne({ _id: created.data.id }, change).then(() => run());
+        return query;
       }) as typeof original);
 
       expect(codeOf(await accept(partner.cookie, token))).toBe('INVITE_INVALID');
@@ -558,6 +559,7 @@ describe('Partner invitations (integration)', () => {
           weddingDate: '2027-02-14',
           invitedByName: 'Priya Sharma',
           role: 'owner',
+          handOver: false,
           expiresAt: expect.any(String) as string,
         },
       ]);
@@ -639,7 +641,7 @@ describe('Partner invitations (integration)', () => {
       expect(codeOf(await acceptById(invitee.cookie, other.inviteId))).toBe('WEDDING_ARCHIVED');
     });
 
-    it('keeps the owner rules: two owners at most, one owned wedding each', async () => {
+    it('keeps two owners at most; owning another wedding does not matter', async () => {
       const full = await invited();
       const partner = await signupVerified(app, { email: full.email });
       await memberships.create({
@@ -664,8 +666,8 @@ describe('Partner invitations (integration)', () => {
           state: 'Maharashtra',
         });
       expect(created.status).toBe(201);
-      expect(codeOf(await acceptById(busy.cookie, inviteId))).toBe('OWNER_ACTIVE_LIMIT');
-      expect((await invites.findById(inviteId).lean())?.status).toBe('pending');
+      expect((await acceptById(busy.cookie, inviteId)).status).toBe(200);
+      expect((await invites.findById(inviteId).lean())?.status).toBe('accepted');
     });
   });
 });

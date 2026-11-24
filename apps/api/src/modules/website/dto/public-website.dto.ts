@@ -35,6 +35,18 @@ export class PublicEventDto {
   cancelled: boolean;
 }
 
+/**
+ * The wedding's main venue, only when the couple chose to show it
+ * (decision 0022). Its known parts; the map link is a checked Google Maps one.
+ */
+export class PublicVenueDto {
+  name?: string;
+
+  address?: string;
+
+  mapsUrl?: string;
+}
+
 export class PublicDateRangeDto {
   @ApiProperty({ format: 'date' })
   start: string;
@@ -78,6 +90,9 @@ export class PublicWebsiteDto {
   story?: string;
 
   faq: WebsiteFaqDto[];
+
+  /** The main venue; missing unless the couple chose to show it. */
+  mainVenue?: PublicVenueDto;
 
   /** The first and last day of the ceremonies with a date, cancelled ones left out. */
   dateRange?: PublicDateRangeDto;

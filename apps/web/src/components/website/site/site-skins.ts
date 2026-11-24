@@ -36,7 +36,7 @@ const traditional: SiteSkin = {
   ...RSVP_SKINS.traditional,
   navLink: 'text-label-md font-semibold text-on-surface-variant hover:text-primary',
   overline: 'text-label-sm font-semibold tracking-widest text-secondary uppercase',
-  heading: 'font-serif text-headline-lg-mobile text-on-surface sm:text-headline-lg',
+  heading: 'font-serif text-headline-lg-mobile text-on-surface site-sm:text-headline-lg',
   primary:
     'inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-title-sm font-semibold text-on-primary shadow-md transition-colors hover:bg-primary-container',
   secondary:
@@ -54,7 +54,8 @@ const modern: SiteSkin = {
   navLink:
     'font-mono text-[11px] tracking-widest text-minimal-body uppercase hover:text-minimal-ink',
   overline: 'font-mono text-[10px] tracking-[0.18em] text-minimal-tan uppercase',
-  heading: 'font-serif text-[2rem] leading-tight font-normal text-minimal-text sm:text-[2.5rem]',
+  heading:
+    'font-serif text-[2rem] leading-tight font-normal text-minimal-text site-sm:text-[2.5rem]',
   primary:
     'inline-flex items-center justify-center gap-2 rounded-md bg-minimal-ink px-5 py-3 font-mono text-[12px] tracking-widest text-white uppercase transition-colors hover:bg-minimal-ink-hover',
   secondary:
@@ -72,7 +73,7 @@ const royal: SiteSkin = {
   navLink:
     'font-display text-[11px] font-semibold tracking-[0.16em] text-regal-label uppercase hover:text-regal-ink',
   overline: 'font-display text-[11px] font-bold tracking-[0.22em] text-regal-bronze uppercase',
-  heading: 'font-serif text-headline-lg-mobile text-regal-ink sm:text-headline-lg',
+  heading: 'font-serif text-headline-lg-mobile text-regal-ink site-sm:text-headline-lg',
   primary:
     'inline-flex items-center justify-center gap-2 rounded-xl border border-regal-emboss-line bg-regal-emboss px-5 py-3 font-display text-[13px] font-bold tracking-wider text-regal-gold-ink shadow-md transition hover:brightness-105',
   secondary:

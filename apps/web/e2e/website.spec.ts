@@ -358,3 +358,126 @@ test('a cover photo is uploaded in the builder, previewed, and shown to guests o
   await expect(editor.getByText('Upload a cover photo')).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test('the couple chooses to show the main venue and map, and guests see it once published', async ({
+  page,
+  browser,
+}) => {
+  const errors = collectErrors(page);
+  const { weddingId, website } = await ownerAtWebsite(page);
+  const editor = page.getByRole('region', { name: 'Website editor' });
+  const preview = page.getByRole('region', { name: 'Live preview' });
+
+  // No venue in Settings yet: the builder says where to add it.
+  await expect(editor.getByText('No main venue yet.')).toBeVisible();
+  await expect(editor.getByRole('link', { name: 'Add it in Settings' })).toBeVisible();
+
+  const saved = await page.request.patch(`/api/v1/weddings/${weddingId}`, {
+    data: {
+      mainVenue: {
+        name: 'Rambagh Palace',
+        address: 'Bhawani Singh Road, Jaipur',
+        mapsUrl: 'https://maps.app.goo.gl/AbCdEf123',
+      },
+      description: 'Private note for the team',
+    },
+  });
+  expect(saved.status()).toBe(200);
+  expect(
+    (
+      await page.request.post(`/api/v1/weddings/${weddingId}/events`, {
+        data: { title: 'Haldi', startDate: '2031-02-12' },
+      })
+    ).status(),
+  ).toBe(201);
+  await page.goto(website);
+
+  const choice = editor.getByRole('checkbox', {
+    name: /Show the venue address and map on my website/,
+  });
+  await expect(choice).not.toBeChecked();
+  await expect(editor).toContainText(
+    'Rambagh Palace · Bhawani Singh Road, Jaipur · with a map link',
+  );
+  await expect(preview.getByText('The wedding venue')).toHaveCount(0);
+  await choice.check();
+  // Shown in the live preview before it is saved.
+  await expect(preview.getByRole('heading', { name: 'Rambagh Palace' })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Publish website' }).click();
+  await page.getByRole('button', { name: 'Confirm & publish' }).click();
+  await expect(page.getByText('Published · Live')).toBeVisible();
+  const slug = await editor.getByLabel('Public wedding URL').inputValue();
+
+  const visitor = await newVisitor(browser);
+  const tab = await visitor.newPage();
+  await tab.goto(`/w/${slug}`);
+  const venue = tab.getByRole('region', { name: 'Rambagh Palace' });
+  await expect(venue).toContainText('Bhawani Singh Road, Jaipur');
+  await expect(
+    venue.getByRole('link', { name: /Get directions to the wedding venue/ }),
+  ).toHaveAttribute('href', 'https://maps.app.goo.gl/AbCdEf123');
+  await expect(tab.getByText('Private note for the team')).toHaveCount(0);
+  await expectNoHorizontalScroll(tab);
+
+  // Turned off and published again: gone.
+  await choice.uncheck();
+  await page.getByRole('button', { name: 'Update published site' }).click();
+  await page.getByRole('button', { name: 'Confirm & update' }).click();
+  await expect(page.getByText('Published · Live')).toBeVisible();
+  await expect
+    .poll(async () => {
+      await tab.reload();
+      return tab.getByText('The wedding venue').count();
+    })
+    .toBe(0);
+  expect(errors).toEqual([]);
+});
+
+test('on a phone the website leads with RSVP one tap away and lets guests jump to a day; on a desktop neither shows', async ({
+  page,
+  browser,
+}, testInfo) => {
+  const { weddingId } = await ownerAtWebsite(page);
+  for (const [title, startDate] of [
+    ['Haldi', '2031-02-12'],
+    ['Wedding', '2031-02-14'],
+  ] as const) {
+    const res = await page.request.post(`/api/v1/weddings/${weddingId}/events`, {
+      data: { title, startDate },
+    });
+    expect(res.status()).toBe(201);
+  }
+  const published = await page.request.post(`/api/v1/weddings/${weddingId}/website/publish`, {
+    data: { contentVersion: 0 },
+  });
+  expect(published.status()).toBe(200);
+  const slug = ((await published.json()) as { data: { slug: string } }).data.slug;
+
+  const visitor = await newVisitor(browser);
+  const phone = await visitor.newPage();
+  await phone.setViewportSize({ width: 360, height: 780 });
+  // A visitor without a private link: the RSVP section's check answers 401.
+  const errors = collectErrors(phone, ['/api/v1/guest-access/invitation']);
+  await phone.goto(`/w/${slug}`);
+  const reply = phone.getByRole('link', { name: 'RSVP for celebrations' }).last();
+  await expect(reply).toBeInViewport();
+  const days = phone.getByRole('navigation', { name: 'Jump to a day' });
+  await days.getByRole('link', { name: /Day 2/ }).click();
+  await expect(phone).toHaveURL(/#celebrations-day-2$/);
+  await expect(phone.getByRole('heading', { name: 'Wedding', exact: true })).toBeInViewport();
+  // Replying stays one tap away while scrolling.
+  await expect(reply).toBeInViewport();
+  await expectNoHorizontalScroll(phone);
+  await expectNoSeriousA11yIssues(phone);
+  await testInfo.attach('website-phone', {
+    body: await phone.screenshot({ fullPage: true }),
+    contentType: 'image/png',
+  });
+
+  await phone.setViewportSize({ width: 1280, height: 900 });
+  await expect(days).toBeHidden();
+  // Only the welcome card's button: the phone's bar is gone.
+  await expect(phone.getByRole('link', { name: 'RSVP for celebrations' })).toHaveCount(1);
+  expect(errors).toEqual([]);
+});

@@ -2,9 +2,9 @@ import { OptionalTextBlockField } from '../../events/dto/fields.js';
 import { OptionalIdField } from '../../tasks/dto/fields.js';
 import { EventIdsField } from '../../vendors/dto/fields.js';
 import { OptionalDateField, TextLineField } from '../../weddings/dto/fields.js';
-import { EXPENSE_LIMITS } from '../expense-policy.js';
+import { EXPENSE_LIMITS, RECEIPT_LIMITS } from '../expense-policy.js';
 import { CATEGORY_EMPTY, TITLE_EMPTY, VENDOR_MESSAGE } from './create-expense.dto.js';
-import { MoneyPaiseField } from './fields.js';
+import { MoneyPaiseField, ReceiptIdsField } from './fields.js';
 
 /**
  * Changes to an expense's details (PRD EXP-01). Fields left out stay as
@@ -49,4 +49,11 @@ export class UpdateExpenseDto {
     nullable: true,
   })
   notes?: string | null;
+
+  /**
+   * The expense's files after this change, in order: new uploads are
+   * added, files left out are deleted. Left out entirely: unchanged.
+   */
+  @ReceiptIdsField(RECEIPT_LIMITS.perExpense)
+  receiptAssetIds?: string[];
 }

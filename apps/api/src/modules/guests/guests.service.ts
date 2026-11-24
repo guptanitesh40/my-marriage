@@ -10,6 +10,7 @@ import type { AuthenticatedUser } from '../auth/sessions.service.js';
 import { EventsService, type EventBrief } from '../events/events.service.js';
 import type { NotificationState } from '../notifications/notification.schema.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
+import { ADMIN_ROLES } from '../weddings/schemas/wedding-membership.schema.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
 import { weddingArchived } from '../weddings/wedding-errors.js';
 import type {
@@ -147,6 +148,21 @@ export class GuestsService {
     };
   }
 
+  /**
+   * The same totals as the guest list, without the list, for the overview
+   * (PRD DASH-01). The caller has checked access.
+   */
+  async totals(weddingId: Types.ObjectId): Promise<GuestTotalsDto> {
+    const [found, invitations, events] = await Promise.all([
+      this.guests.find({ weddingId, ...ACTIVE }, { partySize: 1 }).lean(),
+      this.invitations
+        .find({ weddingId, isInvited: true }, { guestId: 1, eventId: 1, rsvp: 1 })
+        .lean(),
+      this.events.briefs(weddingId),
+    ]);
+    return this.totalsOf(found, this.groupByGuest(invitations), events);
+  }
+
   /** One guest with their link and the history of each answer. */
   async get(user: AuthenticatedUser, weddingId: string, guestId: string): Promise<GuestDetailDto> {
     const { wedding } = await this.access.require(user, weddingId);
@@ -226,12 +242,12 @@ export class GuestsService {
   }
 
   /**
-   * Removes a guest (owners only, as for events, vendors and expenses). The
+   * Removes a guest (owners and admins, as for events, vendors and expenses). The
    * record and answers are kept, marked removed; every link and guest
    * session stops working at once.
    */
   async remove(user: AuthenticatedUser, weddingId: string, guestId: string): Promise<void> {
-    const { wedding, userId } = await this.access.require(user, weddingId, ['owner']);
+    const { wedding, userId } = await this.access.require(user, weddingId, ADMIN_ROLES);
     if (wedding.status !== 'active') throw weddingArchived();
     const id = parseObjectId(guestId);
     if (!id) throw guestNotFound();
@@ -859,8 +875,10 @@ export class GuestsService {
     return known;
   }
 
-  private groupByGuest(invitations: StoredInvitation[]): Map<string, StoredInvitation[]> {
-    const byGuest = new Map<string, StoredInvitation[]>();
+  private groupByGuest<T extends Pick<StoredInvitation, 'guestId'>>(
+    invitations: T[],
+  ): Map<string, T[]> {
+    const byGuest = new Map<string, T[]>();
     for (const invitation of invitations) {
       const key = invitation.guestId.toHexString();
       byGuest.set(key, [...(byGuest.get(key) ?? []), invitation]);
@@ -874,8 +892,8 @@ export class GuestsService {
    * ceremony. Deleted events are left out; cancelled ones are not answered.
    */
   private totalsOf(
-    guests: StoredGuest[],
-    byGuest: Map<string, StoredInvitation[]>,
+    guests: Pick<StoredGuest, '_id' | 'partySize'>[],
+    byGuest: Map<string, Pick<StoredInvitation, 'eventId' | 'rsvp'>[]>,
     events: EventBrief[],
   ): GuestTotalsDto {
     const perEvent = new Map<string, EventRsvpTotalsDto>(

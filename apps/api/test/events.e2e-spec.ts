@@ -530,14 +530,14 @@ describe('Events (integration)', () => {
       }
     });
 
-    it('is for owners only', async () => {
+    it('is for owners and admins only', async () => {
       const { cookie, weddingId } = await ownerWithWedding();
       const manager = await addManager(weddingId);
       const id = await createdId(cookie, weddingId, { title: 'Haldi' });
 
       const res = await remove(manager.cookie, weddingId, id);
       expect(res.status).toBe(403);
-      expect(errorOf(res).code).toBe('OWNER_REQUIRED');
+      expect(errorOf(res).code).toBe('ADMIN_REQUIRED');
       expect((await events.findById(id).lean())?.deletedAt).toBeUndefined();
     });
 

@@ -9,6 +9,7 @@ import { getGuests, getReminderSettings } from '@/lib/guests/guests';
 import { isUpcoming } from '@/lib/guests/reminders';
 import { guestsPath } from '@/lib/routes';
 import { getWedding } from '@/lib/weddings/workspace';
+import { ConfirmedByCeremony } from './confirmed-by-ceremony';
 import { GuestDirectory } from './guest-directory';
 import { AddGuestButton, GuestDrawer } from './guest-drawer';
 import type { GuestEventChoice } from './guest-form';
@@ -217,17 +218,7 @@ function GuestStats({ totals }: { totals: GuestTotals }) {
             No one invited to a ceremony yet.
           </p>
         ) : (
-          <ul className="mt-2 flex flex-col gap-0.5 text-body-sm">
-            {events.map((event) => (
-              <li key={event.eventId} className="flex justify-between gap-3">
-                <span className="truncate text-on-surface">{event.title}</span>
-                <span className="shrink-0 text-on-surface tabular-nums">
-                  <b>{event.confirmedPeople}</b>
-                  <span className="text-on-surface-variant"> of {event.invitedPeople}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
+          <ConfirmedByCeremony events={events} />
         )}
         <p className="mt-1.5 text-label-sm text-on-surface-variant">
           People attending · Maybe not included

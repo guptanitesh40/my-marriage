@@ -319,6 +319,39 @@ const mediaExportIndexes: Migration = {
   },
 };
 
+const teamChanges: Migration = {
+  id: '0018-team-and-audit',
+  description: 'audit_events indexes; drop the one-active-owned-wedding index',
+  up: async (db) => {
+    // Schema document §4.27; no TTL: audit history is kept.
+    const audit = db.collection('audit_events');
+    await audit.createIndex({ weddingId: 1, occurredAt: -1 });
+    await audit.createIndex({ actorUserId: 1, occurredAt: -1 });
+
+    // An account may now own several active weddings (decision 0020).
+    const memberships = db.collection('wedding_memberships');
+    const indexes = await memberships.indexes();
+    if (indexes.some((index) => index.name === 'uniq_active_owned_wedding_per_user')) {
+      await memberships.dropIndex('uniq_active_owned_wedding_per_user');
+    }
+  },
+};
+
+const deletionJobIndexes: Migration = {
+  id: '0019-deletion-jobs',
+  description: 'deletion_jobs indexes: one waiting deletion request per wedding',
+  up: async (db) => {
+    // Schema document §4.29; decision 0021.
+    const jobs = db.collection('deletion_jobs');
+    await jobs.createIndex({ weddingId: 1, createdAt: 1 });
+    await jobs.createIndex({ state: 1, requestedAt: 1 });
+    await jobs.createIndex(
+      { weddingId: 1 },
+      { unique: true, partialFilterExpression: { state: 'requested' } },
+    );
+  },
+};
+
 /** Every migration, oldest first. Append here as each collection is introduced. */
 export const MIGRATIONS: readonly Migration[] = [
   identityIndexes,
@@ -338,4 +371,6 @@ export const MIGRATIONS: readonly Migration[] = [
   mediaIndexes,
   uploadLinkIndexes,
   mediaExportIndexes,
+  teamChanges,
+  deletionJobIndexes,
 ];

@@ -79,16 +79,40 @@ export function fullRows(
   return full;
 }
 
-/** The ceremonies still on, by day, for "At a glance". */
-function byDay(events: readonly SiteEvent[]): { label: string; titles: string[] }[] {
-  const days = new Map<string, string[]>();
-  for (const event of events) {
-    if (event.cancelled) continue;
+interface CelebrationDay {
+  /** "Wed 10 Feb 2027", or "Date to be announced". */
+  label: string;
+  /** "10 Feb" for the jump chips. */
+  chip: string;
+  titles: string[];
+  /** The day's first ceremony, which carries the day's anchor. */
+  firstIndex: number;
+}
+
+/** The ceremonies still on, by day, for "At a glance" and the day chips. */
+function celebrationDays(events: readonly SiteEvent[]): CelebrationDay[] {
+  const days = new Map<string, CelebrationDay>();
+  events.forEach((event, index) => {
+    if (event.cancelled) return;
     const day = eventDay(event);
     const key = day?.short ?? 'Date to be announced';
-    days.set(key, [...(days.get(key) ?? []), event.title]);
-  }
-  return [...days].map(([label, titles]) => ({ label, titles }));
+    const known = days.get(key);
+    if (known) known.titles.push(event.title);
+    else {
+      days.set(key, {
+        label: key,
+        chip: day ? `${day.day} ${day.month}` : 'Date to come',
+        titles: [event.title],
+        firstIndex: index,
+      });
+    }
+  });
+  return [...days.values()];
+}
+
+/** The anchor of the day a ceremony opens, as "At a glance" and the day chips link to it. */
+function dayAnchor(number: number): string {
+  return `celebrations-day-${number}`;
 }
 
 function SectionTitle({
@@ -122,7 +146,7 @@ function Header({ site, skin, sections }: { site: Site; skin: SiteSkin; sections
   const [bride, groom] = monogram(site);
   return (
     <header className={`sticky top-0 z-40 w-full ${skin.header}`}>
-      <div className="mx-auto flex min-h-16 w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 px-4 sm:px-6">
+      <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 px-4 site-sm:min-h-16 site-sm:px-6">
         <a href="#top" className="flex min-w-0 items-center gap-2.5">
           {theme === 'modern' ? (
             <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-minimal-ink" />
@@ -151,13 +175,13 @@ function Header({ site, skin, sections }: { site: Site; skin: SiteSkin; sections
               {site.coupleName}
             </span>
             <span
-              className={
+              className={`hidden site-sm:block ${
                 theme === 'modern'
                   ? 'mt-0.5 font-mono text-[9px] tracking-widest text-minimal-muted uppercase'
                   : theme === 'royal'
                     ? 'text-[10px] tracking-[0.2em] text-regal-bronze uppercase'
                     : 'text-label-sm tracking-wider text-on-surface-variant uppercase'
-              }
+              }`}
             >
               {bride} &amp; {groom} · Wedding
             </span>
@@ -165,7 +189,7 @@ function Header({ site, skin, sections }: { site: Site; skin: SiteSkin; sections
         </a>
         <nav
           aria-label="Website sections"
-          className="order-last -mt-1 flex w-full gap-4 overflow-x-auto pb-2.5 md:order-none md:mt-0 md:w-auto md:gap-5 md:pb-0"
+          className="order-last -mx-4 -mt-1 flex w-[calc(100%+2rem)] gap-5 overflow-x-auto px-4 pb-2 [scrollbar-width:none] site-sm:-mx-6 site-sm:w-[calc(100%+3rem)] site-sm:px-6 site-md:order-none site-md:mx-0 site-md:mt-0 site-md:w-auto site-md:px-0 site-md:pb-0 [&::-webkit-scrollbar]:hidden"
         >
           {sections.map((section) => (
             <a
@@ -218,8 +242,10 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
       </span>
     </p>
   );
+  // On a phone with a cover photo, the card rises over the photo's lower edge.
+  const lift = site.coverUrl ? 'z-10 -mt-24 mx-2 site-sm:mx-0 site-sm:mt-0' : '';
   const actions = (
-    <div className="flex flex-wrap gap-2.5">
+    <div className="flex flex-col gap-2.5 site-sm:flex-row site-sm:flex-wrap">
       <a href={`#${SECTION_ANCHORS.rsvp}`} className={skin.primary}>
         <Icon name="task-alt" className="size-4.5" />
         {RSVP_CTA}
@@ -241,8 +267,8 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
 
   const card =
     theme === 'modern' ? (
-      <div className={`flex flex-col gap-4 ${skin.card} sm:p-7`}>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-minimal-line-soft pb-3">
+      <div className={`relative flex flex-col gap-4 ${skin.card} site-sm:p-7 ${lift}`}>
+        <div className="hidden flex-wrap items-center justify-between gap-2 border-b border-minimal-line-soft pb-3 site-sm:flex">
           <p className="flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-minimal-tan uppercase">
             <Icon name="favorite" className="size-3.5" />
             Wedding website
@@ -255,7 +281,7 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
           <p className="font-mono text-[10px] tracking-widest text-minimal-muted uppercase">
             We request the honour of your presence
           </p>
-          <h1 className="mt-1 font-serif text-[2.25rem] leading-[1.1] font-normal tracking-tight wrap-break-word text-minimal-text sm:text-[3rem]">
+          <h1 className="mt-1 font-serif text-[2.25rem] leading-[1.1] font-normal tracking-tight wrap-break-word text-minimal-text site-sm:text-[3rem]">
             {site.coupleName}
           </h1>
         </div>
@@ -280,7 +306,7 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
             <div className="flex items-center gap-3">
               <span
                 aria-hidden="true"
-                className="flex size-9 shrink-0 items-center justify-center rounded-full border border-minimal-line bg-surface-container-lowest font-mono text-[11px] font-medium text-minimal-ink"
+                className="hidden size-9 shrink-0 items-center justify-center rounded-full border border-minimal-line site-sm:flex bg-surface-container-lowest font-mono text-[11px] font-medium text-minimal-ink"
               >
                 {bride}
                 {groom}
@@ -295,7 +321,9 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
         {note}
       </div>
     ) : theme === 'royal' ? (
-      <div className="relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-regal-gold/45 bg-linear-to-b from-regal-hero to-regal-deep p-6 text-on-primary shadow-lg sm:p-8">
+      <div
+        className={`relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-regal-gold/45 bg-linear-to-b from-regal-hero to-regal-deep p-5 text-on-primary shadow-lg site-sm:p-8 ${lift}`}
+      >
         <span
           aria-hidden="true"
           className="pointer-events-none absolute -top-14 -right-14 size-56 rounded-full border border-regal-gold/20"
@@ -308,7 +336,7 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
           aria-hidden="true"
           className="pointer-events-none absolute -bottom-12 -left-12 size-48 rounded-full bg-regal-gold/5 blur-xl"
         />
-        <div className="relative flex flex-wrap items-center justify-between gap-2">
+        <div className="relative hidden flex-wrap items-center justify-between gap-2 site-sm:flex">
           <p className="flex items-center gap-1 font-display text-[11px] font-semibold tracking-[0.25em] text-regal-gold-light uppercase">
             <Icon name="workspace-premium" className="size-4" />
             Wedding celebration
@@ -327,7 +355,7 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
           <p className="font-display text-[10px] font-medium tracking-[0.3em] text-regal-gold-light/90 uppercase">
             You’re cordially invited
           </p>
-          <h1 className="mt-1 font-serif text-[2.25rem] leading-tight font-normal tracking-tight wrap-break-word text-regal-ivory sm:text-[3rem]">
+          <h1 className="mt-1 font-serif text-[2.25rem] leading-tight font-normal tracking-tight wrap-break-word text-regal-ivory site-sm:text-[3rem]">
             {site.coupleName}’s Wedding
           </h1>
         </div>
@@ -337,7 +365,7 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
             <div className="flex items-center gap-3">
               <span
                 aria-hidden="true"
-                className="flex size-10 shrink-0 items-center justify-center rounded-full border border-regal-emboss-line bg-regal-emboss font-display text-[12px] font-bold text-regal-gold-ink shadow-xs"
+                className="hidden size-10 shrink-0 items-center justify-center rounded-full border border-regal-emboss-line site-sm:flex bg-regal-emboss font-display text-[12px] font-bold text-regal-gold-ink shadow-xs"
               >
                 {bride}
                 {groom}
@@ -357,12 +385,14 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
         <div className="relative">{note}</div>
       </div>
     ) : (
-      <div className="relative flex flex-col gap-4 overflow-hidden rounded-2xl bg-surface-container-lowest p-6 shadow-sm sm:p-8">
+      <div
+        className={`relative flex flex-col gap-4 overflow-hidden rounded-2xl bg-surface-container-lowest p-5 shadow-sm site-sm:p-8 ${lift}`}
+      >
         <span
           aria-hidden="true"
           className="pointer-events-none absolute -right-12 -bottom-12 size-48 rounded-full bg-secondary-container/30 blur-2xl"
         />
-        <div className="relative flex flex-wrap items-center justify-between gap-2">
+        <div className="relative hidden flex-wrap items-center justify-between gap-2 site-sm:flex">
           <p className="flex items-center gap-1.5 text-label-sm font-semibold tracking-widest text-secondary uppercase">
             <Icon name="all-inclusive" className="size-4.5" />
             We’re getting married
@@ -376,7 +406,7 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
           <p className="text-label-sm tracking-widest text-on-surface-variant uppercase">
             You’re invited
           </p>
-          <h1 className="mt-1 font-serif text-[2.25rem] leading-tight wrap-break-word text-on-surface sm:text-[3rem]">
+          <h1 className="mt-1 font-serif text-[2.25rem] leading-tight wrap-break-word text-on-surface site-sm:text-[3rem]">
             {site.coupleName}’s Wedding
           </h1>
         </div>
@@ -386,7 +416,7 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
             <div className="flex items-center gap-3">
               <span
                 aria-hidden="true"
-                className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary-container text-title-sm font-semibold text-on-secondary-container"
+                className="hidden size-10 shrink-0 items-center justify-center rounded-full bg-secondary-container text-title-sm site-sm:flex font-semibold text-on-secondary-container"
               >
                 {bride}
                 {groom}
@@ -408,7 +438,7 @@ function Welcome({ site, skin }: { site: Site; skin: SiteSkin }) {
     );
 
   return (
-    <section className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-6">
+    <section className="grid grid-cols-1 gap-4 site-lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] site-lg:gap-6">
       {card}
       <Photo site={site} skin={skin} />
     </section>
@@ -422,9 +452,15 @@ function Photo({ site, skin }: { site: Site; skin: SiteSkin }) {
   const place = placeLabel(site);
   if (site.coverUrl) {
     return (
-      <div className={`relative min-h-64 overflow-hidden sm:min-h-80 lg:min-h-full ${skin.photo}`}>
+      <div
+        className={`relative order-first -mx-4 -mt-4 aspect-[4/5] overflow-hidden site-sm:order-none site-sm:mx-0 site-sm:mt-0 site-sm:aspect-auto site-sm:min-h-80 site-lg:min-h-full ${skin.photo} site-phone:rounded-none! site-phone:border-0! site-phone:shadow-none!`}
+      >
         <CoverImage src={site.coverUrl} className={theme === 'modern' ? 'grayscale-[15%]' : ''} />
-        <p className={`absolute inset-x-0 bottom-0 ${skin.caption}`}>
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-black/35 to-transparent site-sm:hidden"
+        />
+        <p className={`absolute inset-x-0 bottom-0 ${skin.caption} site-phone:hidden!`}>
           {theme === 'modern' ? (
             <>
               <span>{place}</span>
@@ -443,7 +479,7 @@ function Photo({ site, skin }: { site: Site; skin: SiteSkin }) {
   return (
     <div
       aria-hidden="true"
-      className={`relative hidden min-h-full items-center justify-center overflow-hidden lg:flex ${
+      className={`relative hidden min-h-full items-center justify-center overflow-hidden site-lg:flex ${
         theme === 'royal'
           ? 'rounded-2xl border border-regal-gold/45 bg-regal-emerald'
           : theme === 'modern'
@@ -507,9 +543,12 @@ function QuickFacts({ site, skin }: { site: Site; skin: SiteSkin }) {
     { value: site.city, label: site.state, icon: 'location-on' as const },
   ];
   return (
-    <ul className="grid grid-cols-3 gap-2.5 sm:gap-4">
+    <ul className="grid grid-cols-3 gap-2 site-sm:gap-4">
       {facts.map((fact) => (
-        <li key={fact.label} className={`flex min-w-0 flex-col gap-1 ${skin.card} p-3.5! sm:p-5!`}>
+        <li
+          key={fact.label}
+          className={`flex min-w-0 flex-col gap-1 ${skin.card} p-3! site-sm:p-5!`}
+        >
           <Icon
             name={fact.icon}
             className={`size-5 ${
@@ -520,31 +559,78 @@ function QuickFacts({ site, skin }: { site: Site; skin: SiteSkin }) {
                   : 'text-secondary'
             }`}
           />
-          <span className={`truncate ${skin.statValue}`}>{fact.value}</span>
-          <span className={`truncate ${skin.statLabel}`}>{fact.label}</span>
+          <span className={`wrap-break-word ${skin.statValue}`}>{fact.value}</span>
+          <span
+            className={`leading-tight wrap-break-word ${skin.statLabel} site-phone:text-[10px]! site-phone:tracking-normal!`}
+          >
+            {fact.label}
+          </span>
         </li>
       ))}
     </ul>
   );
 }
 
+/**
+ * The wedding's main venue, when the couple chose to show it (decision
+ * 0022): its name, address and a link to Google Maps.
+ */
+function Venue({ site, skin }: { site: Site; skin: SiteSkin }) {
+  const venue = site.mainVenue;
+  if (!venue) return null;
+  return (
+    <section
+      aria-labelledby="site-venue"
+      className={`flex flex-col gap-3 site-sm:flex-row site-sm:items-center site-sm:justify-between ${skin.card}`}
+    >
+      <div className="flex min-w-0 items-start gap-3">
+        <Icon name="location-on" className={`mt-1 size-6 shrink-0 ${skin.detailIcon}`} />
+        <div className="min-w-0">
+          <p className={skin.overline}>The wedding venue</p>
+          <h2 id="site-venue" className={`wrap-break-word ${skin.title}`}>
+            {venue.name ?? 'Our wedding venue'}
+          </h2>
+          {venue.address && <p className={`wrap-break-word ${skin.body}`}>{venue.address}</p>}
+        </div>
+      </div>
+      {venue.mapsUrl && (
+        <p className="shrink-0">
+          <a
+            href={venue.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={skin.secondary}
+          >
+            <Icon name="location-on" className="size-4" />
+            Get directions <span className="sr-only">to the wedding venue (opens Google Maps)</span>
+            <Icon name="arrow-outward" className="size-4" />
+          </a>
+        </p>
+      )}
+    </section>
+  );
+}
+
 function Story({ site, skin }: { site: Site; skin: SiteSkin }) {
   const paragraphs = storyParagraphs(site.story);
-  const days = byDay(site.events);
+  const days = celebrationDays(site.events);
   const glance = days.length > 0 && (
     <div className={`flex flex-col gap-3 ${skin.card}`}>
       <h3 className={skin.overline}>At a glance</h3>
       <ol className={`flex flex-col ${skin.details} gap-0! p-0!`}>
         {days.map((day, index) => (
-          <li
-            key={day.label}
-            className="flex items-baseline gap-3 border-b border-current/10 px-3.5 py-2.5 last:border-b-0"
-          >
-            <span className={`shrink-0 whitespace-nowrap ${skin.tag}`}>Day {index + 1}</span>
-            <span className="min-w-0">
-              <span className={`block ${skin.detailStrong}`}>{day.label}</span>
-              <span className={`block ${skin.detailText}`}>{day.titles.join(' · ')}</span>
-            </span>
+          <li key={day.label} className="border-b border-current/10 last:border-b-0">
+            <a
+              href={`#${dayAnchor(index + 1)}`}
+              className="flex items-baseline gap-3 px-3.5 py-2.5 transition-opacity hover:opacity-80"
+            >
+              <span className={`shrink-0 whitespace-nowrap ${skin.tag}`}>Day {index + 1}</span>
+              <span className="min-w-0 flex-1">
+                <span className={`block ${skin.detailStrong}`}>{day.label}</span>
+                <span className={`block ${skin.detailText}`}>{day.titles.join(' · ')}</span>
+              </span>
+              <Icon name="arrow-downward" className="size-4 shrink-0 self-center opacity-60" />
+            </a>
           </li>
         ))}
       </ol>
@@ -555,7 +641,7 @@ function Story({ site, skin }: { site: Site; skin: SiteSkin }) {
     <section
       id={SECTION_ANCHORS.story}
       aria-labelledby="site-story"
-      className="grid scroll-mt-24 grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-6"
+      className="grid scroll-mt-24 grid-cols-1 gap-4 site-lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] site-lg:gap-6"
     >
       <div className={skin.card}>
         <SectionTitle
@@ -565,7 +651,7 @@ function Story({ site, skin }: { site: Site; skin: SiteSkin }) {
           id="site-story"
         />
         <div
-          className={`flex flex-col gap-4 text-body-lg leading-relaxed ${site.templateId === 'royal' ? 'text-regal-body' : site.templateId === 'modern' ? 'text-minimal-text' : 'text-on-surface-variant'}`}
+          className={`flex flex-col gap-4 text-body-md leading-relaxed site-sm:text-body-lg ${site.templateId === 'royal' ? 'text-regal-body' : site.templateId === 'modern' ? 'text-minimal-text' : 'text-on-surface-variant'}`}
         >
           {paragraphs.map((paragraph, index) => (
             <p key={index} className="whitespace-pre-line">
@@ -586,10 +672,13 @@ function Celebration({
   wide,
   skin,
   theme,
+  anchor,
 }: {
   event: SiteEvent;
   index: number;
   total: number;
+  /** The day's anchor, on the first ceremony of each day. */
+  anchor?: string | undefined;
   /** Takes a whole row (see fullRows). */
   wide: boolean;
   skin: SiteSkin;
@@ -602,7 +691,10 @@ function Celebration({
   const badge = event.cancelled ? 'Cancelled' : day ? `${day.weekday}` : 'Date to come';
   const live = Boolean(event.livestreamVideoId) && !event.cancelled;
   return (
-    <li className={`flex min-w-0 flex-col gap-3 ${skin.card} ${wide ? 'md:col-span-2' : ''}`}>
+    <li
+      id={anchor}
+      className={`flex min-w-0 scroll-mt-32 flex-col gap-3 ${skin.card} ${wide ? 'site-md:col-span-2' : ''}`}
+    >
       {theme === 'modern' ? (
         <div className="flex items-baseline justify-between gap-2 border-b border-minimal-line-soft pb-2.5">
           <p className="flex min-w-0 items-center gap-2">
@@ -725,7 +817,7 @@ function Celebration({
               <Livestream
                 videoId={event.livestreamVideoId}
                 title={event.title}
-                className="aspect-[4/3] max-h-96 sm:aspect-video"
+                className="aspect-[4/3] max-h-96 site-sm:aspect-video"
               >
                 {theme === 'royal' && (
                   <span aria-hidden="true" className="absolute inset-0 bg-jali opacity-30" />
@@ -795,19 +887,22 @@ export function ThemedSite({
   const photoCount = gallery.reduce((sum, album) => sum + album.photoCount, 0);
   const count = celebrationCount(site.events);
   const wide = fullRows(site.events);
+  const days = celebrationDays(site.events);
+  const anchors = new Map(days.map((day, index) => [day.firstIndex, dayAnchor(index + 1)]));
   return (
     <div
       data-rsvp-theme={theme}
-      className={`flex flex-1 flex-col font-sans antialiased ${skin.page}`}
+      className={`@container/site flex flex-1 flex-col font-sans antialiased ${skin.page}`}
     >
       <Header site={site} skin={skin} sections={sections} />
       <main
         id="top"
-        className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 pt-5 pb-12 sm:px-6 sm:pt-8"
+        className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 pt-4 pb-12 site-sm:px-6 site-sm:pt-8"
       >
-        <div className="flex flex-col gap-4 sm:gap-5">
+        <div className="flex flex-col gap-4 site-sm:gap-5">
           <Welcome site={site} skin={skin} />
           <QuickFacts site={site} skin={skin} />
+          <Venue site={site} skin={skin} />
         </div>
 
         <Story site={site} skin={skin} />
@@ -828,10 +923,26 @@ export function ThemedSite({
             id="site-celebrations"
             aside={`${count === 1 ? '1 celebration' : `${count} celebrations`} · ${placeLabel(site)}`}
           />
+          {days.length > 1 && (
+            <nav
+              aria-label="Jump to a day"
+              className="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] site-sm:-mx-6 site-sm:px-6 site-lg:hidden [&::-webkit-scrollbar]:hidden"
+            >
+              {days.map((day, index) => (
+                <a
+                  key={day.label}
+                  href={`#${dayAnchor(index + 1)}`}
+                  className={`shrink-0 whitespace-nowrap ${skin.secondary}`}
+                >
+                  Day {index + 1} · {day.chip}
+                </a>
+              ))}
+            </nav>
+          )}
           {site.events.length === 0 ? (
             <p className={`${skin.card} ${skin.body}`}>{NO_CELEBRATIONS}</p>
           ) : (
-            <ol className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-5">
+            <ol className="grid grid-cols-1 gap-4 site-md:grid-cols-2 site-lg:gap-5">
               {site.events.map((event, index) => (
                 <Celebration
                   key={index}
@@ -841,6 +952,7 @@ export function ThemedSite({
                   wide={wide[index] ?? false}
                   skin={skin}
                   theme={theme}
+                  anchor={anchors.get(index)}
                 />
               ))}
             </ol>
@@ -867,9 +979,9 @@ export function ThemedSite({
         <section
           id={SECTION_ANCHORS.rsvp}
           aria-labelledby="site-rsvp"
-          className="grid scroll-mt-24 grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] lg:gap-6"
+          className="grid scroll-mt-24 grid-cols-1 items-start gap-4 site-lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] site-lg:gap-6"
         >
-          <div className={`flex flex-col gap-3 lg:sticky lg:top-24 ${skin.card}`}>
+          <div className={`flex flex-col gap-3 site-lg:sticky site-lg:top-24 ${skin.card}`}>
             <p className={skin.overline}>Kindly reply</p>
             <h2 id="site-rsvp" className={skin.heading}>
               RSVP
@@ -894,7 +1006,7 @@ export function ThemedSite({
               title="Questions & Answers"
               id="site-faq"
             />
-            <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 items-start gap-4 site-md:grid-cols-2">
               {site.faq.map((item, index) => (
                 <details key={index} open={index === 0} className={`group ${skin.card}`}>
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
@@ -913,9 +1025,9 @@ export function ThemedSite({
         )}
       </main>
 
-      <footer className="mx-auto w-full max-w-6xl px-4 pb-8 sm:px-6">
+      <footer className="mx-auto w-full max-w-6xl px-4 pb-8 site-sm:px-6">
         <div
-          className={`flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left ${skin.footer}`}
+          className={`flex flex-col items-center justify-between gap-3 text-center site-sm:flex-row site-sm:text-left ${skin.footer}`}
         >
           <p
             className={`font-serif text-[1.375rem] italic ${theme === 'royal' ? 'text-regal-ivory' : theme === 'modern' ? 'text-minimal-text' : 'text-primary'}`}
@@ -930,6 +1042,16 @@ export function ThemedSite({
           </a>
         </div>
       </footer>
+
+      {/* On a phone, replying is always one tap away. */}
+      <div
+        className={`sticky bottom-0 z-30 border-t border-black/5 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] site-sm:hidden ${skin.header}`}
+      >
+        <a href={`#${SECTION_ANCHORS.rsvp}`} className={`w-full ${skin.primary}`}>
+          <Icon name="task-alt" className="size-4.5" />
+          {RSVP_CTA}
+        </a>
+      </div>
     </div>
   );
 }

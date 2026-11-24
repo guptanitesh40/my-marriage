@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ExpenseFileDto } from './expense-file.dto.js';
 import {
   ENTRY_TYPES,
   PAYMENT_METHODS,
@@ -72,6 +73,9 @@ export class ExpenseDto {
 
   notes?: string;
 
+  /** How many receipts or documents it keeps (decision 0023). */
+  receiptCount: number;
+
   createdAt: Date;
 
   updatedAt: Date;
@@ -140,12 +144,18 @@ export class ExpenseEntryDto {
   /** For a payment, discount or extra: whether it has been reversed. */
   reversed: boolean;
 
+  /** Receipts kept with this entry. */
+  receipts: ExpenseFileDto[];
+
   createdAt: Date;
 }
 
 /** An expense with its whole history, newest first. */
 export class ExpenseDetailDto {
   expense: ExpenseDto;
+
+  /** The expense's own receipts and documents, in the order added. */
+  receipts: ExpenseFileDto[];
 
   entries: ExpenseEntryDto[];
 }

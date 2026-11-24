@@ -43,12 +43,14 @@ const expense: Expense = {
   status: 'partially_paid',
   overdue: false,
   dueDate: '2027-02-10',
+  receiptCount: 0,
   createdAt: '2026-11-01T00:00:00.000Z',
   updatedAt: '2026-11-01T00:00:00.000Z',
 };
 const person = { userId: '6740a1b2c3d4e5f601239999', displayName: 'Ananya Sharma' };
 const detail: ExpenseDetail = {
   expense,
+  receipts: [],
   entries: [
     {
       id: 'e2',
@@ -59,6 +61,7 @@ const detail: ExpenseDetail = {
       note: 'Second instalment',
       recordedBy: person,
       reversed: false,
+      receipts: [],
       createdAt: '2026-12-05T00:00:00.000Z',
     },
     {
@@ -69,6 +72,7 @@ const detail: ExpenseDetail = {
       method: 'bank_transfer',
       recordedBy: person,
       reversed: false,
+      receipts: [],
       createdAt: '2026-12-01T00:00:00.000Z',
     },
   ],
@@ -154,6 +158,64 @@ describe('ExpenseDetails', () => {
     );
     expect(onChanged).toHaveBeenCalledWith('Payment of ₹20,000 recorded.');
     expect(dialog.hasAttribute('open')).toBe(false);
+  });
+
+  it('uploads a receipt with a payment, refuses files it can’t keep, and attaches the upload', async () => {
+    const pdf = {
+      id: '6740a1b2c3d4e5f60123f001',
+      fileName: 'UPI receipt.pdf',
+      contentType: 'application/pdf' as const,
+      bytes: 2048,
+      url: `/api/v1/weddings/${weddingId}/expense-files/6740a1b2c3d4e5f60123f001`,
+      viewable: false,
+      createdAt: '2026-12-05T00:00:00.000Z',
+    };
+    const uploaded = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal('fetch', uploaded);
+    await renderDetails();
+    fireEvent.click(screen.getByRole('button', { name: 'Record payment' }));
+    const dialog = dialogNamed('Record payment');
+    const chooser = within(dialog).getByLabelText(/Upload receipt or document/);
+
+    // A web page is refused before anything is sent.
+    fireEvent.change(chooser, {
+      target: { files: [new File(['<html>'], 'page.html', { type: 'text/html' })] },
+    });
+    expect(within(dialog).getByRole('alert').textContent).toMatch(/Choose a PDF/);
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Remove page.html' }));
+
+    post.mockImplementation((path: string) =>
+      Promise.resolve(
+        path.endsWith('/expense-files')
+          ? reply(201, {
+              data: { uploadId: pdf.id, url: '/api/v1/local-uploads', fields: { key: 'k' } },
+            })
+          : path.endsWith('/complete')
+            ? reply(200, { data: pdf })
+            : reply(201, { data: detail }),
+      ),
+    );
+    await act(async () => {
+      fireEvent.change(chooser, {
+        target: { files: [new File(['%PDF-1.7'], 'UPI receipt.pdf', { type: 'application/pdf' })] },
+      });
+      await Promise.resolve();
+    });
+    expect(await within(dialog).findByText('PDF · 2 KB')).toBeTruthy();
+    expect(uploaded).toHaveBeenCalledWith('/api/v1/local-uploads', expect.anything());
+
+    fireEvent.change(within(dialog).getByLabelText(/^Amount paid/), {
+      target: { value: '10,000' },
+    });
+    await submit(dialog, /^Record payment$/);
+    expect(post).toHaveBeenLastCalledWith(
+      '/api/v1/weddings/{weddingId}/expenses/{expenseId}/payments',
+      {
+        params: { path: { weddingId, expenseId: expense.id } },
+        body: { amountPaise: 1000000, paidAt: todayInIndia(), receiptAssetIds: [pdf.id] },
+      },
+    );
+    vi.unstubAllGlobals();
   });
 
   it('records a negotiated discount, filling 10% of the agreed amount, and shows the effect', async () => {

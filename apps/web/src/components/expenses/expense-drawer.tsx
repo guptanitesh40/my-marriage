@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
 import { Drawer } from '@/components/ui/drawer';
+import { OpenOnArrival } from '@/components/ui/open-on-arrival';
 import { Icon } from '@/components/ui/icon';
 import type { Expense } from '@/lib/expenses/directory';
 import { ExpenseDetails } from './expense-details';
@@ -95,6 +96,7 @@ export function ExpenseDrawer({
   return (
     <ExpenseDrawerContext.Provider value={api}>
       {children}
+      <OpenOnArrival open={api.add} />
       <p role="status" className="sr-only">
         {announcement}
       </p>

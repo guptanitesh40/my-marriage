@@ -55,6 +55,13 @@ export class Expense {
   @Prop({ type: Date })
   dueDate?: Date;
 
+  /**
+   * Receipts and documents kept with the expense (`file_assets`, decision
+   * 0023), in the order added. Missing on expenses saved before they existed.
+   */
+  @Prop({ type: [Types.ObjectId], default: [] })
+  receiptAssetIds?: Types.ObjectId[];
+
   /** Private organiser notes. */
   @Prop({ type: String })
   notes?: string;

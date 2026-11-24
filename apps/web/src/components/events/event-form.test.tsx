@@ -254,3 +254,63 @@ describe('EventForm, editing', () => {
     expect(onSaved).not.toHaveBeenCalled();
   });
 });
+
+describe('EventForm, live streaming', () => {
+  const streamBox = () =>
+    screen.getByRole('checkbox', { name: /We’ll live stream this ceremony on YouTube/ });
+
+  it('asks for the YouTube link only once live streaming is ticked, and sends it', async () => {
+    post.mockResolvedValue(reply(201, { data: { id: 'e1', title: 'Wedding' } }));
+    renderForm();
+    fireEvent.click(screen.getByRole('radio', { name: 'Wedding' }));
+    expect(screen.queryByLabelText(/^YouTube link/)).toBeNull();
+
+    fireEvent.click(streamBox());
+    await save();
+    expect(post).not.toHaveBeenCalled();
+    expect(screen.getByText('Paste the YouTube link, or untick live streaming.')).toBeTruthy();
+
+    fireEvent.change(screen.getByLabelText(/^YouTube link/), {
+      target: { value: ' https://youtu.be/dQw4w9WgXcQ ' },
+    });
+    await save();
+    expect(post.mock.calls[0]?.[1]).toMatchObject({
+      body: { title: 'Wedding', livestreamUrl: 'https://youtu.be/dQw4w9WgXcQ' },
+    });
+  });
+
+  it('sends no link when live streaming is not ticked', async () => {
+    post.mockResolvedValue(reply(201, { data: { id: 'e1', title: 'Haldi' } }));
+    renderForm();
+    fireEvent.click(screen.getByRole('radio', { name: 'Haldi' }));
+    await save();
+    expect(post.mock.calls[0]?.[1]?.body).not.toHaveProperty('livestreamUrl');
+  });
+
+  it('shows a saved stream ticked, and unticking it removes the stream', async () => {
+    patch.mockResolvedValue(reply(200, { data: { id: haldi.id, title: 'Haldi' } }));
+    renderEdit({
+      ...haldi,
+      livestream: {
+        provider: 'youtube',
+        videoId: 'dQw4w9WgXcQ',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      },
+    });
+    expect((streamBox() as HTMLInputElement).checked).toBe(true);
+    expect(screen.getByLabelText<HTMLInputElement>(/^YouTube link/).value).toBe(
+      'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    );
+    fireEvent.click(streamBox());
+    await save(/Save changes/);
+    expect(patch.mock.calls[0]?.[1]?.body).toMatchObject({ livestreamUrl: null });
+  });
+
+  it('leaves the stream alone when editing a ceremony that has none', async () => {
+    patch.mockResolvedValue(reply(200, { data: { id: haldi.id, title: 'Haldi' } }));
+    renderEdit();
+    expect((streamBox() as HTMLInputElement).checked).toBe(false);
+    await save(/Save changes/);
+    expect(patch.mock.calls[0]?.[1]?.body).not.toHaveProperty('livestreamUrl');
+  });
+});

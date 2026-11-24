@@ -1,8 +1,8 @@
 import { OptionalTextBlockField } from '../../events/dto/fields.js';
 import { OptionalChoiceField } from '../../tasks/dto/fields.js';
 import { PAYMENT_METHODS, type PaymentMethod } from '../schemas/expense-entry.schema.js';
-import { EXPENSE_LIMITS } from '../expense-policy.js';
-import { ChoiceField, DayField, IdField, MoneyPaiseField } from './fields.js';
+import { EXPENSE_LIMITS, RECEIPT_LIMITS } from '../expense-policy.js';
+import { ChoiceField, DayField, IdField, MoneyPaiseField, ReceiptIdsField } from './fields.js';
 
 /**
  * Money paid outside the app (PRD EXP-02). It can't be more than what is
@@ -21,6 +21,10 @@ export class RecordPaymentDto {
 
   @OptionalTextBlockField({ maxLength: EXPENSE_LIMITS.note, example: 'Advance' })
   note?: string;
+
+  /** The receipt, bank slip or screenshot of the payment (decision 0023). */
+  @ReceiptIdsField(RECEIPT_LIMITS.perEntry)
+  receiptAssetIds?: string[];
 }
 
 export const ADJUSTMENT_KINDS = ['discount', 'extra'] as const;
@@ -47,6 +51,10 @@ export class RecordAdjustmentDto {
     example: 'Agreed 5% off after the final quote.',
   })
   note?: string;
+
+  /** The revised quote or agreement (decision 0023). */
+  @ReceiptIdsField(RECEIPT_LIMITS.perEntry)
+  receiptAssetIds?: string[];
 }
 
 /** Undoes one payment, discount or extra; both stay in the history. */
@@ -57,4 +65,8 @@ export class ReverseEntryDto {
   /** Why, for the history. */
   @OptionalTextBlockField({ maxLength: EXPENSE_LIMITS.note, example: 'Entered twice.' })
   note?: string;
+
+  /** Proof of the refund or correction (decision 0023). */
+  @ReceiptIdsField(RECEIPT_LIMITS.perEntry)
+  receiptAssetIds?: string[];
 }

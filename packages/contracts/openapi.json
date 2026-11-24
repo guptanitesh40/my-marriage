@@ -503,9 +503,6 @@
               }
             }
           },
-          "409": {
-            "description": "OWNER_ACTIVE_LIMIT: you already own an active wedding."
-          },
           "default": {
             "description": "Any failed request, in the standard error envelope.",
             "content": {
@@ -636,6 +633,9 @@
           "404": {
             "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
           },
+          "409": {
+            "description": "WEDDING_ARCHIVED or WEDDING_DELETION_PENDING."
+          },
           "default": {
             "description": "Any failed request, in the standard error envelope.",
             "content": {
@@ -719,6 +719,253 @@
         ]
       }
     },
+    "/api/v1/weddings/{weddingId}/settings": {
+      "get": {
+        "operationId": "WeddingsController_settings",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingSettingsDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Get wedding settings and lifecycle state",
+        "tags": [
+          "Weddings"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/archive": {
+      "post": {
+        "operationId": "WeddingsController_archive",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: admins and managers cannot archive."
+          },
+          "409": {
+            "description": "WEDDING_DELETION_PENDING: deletion is requested."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Archive active wedding (owner only)",
+        "tags": [
+          "Weddings"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/deletion-requests": {
+      "post": {
+        "operationId": "WeddingsController_requestDeletion",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingSettingsDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: admins and managers cannot delete."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Request wedding deletion (owner only)",
+        "tags": [
+          "Weddings"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/deletion-requests/cancel": {
+      "post": {
+        "operationId": "WeddingsController_cancelDeletion",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WeddingSettingsDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "OWNER_REQUIRED: admins and managers cannot cancel."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Cancel a waiting deletion request (owner only)",
+        "tags": [
+          "Weddings"
+        ]
+      }
+    },
     "/api/v1/weddings/{weddingId}/member-invites": {
       "post": {
         "operationId": "MemberInvitesController_create",
@@ -765,6 +1012,12 @@
               }
             }
           },
+          "403": {
+            "description": "ADMIN_REQUIRED or OWNER_REQUIRED."
+          },
+          "409": {
+            "description": "ALREADY_MEMBER, ALREADY_INVITED, OWNER_LIMIT or WEDDING_ARCHIVED."
+          },
           "default": {
             "description": "Any failed request, in the standard error envelope.",
             "content": {
@@ -781,7 +1034,7 @@
             "mm_session": []
           }
         ],
-        "summary": "Invite a manager or second co-owner",
+        "summary": "Invite an admin, a manager or the second owner",
         "tags": [
           "Team"
         ]
@@ -912,6 +1165,75 @@
         ]
       }
     },
+    "/api/v1/weddings/{weddingId}/member-invites/{inviteId}/revoke": {
+      "post": {
+        "operationId": "MemberInvitesController_revoke",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inviteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MemberInviteDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "INVITE_NOT_PENDING or WEDDING_ARCHIVED."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Revoke pending member invitation",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
     "/api/v1/member-invites/preview": {
       "post": {
         "operationId": "MemberInvitesController_preview",
@@ -1033,6 +1355,49 @@
         ]
       }
     },
+    "/api/v1/member-invites/decline": {
+      "post": {
+        "operationId": "MemberInvitesController_decline",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Declined."
+          },
+          "410": {
+            "description": "INVITE_INVALID: expired, replaced or withdrawn."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Decline an invitation",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
     "/api/v1/member-invites/mine": {
       "get": {
         "operationId": "MemberInvitesController_mine",
@@ -1144,6 +1509,51 @@
           }
         ],
         "summary": "Accept an invitation sent to my email address",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
+    "/api/v1/member-invites/{inviteId}/decline": {
+      "post": {
+        "operationId": "MemberInvitesController_declineById",
+        "parameters": [
+          {
+            "name": "inviteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Declined."
+          },
+          "404": {
+            "description": "INVITE_NOT_FOUND: no such invitation for this account."
+          },
+          "410": {
+            "description": "INVITE_INVALID: expired, replaced or withdrawn."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Decline an invitation sent to my email address",
         "tags": [
           "Team"
         ]
@@ -1388,7 +1798,7 @@
             "description": "The event is deleted."
           },
           "403": {
-            "description": "OWNER_REQUIRED: managers cannot delete events."
+            "description": "ADMIN_REQUIRED: managers cannot delete events."
           },
           "404": {
             "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EVENT_NOT_FOUND: no such event in it."
@@ -1412,7 +1822,7 @@
             "mm_session": []
           }
         ],
-        "summary": "Delete ceremony (owners only)",
+        "summary": "Delete ceremony (owners and admins)",
         "tags": [
           "Events"
         ]
@@ -1781,6 +2191,206 @@
         ]
       }
     },
+    "/api/v1/weddings/{weddingId}/team": {
+      "get": {
+        "operationId": "TeamController_view",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/TeamDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ADMIN_REQUIRED: managers do not manage the team."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Team members and invitations, for owners and admins",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/members/{memberId}": {
+      "patch": {
+        "operationId": "TeamController_update",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/TeamMemberDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ADMIN_REQUIRED, OWNER_PROTECTED or NOT_YOURSELF."
+          },
+          "404": {
+            "description": "MEMBER_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Change a member’s role or label",
+        "tags": [
+          "Team"
+        ]
+      },
+      "delete": {
+        "operationId": "TeamController_remove",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Removed."
+          },
+          "403": {
+            "description": "ADMIN_REQUIRED, OWNER_PROTECTED or NOT_YOURSELF."
+          },
+          "404": {
+            "description": "MEMBER_NOT_FOUND"
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED"
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Remove manager from a wedding",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
     "/api/v1/weddings/{weddingId}/vendors": {
       "get": {
         "operationId": "VendorsController_list",
@@ -2087,7 +2697,7 @@
             "description": "The vendor is deleted."
           },
           "403": {
-            "description": "OWNER_REQUIRED: managers cannot delete vendors."
+            "description": "ADMIN_REQUIRED: managers cannot delete vendors."
           },
           "404": {
             "description": "WEDDING_NOT_FOUND: not a wedding you belong to. VENDOR_NOT_FOUND: no such vendor in it."
@@ -2111,9 +2721,208 @@
             "mm_session": []
           }
         ],
-        "summary": "Delete vendor (owners only); the record is kept, marked deleted",
+        "summary": "Delete vendor (owners and admins); the record is kept, marked deleted",
         "tags": [
           "Vendors"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expense-files": {
+      "post": {
+        "operationId": "ExpensesController_requestFileUpload",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpenseFileUploadRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseFileUploadDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Start a receipt or document upload",
+        "tags": [
+          "Expenses"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expense-files/{fileId}/complete": {
+      "post": {
+        "operationId": "ExpensesController_completeFileUpload",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExpenseFileDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "409": {
+            "description": "WEDDING_ARCHIVED: the wedding is read-only."
+          },
+          "422": {
+            "description": "UPLOAD_NOT_FOUND, UPLOAD_TOO_LARGE or UPLOAD_WRONG_TYPE."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Finish a receipt or document upload",
+        "tags": [
+          "Expenses"
+        ]
+      }
+    },
+    "/api/v1/weddings/{weddingId}/expense-files/{fileId}": {
+      "get": {
+        "operationId": "ExpensesController_file",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The file."
+          },
+          "404": {
+            "description": "FILE_NOT_FOUND or WEDDING_NOT_FOUND."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Open or download a receipt or document",
+        "tags": [
+          "Expenses"
         ]
       }
     },
@@ -2484,7 +3293,7 @@
             "description": "The expense is deleted."
           },
           "403": {
-            "description": "OWNER_REQUIRED: managers cannot delete expenses."
+            "description": "ADMIN_REQUIRED: managers cannot delete expenses."
           },
           "404": {
             "description": "WEDDING_NOT_FOUND: not a wedding you belong to. EXPENSE_NOT_FOUND: no such expense in it."
@@ -2508,7 +3317,7 @@
             "mm_session": []
           }
         ],
-        "summary": "Delete expense (owners only); kept with its history, marked deleted",
+        "summary": "Delete expense (owners and admins); kept with its history, marked deleted",
         "tags": [
           "Expenses"
         ]
@@ -3429,7 +4238,7 @@
             "description": "The guest is removed."
           },
           "403": {
-            "description": "OWNER_REQUIRED: managers cannot remove guests."
+            "description": "ADMIN_REQUIRED: managers cannot remove guests."
           },
           "404": {
             "description": "WEDDING_NOT_FOUND: not a wedding you belong to. GUEST_NOT_FOUND: no such guest in it."
@@ -7236,6 +8045,67 @@
           "Public website"
         ]
       }
+    },
+    "/api/v1/weddings/{weddingId}/dashboard": {
+      "get": {
+        "operationId": "DashboardController_get",
+        "parameters": [
+          {
+            "name": "weddingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/DashboardDto"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "WEDDING_NOT_FOUND: not a wedding you belong to."
+          },
+          "default": {
+            "description": "Any failed request, in the standard error envelope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "mm_session": []
+          }
+        ],
+        "summary": "Wedding overview",
+        "tags": [
+          "Dashboard"
+        ]
+      }
     }
   },
   "info": {
@@ -7474,6 +8344,20 @@
           "password"
         ]
       },
+      "WeddingVenueDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "mapsUrl": {
+            "type": "string"
+          }
+        }
+      },
       "WeddingDto": {
         "type": "object",
         "properties": {
@@ -7491,10 +8375,16 @@
             ],
             "type": "string"
           },
+          "archivedAt": {
+            "type": "string",
+            "description": "When an owner archived it.",
+            "format": "date-time"
+          },
           "role": {
             "description": "The signed-in user's role in this wedding.",
             "enum": [
               "owner",
+              "admin",
               "manager"
             ],
             "type": "string"
@@ -7517,6 +8407,12 @@
             "type": "string"
           },
           "state": {
+            "type": "string"
+          },
+          "mainVenue": {
+            "$ref": "#/components/schemas/WeddingVenueDto"
+          },
+          "description": {
             "type": "string"
           }
         },
@@ -7579,6 +8475,7 @@
           "role": {
             "enum": [
               "owner",
+              "admin",
               "manager"
             ],
             "type": "string"
@@ -7589,6 +8486,10 @@
           },
           "displayName": {
             "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "description": "Their label on the team, e.g. \"Bride's father\"."
           }
         },
         "required": [
@@ -7610,6 +8511,29 @@
         "required": [
           "members"
         ]
+      },
+      "WeddingVenueInputDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Rambagh Palace"
+          },
+          "address": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "example": "Bhawani Singh Road, Jaipur"
+          },
+          "mapsUrl": {
+            "type": "string",
+            "description": "A Google Maps link to the venue.",
+            "maxLength": 2048,
+            "example": "https://maps.app.goo.gl/AbCdEf123"
+          }
+        }
       },
       "UpdateWeddingDto": {
         "type": "object",
@@ -7650,8 +8574,76 @@
             "description": "The wedding day; `null` removes it. A new date must not be in the past.",
             "format": "date",
             "example": "2027-12-10"
+          },
+          "mainVenue": {
+            "nullable": true,
+            "description": "Replaces the whole main venue; `null` removes it. Private to the team.",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WeddingVenueInputDto"
+              }
+            ]
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "A short introduction; `null` or empty removes it. Private to the team.",
+            "maxLength": 500,
+            "example": "Two families, one celebration in the Pink City."
           }
         }
+      },
+      "ActorStampDto": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "byName": {
+            "type": "string",
+            "description": "Missing when their account is gone."
+          }
+        },
+        "required": [
+          "at"
+        ]
+      },
+      "DeletionRequestDto": {
+        "type": "object",
+        "properties": {
+          "requestedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "byName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestedAt"
+        ]
+      },
+      "WeddingSettingsDto": {
+        "type": "object",
+        "properties": {
+          "wedding": {
+            "$ref": "#/components/schemas/WeddingDto"
+          },
+          "lastSaved": {
+            "$ref": "#/components/schemas/ActorStampDto"
+          },
+          "archived": {
+            "$ref": "#/components/schemas/ActorStampDto"
+          },
+          "deletionRequest": {
+            "$ref": "#/components/schemas/DeletionRequestDto"
+          }
+        },
+        "required": [
+          "wedding"
+        ]
       },
       "MemberInviteDto": {
         "type": "object",
@@ -7659,6 +8651,7 @@
           "role": {
             "enum": [
               "owner",
+              "admin",
               "manager"
             ],
             "type": "string"
@@ -7669,6 +8662,7 @@
               "pending",
               "accepted",
               "revoked",
+              "declined",
               "expired"
             ],
             "type": "string"
@@ -7690,6 +8684,18 @@
             "type": "string",
             "description": "The address it was sent to."
           },
+          "handOver": {
+            "type": "boolean",
+            "description": "An owner handing over their place (decision 0025): accepting makes the\ninvitee an owner and the sender (`invitedByName`) an admin."
+          },
+          "label": {
+            "type": "string",
+            "description": "Becomes their label once they join."
+          },
+          "invitedByName": {
+            "type": "string",
+            "description": "Who sent it, if their account still exists."
+          },
           "expiresAt": {
             "format": "date-time",
             "type": "string",
@@ -7706,6 +8712,7 @@
           "emailStatus",
           "id",
           "email",
+          "handOver",
           "expiresAt",
           "createdAt"
         ]
@@ -7721,11 +8728,23 @@
             "example": "priya@example.com"
           },
           "role": {
-            "description": "`owner`: your partner, with the same rights as you.",
+            "description": "`owner`: your partner, with the same rights as you (owners only).\n`admin`: runs the team with you. `manager`: helps plan.",
             "enum": [
-              "owner"
+              "owner",
+              "admin",
+              "manager"
             ],
             "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "description": "Becomes their label on the team page once they join.",
+            "maxLength": 40,
+            "example": "Bride’s father"
+          },
+          "handOver": {
+            "type": "boolean",
+            "description": "With `owner`: hand over your own place (decision 0025). Once they\naccept they are an owner and you an admin; nothing changes before.\nThey may already be on the team as an admin or a manager."
           }
         },
         "required": [
@@ -7739,6 +8758,7 @@
           "role": {
             "enum": [
               "owner",
+              "admin",
               "manager"
             ],
             "type": "string"
@@ -7770,6 +8790,10 @@
             "type": "string",
             "description": "Only the account with this address can accept."
           },
+          "handOver": {
+            "type": "boolean",
+            "description": "An owner handing over their place (decision 0025): accepting makes the\ninvitee an owner and the sender (`invitedByName`) an admin."
+          },
           "expiresAt": {
             "format": "date-time",
             "type": "string"
@@ -7783,6 +8807,7 @@
           "city",
           "state",
           "email",
+          "handOver",
           "expiresAt"
         ]
       },
@@ -7804,6 +8829,7 @@
           "role": {
             "enum": [
               "owner",
+              "admin",
               "manager"
             ],
             "type": "string"
@@ -7831,6 +8857,10 @@
             "type": "string",
             "description": "The name of the owner who sent it, if their account still exists."
           },
+          "handOver": {
+            "type": "boolean",
+            "description": "An owner handing over their place (decision 0025): accepting makes the\ninvitee an owner and the sender (`invitedByName`) an admin."
+          },
           "expiresAt": {
             "format": "date-time",
             "type": "string"
@@ -7843,6 +8873,7 @@
           "groomName",
           "city",
           "state",
+          "handOver",
           "expiresAt"
         ]
       },
@@ -8135,6 +9166,7 @@
           "role": {
             "enum": [
               "owner",
+              "admin",
               "manager"
             ],
             "type": "string"
@@ -8473,6 +9505,103 @@
           }
         }
       },
+      "TeamMemberDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "owner",
+              "admin",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID: what removing or changing them names."
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "joinedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "openTaskCount": {
+            "type": "number",
+            "description": "Tasks assigned to them that are not done yet."
+          },
+          "isYou": {
+            "type": "boolean",
+            "description": "The member viewing the page."
+          }
+        },
+        "required": [
+          "role",
+          "userId",
+          "displayName",
+          "email",
+          "joinedAt",
+          "openTaskCount",
+          "isYou"
+        ]
+      },
+      "TeamDto": {
+        "type": "object",
+        "properties": {
+          "viewerRole": {
+            "description": "The viewer's role, which decides what they may change.",
+            "enum": [
+              "owner",
+              "admin",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TeamMemberDto"
+            }
+          },
+          "invites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberInviteDto"
+            }
+          }
+        },
+        "required": [
+          "viewerRole",
+          "members",
+          "invites"
+        ]
+      },
+      "UpdateMemberDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "admin",
+              "manager"
+            ],
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true,
+            "description": "`null` or empty clears it.",
+            "maxLength": 40,
+            "example": "Bride’s father"
+          }
+        }
+      },
       "VendorEventDto": {
         "type": "object",
         "properties": {
@@ -8682,6 +9811,122 @@
           }
         }
       },
+      "ExpenseFileUploadDto": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "uploadId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "maxBytes": {
+            "type": "number"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fields",
+          "uploadId",
+          "url",
+          "maxBytes",
+          "expiresAt"
+        ]
+      },
+      "ExpenseFileUploadRequestDto": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "enum": [
+              "application/pdf",
+              "image/jpeg",
+              "image/png",
+              "image/webp",
+              "image/heic",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "application/vnd.ms-excel",
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            ],
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 15728640
+          },
+          "fileName": {
+            "type": "string",
+            "description": "The name on the uploader's device; kept tidied, for showing and downloading.",
+            "minLength": 1,
+            "maxLength": 255,
+            "example": "Caterer advance receipt.pdf"
+          }
+        },
+        "required": [
+          "contentType",
+          "bytes",
+          "fileName"
+        ]
+      },
+      "ExpenseFileDto": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "enum": [
+              "application/pdf",
+              "image/jpeg",
+              "image/png",
+              "image/webp",
+              "image/heic",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "application/vnd.ms-excel",
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "number"
+          },
+          "url": {
+            "type": "string",
+            "description": "Where members open it: `/api/v1/weddings/{weddingId}/expense-files/{id}`."
+          },
+          "viewable": {
+            "type": "boolean",
+            "description": "A photo the browser can show; everything else downloads."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "contentType",
+          "id",
+          "fileName",
+          "bytes",
+          "url",
+          "viewable",
+          "createdAt"
+        ]
+      },
       "ExpenseEventDto": {
         "type": "object",
         "properties": {
@@ -8789,6 +10034,10 @@
           "notes": {
             "type": "string"
           },
+          "receiptCount": {
+            "type": "number",
+            "description": "How many receipts or documents it keeps (decision 0023)."
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -8811,6 +10060,7 @@
           "paidPaise",
           "outstandingPaise",
           "overdue",
+          "receiptCount",
           "createdAt",
           "updatedAt"
         ]
@@ -8934,6 +10184,18 @@
             "description": "Private notes for the wedding's owners and managers.",
             "maxLength": 4000,
             "example": "Covers 3 drone cinematographers and 4 candid shooters."
+          },
+          "receiptAssetIds": {
+            "description": "Files from `POST /weddings/{weddingId}/expense-files`.",
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
           }
         },
         "required": [
@@ -9005,6 +10267,13 @@
             "type": "boolean",
             "description": "For a payment, discount or extra: whether it has been reversed."
           },
+          "receipts": {
+            "description": "Receipts kept with this entry.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpenseFileDto"
+            }
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -9017,6 +10286,7 @@
           "amountPaise",
           "recordedBy",
           "reversed",
+          "receipts",
           "createdAt"
         ]
       },
@@ -9025,6 +10295,13 @@
         "properties": {
           "expense": {
             "$ref": "#/components/schemas/ExpenseDto"
+          },
+          "receipts": {
+            "description": "The expense's own receipts and documents, in the order added.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpenseFileDto"
+            }
           },
           "entries": {
             "type": "array",
@@ -9035,6 +10312,7 @@
         },
         "required": [
           "expense",
+          "receipts",
           "entries"
         ]
       },
@@ -9090,6 +10368,18 @@
             "nullable": true,
             "maxLength": 4000,
             "example": "Covers 3 drone cinematographers and 4 candid shooters."
+          },
+          "receiptAssetIds": {
+            "description": "Files from `POST /weddings/{weddingId}/expense-files`.",
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
           }
         }
       },
@@ -9138,6 +10428,18 @@
             "type": "string",
             "maxLength": 500,
             "example": "Advance"
+          },
+          "receiptAssetIds": {
+            "description": "Files from `POST /weddings/{weddingId}/expense-files`.",
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
           }
         },
         "required": [
@@ -9172,6 +10474,18 @@
             "type": "string",
             "maxLength": 500,
             "example": "Agreed 5% off after the final quote."
+          },
+          "receiptAssetIds": {
+            "description": "Files from `POST /weddings/{weddingId}/expense-files`.",
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
           }
         },
         "required": [
@@ -9193,6 +10507,18 @@
             "description": "Why, for the history.",
             "maxLength": 500,
             "example": "Entered twice."
+          },
+          "receiptAssetIds": {
+            "description": "Files from `POST /weddings/{weddingId}/expense-files`.",
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "example": [
+              "6740a1b2c3d4e5f601234567"
+            ],
+            "type": "array"
           }
         },
         "required": [
@@ -10269,10 +11595,20 @@
           "coverImageId": {
             "type": "string",
             "description": "The cover photo's ID, when there is one."
+          },
+          "showVenue": {
+            "type": "boolean",
+            "description": "Whether the website shows the main venue from Settings."
+          },
+          "showGallery": {
+            "type": "boolean",
+            "description": "Whether the website shows the approved photos as a gallery."
           }
         },
         "required": [
-          "faq"
+          "faq",
+          "showVenue",
+          "showGallery"
         ]
       },
       "ReadinessCheckDto": {
@@ -10365,6 +11701,10 @@
             "type": "boolean",
             "description": "Published, and the draft has changed since."
           },
+          "galleryLive": {
+            "type": "boolean",
+            "description": "The published website shows the photo gallery now (decision 0024)."
+          },
           "slug": {
             "type": "string",
             "description": "The wedding's web address; the public site is at `/w/{slug}`."
@@ -10391,6 +11731,7 @@
           "content",
           "contentVersion",
           "hasUnpublishedChanges",
+          "galleryLive",
           "slug",
           "readiness",
           "writable",
@@ -10446,6 +11787,14 @@
             "type": "string",
             "nullable": true,
             "description": "Only `null` (or empty)."
+          },
+          "showVenue": {
+            "type": "boolean",
+            "description": "Show the main venue from Settings on the website, once published."
+          },
+          "showGallery": {
+            "type": "boolean",
+            "description": "Show the approved photos as a gallery on the website, once published. Off by default."
           }
         }
       },
@@ -10472,6 +11821,20 @@
         "required": [
           "contentVersion"
         ]
+      },
+      "PublicVenueDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "mapsUrl": {
+            "type": "string"
+          }
+        }
       },
       "PublicDateRangeDto": {
         "type": "object",
@@ -10586,6 +11949,14 @@
             "items": {
               "$ref": "#/components/schemas/WebsiteFaqDto"
             }
+          },
+          "mainVenue": {
+            "description": "The main venue; missing unless the couple chose to show it.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicVenueDto"
+              }
+            ]
           },
           "dateRange": {
             "description": "The first and last day of the ceremonies with a date, cancelled ones left out.",
@@ -11537,6 +12908,315 @@
         },
         "required": [
           "photos"
+        ]
+      },
+      "DashboardCeremonyDto": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "`YYYY-MM-DD` in the ceremony's time zone.",
+            "format": "date",
+            "example": "2027-02-12"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "`HH:mm` in the ceremony's time zone; missing when only the day is known.",
+            "example": "10:30"
+          },
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "timeZone": {
+            "type": "string"
+          },
+          "venueName": {
+            "type": "string"
+          },
+          "dressCode": {
+            "type": "string"
+          },
+          "confirmedPeople": {
+            "type": "number",
+            "description": "People confirmed (attending counts only). Missing when the guest\ntotals could not be loaded, which is not the same as none."
+          }
+        },
+        "required": [
+          "startDate",
+          "id",
+          "title",
+          "timeZone"
+        ]
+      },
+      "DashboardCeremoniesDto": {
+        "type": "object",
+        "properties": {
+          "upcoming": {
+            "type": "number",
+            "description": "Scheduled ceremonies from today on: not cancelled, not completed."
+          },
+          "undated": {
+            "type": "number",
+            "description": "Scheduled ceremonies without a day yet."
+          },
+          "next": {
+            "description": "The next few, soonest first.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardCeremonyDto"
+            }
+          }
+        },
+        "required": [
+          "upcoming",
+          "undated",
+          "next"
+        ]
+      },
+      "DashboardTasksDto": {
+        "type": "object",
+        "properties": {
+          "open": {
+            "type": "number",
+            "description": "To do or in progress."
+          },
+          "overdue": {
+            "type": "number"
+          },
+          "dueSoon": {
+            "type": "number",
+            "description": "Due today or in the next 7 days (India time), and not overdue yet."
+          },
+          "attention": {
+            "description": "The first few open tasks: overdue first, then soonest due, then priority.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          }
+        },
+        "required": [
+          "open",
+          "overdue",
+          "dueSoon",
+          "attention"
+        ]
+      },
+      "DashboardCategoryDto": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "finalPaise": {
+            "type": "number",
+            "description": "Recorded (final) amount in integer paise."
+          },
+          "count": {
+            "type": "number",
+            "description": "Expenses in it."
+          }
+        },
+        "required": [
+          "category",
+          "finalPaise",
+          "count"
+        ]
+      },
+      "DashboardExpensesDto": {
+        "type": "object",
+        "properties": {
+          "finalPaise": {
+            "type": "number",
+            "description": "Recorded: agreed − discounts + extras, in integer paise."
+          },
+          "paidPaise": {
+            "type": "number"
+          },
+          "outstandingPaise": {
+            "type": "number"
+          },
+          "overdue": {
+            "type": "number",
+            "description": "Expenses past their due day with something still to pay."
+          },
+          "count": {
+            "type": "number"
+          },
+          "topCategories": {
+            "description": "The categories with the most recorded spending, largest first.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardCategoryDto"
+            }
+          }
+        },
+        "required": [
+          "finalPaise",
+          "paidPaise",
+          "outstandingPaise",
+          "overdue",
+          "count",
+          "topCategories"
+        ]
+      },
+      "DashboardGuestsDto": {
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "type": "number",
+            "description": "Guest contacts (families or groups)."
+          },
+          "invitedPeople": {
+            "type": "number",
+            "description": "People invited to at least one ceremony, each counted once."
+          },
+          "answered": {
+            "type": "number",
+            "description": "Ceremony invitations answered (attending, not attending or maybe)."
+          },
+          "pending": {
+            "type": "number",
+            "description": "Ceremony invitations not answered yet."
+          },
+          "events": {
+            "description": "Per ceremony, in the wedding's order; deleted ceremonies left out.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventRsvpTotalsDto"
+            }
+          }
+        },
+        "required": [
+          "contacts",
+          "invitedPeople",
+          "answered",
+          "pending",
+          "events"
+        ]
+      },
+      "DashboardPhotosDto": {
+        "type": "object",
+        "properties": {
+          "awaitingReview": {
+            "type": "number"
+          },
+          "approved": {
+            "type": "number"
+          },
+          "usedBytes": {
+            "type": "number",
+            "description": "Photos kept, in bytes."
+          },
+          "limitBytes": {
+            "type": "number",
+            "description": "The wedding's storage allowance, in bytes."
+          }
+        },
+        "required": [
+          "awaitingReview",
+          "approved",
+          "usedBytes",
+          "limitBytes"
+        ]
+      },
+      "DashboardWebsiteDto": {
+        "type": "object",
+        "properties": {
+          "published": {
+            "type": "boolean",
+            "description": "Published and online."
+          },
+          "slug": {
+            "type": "string",
+            "description": "The public address's last part, `/w/{slug}`."
+          }
+        },
+        "required": [
+          "published",
+          "slug"
+        ]
+      },
+      "DashboardTeamDto": {
+        "type": "object",
+        "properties": {
+          "owners": {
+            "type": "number"
+          },
+          "admins": {
+            "type": "number"
+          },
+          "managers": {
+            "type": "number"
+          },
+          "pendingInvites": {
+            "type": "number",
+            "description": "Invitations waiting for an answer: only for owners and admins, who manage the team."
+          }
+        },
+        "required": [
+          "owners",
+          "admins",
+          "managers"
+        ]
+      },
+      "DashboardDto": {
+        "type": "object",
+        "properties": {
+          "today": {
+            "type": "string",
+            "description": "Today in India (`YYYY-MM-DD`), the day the countdown is measured from.",
+            "format": "date",
+            "example": "2026-11-23"
+          },
+          "unavailable": {
+            "type": "array",
+            "description": "Sections that could not be loaded this time.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ceremonies",
+                "tasks",
+                "expenses",
+                "guests",
+                "photos",
+                "website",
+                "team"
+              ]
+            }
+          },
+          "wedding": {
+            "$ref": "#/components/schemas/WeddingDto"
+          },
+          "ceremonies": {
+            "$ref": "#/components/schemas/DashboardCeremoniesDto"
+          },
+          "tasks": {
+            "$ref": "#/components/schemas/DashboardTasksDto"
+          },
+          "expenses": {
+            "$ref": "#/components/schemas/DashboardExpensesDto"
+          },
+          "guests": {
+            "$ref": "#/components/schemas/DashboardGuestsDto"
+          },
+          "photos": {
+            "$ref": "#/components/schemas/DashboardPhotosDto"
+          },
+          "website": {
+            "$ref": "#/components/schemas/DashboardWebsiteDto"
+          },
+          "team": {
+            "$ref": "#/components/schemas/DashboardTeamDto"
+          }
+        },
+        "required": [
+          "today",
+          "unavailable",
+          "wedding"
         ]
       },
       "FieldErrorDto": {

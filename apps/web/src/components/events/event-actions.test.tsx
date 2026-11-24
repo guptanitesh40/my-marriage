@@ -8,7 +8,11 @@ vi.mock('@/lib/api/browser', () => ({
   api: { DELETE: del, POST: vi.fn(), PATCH: vi.fn(), GET: vi.fn() },
 }));
 const refresh = vi.hoisted(() => vi.fn());
-vi.mock('next/navigation', () => ({ useRouter: () => ({ refresh }) }));
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ refresh }),
+  usePathname: () => '/weddings/w1',
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 const weddingId = '6740a1b2c3d4e5f601234567';
 const event = {

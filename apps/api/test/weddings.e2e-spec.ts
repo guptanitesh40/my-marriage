@@ -196,40 +196,15 @@ describe('Weddings (integration)', () => {
     });
   });
 
-  describe('one active owned wedding per user', () => {
-    it('refuses a second wedding, and a repeated submission creates nothing new', async () => {
+  describe('several weddings per user (decision 0020)', () => {
+    it('lets one account own several active weddings', async () => {
       const { cookie, userId } = await signupVerified(app);
-      const body = couple();
-      expect((await create(cookie, body)).status).toBe(201);
-
-      for (const again of [body, couple()]) {
-        const res = await create(cookie, again);
-        expect(res.status).toBe(409);
-        expect((res.body as { error: { code: string } }).error.code).toBe('OWNER_ACTIVE_LIMIT');
-      }
-      expect(await weddingsCreatedBy(userId)).toHaveLength(1);
-      expect(await memberships.countDocuments({ userId: new Types.ObjectId(userId) })).toBe(1);
-    });
-
-    it('lets exactly one of several simultaneous requests through', async () => {
-      const { cookie, userId } = await signupVerified(app);
-      const results = await Promise.all(Array.from({ length: 6 }, () => create(cookie, couple())));
-      const statuses = results.map((res) => res.status).sort();
-      expect(statuses).toEqual([201, 409, 409, 409, 409, 409]);
-
-      expect(await weddingsCreatedBy(userId)).toHaveLength(1);
-      expect(await memberships.countDocuments({ userId: new Types.ObjectId(userId) })).toBe(1);
-    });
-
-    it('enforces the rule in the database even when the first check is passed', async () => {
-      const { cookie, userId } = await signupVerified(app);
-      expect((await create(cookie, couple())).status).toBe(201);
-      // As if both requests had passed the check before either wrote.
-      vi.spyOn(memberships, 'exists').mockResolvedValueOnce(null);
-      const res = await create(cookie, couple());
-      expect(res.status).toBe(409);
-      expect((res.body as { error: { code: string } }).error.code).toBe('OWNER_ACTIVE_LIMIT');
-      expect(await weddingsCreatedBy(userId)).toHaveLength(1);
+      for (let i = 0; i < 3; i += 1) expect((await create(cookie, couple())).status).toBe(201);
+      expect(await weddingsCreatedBy(userId)).toHaveLength(3);
+      const owned = await memberships.find({ userId: new Types.ObjectId(userId) }).lean();
+      expect(owned.map((membership) => membership.role)).toEqual(['owner', 'owner', 'owner']);
+      const listed = await list(cookie);
+      expect((listed.body as { data: unknown[] }).data).toHaveLength(3);
     });
 
     it('leaves nothing behind when the transaction fails', async () => {

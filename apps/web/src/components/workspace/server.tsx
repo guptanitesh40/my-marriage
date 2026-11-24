@@ -5,6 +5,7 @@ import { SignOutButton } from '@/components/auth/sign-out-button';
 import { ButtonLink } from '@/components/ui/button-link';
 import { Wordmark } from '@/components/ui/wordmark';
 import { loginThenReturnTo, routes, workspacePath } from '@/lib/routes';
+import { getMyInvites, getMyWeddings } from '@/lib/weddings/my-weddings';
 import { getWedding, getWorkspaceUser } from '@/lib/weddings/workspace';
 import { WorkspaceShell } from './workspace-shell';
 
@@ -22,7 +23,12 @@ export async function Workspace({
   children: ReactNode;
 }) {
   const { weddingId } = await params;
-  const [user, result] = await Promise.all([getWorkspaceUser(), getWedding(weddingId)]);
+  const [user, result, weddings, invites] = await Promise.all([
+    getWorkspaceUser(),
+    getWedding(weddingId),
+    getMyWeddings(),
+    getMyInvites(),
+  ]);
   if (!user) redirect(loginThenReturnTo(workspacePath(weddingId)));
   if (!user.emailVerified) redirect(routes.verifyEmail);
 
@@ -45,7 +51,12 @@ export async function Workspace({
     );
   }
   return (
-    <WorkspaceShell wedding={result.wedding} user={user}>
+    <WorkspaceShell
+      wedding={result.wedding}
+      weddings={weddings ?? [result.wedding]}
+      invites={invites ?? []}
+      user={user}
+    >
       {children}
     </WorkspaceShell>
   );

@@ -1,4 +1,4 @@
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { components } from '@my-marriage/contracts';
 import { WorkspaceShell } from './workspace-shell';
@@ -22,9 +22,34 @@ const wedding: components['schemas']['WeddingDto'] = {
 };
 const user = { displayName: 'Ananya Sharma', email: 'ananya@example.com' };
 
-function renderShell(overrides: Partial<typeof wedding> = {}) {
+const other: components['schemas']['WeddingDto'] = {
+  ...wedding,
+  id: '6740a1b2c3d4e5f601234999',
+  slug: 'meera-dev',
+  brideName: 'Meera',
+  groomName: 'Dev',
+  city: 'Pune',
+  role: 'manager',
+};
+
+type MyInvite = components['schemas']['MyInviteDto'];
+
+const handOver: MyInvite = {
+  id: '6740a1b2c3d4e5f601234aaa',
+  brideName: 'Divya',
+  groomName: 'Hitesh',
+  city: 'Ara',
+  state: 'Bihar',
+  invitedByName: 'Nitesh Gupta',
+  role: 'owner',
+  handOver: true,
+  expiresAt: '2099-01-08T10:00:00.000Z',
+};
+
+function renderShell(overrides: Partial<typeof wedding> = {}, invites: MyInvite[] = []) {
+  const current = { ...wedding, ...overrides };
   return render(
-    <WorkspaceShell wedding={{ ...wedding, ...overrides }} user={user}>
+    <WorkspaceShell wedding={current} weddings={[current, other]} invites={invites} user={user}>
       <h1>Page content</h1>
     </WorkspaceShell>,
   );
@@ -33,7 +58,7 @@ function renderShell(overrides: Partial<typeof wedding> = {}) {
 describe('WorkspaceShell', () => {
   it('names the wedding, the visitor’s role and who is signed in', () => {
     renderShell();
-    expect(screen.getByText('Ananya & Arjun', { selector: 'aside p' })).toBeTruthy();
+    expect(screen.getByRole('complementary').textContent).toContain('Ananya & Arjun');
     expect(screen.getByRole('banner').textContent).toContain('Ananya & Arjun — Jaipur 2027');
     expect(screen.getByText('Owner')).toBeTruthy();
     expect(screen.getByText('Ananya Sharma')).toBeTruthy();
@@ -42,14 +67,35 @@ describe('WorkspaceShell', () => {
     expect(screen.getByRole('main').textContent).toContain('Page content');
   });
 
-  it('shows a manager as a manager, and leaves out the year without a date', () => {
+  it('shows a manager as a manager, without the team page, and leaves out the year without a date', () => {
     renderShell({ role: 'manager', weddingDate: undefined });
     expect(screen.getByText('Manager')).toBeTruthy();
+    const nav = screen.getByRole('navigation', { name: 'Workspace' });
+    expect(within(nav).queryByText('Team & Family')).toBeNull();
     expect(screen.getByRole('banner').textContent).toContain('Ananya & Arjun — Jaipur');
     expect(screen.getByRole('banner').textContent).not.toMatch(/\d{4}/);
   });
 
-  it('links only the sections that exist; the rest are marked as coming soon', () => {
+  it('says when an invitation to another wedding is waiting, and where to answer it', () => {
+    renderShell({}, [handOver]);
+    const banner = screen.getByRole('region', { name: 'Invitations waiting' });
+    expect(banner.textContent).toContain(
+      'Nitesh Gupta invited you to take over as an owner of Divya & Hitesh’s wedding.',
+    );
+    expect(
+      within(banner).getByRole('link', { name: 'Review invitation' }).getAttribute('href'),
+    ).toBe('/invitations');
+    cleanup();
+    renderShell({}, [handOver, { ...handOver, id: 'x2', role: 'manager', handOver: false }]);
+    expect(screen.getByRole('region', { name: 'Invitations waiting' }).textContent).toContain(
+      '2 invitations to other weddings are waiting',
+    );
+    cleanup();
+    renderShell();
+    expect(screen.queryByRole('region', { name: 'Invitations waiting' })).toBeNull();
+  });
+
+  it('links every section', () => {
     renderShell();
     const nav = screen.getByRole('navigation', { name: 'Workspace' });
     const links = within(nav).getAllByRole('link');
@@ -62,12 +108,9 @@ describe('WorkspaceShell', () => {
       ['Vendors', '/weddings/6740a1b2c3d4e5f601234567/vendors'],
       ['Wedding Website', '/weddings/6740a1b2c3d4e5f601234567/website'],
       ['Photos & QR Drive', '/weddings/6740a1b2c3d4e5f601234567/photos'],
+      ['Team & Family', '/weddings/6740a1b2c3d4e5f601234567/team'],
+      ['Settings', '/weddings/6740a1b2c3d4e5f601234567/settings'],
     ]);
-    for (const section of ['Settings']) {
-      const item = within(nav).getByText(section).closest('li');
-      expect(item?.textContent).toContain('Soon');
-      expect(item?.querySelector('a')).toBeNull();
-    }
   });
 
   it.each([
@@ -93,6 +136,28 @@ describe('WorkspaceShell', () => {
   ] as const)('says when the wedding is %s', (status, label) => {
     renderShell({ status });
     expect(within(screen.getByRole('banner')).getByText(label)).toBeTruthy();
+  });
+
+  it('switches between the visitor’s weddings, or starts another', () => {
+    renderShell({ role: 'admin' });
+    const aside = screen.getByRole('complementary');
+    const toggle = within(aside).getByRole('button', { name: /Switch wedding/ });
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    fireEvent.click(toggle);
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    const links = within(aside).getAllByRole('link', { name: /Ananya & Arjun|Meera & Dev/ });
+    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/weddings/6740a1b2c3d4e5f601234567',
+      '/weddings/6740a1b2c3d4e5f601234999',
+    ]);
+    expect(links[0]?.getAttribute('aria-current')).toBe('page');
+    expect(links[0]?.textContent).toContain('Admin');
+    expect(links[1]?.textContent).toContain('Manager');
+    expect(
+      within(aside).getByRole('link', { name: 'Start another wedding' }).getAttribute('href'),
+    ).toBe('/onboarding?start=new');
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
   });
 
   it('shows no status for an active wedding', () => {

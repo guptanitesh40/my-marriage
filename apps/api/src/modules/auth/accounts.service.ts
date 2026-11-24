@@ -26,4 +26,29 @@ export class AccountsService {
     const users = await this.users.find({ _id: { $in: userIds } }, { displayName: 1 }).lean();
     return new Map(users.map((user) => [user._id.toHexString(), user.displayName]));
   }
+
+  /**
+   * Names and addresses of several accounts, by ID, for a wedding's team
+   * page, which only its owners and admins see.
+   */
+  async contacts(
+    userIds: readonly Types.ObjectId[],
+  ): Promise<Map<string, { displayName: string; email: string }>> {
+    if (userIds.length === 0) return new Map();
+    const users = await this.users
+      .find({ _id: { $in: userIds } }, { displayName: 1, emailNormalized: 1 })
+      .lean();
+    return new Map(
+      users.map((user) => [
+        user._id.toHexString(),
+        { displayName: user.displayName, email: user.emailNormalized },
+      ]),
+    );
+  }
+
+  /** The account with this (normalized) address, if there is one. */
+  async idByEmail(emailNormalized: string): Promise<Types.ObjectId | undefined> {
+    const user = await this.users.findOne({ emailNormalized }, { _id: 1 }).lean();
+    return user?._id;
+  }
 }

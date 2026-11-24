@@ -3,11 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Types, type ClientSession, type Model } from 'mongoose';
 import { parseObjectId } from '../../platform/mongo.js';
 import type { AuthenticatedUser } from '../auth/sessions.service.js';
-import { WeddingMembership, type MembershipRole } from './schemas/wedding-membership.schema.js';
+import {
+  MEMBERSHIP_ROLES,
+  WeddingMembership,
+  type MembershipRole,
+} from './schemas/wedding-membership.schema.js';
 import { WeddingSlug } from './schemas/wedding-slug.schema.js';
 import { Wedding } from './schemas/wedding.schema.js';
 import { SLUG_PATTERN } from './slug.js';
-import { ownersOnly, weddingArchived, weddingNotFound } from './wedding-errors.js';
+import { adminsOnly, ownersOnly, weddingArchived, weddingNotFound } from './wedding-errors.js';
 import { Traced } from '../../platform/tracing.js';
 
 export interface WeddingAccess {
@@ -57,7 +61,7 @@ export class WeddingAccessService {
   async require(
     user: AuthenticatedUser,
     weddingId: string,
-    roles: readonly MembershipRole[] = ['owner', 'manager'],
+    roles: readonly MembershipRole[] = MEMBERSHIP_ROLES,
   ): Promise<WeddingAccess> {
     const id = parseObjectId(weddingId);
     if (!id) throw weddingNotFound();
@@ -69,7 +73,9 @@ export class WeddingAccessService {
       this.weddings.findById(id).lean(),
     ]);
     if (!membership || !wedding) throw weddingNotFound();
-    if (!roles.includes(membership.role)) throw ownersOnly();
+    if (!roles.includes(membership.role)) {
+      throw roles.includes('admin') ? adminsOnly() : ownersOnly();
+    }
     return { wedding, role: membership.role, userId };
   }
 
@@ -81,11 +87,77 @@ export class WeddingAccessService {
    * writes the same document, so one of the two transactions is retried and
    * then sees the other.
    */
-  /** The wedding's active owners and managers. */
-  async activeMembers(
+  /** The wedding's active members. */
+  async activeMembers(weddingId: Types.ObjectId): Promise<
+    {
+      userId: Types.ObjectId;
+      role: MembershipRole;
+      joinedAt: Date;
+      label?: string;
+    }[]
+  > {
+    return this.memberships
+      .find({ weddingId, status: 'active' }, { userId: 1, role: 1, joinedAt: 1, label: 1 })
+      .lean();
+  }
+
+  /** Someone's active membership of the wedding, read in the caller's transaction. */
+  async activeMembership(
     weddingId: Types.ObjectId,
-  ): Promise<{ userId: Types.ObjectId; role: MembershipRole }[]> {
-    return this.memberships.find({ weddingId, status: 'active' }, { userId: 1, role: 1 }).lean();
+    userId: Types.ObjectId,
+    session: ClientSession,
+  ): Promise<{ role: MembershipRole } | null> {
+    return this.memberships
+      .findOne({ weddingId, userId, status: 'active' }, { role: 1 })
+      .session(session)
+      .lean();
+  }
+
+  /**
+   * Takes someone off the team, keeping the record, marked (decision 0020).
+   * Never an owner: the condition is in the write. False if nothing changed.
+   */
+  async removeMembership(
+    weddingId: Types.ObjectId,
+    userId: Types.ObjectId,
+    removedBy: Types.ObjectId,
+    session: ClientSession,
+  ): Promise<boolean> {
+    const removed = await this.memberships.updateOne(
+      { weddingId, userId, status: 'active', role: { $ne: 'owner' } },
+      { $set: { status: 'removed', removedAt: new Date(), removedBy } },
+      { session },
+    );
+    return removed.modifiedCount === 1;
+  }
+
+  /**
+   * Changes a member's role between admin and manager, and their label
+   * (`null` clears it). Never an owner's role. False if nothing matched.
+   */
+  async updateMembership(
+    weddingId: Types.ObjectId,
+    userId: Types.ObjectId,
+    change: { role?: 'admin' | 'manager'; label?: string | null },
+    session: ClientSession,
+  ): Promise<boolean> {
+    const set: { role?: 'admin' | 'manager'; label?: string } = {};
+    if (change.role) set.role = change.role;
+    if (change.label) set.label = change.label;
+    const updated = await this.memberships.updateOne(
+      {
+        weddingId,
+        userId,
+        status: 'active',
+        ...(change.role ? { role: { $ne: 'owner' } } : {}),
+      },
+      {
+        ...(Object.keys(set).length > 0 ? { $set: set } : {}),
+        ...(change.label === null ? { $unset: { label: 1 } } : {}),
+      },
+      { session },
+    );
+    return updated.matchedCount === 1;
   }
 
   /**
@@ -107,7 +179,9 @@ export class WeddingAccessService {
 
   /**
    * The couple's names and whether the wedding is active, for a guest's
-   * invitation page; nothing private.
+   * invitation page; nothing private. Null for a wedding waiting for
+   * deletion (decision 0021), so its website address, gallery, invitation
+   * and upload pages and emails all treat it as gone.
    */
   async coupleOf(
     weddingId: Types.ObjectId,
@@ -115,7 +189,7 @@ export class WeddingAccessService {
     const wedding = await this.weddings
       .findById(weddingId, { brideName: 1, groomName: 1, city: 1, state: 1, slug: 1, status: 1 })
       .lean();
-    if (!wedding) return null;
+    if (!wedding || wedding.status === 'deletion_pending') return null;
     return {
       coupleName: `${wedding.brideName} & ${wedding.groomName}`,
       place: [wedding.city, wedding.state].filter(Boolean).join(', '),

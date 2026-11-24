@@ -47,6 +47,10 @@ export class ExpenseEntry {
   @Prop({ type: String })
   note?: string;
 
+  /** Receipts kept with this entry (decision 0023); set when it is recorded, like everything else. */
+  @Prop({ type: [Types.ObjectId], default: undefined })
+  receiptAssetIds?: Types.ObjectId[];
+
   @Prop({ type: Types.ObjectId, required: true })
   recordedBy: Types.ObjectId;
 

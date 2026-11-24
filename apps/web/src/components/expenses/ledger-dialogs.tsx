@@ -17,7 +17,9 @@ import {
 } from '@/lib/expenses/directory';
 import { EXPENSE_INPUT_LIMITS } from '@/lib/expenses/input';
 import { amountProblem, formatInr, parseRupees } from '@/lib/expenses/money';
+import { RECEIPT_LIMITS } from '@/lib/expenses/files';
 import { todayInIndia } from '@/lib/weddings/validation';
+import { ReceiptPicker, useReceipts } from './receipts';
 
 /** Failures that mean the page is out of date: it shows the truth after a refresh. */
 const STALE = new Set([
@@ -231,17 +233,19 @@ export function RecordPaymentDialog({
   const [date, setDate] = useState(today);
   const [method, setMethod] = useState<PaymentMethod | ''>('');
   const [note, setNote] = useState('');
+  const receipts = useReceipts(weddingId);
   const { pending, errors, setErrors, alert, send, reset } = useLedgerPost(dialog, (detail, m) => {
     setAmount('');
     setNote('');
     setMethod('');
     setDate(todayInIndia());
+    receipts.reset();
     onDone(detail, m);
   });
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending) return;
+    if (pending || receipts.busy) return;
     const paise = parseRupees(amount);
     const problems: Record<string, string> = {};
     const amountError =
@@ -263,6 +267,7 @@ export function RecordPaymentDialog({
             paidAt: date,
             ...(method ? { method } : {}),
             ...(note.trim() ? { note: note.trim() } : {}),
+            ...(receipts.ids.length > 0 ? { receiptAssetIds: receipts.ids } : {}),
           },
         }),
       `Payment of ${formatInr(paise)} recorded.`,
@@ -278,8 +283,9 @@ export function RecordPaymentDialog({
       alert={alert}
       alertTitle="Unable to record the payment"
       pending={pending}
-      submitLabel="Record payment"
+      submitLabel={receipts.busy ? 'Uploading…' : 'Record payment'}
       pendingLabel="Recording…"
+      disabled={receipts.busy}
       onSubmit={submit}
       onClose={reset}
     >
@@ -323,6 +329,13 @@ export function RecordPaymentDialog({
         onChange={(e) => setNote(e.target.value)}
         error={errors.note}
       />
+      <ReceiptPicker
+        receipts={receipts}
+        limit={RECEIPT_LIMITS.perEntry}
+        label="Receipt or proof of payment"
+        hint="A photo of the receipt, a bank slip or a UPI screenshot"
+        error={errors.receiptAssetIds}
+      />
     </LedgerDialog>
   );
 }
@@ -355,10 +368,12 @@ export function AdjustAmountDialog({
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState(today);
   const [note, setNote] = useState('');
+  const receipts = useReceipts(weddingId);
   const { pending, errors, setErrors, alert, send, reset } = useLedgerPost(dialog, (detail, m) => {
     setAmount('');
     setNote('');
     setDate(todayInIndia());
+    receipts.reset();
     onDone(detail, m);
   });
   const paise = parseRupees(amount);
@@ -374,7 +389,7 @@ export function AdjustAmountDialog({
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending) return;
+    if (pending || receipts.busy) return;
     const problems: Record<string, string> = {};
     const amountError =
       amountProblem(amount) ??
@@ -397,6 +412,7 @@ export function AdjustAmountDialog({
             amountPaise: paise,
             date,
             ...(note.trim() ? { note: note.trim() } : {}),
+            ...(receipts.ids.length > 0 ? { receiptAssetIds: receipts.ids } : {}),
           },
         }),
       kind === 'discount'
@@ -414,8 +430,11 @@ export function AdjustAmountDialog({
       alert={alert}
       alertTitle="Unable to record the change"
       pending={pending}
-      submitLabel={kind === 'discount' ? 'Record discount' : 'Record extra'}
+      submitLabel={
+        receipts.busy ? 'Uploading…' : kind === 'discount' ? 'Record discount' : 'Record extra'
+      }
       pendingLabel="Recording…"
+      disabled={receipts.busy}
       onSubmit={submit}
       onClose={reset}
     >
@@ -493,6 +512,13 @@ export function AdjustAmountDialog({
         onChange={(e) => setNote(e.target.value)}
         error={errors.note}
       />
+      <ReceiptPicker
+        receipts={receipts}
+        limit={RECEIPT_LIMITS.perEntry}
+        label="Revised quote or agreement"
+        hint="The new quote, an invoice or a message confirming it"
+        error={errors.receiptAssetIds}
+      />
     </LedgerDialog>
   );
 }
@@ -525,8 +551,10 @@ export function ReverseEntryDialog({
   onDone: Done;
 }) {
   const [note, setNote] = useState('');
+  const receipts = useReceipts(weddingId);
   const { pending, errors, alert, send, reset } = useLedgerPost(dialog, (detail, m) => {
     setNote('');
+    receipts.reset();
     onDone(detail, m);
   });
   const amount = entry?.amountPaise ?? 0;
@@ -540,12 +568,16 @@ export function ReverseEntryDialog({
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending || !entry || blocked) return;
+    if (pending || !entry || blocked || receipts.busy) return;
     void send(
       () =>
         api.POST('/api/v1/weddings/{weddingId}/expenses/{expenseId}/payments/reverse', {
           params: { path: { weddingId, expenseId: expense.id } },
-          body: { entryId: entry.id, ...(note.trim() ? { note: note.trim() } : {}) },
+          body: {
+            entryId: entry.id,
+            ...(note.trim() ? { note: note.trim() } : {}),
+            ...(receipts.ids.length > 0 ? { receiptAssetIds: receipts.ids } : {}),
+          },
         }),
       `${entryName(entry)} of ${formatInr(amount)} reversed.`,
     );
@@ -562,10 +594,10 @@ export function ReverseEntryDialog({
       alert={alert}
       alertTitle="Unable to reverse it"
       pending={pending}
-      submitLabel="Reverse"
+      submitLabel={receipts.busy ? 'Uploading…' : 'Reverse'}
       pendingLabel="Reversing…"
       danger
-      disabled={blocked}
+      disabled={blocked || receipts.busy}
       onSubmit={submit}
       onClose={() => {
         setNote('');
@@ -593,6 +625,13 @@ export function ReverseEntryDialog({
         value={note}
         onChange={(e) => setNote(e.target.value)}
         error={errors.note}
+      />
+      <ReceiptPicker
+        receipts={receipts}
+        limit={RECEIPT_LIMITS.perEntry}
+        label="Proof of refund or correction"
+        hint="A refund receipt or a message from the vendor"
+        error={errors.receiptAssetIds}
       />
     </LedgerDialog>
   );

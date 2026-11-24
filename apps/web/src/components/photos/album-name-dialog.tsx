@@ -178,7 +178,8 @@ function AlbumNameDialog({
         {!album && (
           <p className="flex items-start gap-2 rounded-xl bg-surface-container-low p-3 text-body-sm text-on-surface-variant">
             <Icon name="lock" className="mt-0.5 size-4 shrink-0 text-secondary" />
-            Every photo waits for your approval before it appears on your website.
+            Every photo waits for your approval, and appears on your website only if you turn on its
+            photo gallery.
           </p>
         )}
 

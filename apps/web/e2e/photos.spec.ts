@@ -158,15 +158,13 @@ test('selects photos, or all of them, and deletes them together', async ({ page 
     .getByRole('link', { name: /View album/ })
     .click();
   await expect(page.getByRole('heading', { level: 1, name: 'Haldi' })).toBeVisible();
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles(
-      ['a', 'b', 'c'].map((name) => ({
-        name: `${name}.jpg`,
-        mimeType: 'image/jpeg',
-        buffer: JPEG,
-      })),
-    );
+  await page.locator('input[type="file"]').setInputFiles(
+    ['a', 'b', 'c'].map((name) => ({
+      name: `${name}.jpg`,
+      mimeType: 'image/jpeg',
+      buffer: JPEG,
+    })),
+  );
   await expect(page.getByRole('img', { name: /^Photo \d/ })).toHaveCount(3, { timeout: 20_000 });
 
   const remove = page.getByRole('button', { name: /^Delete selected/ });
@@ -282,9 +280,14 @@ test('approved photos appear in the website gallery, the same in all three desig
   await page.keyboard.press('Escape');
 
   let version = 0;
-  const publishAs = async (templateId: string) => {
+  const publishAs = async (templateId: string, showGallery = true) => {
     const saved = await page.request.patch(api('/website'), {
-      data: { templateId, content: { headline: 'Welcome', faq: [] }, contentVersion: version },
+      data: {
+        templateId,
+        // The gallery is off until the couple turns it on (decision 0024).
+        content: { headline: 'Welcome', faq: [], showGallery },
+        contentVersion: version,
+      },
     });
     expect(saved.status(), await saved.text()).toBe(200);
     version = ((await saved.json()) as { data: { contentVersion: number } }).data.contentVersion;
@@ -297,8 +300,22 @@ test('approved photos appear in the website gallery, the same in all three desig
 
   const visitor = await newVisitor(browser);
   const site = await visitor.newPage();
+
+  // Published with the gallery off (the default): no photo anywhere on the site.
+  const hidden = await publishAs('traditional', false);
+  await site.goto(`/w/${hidden}`);
+  await expect(site.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(site.getByRole('region', { name: 'Gallery' })).toHaveCount(0);
+  await expect(site.getByRole('navigation', { name: 'Website sections' })).not.toContainText(
+    'Gallery',
+  );
+  await page.goto(`${weddingPath}/photos`);
+  await expect(page.getByRole('main')).toContainText('Your website doesn’t show photos.');
+
   for (const design of ['traditional', 'modern', 'royal']) {
     const slug = await publishAs(design);
+    // A fresh load each time: only changing the # would keep the page as it was.
+    await site.goto('about:blank');
     await site.goto(`/w/${slug}#gallery`);
     const gallery = site.getByRole('region', { name: 'Gallery' });
     await expect(gallery).toBeVisible();

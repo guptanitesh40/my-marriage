@@ -434,13 +434,13 @@ describe('Vendors (integration)', () => {
       expect(stored?.deletedBy?.toHexString()).toBe(userId);
     });
 
-    it('is for owners only', async () => {
+    it('is for owners and admins only', async () => {
       const { cookie, weddingId } = await ownerWithWedding();
       const manager = await addManager(weddingId);
       const vendor = await created(cookie, weddingId, { name: 'Royal Bloom', category: 'Decor' });
       const res = await remove(manager.cookie, weddingId, vendor.id);
       expect(res.status).toBe(403);
-      expect(errorOf(res).code).toBe('OWNER_REQUIRED');
+      expect(errorOf(res).code).toBe('ADMIN_REQUIRED');
       expect(await names(manager.cookie, weddingId)).toEqual(['Royal Bloom']);
     });
 

@@ -5,7 +5,8 @@ export const inputClass =
   'w-full rounded-md border bg-surface-container-lowest px-3.5 py-2.5 text-body-md text-on-surface ' +
   'placeholder:text-on-surface-variant/70 transition-colors hover:border-outline ' +
   'focus:border-primary-container focus:outline-2 focus:outline-offset-0 focus:outline-primary-container ' +
-  'aria-[invalid=true]:border-error';
+  'aria-[invalid=true]:border-error ' +
+  'disabled:cursor-not-allowed disabled:bg-surface-container-low disabled:text-on-surface-variant disabled:hover:border-outline-variant';
 
 export interface FieldProps {
   id: string;

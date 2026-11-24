@@ -16,6 +16,12 @@ export class WebsiteContentDto {
 
   /** The cover photo's ID, when there is one. */
   coverImageId?: string;
+
+  /** Whether the website shows the main venue from Settings. */
+  showVenue: boolean;
+
+  /** Whether the website shows the approved photos as a gallery. */
+  showGallery: boolean;
 }
 
 /**
@@ -81,6 +87,9 @@ export class WebsiteDto {
 
   /** Published, and the draft has changed since. */
   hasUnpublishedChanges: boolean;
+
+  /** The published website shows the photo gallery now (decision 0024). */
+  galleryLive: boolean;
 
   /** The wedding's web address; the public site is at `/w/{slug}`. */
   slug: string;

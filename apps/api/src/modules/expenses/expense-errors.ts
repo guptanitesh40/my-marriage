@@ -1,4 +1,4 @@
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import { ConflictException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { fieldError } from '../weddings/wedding-errors.js';
 import { inr } from './expense-policy.js';
 
@@ -74,4 +74,34 @@ export function reversalBelowPaid(): ConflictException {
     message:
       'Reversing this extra would make the amount owed less than what has been paid. Reverse a payment first.',
   });
+}
+
+/** Also for a file of another wedding: isolation never says which. */
+export function receiptNotFound(): NotFoundException {
+  return new NotFoundException({ code: 'FILE_NOT_FOUND', message: 'File not found.' });
+}
+
+/** The upload never arrived, was too large, or isn’t the kind of file it said it was. */
+export function receiptRejected(
+  code: 'UPLOAD_NOT_FOUND' | 'UPLOAD_TOO_LARGE' | 'UPLOAD_WRONG_TYPE',
+): UnprocessableEntityException {
+  const messages = {
+    UPLOAD_NOT_FOUND: 'The file didn’t finish uploading. Please try again.',
+    UPLOAD_TOO_LARGE: 'That file is too large. Choose one under 15 MB.',
+    UPLOAD_WRONG_TYPE:
+      'That file isn’t what its name says. Choose a PDF, a photo, or a Word or Excel file.',
+  };
+  return new UnprocessableEntityException({ code, message: messages[code] });
+}
+
+/** A file to attach is not this wedding's, not uploaded yet, or already on something else. */
+export function unknownReceipt() {
+  return fieldError(
+    'receiptAssetIds',
+    'One of the files is no longer available. Remove it and upload it again.',
+  );
+}
+
+export function tooManyReceipts(limit: number) {
+  return fieldError('receiptAssetIds', `Attach at most ${limit} files.`);
 }

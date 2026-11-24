@@ -90,14 +90,16 @@ export class VendorsController {
   }
 
   /**
-   * Deletes a vendor (owners only). The record is kept, marked as deleted,
+   * Deletes a vendor (owners and admins). The record is kept, marked as deleted,
    * so expenses can still name it; it is no longer listed or read.
    */
   @Delete(':vendorId')
   @HttpCode(204)
-  @ApiOperation({ summary: 'Delete vendor (owners only); the record is kept, marked deleted' })
+  @ApiOperation({
+    summary: 'Delete vendor (owners and admins); the record is kept, marked deleted',
+  })
   @ApiNoContentResponse({ description: 'The vendor is deleted.' })
-  @ApiForbiddenResponse({ description: 'OWNER_REQUIRED: managers cannot delete vendors.' })
+  @ApiForbiddenResponse({ description: 'ADMIN_REQUIRED: managers cannot delete vendors.' })
   @ApiNotFoundResponse({ description: NOT_FOUND })
   @ApiConflictResponse({ description: 'WEDDING_ARCHIVED: the wedding is read-only.' })
   remove(

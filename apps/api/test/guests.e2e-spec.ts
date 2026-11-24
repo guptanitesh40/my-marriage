@@ -513,13 +513,13 @@ describe('Guests and RSVP (integration)', () => {
       expect((await open(second.url)).res.status).toBe(404);
     });
 
-    it('removing a guest (owners only) keeps the record and stops their link', async () => {
+    it('removing a guest (owners and admins only) keeps the record and stops their link', async () => {
       const { owner, rajesh } = await plannedWedding();
       const manager = await addManager(owner.weddingId);
       const { cookie } = await open((await linkOf(owner.cookie, owner.weddingId, rajesh.id)).url);
       const path = `${base(owner.weddingId)}/${rajesh.id}`;
       const byManager = await send('delete', manager.cookie, path);
-      expect(errorOf(byManager).code).toBe('OWNER_REQUIRED');
+      expect(errorOf(byManager).code).toBe('ADMIN_REQUIRED');
 
       expect((await send('delete', owner.cookie, path)).status).toBe(204);
       expect((await view(cookie)).status).toBe(401);

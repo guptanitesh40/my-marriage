@@ -19,8 +19,15 @@ export const routes = {
   onboarding: '/onboarding',
   /** Step 1's form even when invitations are waiting ("Start my own wedding instead"). */
   onboardingStartOwn: '/onboarding?start=own',
+  /** Step 1's form for one more wedding, from the wedding switcher (decision 0020). */
+  onboardingNewWedding: '/onboarding?start=new',
   /** Step 2: invite your partner (optional). */
   onboardingPartner: '/onboarding/partner',
+  /**
+   * The invitations waiting for the signed-in account, to accept or
+   * decline without the email link; for people already on a team too.
+   */
+  invitations: '/invitations',
   /** Where a partner invitation email leads. */
   acceptInvitation: '/invitations/accept',
   privacy: '/privacy',
@@ -95,6 +102,21 @@ export function photosPath(weddingId: string, query?: URLSearchParams): string {
   return `${workspacePath(weddingId)}/photos${search ? `?${search}` : ''}`;
 }
 
+/** A wedding's Team & Family page (owners and admins). */
+export function teamPath(weddingId: string): string {
+  return `${workspacePath(weddingId)}/team`;
+}
+
+/** A wedding's settings: details, archive and deletion. */
+export function settingsPath(weddingId: string): string {
+  return `${workspacePath(weddingId)}/settings`;
+}
+
+/** Onboarding step 2 for one wedding: invite its partner. */
+export function onboardingPartnerFor(weddingId: string): string {
+  return `${routes.onboardingPartner}?wedding=${encodeURIComponent(weddingId)}`;
+}
+
 /** One album of a wedding. */
 export function albumPath(weddingId: string, albumId: string): string {
   return `${photosPath(weddingId)}/albums/${albumId}`;
@@ -114,6 +136,14 @@ export function websitePreviewPath(weddingId: string, templateId?: string): stri
 /** A published wedding website, public at its address. */
 export function publicSitePath(slug: string): string {
   return `/w/${slug}`;
+}
+
+/**
+ * A page that opens its "add" form on arrival (`?new=1`), for the
+ * overview's quick actions: events, tasks, expenses or guests.
+ */
+export function withNewForm(path: string): string {
+  return `${path}${path.includes('?') ? '&' : '?'}new=1`;
 }
 
 /** A guest's private invitation page; the link's secret follows `#t=`. */

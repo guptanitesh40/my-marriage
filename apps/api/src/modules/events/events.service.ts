@@ -3,6 +3,7 @@ import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import type { ClientSession, Connection, Model, Types, UpdateQuery } from 'mongoose';
 import { parseObjectId } from '../../platform/mongo.js';
 import type { AuthenticatedUser } from '../auth/sessions.service.js';
+import { ADMIN_ROLES } from '../weddings/schemas/wedding-membership.schema.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
 import { fieldError, PAST_DATE_MESSAGE, weddingArchived } from '../weddings/wedding-errors.js';
 import type { CreateEventDto, EventVenueInputDto } from './dto/create-event.dto.js';
@@ -165,12 +166,12 @@ export class EventsService {
   }
 
   /**
-   * Deletes a ceremony: owners only (PRD: managers have no delete actions).
+   * Deletes a ceremony: owners and admins (PRD: managers have no delete actions; decision 0020).
    * The record is kept and marked, so whatever refers to it keeps its
    * history; it no longer appears anywhere.
    */
   async remove(user: AuthenticatedUser, weddingId: string, eventId: string): Promise<void> {
-    const { wedding, userId } = await this.access.require(user, weddingId, ['owner']);
+    const { wedding, userId } = await this.access.require(user, weddingId, ADMIN_ROLES);
     if (wedding.status !== 'active') throw weddingArchived();
     const id = parseObjectId(eventId);
     if (!id) throw eventNotFound();

@@ -6,7 +6,11 @@ import { TaskDrawer } from './task-drawer';
 const patch = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/api/browser', () => ({ api: { PATCH: patch, POST: vi.fn(), GET: vi.fn() } }));
 const refresh = vi.hoisted(() => vi.fn());
-vi.mock('next/navigation', () => ({ useRouter: () => ({ refresh }) }));
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ refresh }),
+  usePathname: () => '/weddings/w1',
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 // jsdom has no modal dialogs; these open and close one as a browser would.
 HTMLDialogElement.prototype.showModal = function (this: HTMLDialogElement) {

@@ -14,6 +14,7 @@ const invite = {
   id: 'i1',
   email: 'arjun@example.com',
   role: 'owner' as const,
+  handOver: false,
   status: 'pending' as const,
   emailStatus: 'sending' as const,
   expiresAt: '2099-01-08T10:00:00.000Z',

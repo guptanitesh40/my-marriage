@@ -1,6 +1,6 @@
 import type { EventBrief } from '../events/events.service.js';
 import type { Wedding } from '../weddings/schemas/wedding.schema.js';
-import type { PublicEventDto, PublicWebsiteDto } from './dto/public-website.dto.js';
+import type { PublicEventDto, PublicVenueDto, PublicWebsiteDto } from './dto/public-website.dto.js';
 import type { WebsiteContentDto } from './dto/website.dto.js';
 import type { WebsiteContent } from './schemas/website-config.schema.js';
 import type { WebsiteTemplate } from './website-policy.js';
@@ -18,6 +18,22 @@ export function contentDto(content: WebsiteContent | undefined): WebsiteContentD
     ...(content?.story ? { story: content.story } : {}),
     faq: (content?.faq ?? []).map((item) => ({ question: item.question, answer: item.answer })),
     ...(content?.coverAssetId ? { coverImageId: content.coverAssetId.toHexString() } : {}),
+    showVenue: Boolean(content?.showVenue),
+    showGallery: Boolean(content?.showGallery),
+  };
+}
+
+/** The main venue's known parts, when the website is set to show it; nothing otherwise. */
+function publicVenue(
+  wedding: Pick<Wedding, 'mainVenue'>,
+  content: WebsiteContent | undefined,
+): PublicVenueDto | undefined {
+  const venue = wedding.mainVenue;
+  if (!content?.showVenue || (!venue?.name && !venue?.address && !venue?.mapsUrl)) return undefined;
+  return {
+    ...(venue.name ? { name: venue.name } : {}),
+    ...(venue.address ? { address: venue.address } : {}),
+    ...(venue.mapsUrl ? { mapsUrl: venue.mapsUrl } : {}),
   };
 }
 
@@ -43,7 +59,7 @@ export function publicEvents(events: readonly EventBrief[]): PublicEventDto[] {
 }
 
 export function projectWebsite(input: {
-  wedding: Pick<Wedding, 'slug' | 'brideName' | 'groomName' | 'city' | 'state'>;
+  wedding: Pick<Wedding, 'slug' | 'brideName' | 'groomName' | 'city' | 'state' | 'mainVenue'>;
   templateId: WebsiteTemplate;
   content: WebsiteContent | undefined;
   events: readonly EventBrief[];
@@ -59,6 +75,7 @@ export function projectWebsite(input: {
   const first = days[0];
   const last = days.at(-1);
   const { headline, story, faq } = contentDto(input.content);
+  const mainVenue = publicVenue(input.wedding, input.content);
   return {
     slug: input.wedding.slug,
     templateId: input.templateId,
@@ -70,6 +87,7 @@ export function projectWebsite(input: {
     ...(headline ? { headline } : {}),
     ...(story ? { story } : {}),
     faq,
+    ...(mainVenue ? { mainVenue } : {}),
     ...(input.coverUrl ? { coverUrl: input.coverUrl } : {}),
     ...(first && last ? { dateRange: { start: first, end: last } } : {}),
     events,

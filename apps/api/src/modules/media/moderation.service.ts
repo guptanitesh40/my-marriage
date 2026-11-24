@@ -72,6 +72,15 @@ export class ModerationService {
     return { photos: found.map((photo) => photoDto(photo, names)), total, processing };
   }
 
+  /** How many photos wait for review and how many are approved, for the overview. Access is the caller's. */
+  async counts(weddingId: Types.ObjectId): Promise<{ awaitingReview: number; approved: number }> {
+    const [awaitingReview, approved] = await Promise.all([
+      this.photos.countDocuments({ weddingId, moderation: 'pending' }),
+      this.photos.countDocuments({ weddingId, moderation: 'approved' }),
+    ]);
+    return { awaitingReview, approved };
+  }
+
   async change(
     user: AuthenticatedUser,
     weddingId: string,

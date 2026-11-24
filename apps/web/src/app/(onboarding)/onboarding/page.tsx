@@ -7,7 +7,8 @@ export const metadata: Metadata = { title: 'Create your wedding' };
 
 /**
  * Onboarding step 1: create the wedding, or first join one you were invited
- * to. `?start=own` skips the invitations ("Start my own wedding instead").
+ * to. `?start=own` skips the invitations ("Start my own wedding instead");
+ * `?start=new` starts another wedding, from the wedding switcher.
  */
 export default function CreateWeddingPage({ searchParams }: PageProps<'/onboarding'>) {
   return (
@@ -19,5 +20,5 @@ export default function CreateWeddingPage({ searchParams }: PageProps<'/onboardi
 
 async function Step({ searchParams }: Pick<PageProps<'/onboarding'>, 'searchParams'>) {
   const { start } = await searchParams;
-  return <WeddingStep startOwn={start === 'own'} />;
+  return <WeddingStep startOwn={start === 'own'} startNew={start === 'new'} />;
 }

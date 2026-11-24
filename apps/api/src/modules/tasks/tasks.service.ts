@@ -1,6 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Types, type Connection, type QueryFilter, type Model, type UpdateQuery } from 'mongoose';
+import {
+  Types,
+  type ClientSession,
+  type Connection,
+  type QueryFilter,
+  type Model,
+  type UpdateQuery,
+} from 'mongoose';
 import { parseObjectId } from '../../platform/mongo.js';
 import { Traced } from '../../platform/tracing.js';
 import { AccountsService } from '../auth/accounts.service.js';
@@ -23,7 +30,7 @@ import type {
 import type { UpdateTaskDto } from './dto/update-task.dto.js';
 import { WeddingTask, type TaskState } from './schemas/task.schema.js';
 import { taskNotFound, timeWithoutDay, unknownAssignee, unknownEvent } from './task-errors.js';
-import { TASK_LIST_LIMIT, TASK_TIME_ZONE } from './task-policy.js';
+import { DUE_SOON_DAYS, TASK_LIST_LIMIT, TASK_TIME_ZONE } from './task-policy.js';
 
 type StoredTask = WeddingTask & { _id: Types.ObjectId };
 
@@ -453,5 +460,92 @@ export class TasksService {
       createdAt: task.createdAt,
       updatedAt: task.updatedAt,
     };
+  }
+
+  /**
+   * The wedding's open work, for the overview (PRD DASH-01): how many tasks
+   * are open, overdue, and due in the next DUE_SOON_DAYS days without being
+   * overdue yet, and the first few needing attention. Overdue ones come
+   * first because they are the earliest due; tasks without a day come last.
+   * The caller has checked access.
+   */
+  async attention(
+    weddingId: Types.ObjectId,
+    now: Date,
+    limit: number,
+  ): Promise<{ open: number; overdue: number; dueSoon: number; tasks: TaskDto[] }> {
+    const today = new Date(`${todayIn(TASK_TIME_ZONE, now)}T00:00:00Z`);
+    const horizon = new Date(today.getTime() + DUE_SOON_DAYS * 24 * 60 * 60 * 1000);
+    const open = { weddingId, state: { $in: OPEN_STATES } };
+    const [openCount, overdue, dueSoon, found, members] = await Promise.all([
+      this.tasks.countDocuments(open),
+      this.tasks.countDocuments({ weddingId, ...this.overdue(now) }),
+      this.tasks.countDocuments({
+        ...open,
+        dueDate: { $gte: today, $lte: horizon },
+        $or: [{ dueAt: null }, { dueAt: { $gte: now } }],
+      }),
+      this.tasks.aggregate<StoredTask>([
+        { $match: open },
+        {
+          $addFields: {
+            noDue: { $cond: [{ $ifNull: ['$dueDate', false] }, 0, 1] },
+            noTime: { $cond: [{ $ifNull: ['$dueAt', false] }, 0, 1] },
+            rank: {
+              $switch: {
+                branches: [
+                  { case: { $eq: ['$priority', 'high'] }, then: 0 },
+                  { case: { $eq: ['$priority', 'normal'] }, then: 1 },
+                ],
+                default: 2,
+              },
+            },
+          },
+        },
+        { $sort: { noDue: 1, dueDate: 1, noTime: 1, dueAt: 1, rank: 1, createdAt: -1, _id: 1 } },
+        { $limit: limit },
+        { $project: { noDue: 0, noTime: 0, rank: 0 } },
+      ]),
+      this.weddings.memberDirectory(weddingId),
+    ]);
+    const context = await this.contextOf(weddingId, members, found, now);
+    return {
+      open: openCount,
+      overdue,
+      dueSoon,
+      tasks: found.map((task) => this.toDto(task, context)),
+    };
+  }
+
+  /**
+   * Open tasks per assignee, for the team page: user ID to count. Only
+   * open ones: a finished task is no longer someone's work.
+   */
+  async openCounts(weddingId: Types.ObjectId): Promise<Map<string, number>> {
+    const rows = await this.tasks
+      .aggregate<{ _id: Types.ObjectId; count: number }>([
+        { $match: { weddingId, state: { $in: OPEN_STATES }, assigneeId: { $exists: true } } },
+        { $group: { _id: '$assigneeId', count: { $sum: 1 } } },
+      ])
+      .exec();
+    return new Map(rows.map((row) => [row._id.toHexString(), row.count]));
+  }
+
+  /**
+   * Leaves every task of someone removed from the team unassigned, in the
+   * removal's transaction (decision 0020); who completed a task is kept.
+   * Returns how many tasks changed.
+   */
+  async unassignMember(
+    weddingId: Types.ObjectId,
+    userId: Types.ObjectId,
+    session: ClientSession,
+  ): Promise<number> {
+    const changed = await this.tasks.updateMany(
+      { weddingId, assigneeId: userId },
+      { $unset: { assigneeId: 1 } },
+      { session },
+    );
+    return changed.modifiedCount;
   }
 }

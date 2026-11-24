@@ -18,6 +18,11 @@ export interface EventInput {
   venueName: string;
   venueAddress: string;
   description: string;
+  /**
+   * The YouTube link, when "We'll live stream this ceremony" is ticked;
+   * left out when it isn't. The API checks that it is a YouTube link.
+   */
+  livestreamUrl?: string;
 }
 
 function tooLong(value: string, limit: number): string | undefined {
@@ -43,6 +48,10 @@ export function eventInputErrors(input: EventInput): Record<string, string> {
   set('venue.name', tooLong(input.venueName, EVENT_INPUT_LIMITS.venueName));
   set('venue.address', tooLong(input.venueAddress, EVENT_INPUT_LIMITS.venueAddress));
   set('description', tooLong(input.description, EVENT_INPUT_LIMITS.description));
+  set(
+    'livestreamUrl',
+    input.livestreamUrl === '' ? 'Paste the YouTube link, or untick live streaming.' : undefined,
+  );
   return errors;
 }
 

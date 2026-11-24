@@ -9,6 +9,7 @@ import {
 import {
   createWedding,
   expectRedirectBeforeRender,
+  PARTNER_STEP,
   signUp,
   signUpVerified,
   WORKSPACE,
@@ -99,7 +100,7 @@ test('step 1 explains what is missing, beside each field, and refuses past dates
   await expect(page.getByText('Choose today or a later date.')).toBeVisible();
   await page.getByLabel('Wedding date').fill('');
   await page.getByLabel('City').press('Enter');
-  await expect(page).toHaveURL('/onboarding/partner');
+  await expect(page).toHaveURL(PARTNER_STEP);
 });
 
 test('going back edits the wedding, and never creates another', async ({ page }) => {
@@ -117,7 +118,7 @@ test('going back edits the wedding, and never creates another', async ({ page })
 
   await page.getByLabel('City').fill('Panaji');
   await page.getByRole('button', { name: 'Save and continue' }).click();
-  await expect(page).toHaveURL('/onboarding/partner');
+  await expect(page).toHaveURL(PARTNER_STEP);
   await expect(page.getByRole('status')).toContainText('Panaji, Goa');
 
   // A refresh shows the same: the API, not the browser, decides.
@@ -179,9 +180,12 @@ test('the partner is invited, signs up from the email, accepts and becomes an ow
   await expect(
     partner.getByRole('heading', { level: 1, name: 'Welcome to the wedding' }),
   ).toBeVisible();
-  await partner.getByRole('link', { name: 'Go to your dashboard' }).click();
+  await partner.getByRole('link', { name: 'Open the wedding workspace' }).click();
   await expect(partner).toHaveURL(WORKSPACE);
-  await expect(partner.getByRole('main')).toContainText('Pushpa & Nitesh’s wedding · Ara, Bihar');
+  await expect(
+    partner.getByRole('heading', { level: 1, name: 'Pushpa & Nitesh’s Wedding' }),
+  ).toBeVisible();
+  await expect(partner.getByRole('main')).toContainText('Ara, Bihar');
 
   // The owner sees that the partner has joined.
   await owner.goto('/onboarding/partner');
@@ -246,9 +250,10 @@ test('a partner who signs up without the link sees the invitation and joins in o
 
   await partner.getByRole('button', { name: 'Accept and join' }).click();
   await expect(partner).toHaveURL(WORKSPACE);
-  await expect(partner.getByRole('main')).toContainText(
-    'Ananya & Arjun’s wedding · Jaipur, Rajasthan',
-  );
+  await expect(
+    partner.getByRole('heading', { level: 1, name: 'Ananya & Arjun’s Wedding' }),
+  ).toBeVisible();
+  await expect(partner.getByRole('main')).toContainText('Jaipur, Rajasthan');
 
   await owner.goto('/onboarding/partner');
   await expect(owner.getByText('Your partner has joined')).toBeVisible();

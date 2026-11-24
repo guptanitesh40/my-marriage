@@ -8,6 +8,7 @@ import type { AuthenticatedUser } from '../auth/sessions.service.js';
 import { todayIn } from '../events/event-time.js';
 import { EventsService } from '../events/events.service.js';
 import { VendorsService } from '../vendors/vendors.service.js';
+import { ADMIN_ROLES } from '../weddings/schemas/wedding-membership.schema.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
 import { weddingArchived } from '../weddings/wedding-errors.js';
 import type { CreateExpenseDto } from './dto/create-expense.dto.js';
@@ -40,6 +41,8 @@ import {
   unknownVendor,
 } from './expense-errors.js';
 import { EXPENSE_LIST_LIMIT, EXPENSE_TIME_ZONE } from './expense-policy.js';
+import { ExpenseFilesService } from './expense-files.service.js';
+import type { ExpenseFileDto } from './dto/expense-file.dto.js';
 import { ExpenseEntry, type EntryType } from './schemas/expense-entry.schema.js';
 import { Expense } from './schemas/expense.schema.js';
 
@@ -106,6 +109,7 @@ export class ExpensesService {
     private readonly events: EventsService,
     private readonly vendors: VendorsService,
     private readonly accounts: AccountsService,
+    private readonly files: ExpenseFilesService,
   ) {}
 
   /**
@@ -169,7 +173,10 @@ export class ExpensesService {
     if (wedding.status !== 'active') throw weddingArchived();
     const eventIds = distinctIds(input.eventIds ?? []);
     const vendorId = input.vendorId ? new Types.ObjectId(input.vendorId) : undefined;
-    const record: Omit<Expense, 'createdAt' | 'updatedAt'> = {
+    const id = new Types.ObjectId();
+    const receiptIds = distinctIds(input.receiptAssetIds ?? []);
+    const record: Omit<Expense, 'createdAt' | 'updatedAt'> & { _id: Types.ObjectId } = {
+      _id: id,
       weddingId: wedding._id,
       title: input.title,
       category: input.category,
@@ -181,6 +188,7 @@ export class ExpensesService {
       ...(vendorId ? { vendorId } : {}),
       ...(input.dueDate ? { dueDate: midnight(input.dueDate) } : {}),
       ...(input.notes ? { notes: input.notes } : {}),
+      receiptAssetIds: receiptIds,
       createdBy: userId,
     };
 
@@ -188,6 +196,7 @@ export class ExpensesService {
       await this.checkLinks(wedding._id, eventIds, vendorId, session);
       await this.access.raiseWriteFence(wedding._id, session);
       const [expense] = await this.expenses.create([record], { session });
+      await this.files.attach(wedding._id, receiptIds, { kind: 'expense', id }, session);
       return expense;
     });
     if (!created) throw new Error('The expense was not created');
@@ -212,6 +221,8 @@ export class ExpensesService {
     if (!id) throw expenseNotFound();
     const filter = { _id: id, weddingId: wedding._id, ...NOT_DELETED };
     const eventIds = input.eventIds ? distinctIds(input.eventIds) : undefined;
+    const receiptIds = input.receiptAssetIds ? distinctIds(input.receiptAssetIds) : undefined;
+    let removedFiles: string[] = [];
 
     const updated = await this.connection.transaction(async (session) => {
       const expense = await this.expenses.findOne(filter).session(session).lean();
@@ -231,14 +242,26 @@ export class ExpensesService {
         }
       }
       await this.access.raiseWriteFence(wedding._id, session);
+      if (receiptIds) {
+        const owner = { kind: 'expense' as const, id };
+        const kept = new Set((expense.receiptAssetIds ?? []).map((fileId) => fileId.toHexString()));
+        const wanted = new Set(receiptIds.map((fileId) => fileId.toHexString()));
+        const added = receiptIds.filter((fileId) => !kept.has(fileId.toHexString()));
+        const removed = (expense.receiptAssetIds ?? []).filter(
+          (fileId) => !wanted.has(fileId.toHexString()),
+        );
+        await this.files.attach(wedding._id, added, owner, session);
+        removedFiles = await this.files.detach(wedding._id, removed, owner, session);
+      }
       return this.expenses
-        .findOneAndUpdate(filter, this.changeOf(input, eventIds), {
+        .findOneAndUpdate(filter, this.changeOf(input, eventIds, receiptIds), {
           returnDocument: 'after',
           session,
         })
         .lean();
     });
     if (!updated) throw expenseNotFound();
+    await this.files.removeStored(wedding._id, removedFiles);
     return this.toDto(updated, await this.labelsOf(wedding._id, [updated]));
   }
 
@@ -250,7 +273,7 @@ export class ExpensesService {
     input: RecordPaymentDto,
   ): Promise<ExpenseDetailDto> {
     if (input.paidAt > todayIn(EXPENSE_TIME_ZONE)) throw futureDate('paidAt');
-    return this.addEntry(user, weddingId, expenseId, (expense) => {
+    return this.addEntry(user, weddingId, expenseId, input.receiptAssetIds, (expense) => {
       if (input.amountPaise > outstandingOf(expense)) throw paymentTooLarge(outstandingOf(expense));
       return {
         entry: {
@@ -277,7 +300,7 @@ export class ExpensesService {
     input: RecordAdjustmentDto,
   ): Promise<ExpenseDetailDto> {
     if (input.date > todayIn(EXPENSE_TIME_ZONE)) throw futureDate('date');
-    return this.addEntry(user, weddingId, expenseId, (expense) => {
+    return this.addEntry(user, weddingId, expenseId, input.receiptAssetIds, (expense) => {
       if (input.kind === 'discount' && input.amountPaise > outstandingOf(expense)) {
         throw discountTooLarge(outstandingOf(expense));
       }
@@ -305,41 +328,47 @@ export class ExpensesService {
     input: ReverseEntryDto,
   ): Promise<ExpenseDetailDto> {
     const entryId = new Types.ObjectId(input.entryId);
-    return this.addEntry(user, weddingId, expenseId, async (expense, session) => {
-      const original = await this.entries
-        .findOne({ _id: entryId, weddingId: expense.weddingId, expenseId: expense._id })
-        .session(session)
-        .lean();
-      if (!original) throw entryNotFound();
-      if (original.entryType === 'reversal') throw reversalNotReversible();
-      const undone = await this.entries.exists({ reversalOfId: entryId }).session(session);
-      if (undone) throw alreadyReversed();
-      if (
-        original.entryType === 'extra' &&
-        finalOf(expense) - original.amountPaise < expense.paidPaise
-      ) {
-        throw reversalBelowPaid();
-      }
-      return {
-        entry: {
-          entryType: 'reversal',
-          amountPaise: original.amountPaise,
-          paidAt: midnight(todayIn(EXPENSE_TIME_ZONE)),
-          reversalOfId: entryId,
-          ...(input.note ? { note: input.note } : {}),
-        },
-        change: { $inc: { [CACHE[original.entryType]]: -original.amountPaise } },
-      };
-    });
+    return this.addEntry(
+      user,
+      weddingId,
+      expenseId,
+      input.receiptAssetIds,
+      async (expense, session) => {
+        const original = await this.entries
+          .findOne({ _id: entryId, weddingId: expense.weddingId, expenseId: expense._id })
+          .session(session)
+          .lean();
+        if (!original) throw entryNotFound();
+        if (original.entryType === 'reversal') throw reversalNotReversible();
+        const undone = await this.entries.exists({ reversalOfId: entryId }).session(session);
+        if (undone) throw alreadyReversed();
+        if (
+          original.entryType === 'extra' &&
+          finalOf(expense) - original.amountPaise < expense.paidPaise
+        ) {
+          throw reversalBelowPaid();
+        }
+        return {
+          entry: {
+            entryType: 'reversal',
+            amountPaise: original.amountPaise,
+            paidAt: midnight(todayIn(EXPENSE_TIME_ZONE)),
+            reversalOfId: entryId,
+            ...(input.note ? { note: input.note } : {}),
+          },
+          change: { $inc: { [CACHE[original.entryType]]: -original.amountPaise } },
+        };
+      },
+    );
   }
 
   /**
-   * Deletes an expense (owners only, as for events and vendors). It is kept,
+   * Deletes an expense (owners and admins, as for events and vendors). It is kept,
    * with its whole ledger, marked with when and by whom; it leaves the list
    * and the totals, and can no longer be read or changed.
    */
   async remove(user: AuthenticatedUser, weddingId: string, expenseId: string): Promise<void> {
-    const { wedding, userId } = await this.access.require(user, weddingId, ['owner']);
+    const { wedding, userId } = await this.access.require(user, weddingId, ADMIN_ROLES);
     if (wedding.status !== 'active') throw weddingArchived();
     const id = parseObjectId(expenseId);
     if (!id) throw expenseNotFound();
@@ -375,6 +404,7 @@ export class ExpensesService {
     user: AuthenticatedUser,
     weddingId: string,
     expenseId: string,
+    receiptAssetIds: string[] | undefined,
     plan: (
       expense: StoredExpense,
       session: ClientSession,
@@ -393,6 +423,8 @@ export class ExpensesService {
     const id = parseObjectId(expenseId);
     if (!id) throw expenseNotFound();
     const filter = { _id: id, weddingId: wedding._id, ...NOT_DELETED };
+    const entryId = new Types.ObjectId();
+    const receiptIds = distinctIds(receiptAssetIds ?? []);
 
     const updated = await this.connection.transaction(async (session) => {
       const expense = await this.expenses.findOne(filter).session(session).lean();
@@ -401,7 +433,16 @@ export class ExpensesService {
       await this.access.raiseWriteFence(wedding._id, session);
       try {
         await this.entries.create(
-          [{ ...entry, weddingId: wedding._id, expenseId: id, recordedBy: userId }],
+          [
+            {
+              ...entry,
+              _id: entryId,
+              weddingId: wedding._id,
+              expenseId: id,
+              recordedBy: userId,
+              ...(receiptIds.length > 0 ? { receiptAssetIds: receiptIds } : {}),
+            },
+          ],
           { session },
         );
       } catch (error) {
@@ -409,6 +450,12 @@ export class ExpensesService {
         if ((error as { code?: number }).code === 11000) throw alreadyReversed();
         throw error;
       }
+      await this.files.attach(
+        wedding._id,
+        receiptIds,
+        { kind: 'expense_entry', id: entryId },
+        session,
+      );
       return this.expenses
         .findOneAndUpdate(filter, change, { returnDocument: 'after', session })
         .lean();
@@ -433,13 +480,18 @@ export class ExpensesService {
   }
 
   /** The update for an expense's details: left out stays, null clears. */
-  private changeOf(input: UpdateExpenseDto, eventIds?: Types.ObjectId[]): UpdateQuery<Expense> {
+  private changeOf(
+    input: UpdateExpenseDto,
+    eventIds?: Types.ObjectId[],
+    receiptIds?: Types.ObjectId[],
+  ): UpdateQuery<Expense> {
     const set: Partial<Expense> = {};
     const unset: Record<string, 1> = {};
     if (input.title !== undefined) set.title = input.title;
     if (input.category !== undefined) set.category = input.category;
     if (input.amountPaise !== undefined) set.amountPaise = input.amountPaise;
     if (eventIds) set.eventIds = eventIds;
+    if (receiptIds) set.receiptAssetIds = receiptIds;
     if (input.vendorId !== undefined) {
       if (input.vendorId) set.vendorId = new Types.ObjectId(input.vendorId);
       else unset.vendorId = 1;
@@ -455,8 +507,46 @@ export class ExpensesService {
     return { $set: set, ...(Object.keys(unset).length > 0 ? { $unset: unset } : {}) };
   }
 
-  /** Totals over every expense of the wedding, from the cached ledger sums. */
-  private async totalsOf(weddingId: Types.ObjectId): Promise<ExpenseTotalsDto> {
+  /**
+   * The categories with the most recorded (final) spending, largest first,
+   * for the overview (PRD DASH-01). Categories are free text, so the same
+   * word typed in another case counts as one; the spelling used most is
+   * shown. The caller has checked access.
+   */
+  async topCategories(
+    weddingId: Types.ObjectId,
+    limit: number,
+  ): Promise<{ category: string; finalPaise: number; count: number }[]> {
+    const final = { $add: [{ $subtract: ['$amountPaise', '$discountPaise'] }, '$extraPaise'] };
+    return this.expenses.aggregate<{ category: string; finalPaise: number; count: number }>([
+      { $match: { weddingId, ...NOT_DELETED } },
+      {
+        $group: {
+          _id: { key: { $toLower: { $trim: { input: '$category' } } }, spelling: '$category' },
+          finalPaise: { $sum: final },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1, '_id.spelling': 1 } },
+      {
+        $group: {
+          _id: '$_id.key',
+          category: { $first: '$_id.spelling' },
+          finalPaise: { $sum: '$finalPaise' },
+          count: { $sum: '$count' },
+        },
+      },
+      { $sort: { finalPaise: -1, _id: 1 } },
+      { $limit: limit },
+      { $project: { _id: 0, category: 1, finalPaise: 1, count: 1 } },
+    ]);
+  }
+
+  /**
+   * Totals over every expense of the wedding, from the cached ledger sums.
+   * Public for the overview; its caller checks access.
+   */
+  async totalsOf(weddingId: Types.ObjectId): Promise<ExpenseTotalsDto> {
     const today = midnight(todayIn(EXPENSE_TIME_ZONE));
     const final = { $add: [{ $subtract: ['$amountPaise', '$discountPaise'] }, '$extraPaise'] };
     const outstanding = { $max: [0, { $subtract: [final, '$paidPaise'] }] };
@@ -533,17 +623,31 @@ export class ExpensesService {
         .sort({ createdAt: -1, _id: -1 })
         .lean(),
     ]);
-    const names = await this.accounts.displayNames([
-      ...new Map(
-        entries.map((entry) => [entry.recordedBy.toHexString(), entry.recordedBy]),
-      ).values(),
+    const [names, files] = await Promise.all([
+      this.accounts.displayNames([
+        ...new Map(
+          entries.map((entry) => [entry.recordedBy.toHexString(), entry.recordedBy]),
+        ).values(),
+      ]),
+      this.files.filesOf(expense.weddingId, [
+        ...(expense.receiptAssetIds ?? []),
+        ...entries.flatMap((entry) => entry.receiptAssetIds ?? []),
+      ]),
     ]);
+    const receiptsOf = (ids: readonly Types.ObjectId[] | undefined): ExpenseFileDto[] =>
+      (ids ?? []).flatMap((fileId) => {
+        const file = files.get(fileId.toHexString());
+        return file ? [file] : [];
+      });
     const reversed = new Set(
       entries.flatMap((entry) => (entry.reversalOfId ? [entry.reversalOfId.toHexString()] : [])),
     );
     return {
       expense: this.toDto(expense, labels),
-      entries: entries.map((entry) => this.entryDto(entry, names, reversed)),
+      receipts: receiptsOf(expense.receiptAssetIds),
+      entries: entries.map((entry) =>
+        this.entryDto(entry, names, reversed, receiptsOf(entry.receiptAssetIds)),
+      ),
     };
   }
 
@@ -551,6 +655,7 @@ export class ExpensesService {
     entry: StoredEntry,
     names: Map<string, string>,
     reversed: Set<string>,
+    receipts: ExpenseFileDto[],
   ): ExpenseEntryDto {
     const id = entry._id.toHexString();
     const by = entry.recordedBy.toHexString();
@@ -565,6 +670,7 @@ export class ExpensesService {
       recordedBy: { userId: by, ...(name ? { displayName: name } : {}) },
       ...(entry.reversalOfId ? { reversalOfId: entry.reversalOfId.toHexString() } : {}),
       reversed: reversed.has(id),
+      receipts,
       createdAt: entry.createdAt,
     };
   }
@@ -600,6 +706,7 @@ export class ExpensesService {
       overdue: outstandingPaise > 0 && dueDate !== undefined && dueDate < labels.today,
       ...(dueDate ? { dueDate } : {}),
       ...(expense.notes ? { notes: expense.notes } : {}),
+      receiptCount: expense.receiptAssetIds?.length ?? 0,
       createdAt: expense.createdAt,
       updatedAt: expense.updatedAt,
     };

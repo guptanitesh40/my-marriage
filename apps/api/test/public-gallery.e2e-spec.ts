@@ -44,7 +44,8 @@ describe('Public gallery (integration)', () => {
   });
   const anyone = (path: string) => request(server()).get(`/api/v1${path}`);
 
-  async function publishedWedding() {
+  /** A published wedding; its gallery is shown only when `showGallery` (off by default). */
+  async function publishedWedding(showGallery = true) {
     const owner = await signupVerified(app, { displayName: 'Ananya Sharma' });
     const api = as(owner.cookie);
     const tag = Math.random().toString(36).slice(2, 10).replace(/\d/g, 'x');
@@ -66,7 +67,7 @@ describe('Public gallery (integration)', () => {
       .expect(201);
     await api
       .patch(`/weddings/${wedding.id}/website`, {
-        content: { headline: 'Welcome', faq: [] },
+        content: { headline: 'Welcome', faq: [], showGallery },
         contentVersion: 0,
       })
       .expect(200);
@@ -78,7 +79,7 @@ describe('Public gallery (integration)', () => {
       await api.get(`/weddings/${wedding.id}/albums`),
     ).albums;
     const albumId = albums.find((album) => album.title === 'Mehendi')?.id ?? '';
-    return { ...owner, api, weddingId: wedding.id, slug: wedding.slug, albumId };
+    return { ...owner, api, weddingId: wedding.id, slug: wedding.slug, albumId, version: 1 };
   }
 
   async function addPhoto(w: Awaited<ReturnType<typeof publishedWedding>>) {
@@ -157,5 +158,56 @@ describe('Public gallery (integration)', () => {
     expect((await anyone(`/public/weddings/${w.slug}/albums/${w.albumId}/photos`)).status).toBe(
       404,
     );
+  });
+
+  it('shows no photo publicly until the couple turns the gallery on and publishes (decision 0024)', async () => {
+    const w = await publishedWedding(false);
+    const approved = await addPhoto(w);
+    const gallery = () =>
+      anyone(`/public/weddings/${w.slug}/albums`).then(
+        (res) => dataOf<{ albums: unknown[] }>(res).albums,
+      );
+    const image = () => anyone(`/public/weddings/${w.slug}/photos/${approved}/display`);
+
+    // Off by default: no albums, and a guessed photo address finds nothing.
+    expect(await gallery()).toEqual([]);
+    expect((await image()).status).toBe(404);
+    expect((await anyone(`/public/weddings/${w.slug}/albums/${w.albumId}/photos`)).status).toBe(
+      404,
+    );
+
+    // Turned on in the draft only: still nothing public.
+    const draft = dataOf<{ contentVersion: number; content: { showGallery: boolean } }>(
+      await w.api
+        .patch(`/weddings/${w.weddingId}/website`, {
+          content: { showGallery: true },
+          contentVersion: w.version,
+        })
+        .expect(200),
+    );
+    expect(draft.content.showGallery).toBe(true);
+    expect(await gallery()).toEqual([]);
+
+    // Published: shown.
+    await w.api
+      .post(`/weddings/${w.weddingId}/website/publish`, { contentVersion: draft.contentVersion })
+      .expect(200);
+    expect(await gallery()).toHaveLength(1);
+    expect((await image()).status).toBe(200);
+
+    // Turned off and published: gone again, photo files included.
+    const off = dataOf<{ contentVersion: number }>(
+      await w.api
+        .patch(`/weddings/${w.weddingId}/website`, {
+          content: { showGallery: false },
+          contentVersion: draft.contentVersion,
+        })
+        .expect(200),
+    );
+    await w.api
+      .post(`/weddings/${w.weddingId}/website/publish`, { contentVersion: off.contentVersion })
+      .expect(200);
+    expect(await gallery()).toEqual([]);
+    expect((await image()).status).toBe(404);
   });
 });
