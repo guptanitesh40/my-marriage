@@ -307,3 +307,67 @@ test('another wedding’s expenses are simply not found', async ({ page, browser
   expect(direct.status()).toBe(404);
   await otherContext.close();
 });
+
+const PDF = {
+  name: 'Caterer quote.pdf',
+  mimeType: 'application/pdf',
+  buffer: Buffer.from('%PDF-1.7\n'.padEnd(400, ' ')),
+};
+const PNG = {
+  name: 'UPI screenshot.png',
+  mimeType: 'image/png',
+  buffer: Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    Buffer.alloc(400, 7),
+  ]),
+};
+
+for (const viewport of [PHONE, DESKTOP]) {
+  test(`receipts and documents go with an expense and its payments at ${viewport.width}px`, async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    const errors = collectErrors(page);
+    await ownerAtExpenses(page);
+
+    await page.getByRole('button', { name: 'Add your first expense' }).click();
+    const drawer = page.getByRole('dialog', { name: 'Add expense' });
+    await drawer.getByLabel(/^Expense name/).fill('Caterer');
+    await drawer.getByLabel(/^Category/).selectOption('Catering');
+    await drawer.getByLabel(/^Agreed amount/).fill('2,50,000');
+    await drawer.getByLabel(/Upload receipt or document/).setInputFiles(PDF);
+    await expect(drawer.getByText(/^PDF · \d+ KB$/)).toBeVisible();
+    await drawer.getByRole('button', { name: 'Save expense' }).click();
+
+    const details = page.getByRole('dialog', { name: 'Caterer' });
+    const files = details.getByRole('region', { name: 'Receipts & documents' });
+    const quote = details.getByRole('link', { name: /Caterer quote\.pdf/ });
+    await expect(quote).toBeVisible();
+    // A PDF downloads, for members only.
+    const href = (await quote.getAttribute('href')) ?? '';
+    const got = await page.request.get(href);
+    expect(got.status()).toBe(200);
+    expect(got.headers()['content-disposition']).toContain('attachment');
+
+    await details.getByRole('button', { name: 'Record payment' }).click();
+    const dialog = page.getByRole('dialog', { name: 'Record payment' });
+    await dialog.getByLabel(/^Amount paid/).fill('50,000');
+    await dialog.getByLabel(/Upload receipt or document/).setInputFiles(PNG);
+    await expect(dialog.getByText(/^Photo · \d+ KB$/)).toBeVisible();
+    await expectNoHorizontalScroll(page);
+    await expectNoSeriousA11yIssues(page);
+    await testInfo.attach(`payment-receipt-${viewport.width}`, {
+      body: await page.screenshot(),
+      contentType: 'image/png',
+    });
+    await dialog.getByRole('button', { name: 'Record payment' }).click();
+    await expect(dialog).toBeHidden();
+
+    // The payment keeps its own file, in the history.
+    const history = details.getByRole('region', { name: 'Payment history' });
+    await expect(history.getByRole('link', { name: /UPI screenshot\.png/ })).toBeVisible();
+    await expect(files.getByRole('link')).toHaveCount(1);
+    await expectNoHorizontalScroll(page);
+    expect(errors).toEqual([]);
+  });
+}

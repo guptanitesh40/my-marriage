@@ -10,7 +10,13 @@ import { Icon, type IconName } from '@/components/ui/icon';
 import { api } from '@/lib/api/browser';
 import { networkFailure, toFailure } from '@/lib/api/errors';
 import { partOfDay } from '@/lib/events/format';
-import { eventsPath, publicSitePath, websitePreviewPath } from '@/lib/routes';
+import {
+  eventsPath,
+  photosPath,
+  publicSitePath,
+  settingsPath,
+  websitePreviewPath,
+} from '@/lib/routes';
 import { eventDay, eventTime, venueLabel, type Site, type SiteEvent } from '@/lib/website/site';
 import { TEMPLATES, templateLabel, type TemplateId } from '@/lib/website/templates';
 import type { Website } from '@/lib/website/website';
@@ -34,7 +40,14 @@ interface Draft {
   faq: { question: string; answer: string }[];
   /** The cover photo's ID; null when there is none, or it was taken off. */
   coverId: string | null;
+  /** Show the main venue from Settings (decision 0022). */
+  showVenue: boolean;
+  /** Show the approved photos as a gallery; off by default (decision 0024). */
+  showGallery: boolean;
 }
+
+/** The wedding's main venue, as Settings has it. */
+type Venue = NonNullable<Site['mainVenue']>;
 
 function draftOf(website: Website): Draft {
   return {
@@ -43,6 +56,8 @@ function draftOf(website: Website): Draft {
     story: website.content.story ?? '',
     faq: website.content.faq.map((item) => ({ ...item })),
     coverId: website.content.coverImageId ?? null,
+    showVenue: website.content.showVenue,
+    showGallery: website.content.showGallery,
   };
 }
 
@@ -69,10 +84,13 @@ export function WebsiteBuilder({
   weddingId,
   website,
   preview,
+  venue,
 }: {
   weddingId: string;
   website: Website;
   preview: Site;
+  /** The main venue from Settings, when one is set. */
+  venue?: Venue;
 }) {
   const router = useRouter();
   const origin = useOrigin();
@@ -170,8 +188,16 @@ export function WebsiteBuilder({
                     story: next.story.trim() || null,
                     faq,
                     coverImageId: null,
+                    showVenue: next.showVenue,
+                    showGallery: next.showGallery,
                   }
-                : { headline: next.headline.trim() || null, story: next.story.trim() || null, faq },
+                : {
+                    headline: next.headline.trim() || null,
+                    story: next.story.trim() || null,
+                    faq,
+                    showVenue: next.showVenue,
+                    showGallery: next.showGallery,
+                  },
             contentVersion: version,
           },
         });
@@ -322,6 +348,7 @@ export function WebsiteBuilder({
     ...(draft.story.trim() ? { story: draft.story } : { story: undefined }),
     faq: draft.faq.filter((item) => item.question.trim() && item.answer.trim()),
     coverUrl: draft.coverId ? draftCoverPath(weddingId, draft.coverId) : undefined,
+    mainVenue: draft.showVenue && venue ? venue : undefined,
   };
   const shownEvents = preview.events.filter((event) => !event.cancelled);
 
@@ -630,6 +657,20 @@ export function WebsiteBuilder({
                     From your wedding setup, so they read the same everywhere.
                   </p>
                 </div>
+
+                <VenueChoice
+                  weddingId={weddingId}
+                  venue={venue}
+                  checked={draft.showVenue}
+                  onChange={(showVenue) => change({ showVenue })}
+                />
+
+                <GalleryChoice
+                  weddingId={weddingId}
+                  checked={draft.showGallery}
+                  live={website.galleryLive}
+                  onChange={(showGallery) => change({ showGallery })}
+                />
 
                 <div>
                   <div className="mb-1.5 flex items-baseline justify-between gap-3">
@@ -1191,5 +1232,110 @@ function ReadinessRow({ ok, title, detail }: { ok: boolean; title: string; detai
         <span className="block text-body-sm wrap-break-word text-on-surface-variant">{detail}</span>
       </span>
     </li>
+  );
+}
+
+/**
+ * Whether the website shows the main venue from Settings: off until the
+ * couple turns it on, and only shown to guests once published.
+ */
+function VenueChoice({
+  weddingId,
+  venue,
+  checked,
+  onChange,
+}: {
+  weddingId: string;
+  venue: Venue | undefined;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  return (
+    <div>
+      <p className="mb-1.5 text-title-sm font-semibold">Wedding venue & location</p>
+      {venue ? (
+        <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-outline-variant/60 bg-surface-container-lowest px-3.5 py-3 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary-container">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={(event) => onChange(event.target.checked)}
+            className="mt-1 size-4 shrink-0 accent-primary"
+          />
+          <span className="flex min-w-0 flex-col gap-0.5">
+            <span className="text-body-md font-semibold text-on-surface">
+              Show the venue address and map on my website
+            </span>
+            <span className="text-body-sm break-words text-on-surface-variant">
+              {[venue.name, venue.address].filter(Boolean).join(' · ') || 'Map link only'}
+              {venue.mapsUrl && (venue.name || venue.address) ? ' · with a map link' : ''}
+            </span>
+          </span>
+        </label>
+      ) : (
+        <p className="rounded-lg bg-surface-container-low px-3.5 py-3 text-body-sm text-on-surface-variant">
+          No main venue yet.{' '}
+          <Link
+            href={settingsPath(weddingId)}
+            className="font-semibold text-primary hover:underline"
+          >
+            Add it in Settings
+          </Link>{' '}
+          to show its address and map here.
+        </p>
+      )}
+      <p className="mt-1.5 text-body-sm text-on-surface-variant">
+        From your wedding settings. Guests see it once you publish; your team’s description is never
+        shown.
+      </p>
+    </div>
+  );
+}
+
+/**
+ * Whether the website shows the approved photos as a gallery: off until
+ * the couple turns it on (decision 0024), so nobody's photo is public by
+ * default; guests see it only once published.
+ */
+function GalleryChoice({
+  weddingId,
+  checked,
+  live,
+  onChange,
+}: {
+  weddingId: string;
+  checked: boolean;
+  /** What the published website does now. */
+  live: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  return (
+    <div>
+      <p className="mb-1.5 text-title-sm font-semibold">Photo gallery</p>
+      <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-outline-variant/60 bg-surface-container-lowest px-3.5 py-3 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary-container">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(event) => onChange(event.target.checked)}
+          className="mt-1 size-4 shrink-0 accent-primary"
+        />
+        <span className="flex min-w-0 flex-col gap-0.5">
+          <span className="text-body-md font-semibold text-on-surface">
+            Show approved photos on my website
+          </span>
+          <span className="text-body-sm text-on-surface-variant">
+            {live
+              ? 'Your website shows a gallery of the photos you approved.'
+              : 'Off: anyone with your website’s link sees no photos.'}
+          </span>
+        </span>
+      </label>
+      <p className="mt-1.5 text-body-sm text-on-surface-variant">
+        Only photos you approve on the{' '}
+        <Link href={photosPath(weddingId)} className="font-semibold text-primary hover:underline">
+          Photos page
+        </Link>{' '}
+        are ever shown, and only once you publish. Hidden photos never are.
+      </p>
+    </div>
   );
 }

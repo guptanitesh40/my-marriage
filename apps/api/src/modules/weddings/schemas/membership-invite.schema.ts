@@ -1,12 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types, type HydratedDocument } from 'mongoose';
-import { MEMBERSHIP_ROLES, type MembershipRole } from './wedding-membership.schema.js';
+import {
+  MEMBER_LABEL_MAX,
+  MEMBERSHIP_ROLES,
+  type MembershipRole,
+} from './wedding-membership.schema.js';
 
 /**
  * `expired` is never written: a pending invitation past `expiresAt` is
  * expired, which every read checks. Kept for the schema document's enum.
+ * `declined`: the invitee said no; they can be invited again.
  */
-export const INVITE_STATUSES = ['pending', 'accepted', 'revoked', 'expired'] as const;
+export const INVITE_STATUSES = ['pending', 'accepted', 'revoked', 'declined', 'expired'] as const;
 export type InviteStatus = (typeof INVITE_STATUSES)[number];
 
 /**
@@ -55,6 +60,24 @@ export class MembershipInvite {
 
   @Prop({ type: Date })
   revokedAt?: Date;
+
+  @Prop({ type: Types.ObjectId })
+  revokedBy?: Types.ObjectId;
+
+  @Prop({ type: Date })
+  declinedAt?: Date;
+
+  /**
+   * An owner handing over their own place (decision 0025): `invitedBy`, an
+   * owner when it was sent, becomes an admin as the invitee becomes an
+   * owner, in the transaction that accepts it. Only with role `owner`.
+   */
+  @Prop({ type: Boolean })
+  handOver?: boolean;
+
+  /** Becomes the member's label when accepted. */
+  @Prop({ type: String, maxlength: MEMBER_LABEL_MAX })
+  label?: string;
 
   createdAt: Date;
   updatedAt: Date;

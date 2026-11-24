@@ -102,10 +102,11 @@ test('sign up, verify the email, create the wedding, use the dashboard, sign out
   // The dashboard is the wedding's workspace.
   await expect(page).toHaveURL(WORKSPACE);
   const workspace = new URL(page.url()).pathname;
-  await expect(page.getByRole('heading', { level: 1, name: 'Welcome, Priya.' })).toBeVisible();
-  await expect(page.getByRole('main')).toContainText(
-    'Priya & Rahul’s wedding · Udaipur, Rajasthan',
-  );
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Priya & Rahul’s Wedding' }),
+  ).toBeVisible();
+  await expect(page.getByRole('main')).toContainText('Welcome back, Priya.');
+  await expect(page.getByRole('main')).toContainText('Udaipur, Rajasthan');
   await expect(page.getByRole('complementary')).toContainText(email);
   await expectNoSeriousA11yIssues(page);
 

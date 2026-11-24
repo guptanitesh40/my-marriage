@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
 import { Drawer } from '@/components/ui/drawer';
+import { OpenOnArrival } from '@/components/ui/open-on-arrival';
 import { Icon } from '@/components/ui/icon';
 import type { Task } from '@/lib/tasks/filters';
 import { TaskForm, type TaskChoices } from './task-form';
@@ -71,6 +72,7 @@ export function TaskDrawer({
   return (
     <TaskDrawerContext.Provider value={api}>
       {children}
+      <OpenOnArrival open={api.add} />
       <p role="status" className="sr-only">
         {announcement}
       </p>

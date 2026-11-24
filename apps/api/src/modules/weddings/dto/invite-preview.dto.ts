@@ -24,6 +24,12 @@ export class InvitePreviewDto {
   @ApiProperty({ enum: MEMBERSHIP_ROLES })
   role: MembershipRole;
 
+  /**
+   * An owner handing over their place (decision 0025): accepting makes the
+   * invitee an owner and the sender (`invitedByName`) an admin.
+   */
+  handOver: boolean;
+
   @ApiProperty({ enum: ['pending', 'accepted'] })
   status: 'pending' | 'accepted';
 

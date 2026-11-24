@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "inverse-surface": "#32302b", "outline-variant": "#c0c8c4", "on-secondary": "#ffffff", "background": "#fdf9f0", "on-secondary-container": "#785e39", "outline": "#717975", "secondary-fixed-dim": "#e2c195", "surface-container-high": "#ece8df", "secondary-fixed": "#ffddb0", "error": "#ba1a1a", "on-tertiary-container": "#c0cdc9", "primary": "#184539", "secondary-container": "#fddaac", "surface": "#fdf9f0", "primary-fixed-dim": "#a2d0c0", "on-secondary-fixed-variant": "#594320", "on-primary": "#ffffff", "on-error-container": "#93000a", "tertiary-fixed": "#d8e5e1", "on-tertiary": "#ffffff", "surface-tint": "#3b6759", "surface-dim": "#dddad1", "on-surface": "#1c1c16", "on-primary-container": "#a5d4c3", "on-primary-fixed": "#002018", "primary-fixed": "#bdeddb", "tertiary-container": "#4b5854", "surface-container-lowest": "#ffffff", "error-container": "#ffdad6", "on-tertiary-fixed": "#121e1b", "secondary": "#735a35", "tertiary": "#34413d", "surface-variant": "#e6e2d9", "primary-container": "#315d50", "surface-container": "#f2ede4", "surface-container-highest": "#e6e2d9", "on-error": "#ffffff", "surface-bright": "#fdf9f0", "inverse-on-surface": "#f5f0e7", "inverse-primary": "#a2d0c0", "on-tertiary-fixed-variant": "#3d4946", "surface-container-low": "#f7f3ea", "tertiary-fixed-dim": "#bcc9c5", "on-surface-variant": "#404845", "on-primary-fixed-variant": "#224e42", "on-secondary-fixed": "#281800", "on-background": "#1c1c16" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter": "1.5rem", "margin": "2.5rem", "space-xl": "2.25rem", "gutter-mobile": "1rem", "space-lg": "1.5rem", "margin-mobile": "1.25rem" }, "fontFamily": { "display-lg-mobile": [ "Newsreader" ], "headline-sm": [ "Newsreader" ], "body-sm": [ "Manrope" ], "display-lg": [ "Newsreader" ], "title-sm": [ "Manrope" ], "headline-md": [ "Newsreader" ], "label-md": [ "Manrope" ], "title-md": [ "Manrope" ], "headline-lg-mobile": [ "Newsreader" ], "body-md": [ "Manrope" ], "label-sm": [ "Manrope" ], "body-lg": [ "Manrope" ], "headline-lg": [ "Newsreader" ] }, "fontSize": { "display-lg-mobile": [ "2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.015em", "fontWeight": "400" } ], "headline-sm": [ "1.25rem", { "lineHeight": "1.75rem", "fontWeight": "500" } ], "body-sm": [ "0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" } ], "display-lg": [ "3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.025em", "fontWeight": "400" } ], "title-sm": [ "0.9375rem", { "lineHeight": "1.375rem", "fontWeight": "600" } ], "headline-md": [ "1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "label-md": [ "0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" } ], "title-md": [ "1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-lg-mobile": [ "1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "body-md": [ "0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" } ], "label-sm": [ "0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" } ], "body-lg": [ "1.0625rem", { "lineHeight": "1.65rem", "fontWeight": "400" } ], "headline-lg": [ "2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "400" } ] } } } }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-lg flex items-center justify-between bg-surface-container-low shrink-0"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-semibold shadow-sm">M</div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm font-semibold text-primary tracking-tight">My Marriage</span><span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-medium">Wedding Studio</span></div></div><button class="text-on-surface-variant hover:text-on-surface transition-colors p-space-xs rounded-lg hover:bg-surface-container" type="button"><span class="material-symbols-outlined text-[20px]">unfold_more</span></button></div><div class="px-space-md py-space-xs shrink-0"><div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex items-center justify-between"><div class="flex items-center gap-space-sm min-w-0"><div class="w-8 h-8 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0"><span class="material-symbols-outlined text-[18px]">favorite</span></div><div class="min-w-0"><p class="font-title-sm text-title-sm text-on-surface truncate">Ananya &amp; Arjun</p><p class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold truncate">Jaipur 2027</p></div></div><button class="text-on-surface-variant hover:text-on-surface p-space-xs rounded hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">sync_alt</span></button></div></div><div class="flex-1 overflow-y-auto px-space-md py-space-sm"><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary text-on-primary font-title-sm shadow-sm"><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="overview" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">grid_view</span><span class="font-title-sm text-title-sm">Overview</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="events" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">calendar_month</span><span class="font-title-sm text-title-sm">Events</span></div><span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface-variant">5</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="tasks" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">check_circle</span><span class="font-title-sm text-title-sm">Tasks</span></div><span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-error-container text-on-error-container font-semibold">3 due</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="guests-&amp;-rsvp" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">group</span><span class="font-title-sm text-title-sm">Guests &amp; RSVP</span></div><span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-semibold">126</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="expenses-&amp;-budget" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">account_balance_wallet</span><span class="font-title-sm text-title-sm">Expenses &amp; Budget</span></div><span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-semibold">₹2.1L due</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="vendors" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">storefront</span><span class="font-title-sm text-title-sm">Vendors</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="wedding-website" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">language</span><span class="font-title-sm text-title-sm">Wedding Website</span></div><span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary"><span class="w-2 h-2 rounded-full bg-primary"></span>Live</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="photos-&amp;-qr-drive" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">photo_library</span><span class="font-title-sm text-title-sm">Photos &amp; QR Drive</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="team-&amp;-family" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">diversity_1</span><span class="font-title-sm text-title-sm">Team &amp; Family</span></div><span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface-variant font-medium">6</span></a><div class="my-space-xs h-[1px] bg-surface-container-highest"></div><a aria-current="page" class="flex items-center justify-between px-space-sm py-space-xs rounded-lg transition-colors bg-primary text-on-primary font-title-sm shadow-sm" data-path="settings" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-title-sm text-title-sm">Settings</span></div><span class="material-symbols-outlined text-[16px]">chevron_right</span></a></nav></div></div><div class="p-space-md bg-surface-container-low shrink-0 flex flex-col gap-space-sm"><div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between mb-space-xs"><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="material-symbols-outlined text-[16px]">cloud_done</span><span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">Cloud Vault</span></div><span class="font-label-sm text-label-sm text-on-surface font-semibold">1.6 / 5.0 GB</span></div><div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden"><div class="h-full bg-primary rounded-full" style="width: 32%"></div></div></div><div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex items-center justify-between"><div class="flex items-center gap-space-sm min-w-0"><div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="min-w-0"><p class="font-title-sm text-title-sm text-on-surface truncate">Ananya Sharma</p><p class="font-label-sm text-label-sm text-on-surface-variant truncate">Lead Organizer / Bride</p></div></div><button class="text-on-surface-variant hover:text-on-surface p-space-xs rounded hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen bg-surface"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40"><div class="w-full h-16 px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-sm min-w-0"><span class="material-symbols-outlined text-secondary text-[22px] shrink-0">auto_awesome</span><div class="flex items-center gap-space-xs text-on-surface font-title-sm text-title-sm truncate"><span class="font-headline-sm text-headline-sm text-primary font-medium truncate">Ananya &amp; Arjun</span><span class="text-outline-variant font-normal">—</span><span class="text-on-surface-variant font-normal truncate">Jaipur 2027</span></div><button class="inline-flex items-center gap-0.5 px-space-xs py-0.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors text-label-sm font-label-sm" type="button"><span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span></button></div><div class="flex items-center gap-space-md"><div class="relative w-64 md:w-80"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span><input class="w-full h-10 pl-9 pr-space-md bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary shadow-[0_1px_8px_rgba(0,0,0,0.04)]" placeholder="Search settings, events..." type="text"/></div><button class="h-10 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded-lg font-title-sm text-title-sm font-semibold flex items-center gap-space-xs shadow-sm transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>Quick Action</span></button><button aria-label="Notifications" class="relative w-10 h-10 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center justify-center shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-4rem)] flex-1"><div class="flex flex-col w-full">
+<!-- Interactive Prototype States Controller (Pinned Bar) -->
+<div class="w-full bg-surface-container-high px-gutter py-space-sm shadow-sm transition-all duration-300">
+<div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-secondary">tune</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-secondary">M13 Lifecycle Prototype Simulator:</span>
+</div>
+<div class="flex flex-wrap items-center gap-1.5" id="prototype-state-pills">
+<button class="px-space-sm py-1 rounded-full text-label-sm font-label-sm font-semibold transition-all bg-primary text-on-primary shadow-xs" data-state-btn="active-owner" onclick="setAppState('active-owner')" type="button">
+          Active (Owner View)
+        </button>
+<button class="px-space-sm py-1 rounded-full text-label-sm font-label-sm font-semibold transition-all bg-surface-container-lowest text-on-surface-variant hover:text-on-surface" data-state-btn="manager-view" onclick="setAppState('manager-view')" type="button">
+          Manager Role (Restricted)
+        </button>
+<button class="px-space-sm py-1 rounded-full text-label-sm font-label-sm font-semibold transition-all bg-surface-container-lowest text-on-surface-variant hover:text-on-surface" data-state-btn="validation-error" onclick="setAppState('validation-error')" type="button">
+          Validation &amp; Errors
+        </button>
+<button class="px-space-sm py-1 rounded-full text-label-sm font-label-sm font-semibold transition-all bg-surface-container-lowest text-on-surface-variant hover:text-on-surface" data-state-btn="archived-readonly" onclick="setAppState('archived-readonly')" type="button">
+          Archived (Read-Only)
+        </button>
+<button class="px-space-sm py-1 rounded-full text-label-sm font-label-sm font-semibold transition-all bg-secondary-container text-on-secondary-container hover:opacity-90 flex items-center gap-1" onclick="openArchiveModal()" type="button">
+<span class="material-symbols-outlined text-[14px]">archive</span>
+          Open Archive Modal
+        </button>
+<button class="px-space-sm py-1 rounded-full text-label-sm font-label-sm font-semibold transition-all bg-error-container text-on-error-container hover:opacity-90 flex items-center gap-1" onclick="openDeletionModal()" type="button">
+<span class="material-symbols-outlined text-[14px]">delete_forever</span>
+          Request Deletion Dialog
+        </button>
+</div>
+</div>
+</div>
+<!-- Archived Mode Global Notice Banner (Visible in archived state) -->
+<div class="hidden w-full bg-secondary-container text-on-secondary-container px-gutter py-space-md shadow-sm transition-all duration-300" id="archived-global-banner">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-start md:items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-secondary shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[18px]">lock_clock</span>
+</div>
+<div>
+<p class="font-title-sm text-title-sm font-semibold text-on-surface">Archived Wedding — View Only Workspace</p>
+<p class="font-body-sm text-body-sm text-on-secondary-container">Planning edits, guest RSVPs, and photo uploads were closed on 20 Feb 2027. All historical records, vendor invoices, and memories remain preserved.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="px-space-sm py-1.5 rounded-lg bg-surface-container-lowest text-on-surface text-label-md font-label-md font-semibold hover:bg-surface-container transition-colors shadow-xs" type="button">
+          Unpublish Website
+        </button>
+<button class="px-space-sm py-1.5 rounded-lg bg-primary text-on-primary text-label-md font-label-md font-semibold hover:bg-primary-container transition-colors shadow-xs" type="button">
+          Public Photo Visibility
+        </button>
+</div>
+</div>
+</div>
+<!-- Role Notice Banner (Visible in Manager View) -->
+<div class="hidden w-full bg-surface-container-low px-gutter py-space-sm shadow-xs transition-all duration-300" id="manager-global-banner">
+<div class="max-w-7xl mx-auto flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">shield_person</span>
+<span>You are currently managing this wedding as <strong class="text-on-surface font-semibold">Wedding Manager (Arjun Verma)</strong>. Core wedding details can be edited; lifecycle transitions (Archiving &amp; Workspace Deletion) require authorization by the Primary Owner (<strong class="text-on-surface">Ananya Sharma</strong>).</span>
+</div>
+</div>
+<!-- Main Content Layout Container -->
+<div class="w-full px-margin-mobile md:px-margin py-space-xl max-w-7xl mx-auto flex flex-col gap-space-xl">
+<!-- Page Header (Editorial & Functional) -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex flex-wrap items-center gap-space-sm mb-space-xs">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm font-semibold bg-surface-container-lowest text-primary shadow-xs" id="lifecycle-status-pill">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            Active Wedding
+          </span>
+<span class="font-label-sm text-label-sm px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant tracking-wider uppercase font-semibold">
+            Workspace ID: #MM-JAIPUR-2027
+          </span>
+<span class="font-label-sm text-label-sm text-outline">Created Oct 2026</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-normal text-on-surface tracking-tight">Wedding Settings</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Keep your primary celebration details synchronized across guest invitations, vendor sheets, and manage workspace lifecycle milestones.
+        </p>
+</div>
+<!-- Action status & Quick navigation link -->
+<div class="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-space-xs shrink-0">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">cloud_done</span>
+<span>Last saved by <span class="font-semibold text-on-surface">Ananya Mehta</span> · 10 Feb 2027, 4:15 PM</span>
+</div>
+<a class="font-title-sm text-title-sm text-primary hover:text-primary-container transition-colors flex items-center gap-1 group" href="#wedding-lifecycle-section">
+<span>Jump to Archiving &amp; Lifecycle</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-y-0.5 transition-transform">arrow_downward</span>
+</a>
+</div>
+</div>
+<!-- SECTION 1: Wedding Information Card -->
+<div class="w-full bg-surface-container-lowest rounded-xl shadow-xs overflow-hidden transition-all duration-300">
+<div class="p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md bg-surface-container-low/40">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">celebration</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">General Information</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Core celebration details displayed across your organizer workspace. Ceremony-specific timings and addresses are maintained in Events.
+          </p>
+</div>
+<a class="inline-flex items-center gap-1 font-title-sm text-title-sm text-primary hover:text-primary-container font-semibold transition-colors shrink-0" href="#">
+<span>Manage ceremony schedules in Events</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+<!-- General Info Form Body -->
+<form class="p-space-lg flex flex-col gap-space-xl" id="wedding-general-form" onsubmit="event.preventDefault(); showSavedToast();">
+<!-- Derived Display Title Callout -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-secondary shadow-xs">
+<span class="material-symbols-outlined text-[22px]">auto_awesome</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Derived Wedding Display Title</span>
+<p class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="derived-title-display">Ananya &amp; Arjun's Wedding</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm px- space-sm py-1 rounded bg-surface-container-highest text-on-surface-variant font-medium self-start sm:self-auto">
+            Auto-derived from couple names
+          </span>
+</div>
+<!-- 2-Column Responsive Form Fields -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-space-lg gap-y-space-md">
+<!-- Bride Name -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="bride-name">
+                Bride's Name <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-outline">Partner 1</span>
+</div>
+<div class="relative">
+<input class="w-full h-11 px-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors" id="bride-name" oninput="updateDerivedTitle()" placeholder="e.g. Ananya" required="" type="text" value="Ananya"/>
+</div>
+<p class="hidden font-body-sm text-body-sm text-error flex items-center gap-1 mt-0.5" id="bride-name-error">
+<span class="material-symbols-outlined text-[16px]">error</span>
+              Bride name cannot be empty.
+            </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Shown first in official invitation templates and heading metadata.</p>
+</div>
+<!-- Groom Name -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="groom-name">
+                Groom's Name <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-outline">Partner 2</span>
+</div>
+<div class="relative">
+<input class="w-full h-11 px-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors" id="groom-name" oninput="updateDerivedTitle()" placeholder="e.g. Arjun" required="" type="text" value="Arjun"/>
+</div>
+<p class="hidden font-body-sm text-body-sm text-error flex items-center gap-1 mt-0.5" id="groom-name-error">
+<span class="material-symbols-outlined text-[16px]">error</span>
+              Groom name cannot be empty.
+            </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Used to compose guest communication envelopes and RSVP greetings.</p>
+</div>
+<!-- City -->
+<div class="flex flex-col gap-1.5">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="wedding-city">
+              Host City <span class="text-error">*</span>
+</label>
+<input class="w-full h-11 px-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors" id="wedding-city" placeholder="e.g. Jaipur" required="" type="text" value="Jaipur"/>
+<p class="hidden font-body-sm text-body-sm text-error flex items-center gap-1 mt-0.5" id="wedding-city-error">
+<span class="material-symbols-outlined text-[16px]">error</span>
+              Host city is mandatory for accommodation logistics.
+            </p>
+</div>
+<!-- State / Region -->
+<div class="flex flex-col gap-1.5">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="wedding-state">
+              State / Province
+            </label>
+<input class="w-full h-11 px-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors" id="wedding-state" placeholder="e.g. Rajasthan" type="text" value="Rajasthan"/>
+</div>
+<!-- Main Wedding Date -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="wedding-date">
+                Main Wedding Date <span class="text-outline font-normal">(Optional)</span>
+</label>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Primary Muhurat</span>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">calendar_today</span>
+<input class="w-full h-11 pl-11 pr-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors" id="wedding-date" placeholder="Select auspicious date" type="text" value="14 February 2027"/>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Primary auspicious date; individual ceremonies like Haldi, Mehendi, or Sangeet have their own dates in Events.</p>
+</div>
+<!-- Main Venue Name -->
+<div class="flex flex-col gap-1.5">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="venue-name">
+              Main Venue Name <span class="text-outline font-normal">(Optional)</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">domain</span>
+<input class="w-full h-11 pl-11 pr-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors" id="venue-name" placeholder="e.g. The Oberoi Rajvilas" type="text" value="The Oberoi Rajvilas"/>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Anchor venue referenced in top-level itineraries and lodging assignments.</p>
+</div>
+<!-- Venue Address (Spans 2 columns on desktop) -->
+<div class="flex flex-col gap-1.5 md:col-span-2">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="venue-address">
+              Physical Venue Address
+            </label>
+<textarea class="w-full p-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors resize-none" id="venue-address" placeholder="Full street address and landmarks" rows="2">Babaji Ka Mod, Goner Rd, Jaipur, Rajasthan 302031</textarea>
+</div>
+<!-- Venue Map & Directions URL (Spans 2 cols) -->
+<div class="flex flex-col gap-1.5 md:col-span-2">
+<div class="flex items-center justify-between">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="venue-map-url">
+                Venue Map &amp; Navigation Directions URL
+              </label>
+<a class="font-label-sm text-label-sm text-primary hover:text-primary-container inline-flex items-center gap-0.5 font-semibold" href="https://maps.google.com/?q=Oberoi+Rajvilas+Jaipur" id="test-map-link" rel="noopener" target="_blank">
+<span>Test navigation link</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">location_on</span>
+<input class="w-full h-11 pl-11 pr-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors" id="venue-map-url" placeholder="https://maps.google.com/..." type="url" value="https://maps.google.com/?q=Oberoi+Rajvilas+Jaipur"/>
+</div>
+<p class="hidden font-body-sm text-body-sm text-error flex items-center gap-1 mt-0.5" id="venue-map-error">
+<span class="material-symbols-outlined text-[16px]">error</span>
+              Please provide a valid URL beginning with http:// or https://
+            </p>
+</div>
+<!-- Wedding Description / Notes -->
+<div class="flex flex-col gap-1.5 md:col-span-2">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="wedding-notes">
+              Wedding Description &amp; Welcome Note
+            </label>
+<textarea class="w-full p-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors" id="wedding-notes" placeholder="Short intro shared across guest portal and team briefings..." rows="3">A three-day traditional royal celebration bringing together our families and cherished friends in the heart of Rajasthan.</textarea>
+<span class="font-label-sm text-label-sm text-outline self-end">112 / 500 characters</span>
+</div>
+<!-- Cover Image Module (Spans 2 cols) -->
+<div class="flex flex-col gap-space-sm md:col-span-2 pt-space-xs">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface">
+              Wedding Cover Image &amp; Brand Visual
+            </label>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Warm editorial photographic shot of a heritage royal Rajasthani palace courtyard in Jaipur with sandstone arches, gentle ambient morning sunlight, marigold floral decorations, warm cream ivory tones, peaceful elegance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQigMpSMkvZr5w445tXcAugbu_dqU_Fz7MdEbIu9kT2fqIxK8-PKJffrzK40kB2luZbEKrLHDup55uyiT4T7oLy6jjDW-0G_pJBKbGAWWFZuZm1j9USo0yGhSiD2k6hPu5bdJl9f-OjmUtkqdg_eIiGlRIAFmsUx7ZSRoevdUW28ZhvpqkIPIM_Ksy6nCwiVmL77CWBqXvdVJWO3hIfns27IQ9z6OTgKE7M6nMgps"/>
+<div class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-surface/90 backdrop-blur-sm text-[10px] font-label-sm uppercase font-semibold text-on-surface tracking-wider">
+                    Current
+                  </div>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-title-sm text-title-sm text-on-surface font-semibold truncate">jaipur_rajvilas_courtyard_primary.jpg</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Recommended 1920 × 1080 px · JPG or WebP (max 8MB)</p>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span>Encrypted private media storage</span>
+</div>
+</div>
+</div>
+<!-- Action buttons -->
+<div class="flex items-center gap-space-xs shrink-0 self-end sm:self-center">
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-lg font-title-sm text-title-sm font-semibold shadow-xs transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px]">upload</span>
+<span>Change cover</span>
+</button>
+<button class="h-9 px-space-sm text-error hover:bg-error-container/30 rounded-lg font-title-sm text-title-sm font-medium transition-colors" title="Remove current cover" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Form Actions Footer -->
+<div class="pt-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-md bg-surface-container-lowest">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+<span id="save-status-indicator">All workspace changes are up to date</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="h-10 px-space-md rounded-lg font-title-sm text-title-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" onclick="resetFormToSaved()" type="button">
+              Discard
+            </button>
+<button class="h-10 px-space-lg bg-primary hover:bg-primary-container text-on-primary rounded-lg font-title-sm text-title-sm font-semibold shadow-xs transition-colors flex items-center gap-2" id="save-form-btn" type="submit">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>Save changes</span>
+</button>
+</div>
+</div>
+</form>
+</div>
+<!-- SECTION 2: Connected Modules & Public Touchpoints Card (Read-Only shortcuts) -->
+<div class="w-full flex flex-col gap-space-md">
+<div class="flex flex-col gap-0.5">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Website &amp; Memories Connectivity</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Your wedding workspace synchronizes real-time status with published guest touchpoints. Direct edits to templates, RSVPs, and live photo streams take place in their dedicated studios.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Touchpoint Card 1: Website -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-xs flex flex-col justify-between gap-space-lg transition-transform hover:-translate-y-0.5 duration-200">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">language</span>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-surface-container-high text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                Published &amp; Live
+              </span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="font-title-md text-title-md font-semibold text-on-surface">Public Wedding Website</p>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm font-mono bg-surface-container-low px-2 py-1 rounded max-w-fit">
+<span class="material-symbols-outlined text-[14px]">link</span>
+<span>my-marriage.com/ananya-arjun</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Hosts full multi-day itinerary, digital RSVPs, accommodation guides, and dress codes for confirmed guests.
+              </p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<a class="font-title-sm text-title-sm text-primary hover:text-primary-container font-semibold flex items-center gap-1" href="#">
+<span>Manage in Website Builder</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-on-secondary-container font-semibold flex items-center gap-0.5" href="#">
+<span>Open live site</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</a>
+</div>
+</div>
+<!-- Touchpoint Card 2: Memories & QR Cloud -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-xs flex flex-col justify-between gap-space-lg transition-transform hover:-translate-y-0.5 duration-200">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">photo_library</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-secondary-container text-on-secondary-container">
+                Active · 1.6 / 5.0 GB
+              </span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="font-title-md text-title-md font-semibold text-on-surface">Guest Photos &amp; QR Cloud Vault</p>
+<p class="font-body-sm text-body-sm text-on-surface font-semibold">
+                214 approved memories live · 27 pending moderation
+              </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Live reception table QR codes permit attendees to upload uncompressed RAW and video moments directly to your vault.
+              </p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<a class="font-title-sm text-title-sm text-primary hover:text-primary-container font-semibold flex items-center gap-1" href="#">
+<span>Manage Photos &amp; QR Drive</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<span class="font-label-sm text-label-sm text-outline">PIN Protected</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3: Wedding Lifecycle & Archiving Card -->
+<div class="w-full bg-surface-container-lowest rounded-xl shadow-xs overflow-hidden" id="wedding-lifecycle-section">
+<div class="p-space-lg flex flex-col gap-space-xs bg-surface-container-low/40">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[22px]">history_edu</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Wedding Lifecycle</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Distinguish between temporary planning pauses, post-event archiving, and permanent workspace deletion.
+        </p>
+</div>
+<div class="p-space-lg flex flex-col gap-space-lg">
+<!-- Explanatory Governance Banner -->
+<div class="p-space-md rounded-xl bg-secondary-container/40 flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5 shrink-0">info</span>
+<div class="flex flex-col gap-0.5 font-body-sm text-body-sm text-on-surface">
+<p class="font-semibold text-secondary">Platform Archiving &amp; Ownership Policy</p>
+<p class="text-on-surface-variant">
+              Archiving releases your active-owned-wedding limit on your subscription while permanently retaining all guest lists, vendor contracts, settled expenses, and photo archives in read-only mode. You can revisit your wedding anytime.
+            </p>
+</div>
+</div>
+<!-- Archive Action Box -->
+<div class="p-space-lg rounded-xl bg-surface-container-low flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
+<div class="flex flex-col gap-1 max-w-2xl">
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface">Archive this wedding</h3>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-semibold">
+                Owner Action Only
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Close active planning, RSVP submissions, and live guest photo uploads. Your existing records and published wedding website remain intact for historical viewing. Owners can subsequently create a new active wedding workspace.
+            </p>
+</div>
+<!-- Archive Trigger (Conditioned by Role in prototype) -->
+<div class="shrink-0" id="archive-action-slot">
+<button class="h-10 px-space-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-lg font-title-sm text-title-sm font-semibold shadow-xs transition-colors flex items-center gap-2" onclick="openArchiveModal()" type="button">
+<span class="material-symbols-outlined text-secondary text-[18px]">inventory_2</span>
+<span>Archive wedding</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 4: Danger Zone (Permanent Deletion Request) -->
+<div class="w-full bg-surface-container-lowest rounded-xl shadow-xs overflow-hidden">
+<div class="p-space-lg flex flex-col gap-space-xs bg-error-container/20">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-error text-[22px]">warning</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Danger Zone — Permanent Deletion</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Administrative procedures for irreversible workspace decommissioning.
+        </p>
+</div>
+<div class="p-space-lg flex flex-col gap-space-lg">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
+<div class="flex flex-col gap-1.5 max-w-2xl">
+<p class="font-title-sm text-title-sm font-semibold text-on-surface">Request Permanent Workspace Deletion</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Submitting a deletion request initiates the permanent removal of this wedding workspace, collaborator access, guest records, and photo vaults under platform retention governance. Deletion is a separate administrative workflow and is irreversible once confirmed.
+            </p>
+<div class="flex items-center gap-1.5 text-secondary font-body-sm text-body-sm font-medium mt-1">
+<span class="material-symbols-outlined text-[16px]">help_outline</span>
+<span>Looking to keep records safe without accepting new RSVPs? Use <a class="underline font-semibold hover:text-on-surface" href="#wedding-lifecycle-section">Archive</a> instead.</span>
+</div>
+</div>
+<!-- Deletion CTA (Owner only) -->
+<div class="shrink-0" id="deletion-action-slot">
+<button class="h-10 px-space-lg bg-surface-container-lowest hover:bg-error-container/30 text-error rounded-lg font-title-sm text-title-sm font-semibold shadow-xs transition-colors flex items-center gap-2" onclick="openDeletionModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">delete_forever</span>
+<span>Request permanent deletion</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MODAL 1: Archive Confirmation Dialog -->
+<div class="fixed inset-0 z-50 hidden flex items-center justify-center p-space-md bg-inverse-surface/40 backdrop-blur-sm transition-all duration-300" id="archive-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
+<!-- Modal Header -->
+<div class="p-space-lg bg-surface-container-low flex items-start justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">archive</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Archive Ananya &amp; Arjun's Wedding?</h3>
+<p class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Workspace #MM-JAIPUR-2027</p>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded-lg hover:bg-surface-container transition-colors" onclick="closeArchiveModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-space-lg flex flex-col gap-space-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Please review what will happen when this wedding transitions into the permanent archive:
+        </p>
+<!-- Checklist of effects -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-xs font-body-sm text-body-sm text-on-surface">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Planning workspace switches to <strong>view-only</strong> (no new tasks, expenses, or event edits).</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Guest RSVP responses and direct photo drive uploads are immediately closed.</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Historical records remain accessible to your designated planning team.</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Published wedding website remains live unless explicitly unpublished.</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Releases your single-active-wedding ownership slot on your account.</span>
+</div>
+</div>
+<!-- Confirmation Prompt -->
+<div class="flex flex-col gap-1.5 pt-space-xs">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="archive-confirm-input">
+            To proceed, type <span class="font-mono text-primary font-bold">ARCHIVE</span> below:
+          </label>
+<input class="h-10 px-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary shadow-xs" id="archive-confirm-input" oninput="checkArchiveInput()" placeholder="Type ARCHIVE" type="text"/>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-end gap-space-sm">
+<button class="h-10 px-space-md rounded-lg font-title-sm text-title-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" onclick="closeArchiveModal()" type="button">
+          Keep wedding active
+        </button>
+<button class="h-10 px-space-lg rounded-lg font-title-sm text-title-sm font-semibold transition-all bg-surface-container-highest text-outline cursor-not-allowed" disabled="" id="confirm-archive-btn" onclick="executeArchive()" type="button">
+          Archive wedding
+        </button>
+</div>
+</div>
+</div>
+<!-- MODAL 2: Deletion Request Dialog -->
+<div class="fixed inset-0 z-50 hidden flex items-center justify-center p-space-md bg-inverse-surface/40 backdrop-blur-sm transition-all duration-300" id="deletion-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
+<!-- Modal Header -->
+<div class="p-space-lg bg-error-container/30 flex items-start justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-error text-on-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">delete_forever</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Request Workspace Deletion</h3>
+<p class="font-label-sm text-label-sm text-error font-semibold">Irreversible Platform Governance Action</p>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded-lg hover:bg-surface-container transition-colors" onclick="closeDeletionModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-space-lg flex flex-col gap-space-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Submitting this administrative request schedules this wedding workspace for permanent decommissioning:
+        </p>
+<div class="p-space-md rounded-xl bg-error-container/20 flex flex-col gap-space-xs font-body-sm text-body-sm text-on-surface">
+<p class="font-semibold text-on-error-container">Critical Consequences:</p>
+<ul class="list-disc pl-5 space-y-1 text-on-surface-variant">
+<li>All member and vendor invitations are permanently revoked.</li>
+<li>Stored guest registries, RSVPs, dietary restrictions, and contacts will be wiped.</li>
+<li>All high-resolution guest photos in Cloud Vault will be deleted according to platform data lifecycle policies.</li>
+<li>Your public wedding site (my-marriage.com/ananya-arjun) will go offline immediately.</li>
+</ul>
+</div>
+<p class="font-body-sm text-body-sm text-outline">
+          Our security team will review and process the ownership request within the administrative compliance window.
+        </p>
+<!-- Confirmation Prompt -->
+<div class="flex flex-col gap-1.5 pt-space-xs">
+<label class="font-title-sm text-title-sm font-semibold text-on-surface" for="deletion-confirm-input">
+            Type <span class="font-mono text-error font-bold">DELETE-PERMANENTLY</span> to verify:
+          </label>
+<input class="h-10 px-space-md bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-error shadow-xs" id="deletion-confirm-input" oninput="checkDeletionInput()" placeholder="Type DELETE-PERMANENTLY" type="text"/>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-end gap-space-sm">
+<button class="h-10 px-space-md rounded-lg font-title-sm text-title-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" onclick="closeDeletionModal()" type="button">
+          Cancel request
+        </button>
+<button class="h-10 px-space-lg rounded-lg font-title-sm text-title-sm font-semibold transition-all bg-surface-container-highest text-outline cursor-not-allowed" disabled="" id="confirm-deletion-btn" onclick="executeDeletionRequest()" type="button">
+          Submit Deletion Request
+        </button>
+</div>
+</div>
+</div>
+<!-- Toast Notification Overlay -->
+<div class="fixed bottom-6 right-6 z-50 hidden transition-all duration-300" id="toast-notification">
+<div class="bg-inverse-surface text-inverse-on-surface px-space-lg py-space-sm rounded-xl shadow-xl flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[20px]">check_circle</span>
+<span class="font-body-sm text-body-sm font-medium" id="toast-message">Wedding details saved successfully.</span>
+</div>
+</div>
+</div>
+<!-- Vanilla Interactive Prototype Logic -->
+<script>
+  let currentPrototypeState = 'active-owner';
+
+  function updateDerivedTitle() {
+    const bride = document.getElementById('bride-name').value.trim() || 'Bride';
+    const groom = document.getElementById('groom-name').value.trim() || 'Groom';
+    document.getElementById('derived-title-display').textContent = `${bride} & ${groom}'s Wedding`;
+  }
+
+  function setAppState(state) {
+    currentPrototypeState = state;
+    
+    // Update active pill in prototype bar
+    document.querySelectorAll('[data-state-btn]').forEach(btn => {
+      if (btn.getAttribute('data-state-btn') === state) {
+        btn.className = 'px-space-sm py-1 rounded-full text-label-sm font-label-sm font-semibold transition-all bg-primary text-on-primary shadow-xs';
+      } else {
+        btn.className = 'px-space-sm py-1 rounded-full text-label-sm font-label-sm font-semibold transition-all bg-surface-container-lowest text-on-surface-variant hover:text-on-surface';
+      }
+    });
+
+    const bannerArchived = document.getElementById('archived-global-banner');
+    const bannerManager = document.getElementById('manager-global-banner');
+    const lifecyclePill = document.getElementById('lifecycle-status-pill');
+    const formInputs = document.querySelectorAll('#wedding-general-form input, #wedding-general-form textarea');
+    const saveBtn = document.getElementById('save-form-btn');
+    const archiveSlot = document.getElementById('archive-action-slot');
+    const deletionSlot = document.getElementById('deletion-action-slot');
+
+    // Reset error styles first
+    hideErrors();
+
+    // State 1: Active (Owner View)
+    if (state === 'active-owner') {
+      bannerArchived.classList.add('hidden');
+      bannerManager.classList.add('hidden');
+      lifecyclePill.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm font-semibold bg-surface-container-lowest text-primary shadow-xs';
+      lifecyclePill.innerHTML = '<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Active Wedding';
+      
+      formInputs.forEach(i => i.removeAttribute('disabled'));
+      saveBtn.removeAttribute('disabled');
+      saveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+      archiveSlot.innerHTML = `
+        <button type="button" onclick="openArchiveModal()" class="h-10 px-space-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-lg font-title-sm text-title-sm font-semibold shadow-xs transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-secondary text-[18px]">inventory_2</span>
+          <span>Archive wedding</span>
+        </button>
+      `;
+
+      deletionSlot.innerHTML = `
+        <button type="button" onclick="openDeletionModal()" class="h-10 px-space-lg bg-surface-container-lowest hover:bg-error-container/30 text-error rounded-lg font-title-sm text-title-sm font-semibold shadow-xs transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">delete_forever</span>
+          <span>Request permanent deletion</span>
+        </button>
+      `;
+    }
+
+    // State 2: Manager Role (Restricted)
+    if (state === 'manager-view') {
+      bannerArchived.classList.add('hidden');
+      bannerManager.classList.remove('hidden');
+      lifecyclePill.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm font-semibold bg-surface-container-lowest text-primary shadow-xs';
+      lifecyclePill.innerHTML = '<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Active Wedding';
+
+      // Manager CAN edit general details
+      formInputs.forEach(i => i.removeAttribute('disabled'));
+      saveBtn.removeAttribute('disabled');
+      saveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+      // But lifecycle actions are restricted
+      archiveSlot.innerHTML = `
+        <div class="px-space-md py-space-xs rounded-lg bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px] text-outline">lock</span>
+          <span>Owner authorization required to archive</span>
+        </div>
+      `;
+
+      deletionSlot.innerHTML = `
+        <div class="px-space-md py-space-xs rounded-lg bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px] text-outline">lock</span>
+          <span>Only Primary Owner can request deletion</span>
+        </div>
+      `;
+    }
+
+    // State 3: Validation & Errors
+    if (state === 'validation-error') {
+      bannerArchived.classList.add('hidden');
+      bannerManager.classList.add('hidden');
+      showValidationErrors();
+    }
+
+    // State 4: Archived (Read-Only)
+    if (state === 'archived-readonly') {
+      bannerArchived.classList.remove('hidden');
+      bannerManager.classList.add('hidden');
+      lifecyclePill.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm font-semibold bg-secondary-container text-on-secondary-container shadow-xs';
+      lifecyclePill.innerHTML = '<span class="material-symbols-outlined text-[14px]">archive</span> Archived Wedding (Read-Only)';
+
+      // Disable inputs
+      formInputs.forEach(i => i.setAttribute('disabled', 'true'));
+      saveBtn.setAttribute('disabled', 'true');
+      saveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+      archiveSlot.innerHTML = `
+        <div class="px-space-md py-space-xs rounded-lg bg-surface-container-lowest text-secondary font-label-sm text-label-sm font-semibold flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">lock</span>
+          <span>Archived on 20 Feb 2027</span>
+        </div>
+      `;
+
+      deletionSlot.innerHTML = `
+        <button type="button" onclick="openDeletionModal()" class="h-10 px-space-lg bg-surface-container-lowest hover:bg-error-container/30 text-error rounded-lg font-title-sm text-title-sm font-semibold shadow-xs transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">delete_forever</span>
+          <span>Request permanent deletion</span>
+        </button>
+      `;
+    }
+  }
+
+  function showValidationErrors() {
+    document.getElementById('bride-name').value = '';
+    document.getElementById('bride-name-error').classList.remove('hidden');
+    document.getElementById('groom-name').value = '';
+    document.getElementById('groom-name-error').classList.remove('hidden');
+    document.getElementById('wedding-city').value = '';
+    document.getElementById('wedding-city-error').classList.remove('hidden');
+    document.getElementById('venue-map-url').value = 'not-a-valid-url';
+    document.getElementById('venue-map-error').classList.remove('hidden');
+
+    updateDerivedTitle();
+    triggerToast('Form has 4 input errors requiring resolution.');
+  }
+
+  function hideErrors() {
+    document.getElementById('bride-name-error').classList.add('hidden');
+    document.getElementById('groom-name-error').classList.add('hidden');
+    document.getElementById('wedding-city-error').classList.add('hidden');
+    document.getElementById('venue-map-error').classList.add('hidden');
+
+    // Restore standard values if cleared
+    if (!document.getElementById('bride-name').value) document.getElementById('bride-name').value = 'Ananya';
+    if (!document.getElementById('groom-name').value) document.getElementById('groom-name').value = 'Arjun';
+    if (!document.getElementById('wedding-city').value) document.getElementById('wedding-city').value = 'Jaipur';
+    if (document.getElementById('venue-map-url').value === 'not-a-valid-url') {
+      document.getElementById('venue-map-url').value = 'https://maps.google.com/?q=Oberoi+Rajvilas+Jaipur';
+    }
+    updateDerivedTitle();
+  }
+
+  function resetFormToSaved() {
+    document.getElementById('bride-name').value = 'Ananya';
+    document.getElementById('groom-name').value = 'Arjun';
+    document.getElementById('wedding-city').value = 'Jaipur';
+    document.getElementById('wedding-state').value = 'Rajasthan';
+    document.getElementById('wedding-date').value = '14 February 2027';
+    document.getElementById('venue-name').value = 'The Oberoi Rajvilas';
+    document.getElementById('venue-address').value = 'Babaji Ka Mod, Goner Rd, Jaipur, Rajasthan 302031';
+    document.getElementById('venue-map-url').value = 'https://maps.google.com/?q=Oberoi+Rajvilas+Jaipur';
+    document.getElementById('wedding-notes').value = 'A three-day traditional royal celebration bringing together our families and cherished friends in the heart of Rajasthan.';
+    hideErrors();
+    triggerToast('Form restored to last saved state.');
+  }
+
+  function showSavedToast() {
+    triggerToast('All wedding details updated successfully.');
+  }
+
+  function triggerToast(msg) {
+    const toast = document.getElementById('toast-notification');
+    document.getElementById('toast-message').textContent = msg;
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 3800);
+  }
+
+  // Archive Modal Logic
+  function openArchiveModal() {
+    document.getElementById('archive-modal').classList.remove('hidden');
+    document.getElementById('archive-confirm-input').value = '';
+    checkArchiveInput();
+  }
+  function closeArchiveModal() {
+    document.getElementById('archive-modal').classList.add('hidden');
+  }
+  function checkArchiveInput() {
+    const val = document.getElementById('archive-confirm-input').value.trim();
+    const btn = document.getElementById('confirm-archive-btn');
+    if (val === 'ARCHIVE') {
+      btn.removeAttribute('disabled');
+      btn.className = 'h-10 px-space-lg rounded-lg font-title-sm text-title-sm font-semibold transition-all bg-primary hover:bg-primary-container text-on-primary shadow-xs cursor-pointer';
+    } else {
+      btn.setAttribute('disabled', 'true');
+      btn.className = 'h-10 px-space-lg rounded-lg font-title-sm text-title-sm font-semibold transition-all bg-surface-container-highest text-outline cursor-not-allowed';
+    }
+  }
+  function executeArchive() {
+    closeArchiveModal();
+    setAppState('archived-readonly');
+    triggerToast('Wedding archived. Planning workspace is now view-only.');
+  }
+
+  // Deletion Modal Logic
+  function openDeletionModal() {
+    document.getElementById('deletion-modal').classList.remove('hidden');
+    document.getElementById('deletion-confirm-input').value = '';
+    checkDeletionInput();
+  }
+  function closeDeletionModal() {
+    document.getElementById('deletion-modal').classList.add('hidden');
+  }
+  function checkDeletionInput() {
+    const val = document.getElementById('deletion-confirm-input').value.trim();
+    const btn = document.getElementById('confirm-deletion-btn');
+    if (val === 'DELETE-PERMANENTLY') {
+      btn.removeAttribute('disabled');
+      btn.className = 'h-10 px-space-lg rounded-lg font-title-sm text-title-sm font-semibold transition-all bg-error hover:bg-error/90 text-on-error shadow-xs cursor-pointer';
+    } else {
+      btn.setAttribute('disabled', 'true');
+      btn.className = 'h-10 px-space-lg rounded-lg font-title-sm text-title-sm font-semibold transition-all bg-surface-container-highest text-outline cursor-not-allowed';
+    }
+  }
+  function executeDeletionRequest() {
+    closeDeletionModal();
+    triggerToast('Administrative deletion request received. Notification dispatched to Primary Owner.');
+  }
+</script></main></div></body></html>

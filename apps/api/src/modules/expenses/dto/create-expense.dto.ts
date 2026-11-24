@@ -2,8 +2,8 @@ import { OptionalTextBlockField } from '../../events/dto/fields.js';
 import { OptionalIdField } from '../../tasks/dto/fields.js';
 import { EventIdsField } from '../../vendors/dto/fields.js';
 import { OptionalDateField, TextLineField } from '../../weddings/dto/fields.js';
-import { EXPENSE_LIMITS } from '../expense-policy.js';
-import { MoneyPaiseField } from './fields.js';
+import { EXPENSE_LIMITS, RECEIPT_LIMITS } from '../expense-policy.js';
+import { MoneyPaiseField, ReceiptIdsField } from './fields.js';
 
 export const TITLE_EMPTY = 'Enter an expense name.';
 export const CATEGORY_EMPTY = 'Choose a category.';
@@ -53,4 +53,8 @@ export class CreateExpenseDto {
     example: 'Covers 3 drone cinematographers and 4 candid shooters.',
   })
   notes?: string;
+
+  /** Receipts or documents uploaded for it (decision 0023). */
+  @ReceiptIdsField(RECEIPT_LIMITS.perExpense)
+  receiptAssetIds?: string[];
 }

@@ -168,12 +168,12 @@ export class GuestsController {
     return this.guests.update(user, weddingId, guestId, body);
   }
 
-  /** Removes a guest (owners only); their links stop working. The record is kept. */
+  /** Removes a guest (owners and admins); their links stop working. The record is kept. */
   @Delete(':guestId')
   @HttpCode(204)
   @ApiOperation({ summary: 'Remove guest and revoke invitation capabilities' })
   @ApiNoContentResponse({ description: 'The guest is removed.' })
-  @ApiForbiddenResponse({ description: 'OWNER_REQUIRED: managers cannot remove guests.' })
+  @ApiForbiddenResponse({ description: 'ADMIN_REQUIRED: managers cannot remove guests.' })
   @ApiNotFoundResponse({ description: NOT_FOUND })
   @ApiConflictResponse({ description: ARCHIVED })
   remove(

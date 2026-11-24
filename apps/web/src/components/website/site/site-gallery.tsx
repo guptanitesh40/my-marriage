@@ -90,7 +90,7 @@ export function SiteGallery({
       ) : !photos ? (
         <ul
           aria-hidden="true"
-          className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"
+          className="grid grid-cols-2 gap-2 site-sm:grid-cols-3 site-sm:gap-3 site-lg:grid-cols-4"
         >
           {Array.from({ length: Math.min(album?.photoCount ?? 4, 8) }, (_, index) => (
             <li key={index} className={`aspect-square animate-pulse bg-black/5 ${skin.photo}`} />
@@ -99,7 +99,7 @@ export function SiteGallery({
       ) : (
         <ul
           aria-label={album ? `${album.title} photos` : 'Photos'}
-          className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"
+          className="grid grid-cols-2 gap-2 site-sm:grid-cols-3 site-sm:gap-3 site-lg:grid-cols-4"
         >
           {photos.map((photo, index) => (
             <li key={photo.id}>

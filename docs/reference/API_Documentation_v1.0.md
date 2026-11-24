@@ -50,22 +50,37 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | GET | `/weddings` | List weddings visible to account | Organizer |
 | POST | `/weddings` | Create active wedding with first owner | Organizer |
 | GET | `/weddings/{weddingId}` | Get wedding private details | Organizer |
-| PATCH | `/weddings/{weddingId}` | Update active wedding details | Organizer |
+| PATCH | `/weddings/{weddingId}` | Update active wedding details (any member) | Organizer |
+| GET | `/weddings/{weddingId}/settings` | Settings: wedding, last saved, archive and deletion state | Organizer |
 | POST | `/weddings/{weddingId}/archive` | Archive active wedding (owner only) | Organizer |
-| POST | `/weddings/{weddingId}/deletion-requests` | Request permanent wedding deletion (owner only) | Organizer |
-| GET | `/weddings/{weddingId}/dashboard` | Read organizer dashboard summaries | Organizer |
+| POST | `/weddings/{weddingId}/deletion-requests` | Request wedding deletion, a soft delete (owner only) | Organizer |
+| POST | `/weddings/{weddingId}/deletion-requests/cancel` | Cancel a waiting deletion request (owner only) | Organizer |
+| GET | `/weddings/{weddingId}/dashboard` | Wedding overview: ceremonies to come, tasks, recorded expenses, guest answers, photos, website, team (any member) | Organizer |
 | GET | `/weddings/{weddingId}/quota` | Read current 5 GB S3 photo quota | Organizer |
+
+**Rule (wedding lifecycle, decision 0021):** `PATCH` also takes `mainVenue {name, address, mapsUrl}` (a Google Maps link) and `description` (500 characters); `null` clears them, and both stay private to the team. Archive, deletion requests and cancelling are owners only (403 `OWNER_REQUIRED`) and repeatable: a repeat answers with the state already reached. Archiving is not undone in the app. A deletion request makes the wedding `deletion_pending`: read-only, its public website, gallery, invitation and upload pages offline, nothing erased; cancelling restores `active` or `archived`. Changes are refused with 409 `WEDDING_ARCHIVED` once archived and 409 `WEDDING_DELETION_PENDING` while deletion waits; archiving a wedding waiting for deletion is 409 `WEDDING_DELETION_PENDING`.
+
+**Rule (wedding overview, decision 0022):** `dashboard` is read-only and for any member, archived or not. Each section (`ceremonies`, `tasks`, `expenses`, `guests`, `photos`, `website`, `team`) loads on its own: one that fails is left out and named in `unavailable`, so clients show it as unavailable, never as zero. Money is integer paise; confirmed people count attending only, per ceremony; `team.pendingInvites` appears only for owners and admins.
+
+**Rule (photo gallery on the website, decision 0024):** the website draft's `content.showGallery` (boolean, default `false`) chooses whether the published site shows approved photos. Until a published version has it on, `GET /public/weddings/{slug}/albums` is empty and the public album and photo routes answer 404. `WebsiteDto.galleryLive` says whether the live site shows it.
+
+**Rule (venue on the website, decision 0022):** the website draft's `content.showVenue` (boolean, default `false`) chooses whether the public site shows the wedding's main venue. Once published with it on, `GET /public/weddings/{slug}` (and the preview) includes `mainVenue {name?, address?, mapsUrl?}` from Settings; otherwise the field is absent. The wedding's `description` is never public.
 
 ### Team
 
 | Method | Endpoint | Purpose | Access |
 |---|---|---|---|
-| GET | `/weddings/{weddingId}/members` | List wedding owners/managers | Organizer |
-| POST | `/weddings/{weddingId}/member-invites` | Invite a manager or second co-owner | Organizer |
-| GET | `/weddings/{weddingId}/member-invites` | List pending/consumed membership invites | Organizer |
+| GET | `/weddings/{weddingId}/members` | List wedding owners, admins and managers (names, roles, labels) | Organizer |
+| GET | `/weddings/{weddingId}/team` | Team page: members with addresses and open tasks, and invitations (decision 0020) | Owner, admin |
+| POST | `/weddings/{weddingId}/member-invites` | Invite an admin, a manager or the second owner, or hand over an owner's place (`handOver`, decision 0025) | Owner, admin (partner, hand-over: owner) |
+| GET | `/weddings/{weddingId}/member-invites` | List pending/consumed membership invites | Owner, admin |
+| POST | `/weddings/{weddingId}/member-invites/{inviteId}/resend` | Resend a pending invitation with a new link | Owner, admin |
 | POST | `/member-invites/accept` | Accept invite as signed-in matching email | Organizer |
-| POST | `/weddings/{weddingId}/member-invites/{inviteId}/revoke` | Revoke pending member invitation | Organizer |
-| DELETE | `/weddings/{weddingId}/members/{memberId}` | Remove manager from a wedding | Organizer |
+| POST | `/member-invites/decline` | Decline an invitation from its link (decision 0020) | Signed-in invitee |
+| POST | `/member-invites/{inviteId}/decline` | Decline an invitation sent to my address | Signed-in invitee |
+| POST | `/weddings/{weddingId}/member-invites/{inviteId}/revoke` | Revoke pending member invitation | Owner, admin (partner: owner) |
+| PATCH | `/weddings/{weddingId}/members/{memberId}` | Change a member's role (admin/manager) or label (decision 0020) | Owner, admin |
+| DELETE | `/weddings/{weddingId}/members/{memberId}` | Remove an admin or manager; their tasks become unassigned | Owner, admin |
 
 ### Events
 
@@ -116,6 +131,9 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | POST | `/weddings/{weddingId}/expenses/{expenseId}/adjustments` | Record a discount or an extra agreed after the deal (decision 0014) | Organizer |
 | DELETE | `/weddings/{weddingId}/expenses/{expenseId}` | Delete expense; kept with its history, marked deleted (owner only) | Organizer |
 | GET | `/weddings/{weddingId}/expenses-summary` | Get INR paise totals | Organizer |
+| POST | `/weddings/{weddingId}/expense-files` | Start a receipt or document upload (PDF, photo, Word, Excel; 15 MB) | Organizer |
+| POST | `/weddings/{weddingId}/expense-files/{fileId}/complete` | Check the upload and keep it, ready to attach | Organizer |
+| GET | `/weddings/{weddingId}/expense-files/{fileId}` | Open (photos) or download (others) a kept file; members only | Organizer |
 
 ### Guests
 
@@ -470,7 +488,13 @@ Next.js calls NestJS over REST. Organizer, guest and upload capability sessions 
 | Field | Type | Required |
 |---|---|---|
 | `email` | email | Yes |
-| `role` | enum: owner|manager | Yes |
+| `role` | enum: owner|admin|manager | Yes |
+| `handOver` | boolean, with `owner` only | No |
+| `label` | string, up to 40 | No |
+
+**Rule (team, decision 0020):** roles are `owner` (the couple, at most two, protected), `admin` and `manager`. Owners and admins manage the team; managers get 403 `ADMIN_REQUIRED` on team routes. Inviting answers 409 `ALREADY_MEMBER` or `ALREADY_INVITED`; removing or changing an owner 403 `OWNER_PROTECTED`; acting on yourself 403 `NOT_YOURSELF`. `memberId` is the member's user ID. An account may own several active weddings: `OWNER_ACTIVE_LIMIT` is no longer returned.
+
+**Rule (hand-over, decision 0025):** `handOver: true` with `role: owner` gives the sending owner's own place away: owners only, no free seat needed, and it may go to an admin or a manager already on the team (409 `ALREADY_OWNER` for an owner). A new one replaces the sender's pending one. Accepting makes the invitee an owner and the sender an admin in one transaction; if the sender is no longer an owner it answers 410 `HAND_OVER_INVALID` and changes nothing. Invitation views (`MemberInvite`, the preview, `member-invites/mine`) carry `handOver`. Only owners resend or revoke one.
 
 #### EventCreate
 
@@ -560,7 +584,7 @@ The `VendorCreate` fields, all optional; `null` or `""` removes `contactName`, `
 | `amountPaise` | MoneyPaise | Yes |
 | `dueDate` | date (India day) | No |
 | `notes` | string | No |
-| `receiptAssetIds` | array<Id> | Not yet: needs private uploads (decision 0014) |
+| `receiptAssetIds` | array<Id> | Files from `POST …/expense-files`, at most 10; on update the whole list (decision 0023) |
 
 #### ExpensePaymentCreate
 

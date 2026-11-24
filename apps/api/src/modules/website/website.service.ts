@@ -131,6 +131,19 @@ export class WebsiteService {
   }
 
   /**
+   * The website's address when it is published with the photo gallery
+   * turned on (decision 0024), for the public gallery and its photos; null
+   * otherwise, so no photo is public unless the couple chose to show them.
+   */
+  async galleryAddress(weddingId: Types.ObjectId): Promise<string | null> {
+    const [config, couple] = await Promise.all([
+      this.configs.exists({ weddingId, published: true, 'publishedContent.showGallery': true }),
+      this.access.coupleOf(weddingId),
+    ]);
+    return config && couple ? couple.slug : null;
+  }
+
+  /**
    * How a guest's private RSVP page looks: like the published website,
    * with its design and cover photo. While the website is a draft (never
    * published, or taken down) guests see the standard RSVP page, so nothing
@@ -427,11 +440,15 @@ export class WebsiteService {
     // Only null (or empty) is accepted: a new cover comes from an upload.
     const cover =
       edit?.coverImageId === null || edit?.coverImageId === '' ? undefined : saved?.coverAssetId;
+    const showVenue = edit?.showVenue ?? saved?.showVenue ?? false;
+    const showGallery = edit?.showGallery ?? saved?.showGallery ?? false;
     return {
       ...(headline ? { headline } : {}),
       ...(story ? { story } : {}),
       faq: faq.map((item) => ({ question: item.question, answer: item.answer })),
       ...(cover ? { coverAssetId: cover } : {}),
+      ...(showVenue ? { showVenue } : {}),
+      ...(showGallery ? { showGallery } : {}),
     };
   }
 
@@ -456,6 +473,7 @@ export class WebsiteService {
         : {}),
       ...(published && config?.publishedAt ? { publishedAt: config.publishedAt } : {}),
       hasUnpublishedChanges: published && config?.publishedVersion !== config?.contentVersion,
+      galleryLive: published && Boolean(config?.publishedContent?.showGallery),
       slug: wedding.slug,
       readiness: this.readinessOf(wedding, events),
       writable,

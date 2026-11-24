@@ -39,11 +39,18 @@ async function onboardingVisitor(path: string): Promise<{
  * or create a wedding, unless they just chose to start their own
  * (`startOwn`, from "Start my own wedding instead").
  */
-export async function WeddingStep({ startOwn = false }: { startOwn?: boolean }) {
+export async function WeddingStep({
+  startOwn = false,
+  startNew = false,
+}: {
+  startOwn?: boolean;
+  /** Another wedding, from the wedding switcher: always the empty form. */
+  startNew?: boolean;
+}) {
   const { user, weddings } = await onboardingVisitor(routes.onboarding);
-  const owned = weddings ? ownedActiveWedding(weddings) : undefined;
+  const owned = !startNew && weddings ? ownedActiveWedding(weddings) : undefined;
 
-  if (!owned && !startOwn) {
+  if (!owned && !startOwn && !startNew) {
     const invites = await getMyInvites();
     if (invites && invites.length > 0) {
       return <PendingInvitations invites={invites} email={user.email} />;
@@ -72,7 +79,7 @@ export async function WeddingStep({ startOwn = false }: { startOwn?: boolean }) 
         <WeddingDetailsForm wedding={owned} />
       </div>
       <p className="mt-6 px-2 text-body-sm text-on-surface-variant">
-        You can own one active wedding at a time, and still help plan others.
+        You can own or help plan several weddings, and switch between them at any time.
       </p>
     </>
   );
@@ -83,9 +90,16 @@ export async function WeddingStep({ startOwn = false }: { startOwn?: boolean }) 
  * invitation if one was sent, or — once the partner has accepted — that
  * they have joined.
  */
-export async function PartnerStep() {
+export async function PartnerStep({ weddingId }: { weddingId?: string } = {}) {
   const { weddings } = await onboardingVisitor(routes.onboardingPartner);
-  const owned = weddings ? ownedActiveWedding(weddings) : undefined;
+  const owned = weddingId
+    ? weddings?.find(
+        (wedding) =>
+          wedding.id === weddingId && wedding.role === 'owner' && wedding.status === 'active',
+      )
+    : weddings
+      ? ownedActiveWedding(weddings)
+      : undefined;
   // Nothing to invite a partner to yet.
   if (!owned) redirect(routes.onboarding);
 
@@ -136,5 +150,40 @@ export async function AccountChip() {
       <span className="sr-only">Signed in as </span>
       {user.email}
     </p>
+  );
+}
+
+/**
+ * The invitations waiting for the signed-in account (`/invitations`), to
+ * accept or decline without the email link. For anyone, including someone
+ * already on a wedding's team, who lands in their workspace on signing in
+ * and is pointed here by its banner.
+ */
+export async function InvitationsStep() {
+  const { user, weddings } = await onboardingVisitor(routes.invitations);
+  const invites = await getMyInvites();
+  if (invites && invites.length > 0) {
+    return (
+      <PendingInvitations
+        invites={invites}
+        email={user.email}
+        hasWeddings={(weddings?.length ?? 0) > 0}
+      />
+    );
+  }
+  return (
+    <section className={stepCardClass}>
+      <h1 className="font-serif text-headline-md text-on-surface">
+        {invites ? 'No invitations waiting' : 'We couldn’t load your invitations'}
+      </h1>
+      <p className="text-body-md text-on-surface-variant">
+        {invites
+          ? `Nothing is waiting for ${user.email}. An invitation that was accepted, declined, withdrawn or has expired isn’t shown.`
+          : 'Something went wrong on our side. Please try again in a moment.'}
+      </p>
+      <ButtonLink href={invites ? routes.dashboard : routes.invitations} size="md">
+        {invites ? 'Go to my weddings' : 'Try again'}
+      </ButtonLink>
+    </section>
   );
 }

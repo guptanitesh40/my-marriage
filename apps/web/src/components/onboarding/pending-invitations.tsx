@@ -9,8 +9,8 @@ import { Icon } from '@/components/ui/icon';
 import { api } from '@/lib/api/browser';
 import { networkFailure, toFailure } from '@/lib/api/errors';
 import { firstName, initials } from '@/lib/format';
-import { routes } from '@/lib/routes';
-import { coupleName, longDate } from '@/lib/weddings/format';
+import { routes, workspacePath } from '@/lib/routes';
+import { coupleName, longDate, roleLabel } from '@/lib/weddings/format';
 import { stepCardClass } from './step-progress';
 
 type MyInvite = components['schemas']['MyInviteDto'];
@@ -19,18 +19,58 @@ type MyInvite = components['schemas']['MyInviteDto'];
 type Problem =
   { kind: 'gone' } | { kind: 'full' } | { kind: 'failed'; message: string; retry: boolean };
 
+/** "Co-owner invitation", "Ownership hand-over", "Admin invitation", "Manager invitation". */
+function invitationKind(invite: MyInvite): string {
+  if (invite.handOver) return 'Ownership hand-over';
+  return invite.role === 'owner' ? 'Co-owner invitation' : `${roleLabel(invite.role)} invitation`;
+}
+
+/** What joining means, for the card. */
+function joiningAs(invite: MyInvite): string {
+  if (invite.handOver) return 'Owner, in place of the sender';
+  if (invite.role === 'owner') return 'Equal co-owner';
+  return invite.role === 'admin' ? 'Admin: plans and runs the team' : 'Manager: helps plan';
+}
+
 function weddingDay(invite: MyInvite): string {
   return invite.weddingDate ? longDate(invite.weddingDate, { weekday: true }) : 'Date not set yet';
 }
 
 /**
- * Accepting one invitation by its ID (no link needed: the API checks the
- * signed-in, verified address). Success leaves for the dashboard; the
- * button stays busy until the page changes.
+ * Accepting or declining one invitation by its ID (no link needed: the API
+ * checks the signed-in, verified address). Accepting leaves for the
+ * wedding's workspace; the button stays busy until the page changes.
+ * Declining ends the invitation; they can be invited again later.
  */
 function useAccept() {
   const [joining, setJoining] = useState<string | null>(null);
   const [problems, setProblems] = useState<Record<string, Problem>>({});
+  const [declined, setDeclined] = useState<ReadonlySet<string>>(new Set());
+
+  async function decline(inviteId: string) {
+    if (joining) return;
+    setJoining(inviteId);
+    try {
+      const { error, response } = await api.POST('/api/v1/member-invites/{inviteId}/decline', {
+        params: { path: { inviteId } },
+      });
+      if (response.ok || response.status === 404 || response.status === 410) {
+        setDeclined((current) => new Set([...current, inviteId]));
+      } else {
+        const failure = toFailure(response.status, error);
+        setProblems((current) => ({
+          ...current,
+          [inviteId]: { kind: 'failed', message: failure.message, retry: false },
+        }));
+      }
+    } catch {
+      setProblems((current) => ({
+        ...current,
+        [inviteId]: { kind: 'failed', message: networkFailure().message, retry: false },
+      }));
+    }
+    setJoining(null);
+  }
 
   async function accept(inviteId: string) {
     if (joining) return;
@@ -46,7 +86,7 @@ function useAccept() {
         params: { path: { inviteId } },
       });
       if (data) {
-        goTo(routes.dashboard);
+        goTo(workspacePath(data.data.id));
         return;
       }
       const failure = toFailure(response.status, error);
@@ -54,15 +94,13 @@ function useAccept() {
         problem = { kind: 'gone' };
       } else if (failure.code === 'OWNER_LIMIT') {
         problem = { kind: 'full' };
+      } else if (failure.code === 'HAND_OVER_INVALID' || failure.code === 'ALREADY_OWNER') {
+        problem = { kind: 'failed', message: failure.message, retry: false };
       } else {
-        // OWNER_ACTIVE_LIMIT says exactly what to do; retrying will not help.
-        const retry = failure.code !== 'OWNER_ACTIVE_LIMIT';
         problem = {
           kind: 'failed',
-          message: retry
-            ? 'We couldn’t join the wedding just now. Please try again.'
-            : failure.message,
-          retry,
+          message: 'We couldn’t join the wedding just now. Please try again.',
+          retry: true,
         };
       }
     } catch {
@@ -72,24 +110,76 @@ function useAccept() {
     setJoining(null);
   }
 
-  return { joining, problems, accept };
+  return { joining, problems, declined, accept, decline };
 }
 
 /**
  * The invitations waiting for someone who owns no wedding yet, shown on
  * /onboarding before the form to create one (the Stitch design "Pending
- * Co-owner Invitation"). One click joins; "Start my own wedding instead"
- * asks first, because owning a wedding rules out joining another as owner.
- * The invitation stays, and shows again next time, until they decide.
+ * Co-owner Invitation"), as an owner, admin or manager. One click joins,
+ * another declines. "Start my own wedding instead" explains that the
+ * invitations stay open: anyone may own and help plan several weddings
+ * (decision 0020).
  */
-export function PendingInvitations({ invites, email }: { invites: MyInvite[]; email: string }) {
-  const { joining, problems, accept } = useAccept();
+export function PendingInvitations({
+  invites: all,
+  email,
+  hasWeddings = false,
+}: {
+  invites: MyInvite[];
+  email: string;
+  /**
+   * Already on a wedding's team (the /invitations page): offers the way
+   * back to their weddings instead of starting one.
+   */
+  hasWeddings?: boolean;
+}) {
+  const { joining, problems, declined, accept, decline } = useAccept();
   const dialog = useRef<HTMLDialogElement>(null);
+  const invites = all.filter((invite) => !declined.has(invite.id));
   const [first] = invites;
-  if (!first) return null;
+  if (!first && hasWeddings) {
+    return (
+      <section className={stepCardClass}>
+        <h1 className="font-serif text-headline-md text-on-surface">Invitation declined</h1>
+        <p className="text-body-md text-on-surface-variant">
+          Nobody was added, and nothing changed. The person who invited you can send a new one.
+        </p>
+        <Link
+          href={routes.dashboard}
+          className="flex h-11 items-center justify-center rounded-md bg-primary text-label-md font-semibold text-on-primary"
+        >
+          Back to my weddings
+        </Link>
+      </section>
+    );
+  }
+  if (!first) {
+    return (
+      <section className={stepCardClass}>
+        <h1 className="font-serif text-headline-md text-on-surface">Invitation declined</h1>
+        <p className="text-body-md text-on-surface-variant">
+          Nobody was added. You can start your own wedding now.
+        </p>
+        <Link
+          href={routes.onboardingStartOwn}
+          className="flex h-11 items-center justify-center rounded-md bg-primary text-label-md font-semibold text-on-primary"
+        >
+          Start my own wedding
+        </Link>
+      </section>
+    );
+  }
   const single = invites.length === 1;
 
-  const startOwn = (
+  const startOwn = hasWeddings ? (
+    <Link
+      href={routes.dashboard}
+      className="rounded-sm p-1 text-label-md font-semibold text-on-surface-variant underline decoration-outline-variant underline-offset-4 transition-colors hover:text-on-surface hover:decoration-on-surface"
+    >
+      Back to my weddings
+    </Link>
+  ) : (
     <button
       type="button"
       onClick={() => dialog.current?.showModal()}
@@ -108,6 +198,7 @@ export function PendingInvitations({ invites, email }: { invites: MyInvite[]; em
           joining={joining === first.id}
           problem={problems[first.id]}
           onAccept={() => void accept(first.id)}
+          onDecline={() => void decline(first.id)}
           startOwn={startOwn}
         />
       ) : (
@@ -117,17 +208,20 @@ export function PendingInvitations({ invites, email }: { invites: MyInvite[]; em
           joining={joining}
           problems={problems}
           onAccept={(id) => void accept(id)}
+          onDecline={(id) => void decline(id)}
           startOwn={startOwn}
         />
       )}
-      <StartOwnDialog
-        ref={dialog}
-        body={
-          single
-            ? `You can own only one wedding. If you start your own, you won’t be able to join ${coupleName(first)}’s wedding.`
-            : 'You can own only one active wedding. If you start your own, you won’t be able to accept these invitations while you own it.'
-        }
-      />
+      {!hasWeddings && (
+        <StartOwnDialog
+          ref={dialog}
+          body={
+            single
+              ? `You can plan your own wedding and still join ${coupleName(first)}’s: you can switch between weddings at any time.`
+              : 'You can plan your own wedding and still accept these invitations: you can switch between weddings at any time.'
+          }
+        />
+      )}
     </>
   );
 }
@@ -212,6 +306,20 @@ function AcceptButton({
   );
 }
 
+/** Declining ends the invitation; the person can be invited again later. */
+function DeclineButton({ onDecline, disabled }: { onDecline: () => void; disabled?: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={onDecline}
+      disabled={disabled}
+      className="rounded-sm p-1 text-label-md font-semibold text-on-surface-variant hover:text-on-surface disabled:opacity-60"
+    >
+      Decline
+    </button>
+  );
+}
+
 /** The error area that replaces the button, per the design's D1–D3 states. */
 function ProblemNotice({
   problem,
@@ -271,6 +379,7 @@ function SingleInvitation({
   joining,
   problem,
   onAccept,
+  onDecline,
   startOwn,
 }: {
   invite: MyInvite;
@@ -278,19 +387,32 @@ function SingleInvitation({
   joining: boolean;
   problem: Problem | undefined;
   onAccept: () => void;
+  onDecline: () => void;
   startOwn: ReactNode;
 }) {
   const inviter = invite.invitedByName;
   const couple = coupleName(invite);
+  const owner = invite.role === 'owner';
+  const handOver = invite.handOver;
   return (
     <>
       <Heading
         eyebrow="You’re invited"
-        title="Join your wedding."
+        title={
+          handOver
+            ? `Take over ${couple}’s wedding.`
+            : owner
+              ? 'Join your wedding.'
+              : `Help plan ${couple}’s wedding.`
+        }
         intro={
-          inviter
-            ? `${inviter} has already set up your wedding on My Marriage and invited you to plan it together.`
-            : 'Your wedding is already set up on My Marriage, and you’re invited to plan it together.'
+          handOver
+            ? `${inviter ?? 'An owner'} invited you to take over their place as an owner of the wedding.`
+            : owner
+              ? inviter
+                ? `${inviter} has already set up your wedding on My Marriage and invited you to plan it together.`
+                : 'Your wedding is already set up on My Marriage, and you’re invited to plan it together.'
+              : `${inviter ?? 'The couple'} invited you to join their planning team as ${invite.role === 'admin' ? 'an admin' : 'a manager'}.`
         }
       />
       <section aria-label={`Invitation to ${couple}’s wedding`} className={stepCardClass}>
@@ -306,7 +428,7 @@ function SingleInvitation({
             <h2 className="font-serif text-headline-md text-on-surface">{couple}</h2>
             <span className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary-container/20 bg-primary-container/5 px-2.5 py-1 text-label-md text-primary-container">
               <Icon name="verified" className="size-4" />
-              Co-owner invitation
+              {invitationKind(invite)}
             </span>
           </div>
         </div>
@@ -344,11 +466,32 @@ function SingleInvitation({
           <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary-fixed/50 text-secondary">
             <Icon name="groups" className="size-4" />
           </span>
-          <p className="text-body-md text-on-surface-variant">
-            You’ll join as an <strong className="font-semibold text-on-surface">equal owner</strong>
-            , with the same access as {firstName(inviter) ?? 'the person who invited you'}. You can
-            plan everything together.
-          </p>
+          {handOver ? (
+            <p className="text-body-md text-on-surface-variant">
+              You’ll become an <strong className="font-semibold text-on-surface">owner</strong>,
+              with full authority over the wedding, and{' '}
+              {firstName(inviter) ?? 'the person who invited you'} stays on the team as an admin.
+              Nothing changes unless you accept.
+            </p>
+          ) : owner ? (
+            <p className="text-body-md text-on-surface-variant">
+              You’ll join as an{' '}
+              <strong className="font-semibold text-on-surface">equal owner</strong>, with the same
+              access as {firstName(inviter) ?? 'the person who invited you'}. You can plan
+              everything together.
+            </p>
+          ) : (
+            <p className="text-body-md text-on-surface-variant">
+              You’ll join as{' '}
+              <strong className="font-semibold text-on-surface">
+                {invite.role === 'admin' ? 'an admin' : 'a manager'}
+              </strong>
+              .{' '}
+              {invite.role === 'admin'
+                ? 'You can plan everything and look after the team with the couple.'
+                : 'You can help with events, tasks, guests, vendors, expenses, the website and photos.'}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col items-center gap-4">
@@ -364,6 +507,7 @@ function SingleInvitation({
           ) : (
             <>
               <AcceptButton joining={joining} onAccept={onAccept} label="Accept and join" />
+              {!joining && <DeclineButton onDecline={onDecline} />}
               {!joining && startOwn}
             </>
           )}
@@ -383,6 +527,7 @@ function SeveralInvitations({
   joining,
   problems,
   onAccept,
+  onDecline,
   startOwn,
 }: {
   invites: MyInvite[];
@@ -390,6 +535,7 @@ function SeveralInvitations({
   joining: string | null;
   problems: Record<string, Problem>;
   onAccept: (inviteId: string) => void;
+  onDecline: (inviteId: string) => void;
   startOwn: ReactNode;
 }) {
   return (
@@ -397,7 +543,7 @@ function SeveralInvitations({
       <Heading
         eyebrow={`${invites.length} pending invitations`}
         title={`You have ${invites.length} invitations.`}
-        intro="Choose the wedding you’d like to join. You can own only one active wedding at a time."
+        intro="Accept the weddings you’d like to join; you can switch between them at any time."
       />
       <ul className="flex flex-col gap-4">
         {invites.map((invite, index) => {
@@ -444,7 +590,7 @@ function SeveralInvitations({
                     {weddingDay(invite)}
                   </span>
                   <span className="rounded-md bg-primary-fixed/60 px-2.5 py-1 text-label-sm text-on-primary-fixed">
-                    Equal co-owner
+                    {joiningAs(invite)}
                   </span>
                 </p>
                 {problem ? (
@@ -455,12 +601,18 @@ function SeveralInvitations({
                     startOwn={null}
                   />
                 ) : (
-                  <AcceptButton
-                    joining={joining === invite.id}
-                    disabled={joining !== null}
-                    onAccept={() => onAccept(invite.id)}
-                    label="Accept and join this wedding"
-                  />
+                  <div className="flex flex-col items-center gap-2">
+                    <AcceptButton
+                      joining={joining === invite.id}
+                      disabled={joining !== null}
+                      onAccept={() => onAccept(invite.id)}
+                      label="Accept and join this wedding"
+                    />
+                    <DeclineButton
+                      onDecline={() => onDecline(invite.id)}
+                      disabled={joining !== null}
+                    />
+                  </div>
                 )}
               </article>
             </li>
@@ -502,9 +654,7 @@ function StartOwnDialog({ ref, body }: { ref: Ref<HTMLDialogElement>; body: stri
         </div>
         <div className="flex flex-col gap-1 rounded-lg border border-surface-variant bg-surface-container-low p-3.5 text-body-sm text-on-surface-variant">
           <span className="font-semibold text-on-surface">What happens to your invitation?</span>
-          <span>
-            It stays open until it expires, but you can’t accept it while you own another wedding.
-          </span>
+          <span>It stays open until it expires; you can still accept it from its email.</span>
         </div>
         <form method="dialog" className="flex flex-col gap-2">
           <button

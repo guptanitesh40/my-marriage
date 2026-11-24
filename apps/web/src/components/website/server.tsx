@@ -33,7 +33,14 @@ export async function WebsiteSection({ params }: { params: Promise<{ weddingId: 
     );
   }
 
-  return <WebsiteBuilder weddingId={weddingId} website={website} preview={preview.site} />;
+  return (
+    <WebsiteBuilder
+      weddingId={weddingId}
+      website={website}
+      preview={preview.site}
+      {...(wedding.wedding.mainVenue ? { venue: wedding.wedding.mainVenue } : {})}
+    />
+  );
 }
 
 export function WebsiteLoading() {

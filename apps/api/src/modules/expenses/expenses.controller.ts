@@ -1,13 +1,28 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Header,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  StreamableFile,
+} from '@nestjs/common';
 import {
   ApiConflictResponse,
   ApiCookieAuth,
   ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
+  ApiOkResponse,
   ApiOperation,
+  ApiProduces,
   ApiTags,
+  ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { DOCUMENT_TYPES } from '../../platform/storage/document-type.js';
 import { ApiDataResponse } from '../../platform/response-envelope.js';
 import { CurrentUser } from '../auth/auth.decorators.js';
 import type { AuthenticatedUser } from '../auth/sessions.service.js';
@@ -22,6 +37,18 @@ import {
 import { RecordAdjustmentDto, RecordPaymentDto, ReverseEntryDto } from './dto/ledger-input.dto.js';
 import { UpdateExpenseDto } from './dto/update-expense.dto.js';
 import { ExpensesService } from './expenses.service.js';
+import { ExpenseFilesService } from './expense-files.service.js';
+import {
+  ExpenseFileDto,
+  ExpenseFileUploadDto,
+  ExpenseFileUploadRequestDto,
+} from './dto/expense-file.dto.js';
+
+/** How a file is handed over: shown when it's a photo, otherwise downloaded under its own name. */
+function disposition(name: string, viewable: boolean): string {
+  const ascii = name.replace(/[^\x20-\x7e]/g, '_').replace(/["\\]/g, '_');
+  return `${viewable ? 'inline' : 'attachment'}; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`;
+}
 
 const WEDDING_NOT_FOUND = 'WEDDING_NOT_FOUND: not a wedding you belong to.';
 const NOT_FOUND = `${WEDDING_NOT_FOUND} EXPENSE_NOT_FOUND: no such expense in it.`;
@@ -35,7 +62,72 @@ const ARCHIVED = 'WEDDING_ARCHIVED: the wedding is read-only.';
 @ApiCookieAuth('mm_session')
 @Controller('weddings/:weddingId')
 export class ExpensesController {
-  constructor(private readonly expenses: ExpensesService) {}
+  constructor(
+    private readonly expenses: ExpensesService,
+    private readonly files: ExpenseFilesService,
+  ) {}
+
+  /**
+   * A form to upload one receipt or document to (decision 0023): a PDF, a
+   * photo, or a Word or Excel file, up to 15 MB. Then `…/complete`, then
+   * send its ID with the expense, payment, discount, extra or reversal.
+   */
+  @Post('expense-files')
+  @HttpCode(201)
+  @ApiOperation({ summary: 'Start a receipt or document upload' })
+  @ApiDataResponse(ExpenseFileUploadDto, { status: 201 })
+  @ApiNotFoundResponse({ description: WEDDING_NOT_FOUND })
+  @ApiConflictResponse({ description: ARCHIVED })
+  requestFileUpload(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('weddingId') weddingId: string,
+    @Body() body: ExpenseFileUploadRequestDto,
+  ): Promise<ExpenseFileUploadDto> {
+    return this.files.requestUpload(user, weddingId, body);
+  }
+
+  /** Checks the uploaded file and keeps it, ready to attach. */
+  @Post('expense-files/:fileId/complete')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Finish a receipt or document upload' })
+  @ApiDataResponse(ExpenseFileDto)
+  @ApiNotFoundResponse({ description: WEDDING_NOT_FOUND })
+  @ApiConflictResponse({ description: ARCHIVED })
+  @ApiUnprocessableEntityResponse({
+    description: 'UPLOAD_NOT_FOUND, UPLOAD_TOO_LARGE or UPLOAD_WRONG_TYPE.',
+  })
+  completeFileUpload(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('weddingId') weddingId: string,
+    @Param('fileId') fileId: string,
+  ): Promise<ExpenseFileDto> {
+    return this.files.completeUpload(user, weddingId, fileId);
+  }
+
+  /**
+   * A receipt or document, for the wedding's members only: photos open in
+   * the browser, everything else downloads. Never cached by anyone else.
+   */
+  @Get('expense-files/:fileId')
+  @Header('Cache-Control', 'private, max-age=300')
+  @Header('X-Content-Type-Options', 'nosniff')
+  @Header('Content-Security-Policy', "default-src 'none'; img-src 'self'; sandbox")
+  @ApiOperation({ summary: 'Open or download a receipt or document' })
+  @ApiProduces(...DOCUMENT_TYPES)
+  @ApiOkResponse({ description: 'The file.' })
+  @ApiNotFoundResponse({ description: 'FILE_NOT_FOUND or WEDDING_NOT_FOUND.' })
+  async file(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('weddingId') weddingId: string,
+    @Param('fileId') fileId: string,
+  ): Promise<StreamableFile> {
+    const { file, fileName, viewable } = await this.files.read(user, weddingId, fileId);
+    return new StreamableFile(file.body, {
+      type: file.contentType,
+      length: file.bytes,
+      disposition: disposition(fileName, viewable),
+    });
+  }
 
   /** The wedding's expenses, soonest due first, with totals over all of them. */
   @Get('expenses')
@@ -105,14 +197,16 @@ export class ExpensesController {
   }
 
   /**
-   * Deletes an expense (owners only). It is kept, with its whole history,
+   * Deletes an expense (owners and admins). It is kept, with its whole history,
    * marked as deleted; it leaves the list and the totals.
    */
   @Delete('expenses/:expenseId')
   @HttpCode(204)
-  @ApiOperation({ summary: 'Delete expense (owners only); kept with its history, marked deleted' })
+  @ApiOperation({
+    summary: 'Delete expense (owners and admins); kept with its history, marked deleted',
+  })
   @ApiNoContentResponse({ description: 'The expense is deleted.' })
-  @ApiForbiddenResponse({ description: 'OWNER_REQUIRED: managers cannot delete expenses.' })
+  @ApiForbiddenResponse({ description: 'ADMIN_REQUIRED: managers cannot delete expenses.' })
   @ApiNotFoundResponse({ description: NOT_FOUND })
   @ApiConflictResponse({ description: ARCHIVED })
   remove(

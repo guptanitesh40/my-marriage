@@ -9,12 +9,15 @@ function isCurrent(item: NavItem, href: string, pathname: string): boolean {
   return item.exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-/**
- * The workspace sections, with the current one highlighted. Only built
- * sections are links; the rest are marked "Soon" and are not focusable, so
- * nobody lands on a page that does not exist.
- */
-export function SectionNav({ weddingId }: { weddingId: string }) {
+/** The workspace sections, with the current one highlighted. */
+export function SectionNav({
+  weddingId,
+  managesTeam,
+}: {
+  weddingId: string;
+  /** Owners and admins see the team page; managers do not. */
+  managesTeam: boolean;
+}) {
   const pathname = usePathname();
   return (
     <nav aria-label="Workspace" className="px-2 py-1">
@@ -22,22 +25,7 @@ export function SectionNav({ weddingId }: { weddingId: string }) {
         Workspace
       </p>
       <ul className="flex flex-col gap-0.5">
-        {WORKSPACE_NAV.map((item) => {
-          if (!item.href) {
-            return (
-              <li key={item.label}>
-                <span className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-body-sm text-on-surface-variant">
-                  <span className="flex min-w-0 items-center gap-3">
-                    <Icon name={item.icon} className="size-4.5 shrink-0" />
-                    <span className="truncate">{item.label}</span>
-                  </span>
-                  <span className="shrink-0 rounded-sm bg-surface-container-highest px-1.5 py-0.5 text-label-sm text-on-surface-variant">
-                    Soon
-                  </span>
-                </span>
-              </li>
-            );
-          }
+        {WORKSPACE_NAV.filter((item) => managesTeam || !item.adminsOnly).map((item) => {
           const href = item.href(weddingId);
           const current = isCurrent(item, href, pathname);
           return (

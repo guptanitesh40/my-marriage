@@ -74,7 +74,7 @@ describe('WeddingDetailsForm', () => {
     expect(post).toHaveBeenCalledWith('/api/v1/weddings', {
       body: { brideName: 'Ananya', groomName: 'Arjun', city: 'Jaipur', state: 'Rajasthan' },
     });
-    expect(goTo).toHaveBeenCalledWith('/onboarding/partner');
+    expect(goTo).toHaveBeenCalledWith('/onboarding/partner?wedding=w1');
     // Stays busy while the next page loads, so it cannot be sent twice.
     const button = screen.getByRole('button', { name: /creating your wedding/i });
     expect(button.hasAttribute('disabled')).toBe(true);
@@ -91,14 +91,18 @@ describe('WeddingDetailsForm', () => {
     });
   });
 
-  it('carries on with the wedding if it was already created by a repeated submission', async () => {
+  it('says why the wedding could not be created, and stays on the form', async () => {
     post.mockResolvedValue(
-      reply(409, { error: { code: 'OWNER_ACTIVE_LIMIT', message: 'x' }, requestId: 'r' }),
+      reply(409, {
+        error: { code: 'WEDDING_CONFLICT', message: 'Please try again.' },
+        requestId: 'r',
+      }),
     );
     render(<WeddingDetailsForm />);
     fillRequired();
     await submit();
-    expect(goTo).toHaveBeenCalledWith('/onboarding/partner');
+    expect(goTo).not.toHaveBeenCalled();
+    expect(screen.getByRole('alert').textContent).toContain('Please try again.');
   });
 
   it('shows an API field error beside its field', async () => {
@@ -180,7 +184,7 @@ describe('WeddingDetailsForm', () => {
           weddingDate: '2026-02-14',
         },
       });
-      expect(goTo).toHaveBeenCalledWith('/onboarding/partner');
+      expect(goTo).toHaveBeenCalledWith('/onboarding/partner?wedding=w1');
     });
 
     it('removes the date when the field is emptied', async () => {

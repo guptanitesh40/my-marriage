@@ -6,6 +6,9 @@ export const PASSWORD = 'mehendi at the haveli';
 /** A wedding's workspace, where `/dashboard` leads. */
 export const WORKSPACE = /\/weddings\/[0-9a-f]{24}$/;
 
+/** Onboarding step 2, for the wedding just created or edited. */
+export const PARTNER_STEP = /\/onboarding\/partner\?wedding=[0-9a-f]{24}$/;
+
 /** Signs up through the form and waits for the verification screen. */
 export async function signUp(page: Page, email: string, name = 'Priya Sharma') {
   await page.goto('/signup');
@@ -49,7 +52,7 @@ export async function createWedding(
   await page.getByLabel('State').selectOption(details.state);
   if (details.date) await page.getByLabel('Wedding date').fill(details.date);
   await page.getByRole('button', { name: 'Create wedding workspace' }).click();
-  await expect(page).toHaveURL('/onboarding/partner');
+  await expect(page).toHaveURL(PARTNER_STEP);
 }
 
 /**

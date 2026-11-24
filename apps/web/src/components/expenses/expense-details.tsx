@@ -9,9 +9,12 @@ import {
   type ExpenseDetail,
   type ExpenseEntry,
 } from '@/lib/expenses/directory';
+import { RECEIPT_LIMITS, type ExpenseFile } from '@/lib/expenses/files';
 import { formatInr, share } from '@/lib/expenses/money';
+import { toFailure, networkFailure } from '@/lib/api/errors';
 import { DeleteExpenseDialog } from './expense-delete';
 import { StatusPill } from './expense-status';
+import { ReceiptList, ReceiptPicker, useReceipts } from './receipts';
 import {
   AdjustAmountDialog,
   entryName,
@@ -222,6 +225,40 @@ export function ExpenseDetails({
           </div>
         )}
 
+        <section aria-labelledby="expense-files-heading" className="flex flex-col gap-2">
+          <h3 id="expense-files-heading" className={sectionLabel}>
+            Receipts & documents
+          </h3>
+          {detail ? (
+            detail.receipts.length > 0 ? (
+              <ReceiptList files={detail.receipts} />
+            ) : (
+              !writable && (
+                <p className="rounded-lg bg-surface-container-low px-4 py-3 text-body-sm text-on-surface-variant">
+                  No files kept with this expense.
+                </p>
+              )
+            )
+          ) : (
+            expense.receiptCount > 0 && (
+              <p role="status" className="text-body-sm text-on-surface-variant">
+                Loading {expense.receiptCount === 1 ? 'the file' : 'the files'}…
+              </p>
+            )
+          )}
+          {writable && detail && (
+            <AddFiles
+              weddingId={weddingId}
+              expenseId={expense.id}
+              kept={detail.receipts}
+              onAdded={(count) => {
+                setAttempt((n) => n + 1);
+                onChanged(count === 1 ? 'File added.' : `${count} files added.`);
+              }}
+            />
+          )}
+        </section>
+
         {expense.notes && (
           <section aria-labelledby="expense-notes-heading">
             <h3 id="expense-notes-heading" className={sectionLabel}>
@@ -299,6 +336,7 @@ export function ExpenseDetails({
                               “{entry.note}”
                             </p>
                           )}
+                          <ReceiptList files={entry.receipts} compact />
                         </div>
                       </div>
                       <div className="flex shrink-0 flex-col items-end">
@@ -397,6 +435,89 @@ export function ExpenseDetails({
             onDone={changed}
           />
         </>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Attaches more files to an expense from its details, without opening the
+ * edit form: upload, then "Attach". Removing a file is done in the form.
+ */
+function AddFiles({
+  weddingId,
+  expenseId,
+  kept,
+  onAdded,
+}: {
+  weddingId: string;
+  expenseId: string;
+  kept: readonly ExpenseFile[];
+  onAdded: (count: number) => void;
+}) {
+  const receipts = useReceipts(weddingId);
+  const [saving, setSaving] = useState(false);
+  const [problem, setProblem] = useState<string | null>(null);
+  const room = RECEIPT_LIMITS.perExpense - kept.length;
+  if (room <= 0) {
+    return (
+      <p className="text-body-sm text-on-surface-variant">
+        This expense keeps the most files it can ({RECEIPT_LIMITS.perExpense}). Edit it to remove
+        one.
+      </p>
+    );
+  }
+
+  async function attach() {
+    if (saving || receipts.busy || receipts.ids.length === 0) return;
+    setSaving(true);
+    setProblem(null);
+    try {
+      const { data, error, response } = await api.PATCH(
+        '/api/v1/weddings/{weddingId}/expenses/{expenseId}',
+        {
+          params: { path: { weddingId, expenseId } },
+          body: { receiptAssetIds: [...kept.map((file) => file.id), ...receipts.ids] },
+        },
+      );
+      if (data) {
+        const count = receipts.ids.length;
+        receipts.reset();
+        onAdded(count);
+      } else {
+        const failure = toFailure(response.status, error);
+        setProblem(failure.fields.receiptAssetIds ?? failure.message);
+      }
+    } catch {
+      setProblem(networkFailure().message);
+    }
+    setSaving(false);
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <ReceiptPicker
+        receipts={receipts}
+        limit={room}
+        label={kept.length > 0 ? 'Add more files' : 'Add a file'}
+        hint="The quote, invoice or contract, or a photo of the bill"
+        error={problem ?? undefined}
+      />
+      {receipts.ids.length > 0 && (
+        <button
+          type="button"
+          onClick={() => void attach()}
+          disabled={saving || receipts.busy}
+          aria-busy={saving || undefined}
+          className="inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-md bg-primary px-4 py-2.5 text-label-md font-semibold text-on-primary shadow-sm transition-colors hover:bg-primary-container disabled:opacity-60"
+        >
+          <Icon name="attach-file" className="size-4.5" />
+          {saving
+            ? 'Attaching…'
+            : receipts.ids.length === 1
+              ? 'Attach file'
+              : `Attach ${receipts.ids.length} files`}
+        </button>
       )}
     </div>
   );

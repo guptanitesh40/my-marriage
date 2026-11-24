@@ -26,6 +26,7 @@ function expense(fields: Partial<Expense> & Pick<Expense, 'id' | 'title'>): Expe
     outstandingPaise: 100000,
     status: 'unpaid',
     overdue: false,
+    receiptCount: 0,
     createdAt: '2026-11-01T00:00:00.000Z',
     updatedAt: '2026-11-01T00:00:00.000Z',
     ...fields,

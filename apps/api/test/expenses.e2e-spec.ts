@@ -187,7 +187,7 @@ describe('Expenses (integration)', () => {
         category: 'B',
         amountPaise: 100,
         dueDate: '2027-02-30',
-        receiptAssetIds: [],
+        receiptAssetIds: ['not-an-id'],
       });
       expect(fieldsOf(bad).sort()).toEqual(['dueDate', 'receiptAssetIds']);
     });
@@ -370,7 +370,7 @@ describe('Expenses (integration)', () => {
       const path = `${base(weddingId)}/${expense.id}`;
       const byManager = await request(server()).delete(path).set('Cookie', manager.cookie);
       expect(byManager.status).toBe(403);
-      expect(errorOf(byManager).code).toBe('OWNER_REQUIRED');
+      expect(errorOf(byManager).code).toBe('ADMIN_REQUIRED');
       expect((await request(server()).delete(path)).status).toBe(401);
       const byOther = await request(server()).delete(path).set('Cookie', other.cookie);
       expect(errorOf(byOther).code).toBe('WEDDING_NOT_FOUND');

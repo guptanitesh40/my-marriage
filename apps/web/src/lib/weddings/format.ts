@@ -35,7 +35,7 @@ type Membership = Pick<components['schemas']['WeddingDto'], 'role' | 'status'>;
 
 /** "Owner" or "Manager": the visitor's role in a wedding. */
 export function roleLabel(role: Membership['role']): string {
-  return role === 'owner' ? 'Owner' : 'Manager';
+  return role === 'owner' ? 'Owner' : role === 'admin' ? 'Admin' : 'Manager';
 }
 
 /** "Archived" or "Deletion pending"; nothing for an active wedding. */

@@ -12,11 +12,15 @@ import type {
 } from '../notifications/email-composer.js';
 import { MembershipInvite } from './schemas/membership-invite.schema.js';
 import { Wedding } from './schemas/wedding.schema.js';
-import { partnerInviteMessage } from './wedding-emails.js';
+import {
+  handOverInviteMessage,
+  partnerInviteMessage,
+  teamInviteMessage,
+} from './wedding-emails.js';
 import { Traced } from '../../platform/tracing.js';
 
 /**
- * Writes the partner invitation in the worker, creating the link's secret
+ * Writes a team invitation (the partner's, an owner's hand-over, or an admin's or manager's) in the worker, creating the link's secret
  * as it sends (as AuthEmailComposer does): the API never sees the secret,
  * and only its hash is stored. Not sent if the invitation is no longer the
  * pending one this email is for — replaced, resent, accepted, withdrawn or
@@ -55,12 +59,14 @@ export class InviteEmailComposer implements EmailComposer {
     if (saved.modifiedCount === 0) return null;
 
     const invitedByName = await this.accounts.displayName(invite.invitedBy);
-    return partnerInviteMessage({
+    const message = {
       ...(invitedByName ? { invitedByName } : {}),
       coupleName: `${wedding.brideName} & ${wedding.groomName}`,
       // In the fragment, never sent to a server: see AuthEmailComposer.
       link: `${this.webOrigin}/invitations/accept#token=${token}`,
       expiresAt: invite.expiresAt,
-    });
+    };
+    if (invite.role !== 'owner') return teamInviteMessage({ ...message, role: invite.role });
+    return invite.handOver ? handOverInviteMessage(message) : partnerInviteMessage(message);
   }
 }

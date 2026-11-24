@@ -10,6 +10,17 @@
  * WCAG AA 4.5:1 contrast ratio for small text on every warm surface, so
  * secondary text uses `on-surface-variant`.
  */
+/*
+ * The wedding website lays itself out by its own width (its root is the
+ * `site` container), not the window's, so the builder's phone preview is
+ * the same layout a guest's phone gets. `site-phone:` is for phone-only
+ * overrides of a design's classes, with `!`.
+ */
+@custom-variant site-sm (@container site (width >= 40rem));
+@custom-variant site-md (@container site (width >= 48rem));
+@custom-variant site-lg (@container site (width >= 64rem));
+@custom-variant site-phone (@container site (width < 40rem));
+
 @theme inline {
   --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;

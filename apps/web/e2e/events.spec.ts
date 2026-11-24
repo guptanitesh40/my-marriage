@@ -282,3 +282,56 @@ test('another wedding’s events are simply not found', async ({ page, browser }
   await expect(other.locator('body')).not.toContainText('Private Haldi');
   await otherContext.close();
 });
+
+test('a YouTube live stream is added only by ticking live streaming, and shows on the website only while a link is saved', async ({
+  page,
+  browser,
+}) => {
+  const errors = collectErrors(page);
+  const events = await ownerAtEvents(page);
+  const weddingId = events.split('/')[2] ?? '';
+
+  await page.getByRole('button', { name: 'Add first ceremony' }).click();
+  const drawer = page.getByRole('dialog', { name: 'Add a ceremony' });
+  await drawer.getByText('Wedding', { exact: true }).click();
+  await drawer.getByLabel(/^Date/).fill('2031-12-14');
+  await expect(drawer.getByLabel(/^YouTube link/)).toHaveCount(0);
+  const streaming = drawer.getByRole('checkbox', {
+    name: /We’ll live stream this ceremony on YouTube/,
+  });
+  await streaming.check();
+  await drawer.getByRole('button', { name: /Save ceremony/ }).click();
+  await expect(drawer.getByText('Paste the YouTube link, or untick live streaming.')).toBeVisible();
+  await drawer.getByLabel(/^YouTube link/).fill('https://example.com/not-youtube');
+  await drawer.getByRole('button', { name: /Save ceremony/ }).click();
+  await expect(drawer.getByText(/Paste a YouTube video or live link/)).toBeVisible();
+  await drawer.getByLabel(/^YouTube link/).fill('https://youtu.be/dQw4w9WgXcQ');
+  await drawer.getByRole('button', { name: /Save ceremony/ }).click();
+  await expect(drawer).toBeHidden();
+
+  const published = await page.request.post(`/api/v1/weddings/${weddingId}/website/publish`, {
+    data: { contentVersion: 0 },
+  });
+  expect(published.status()).toBe(200);
+  const slug = ((await published.json()) as { data: { slug: string } }).data.slug;
+  const visitor = await newVisitor(browser);
+  const site = await visitor.newPage();
+  await site.goto(`/w/${slug}`);
+  await expect(site.getByText(/Streamed on YouTube/)).toBeVisible();
+
+  // Unticking removes the stream, and the website stops showing it.
+  await page.getByRole('button', { name: 'Manage Wedding' }).click();
+  const editing = page.getByRole('dialog', { name: 'Wedding' });
+  await expect(editing.getByRole('checkbox', { name: /live stream/ })).toBeChecked();
+  await expect(editing.getByLabel(/^YouTube link/)).toHaveValue(
+    'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  );
+  await editing.getByRole('checkbox', { name: /live stream/ }).uncheck();
+  await editing.getByRole('button', { name: 'Save changes' }).click();
+  await expect(editing).toBeHidden();
+  await site.reload();
+  await expect(site.getByRole('heading', { name: 'Wedding', exact: true })).toBeVisible();
+  await expect(site.getByText(/Streamed on YouTube/)).toHaveCount(0);
+  // The refused link was a 400 on purpose.
+  expect(errors.filter((error) => !error.includes('/events'))).toEqual([]);
+});

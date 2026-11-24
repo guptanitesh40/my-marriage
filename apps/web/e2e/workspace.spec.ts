@@ -33,10 +33,12 @@ for (const viewport of VIEWPORTS) {
     const errors = collectErrors(page);
     await ownerWithWedding(page, 'Ananya Sharma');
 
-    await expect(page.getByRole('heading', { level: 1, name: 'Welcome, Ananya.' })).toBeVisible();
-    await expect(page.getByRole('main')).toContainText(
-      'Ananya & Arjun’s wedding · Jaipur, Rajasthan · 10 December 2031',
-    );
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Ananya & Arjun’s Wedding' }),
+    ).toBeVisible();
+    await expect(page.getByRole('main')).toContainText('Welcome back, Ananya.');
+    await expect(page.getByRole('main')).toContainText('Jaipur, Rajasthan');
+    await expect(page.getByRole('main')).toContainText('10 December 2031 (main wedding day)');
     await expect(page.getByRole('banner')).toContainText('Ananya & Arjun');
     // The sidebar is for large screens; smaller ones keep sign-out in the top bar.
     const sidebar = page.getByRole('navigation', { name: 'Workspace' });
@@ -54,10 +56,31 @@ for (const viewport of VIEWPORTS) {
         'Vendors',
         'Wedding Website',
         'Photos & QR Drive',
+        'Team & Family',
+        'Settings',
       ]);
       await expect(page.getByRole('complementary')).toContainText('Owner');
+      await expect(page.getByRole('button', { name: 'Menu' })).toBeHidden();
     } else {
       await expect(sidebar).toBeHidden();
+      // Phones and tablets open the same sections from the top bar.
+      await page.getByRole('button', { name: 'Menu' }).click();
+      const menu = page.getByRole('dialog', { name: 'Menu' });
+      await expect(menu.getByRole('link')).toHaveText([
+        'Overview',
+        'Events',
+        'Tasks',
+        'Guests & RSVP',
+        'Expenses & Budget',
+        'Vendors',
+        'Wedding Website',
+        'Photos & QR Drive',
+        'Team & Family',
+        'Settings',
+      ]);
+      await expectNoSeriousA11yIssues(page);
+      await menu.getByRole('button', { name: 'Close menu' }).click();
+      await expect(menu).toBeHidden();
     }
     await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible();
     await expectNoHorizontalScroll(page);

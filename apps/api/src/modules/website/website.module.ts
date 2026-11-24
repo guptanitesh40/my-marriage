@@ -4,7 +4,7 @@ import { EventsModule } from '../events/events.module.js';
 import { WeddingsModule } from '../weddings/weddings.module.js';
 import { PublicWebsiteService } from './public-website.service.js';
 import { WebsiteConfig, WebsiteConfigSchema } from './schemas/website-config.schema.js';
-import { FileAsset, FileAssetSchema } from './schemas/file-asset.schema.js';
+import { FileAsset, FileAssetSchema } from '../../platform/storage/file-asset.schema.js';
 import { WebsiteImagesService } from './website-images.service.js';
 import { WebsiteService } from './website.service.js';
 

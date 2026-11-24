@@ -20,6 +20,7 @@ const preview = {
   invitedByName: 'Pushpa Devi',
   email: 'nitesh@example.com',
   role: 'owner',
+  handOver: false,
   status: 'pending',
   expiresAt: '2099-01-08T10:00:00.000Z',
 };
@@ -84,8 +85,64 @@ describe('AcceptInvitation', () => {
     });
     expect(post).toHaveBeenCalledWith('/api/v1/member-invites/accept', { body: { token } });
     expect(await screen.findByRole('heading', { name: 'Welcome to the wedding' })).toBeTruthy();
-    expect(screen.getByRole('link', { name: 'Go to your dashboard' })).toBeTruthy();
+    expect(
+      screen.getByRole('link', { name: 'Open the wedding workspace' }).getAttribute('href'),
+    ).toBe('/weddings/w1');
     expect(sessionStorage.getItem(INVITE_TOKEN_KEY)).toBeNull();
+  });
+
+  it('shows a manager what they can do, and lets them decline', async () => {
+    answer({
+      preview: reply(200, { data: { ...preview, role: 'manager' } }),
+      me: reply(200, { data: me }),
+      accept: reply(204),
+    });
+    render(<AcceptInvitation />);
+
+    expect(
+      await screen.findByRole('heading', { name: 'Help plan Pushpa & Nitesh’s wedding' }),
+    ).toBeTruthy();
+    expect(
+      screen.getByText(/Pushpa Devi invited you to join their planning team as a manager/),
+    ).toBeTruthy();
+    expect(screen.getByText('What you can do')).toBeTruthy();
+    expect(screen.getByText(/Any wedding of your own stays as it is/)).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Accept invitation & open workspace' })).toBeTruthy();
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Decline' }));
+      await Promise.resolve();
+    });
+    expect(post).toHaveBeenCalledWith('/api/v1/member-invites/decline', { body: { token } });
+    expect(await screen.findByRole('heading', { name: 'Invitation declined' })).toBeTruthy();
+    expect(sessionStorage.getItem(INVITE_TOKEN_KEY)).toBeNull();
+  });
+
+  it('says what a hand-over changes, and why one can no longer be accepted', async () => {
+    answer({
+      preview: reply(200, { data: { ...preview, handOver: true } }),
+      me: reply(200, { data: me }),
+      accept: reply(410, {
+        error: {
+          code: 'HAND_OVER_INVALID',
+          message: 'The person who sent this is no longer an owner of the wedding.',
+        },
+      }),
+    });
+    render(<AcceptInvitation />);
+
+    expect(await screen.findByRole('heading', { name: 'Take over as an owner' })).toBeTruthy();
+    expect(
+      screen.getByText(/Pushpa Devi invited you to take over their place as an owner/),
+    ).toBeTruthy();
+    expect(screen.getByText('What changes when you accept')).toBeTruthy();
+    expect(screen.getByText(/Pushpa Devi stays on the team as an admin/)).toBeTruthy();
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Accept and become an owner' }));
+      await Promise.resolve();
+    });
+    expect((await screen.findByRole('alert')).textContent).toContain('no longer an owner');
   });
 
   it('explains when another account is signed in', async () => {

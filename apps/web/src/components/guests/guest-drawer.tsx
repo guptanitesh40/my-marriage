@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
 import { Drawer } from '@/components/ui/drawer';
+import { OpenOnArrival } from '@/components/ui/open-on-arrival';
 import { Icon } from '@/components/ui/icon';
 import { people, type Guest, type GuestDetail } from '@/lib/guests/directory';
 import { GuestDetails } from './guest-details';
@@ -101,6 +102,7 @@ export function GuestDrawer({
   return (
     <GuestDrawerContext.Provider value={api}>
       {children}
+      <OpenOnArrival open={api.add} />
       <p role="status" className="sr-only">
         {announcement}
       </p>

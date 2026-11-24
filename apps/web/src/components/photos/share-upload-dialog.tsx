@@ -305,7 +305,7 @@ function ShareDialog({
             <p className="flex items-start gap-2 rounded-xl bg-surface-container-low p-3 text-body-sm text-on-surface-variant">
               <Icon name="lock" className="mt-0.5 size-4 shrink-0 text-secondary" />
               Anyone with this link can add photos. They go to your private review first; only those
-              you approve can appear on your website.
+              you approve can appear on your website, and only if its photo gallery is on.
             </p>
 
             {writable &&

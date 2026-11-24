@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
 import { Drawer } from '@/components/ui/drawer';
+import { OpenOnArrival } from '@/components/ui/open-on-arrival';
 import { Icon } from '@/components/ui/icon';
 import type { components } from '@my-marriage/contracts';
 import { EventForm } from './event-form';
@@ -67,6 +68,7 @@ export function EventDrawer({ weddingId, children }: { weddingId: string; childr
   return (
     <DrawerContext.Provider value={drawer}>
       {children}
+      <OpenOnArrival open={drawer.add} />
       <p role="status" className="sr-only">
         {announcement}
       </p>

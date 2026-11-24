@@ -13,19 +13,155 @@ belong in `docs/decisions/`; requirements stay in `docs/reference/`.
 | Public homepage       | Done (privacy and terms are drafts, pending legal review)    |
 | Authentication        | Done (profile editing and session management not started)    |
 | Wedding management    | Onboarding steps 1–2 done; ceremony step waits for events    |
-| Wedding workspace     | Shell started (M4.1a); switcher and overview next            |
+| Wedding workspace     | Shell, switcher, phone menu, overview dashboard (M14)        |
 | Events                | Listing, adding, editing and deleting ceremonies (M5.1)      |
 | Tasks                 | List, filters, add, edit, quick completion (M6)              |
 | Vendors               | Directory, filters, add, details, edit, delete (M7)          |
-| Expenses              | Ledger, payments, discounts/extras, reversals, delete (M8)   |
+| Expenses              | Ledger, payments, adjustments, reversals, receipts (M8)      |
 | Guests & RSVP         | Guest list, private links, RSVP, CSV, reminders (M9)         |
 | Wedding website       | Builder, three designs, preview, publish, public `/w/` page  |
 | Photos                | Albums, uploads, guest QR links, review, gallery, ZIPs (M11) |
+| Team & Family         | Owners, admins, managers, invitations, hand-over (M12)       |
+| Wedding settings      | Details, archive, deletion requests (soft), phone menu (M13) |
 
 Open questions waiting on the owner are listed in
 [0002 — Foundation for Phase 1](decisions/0002-phase-1-foundation.md#still-open--needs-the-owner).
 
 ## Log
+
+### Owners can hand over their ownership — 2026-11-23
+
+Decisions in [0025](decisions/0025-ownership-hand-over.md).
+
+- An owner can invite someone to take over their place: "Owner, in my
+  place" in the invite drawer, or "Hand over my ownership" on their own
+  owner card, sent only after ticking a confirmation box.
+- When accepted, in one transaction, the person becomes an owner and the
+  sender an admin; the other owner stays. It works with two owners
+  already, and for someone already on the team as an admin or manager.
+- Refused if the sender is no longer an owner by then. Only owners resend
+  or withdraw a hand-over. Audited as `member.ownership_handed_over`.
+- Invitations waiting for someone already on a team: a banner at the top
+  of every workspace page leads to the new `/invitations` page, where
+  they accept or decline without the email link. Before, only people with
+  no wedding saw their invitations in the app (on `/onboarding`).
+- Not yet: an email to the sender or the other owner when it is accepted.
+
+### Website photo gallery is opt-in — 2026-11-23
+
+Decisions in [0024](decisions/0024-website-gallery-opt-in.md).
+
+- The builder's "Show approved photos on my website" is off by default;
+  the gallery appears to guests only once it is turned on and published.
+- Enforced by the API: with it off, the public album list is empty and
+  every public photo address answers "not found".
+- Websites published before this hide their galleries until turned on.
+  The Photos page says whether the website shows photos.
+
+### Receipts and documents on expenses — 2026-11-23
+
+Decisions in [0023](decisions/0023-expense-receipts.md).
+
+- **Upload** a PDF, a photo (JPEG, PNG, WebP, HEIC), or a Word or Excel
+  file, up to 15 MB, when adding or editing an expense (up to 10) and when
+  recording a payment, a discount or extra, or a reversal (up to 5 each).
+  On a phone the chooser offers the camera, photos and files.
+- Each file uploads straight away, is checked (its own bytes must match
+  its type) and is attached when the form is saved, in the same
+  transaction; one file can't be attached twice.
+- **See them** in the expense's details ("Receipts & documents", with
+  "Add a file") and beside each payment in its history. Photos open in
+  the browser; other files download. Members only; never public.
+- Still missing: a clean-up of files uploaded but never saved.
+
+### Wedding overview dashboard (M14) — 2026-11-23
+
+Decisions in [0022](decisions/0022-wedding-overview.md); designs in
+`docs/design/wedding-overview/`.
+
+- **One read** (`GET /weddings/{id}/dashboard`, any member) built from
+  each module's own read methods; a section that fails is shown as
+  unavailable, never as zero, and the rest still load.
+- **Header**: the wedding's title, place, main date, a countdown to the
+  main day with the main venue and map link, and a "wedding week" note
+  in the last 7 days before the first ceremony.
+- **Headline numbers**: upcoming ceremonies, open and overdue tasks,
+  recorded / paid / outstanding expenses (₹, no budget or percentage),
+  guest contacts and people invited.
+- **Quick actions** open the existing add forms on Events, Tasks,
+  Expenses and Guests (`?new=1`), plus photo review and the live site.
+- **Panels**: next 4 ceremonies (time, venue, attire, people confirmed),
+  tasks needing attention, expense overview with top categories, Guests &
+  RSVP per ceremony, "About this wedding", and photo, website and team
+  tiles.
+- **States**: new wedding (first steps), archived and deletion pending
+  (read-only, no shortcuts), loading skeleton, per-section errors;
+  phone, tablet and desktop layouts.
+- **Venue on the website**: the builder can show the main venue's
+  address and a Google Maps "Get directions" link on the public site,
+  off by default and live once published (all three designs).
+- **Live streaming**: the ceremony form has "We’ll live stream this
+  ceremony on YouTube"; ticking it asks for the YouTube link, unticking
+  removes the stream. The website shows a ceremony's stream only while a
+  link is saved.
+- **Website on phones** (all three designs): the cover photo leads,
+  full width, with the names card over its lower edge; a slimmer header
+  with scrolling section links; quick facts that fit; "Jump to a day"
+  chips and "At a glance" days that link to their ceremonies; an RSVP
+  button pinned to the bottom of the screen. The site now lays itself out
+  by its own width (a CSS container), so the builder's "Mobile 390px"
+  preview matches a real phone. Desktop is unchanged.
+- Still missing: nothing planned for M14. Timeline, analytics, budgets
+  and messaging are out of scope.
+
+### Wedding settings, archiving and deletion requests (M13) — 2026-11-23
+
+Decisions in [0021](decisions/0021-wedding-settings-and-lifecycle.md);
+designs in `docs/design/wedding-settings/`.
+
+- **Settings page** (any member): the couple's names, city, state, date,
+  and new main venue (name, address, Google Maps link) and description;
+  the title derived from the names; the website's cover; "Last saved by";
+  save bar with discard; typed text kept after a refused save; a prompt
+  before leaving with unsaved changes. Website and photo status cards.
+- **Archive** (bride and groom only, type `ARCHIVE`): read-only for the
+  whole team; the published site and approved photos stay up; owners keep
+  unpublish and hide. Repeating it is harmless; it races safely with
+  planning writes through the write fence.
+- **Deletion request** (bride and groom only, type `DELETE`): a soft
+  delete. The wedding goes read-only and its website, gallery, invitation
+  and upload pages go offline; nothing is erased; either owner can cancel
+  and everything comes back.
+- **Audit**: `wedding.updated`, `wedding.archived`,
+  `wedding.deletion_requested`, `wedding.deletion_cancelled`.
+- **Phones and tablets**: a Menu button in the top bar opens every
+  workspace section (the sidebar is desktop only).
+- Still missing: the actual purge of a deleted wedding's data (needs an
+  approved retention policy), reopening an archive (operator only), and
+  an activity page for the audit log.
+
+### Team & Family (M12) — 2026-11-22
+
+Decisions in [0020](decisions/0020-team.md); designs in
+`docs/design/team-management/`.
+
+- **Roles**: the bride and groom are protected owners (at most two); a new
+  **admin** role (e.g. a parent) runs the team with them and can delete
+  planning records; managers plan but never see the team.
+- **Team & Family page** (owners and admins): owners with the partner slot,
+  admins and managers with labels, open tasks and joined date, pending
+  invitations; detail panel, make admin / manager, labels, remove access,
+  resend and revoke; archived weddings read-only; phone layout.
+- **Invitations**: admins and managers by email with an optional label;
+  already a member / already invited refused; revoke; accept or decline
+  from the email (role-specific page and email) or from onboarding.
+- **Removing**: access ends at once, their tasks become unassigned,
+  history stays. Nobody removes themselves.
+- **Several weddings**: anyone may own or help plan several; a wedding
+  switcher in the sidebar (top bar on phones) with "Start another wedding".
+- **Audit log**: `audit_events` records every team change.
+- Still missing: an activity page for the audit log. (The phone section
+  menu came with M13.)
 
 ### Photos, guest uploads and gallery (M11) — 2026-11-22
 

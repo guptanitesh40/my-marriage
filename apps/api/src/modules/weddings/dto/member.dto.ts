@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { MEMBERSHIP_ROLES, type MembershipRole } from '../schemas/wedding-membership.schema.js';
 
-/** An active owner or manager of a wedding, as the other members see them. */
+/** An active member of a wedding, as the other members see them. */
 export class MemberDto {
   /** User ID; what a task's `assigneeId` names. */
   userId: string;
@@ -10,9 +10,12 @@ export class MemberDto {
 
   @ApiProperty({ enum: MEMBERSHIP_ROLES })
   role: MembershipRole;
+
+  /** Their label on the team, e.g. "Bride's father". */
+  label?: string;
 }
 
-/** The wedding's active owners and managers: owners first, then by name. */
+/** The wedding's active members: owners first, then admins, then by name. */
 export class MemberListDto {
   members: MemberDto[];
 }

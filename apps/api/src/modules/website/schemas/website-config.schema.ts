@@ -18,10 +18,22 @@ export class WebsiteContent {
   faq: WebsiteFaq[];
   /** The cover photo, a `file_assets` record; never a raw storage key or URL. */
   coverAssetId?: Types.ObjectId;
+  /**
+   * Show the wedding's main venue (name, address, map link from Settings)
+   * on the website. Off unless the couple turns it on (decision 0022).
+   */
+  showVenue?: boolean;
+  /**
+   * Show the approved photos as a gallery on the website. Off unless the
+   * couple turns it on: nobody's photo is public by default (decision 0024).
+   */
+  showGallery?: boolean;
 }
 
 const contentShape = {
   coverAssetId: { type: Types.ObjectId },
+  showVenue: { type: Boolean },
+  showGallery: { type: Boolean },
   headline: { type: String },
   story: { type: String },
   faq: {

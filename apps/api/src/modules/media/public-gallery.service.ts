@@ -25,7 +25,8 @@ function publicImageUrl(slug: string, photoId: Types.ObjectId, size: PhotoSize):
 /**
  * The gallery on the published website (PRD PHOTO-04, PHOTO-07, SITE-03):
  * approved photos only, of albums still listed, and nothing at all while
- * the website is not published. Checked on every request, files included,
+ * the website is not published or its gallery is turned off (the default,
+ * decision 0024). Checked on every request, files included,
  * so hiding a photo or unpublishing takes effect at once (browsers may
  * keep a copy for five minutes). The same data serves all three designs.
  */
@@ -94,7 +95,7 @@ export class PublicGalleryService {
     };
   }
 
-  /** An approved photo's copy, while the website is published; not found otherwise. */
+  /** An approved photo's copy, while the website shows its gallery; not found otherwise. */
   async image(slug: string, photoId: string, size: string): Promise<StoredObject> {
     if (!Object.hasOwn(PHOTO_SIZES, size)) throw photoNotFound();
     const site = await this.published(slug);
@@ -113,13 +114,13 @@ export class PublicGalleryService {
     return file;
   }
 
-  /** The wedding at this address, while its website is published. */
+  /** The wedding at this address, while its website is published with the gallery on. */
   private async published(
     slug: string,
   ): Promise<{ weddingId: Types.ObjectId; slug: string } | null> {
     const found = await this.access.bySlug(slug);
     if (!found) return null;
-    const current = await this.website.publishedAddress(found.wedding._id);
+    const current = await this.website.galleryAddress(found.wedding._id);
     return current ? { weddingId: found.wedding._id, slug: current } : null;
   }
 }

@@ -5,6 +5,7 @@ import { parseObjectId } from '../../platform/mongo.js';
 import { Traced } from '../../platform/tracing.js';
 import type { AuthenticatedUser } from '../auth/sessions.service.js';
 import { EventsService } from '../events/events.service.js';
+import { ADMIN_ROLES } from '../weddings/schemas/wedding-membership.schema.js';
 import { WeddingAccessService } from '../weddings/wedding-access.service.js';
 import { weddingArchived } from '../weddings/wedding-errors.js';
 import type { CreateVendorDto } from './dto/create-vendor.dto.js';
@@ -147,12 +148,12 @@ export class VendorsService {
   }
 
   /**
-   * Deletes a vendor (owners only, as for events). The record is kept,
+   * Deletes a vendor (owners and admins, as for events). The record is kept,
    * marked with when and by whom, so expenses that name it keep their
    * history; it leaves the directory. Deleting it again answers not found.
    */
   async remove(user: AuthenticatedUser, weddingId: string, vendorId: string): Promise<void> {
-    const { wedding, userId } = await this.access.require(user, weddingId, ['owner']);
+    const { wedding, userId } = await this.access.require(user, weddingId, ADMIN_ROLES);
     if (wedding.status !== 'active') throw weddingArchived();
     const id = parseObjectId(vendorId);
     if (!id) throw vendorNotFound();

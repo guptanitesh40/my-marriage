@@ -42,6 +42,27 @@ const site: Site = {
 
 describe('WeddingSite', () => {
   for (const templateId of ['traditional', 'modern', 'royal'] as const) {
+    it(`shows the main venue with directions in the ${templateId} design only when it is shared`, () => {
+      const venue = {
+        name: 'Rambagh Palace',
+        address: 'Bhawani Singh Road, Jaipur',
+        mapsUrl: 'https://maps.app.goo.gl/venue1',
+      };
+      render(<WeddingSite site={{ ...site, templateId, mainVenue: venue }} />);
+      const card = screen.getByRole('region', { name: 'Rambagh Palace' });
+      expect(within(card).getByText('Bhawani Singh Road, Jaipur')).toBeTruthy();
+      expect(
+        within(card)
+          .getByRole('link', { name: /Get directions to the wedding venue/ })
+          .getAttribute('href'),
+      ).toBe('https://maps.app.goo.gl/venue1');
+      cleanup();
+      render(<WeddingSite site={{ ...site, templateId }} />);
+      expect(screen.queryByText('The wedding venue')).toBeNull();
+    });
+  }
+
+  for (const templateId of ['traditional', 'modern', 'royal'] as const) {
     it(`shows every part of the content in the ${templateId} design`, () => {
       render(<WeddingSite site={{ ...site, templateId }} />);
       expect(screen.getByRole('heading', { level: 1 }).textContent).toMatch(/Ananya\s*&\s*Arjun/);
@@ -58,9 +79,20 @@ describe('WeddingSite', () => {
       expect(screen.getByText(/Your private invitation link opens your RSVP/)).toBeTruthy();
       const nav = screen.getByRole('navigation', { name: 'Website sections' });
       expect(within(nav).getAllByRole('link')).toHaveLength(4);
-      expect(screen.getByRole('link', { name: /RSVP for celebrations/ }).getAttribute('href')).toBe(
-        '#rsvp',
-      );
+      // The welcome card's button, and the phone's bar that stays on screen.
+      const replies = screen.getAllByRole('link', { name: /RSVP for celebrations/ });
+      expect(replies.map((link) => link.getAttribute('href'))).toEqual(['#rsvp', '#rsvp']);
+      // Each day links to its first ceremony, from the day chips and "At a glance".
+      const days = screen.getByRole('navigation', { name: 'Jump to a day' });
+      expect(
+        within(days)
+          .getAllByRole('link')
+          .map((link) => link.textContent),
+      ).toEqual(['Day 1 · 12 Feb', 'Day 2 · 14 Feb']);
+      expect(
+        screen.getByRole('link', { name: /Day 2\s*Sun 14 Feb 2027/ }).getAttribute('href'),
+      ).toBe('#celebrations-day-2');
+      expect(document.getElementById('celebrations-day-2')?.textContent).toContain('Pheras');
       expect(screen.getByText('Guests answer here')).toBeTruthy();
 
       // The player loads only when asked.

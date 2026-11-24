@@ -367,25 +367,46 @@ describe('Request tracing (integration)', () => {
     expect(logged).not.toContain(signature);
   });
 
-  it('shows where a failed request stopped, with the error and the response', async () => {
+  it('never logs a receipt upload form’s signature, even with full traces', async () => {
     configureTracing('full');
     const { cookie } = await signupVerified(app);
-    await request(app.getHttpServer())
+    const wedding = await request(app.getHttpServer())
       .post('/api/v1/weddings')
       .set('Cookie', cookie)
       .send(couple());
+    const weddingId = (wedding.body as { data: { id: string } }).data.id;
 
+    const traces = captureTraces();
+    const form = await request(app.getHttpServer())
+      .post(`/api/v1/weddings/${weddingId}/expense-files`)
+      .set('Cookie', cookie)
+      .send({ contentType: 'application/pdf', bytes: 100, fileName: 'receipt.pdf' });
+    expect(form.status).toBe(201);
+    const signature = (form.body as { data: { fields: { signature: string } } }).data.fields
+      .signature;
+    expect(signature.length).toBeGreaterThan(20);
+
+    const logged = traces.join('\n');
+    expect(logged).toContain('ExpenseFilesService.requestUpload(');
+    expect(logged).not.toContain(signature);
+  });
+
+  it('shows where a failed request stopped, with the error and the response', async () => {
+    configureTracing('full');
+    const { cookie } = await signupVerified(app);
+
+    // A wedding date in the past passes the request's checks but not the service's.
     const traces = captureTraces();
     const res = await request(app.getHttpServer())
       .post('/api/v1/weddings')
       .set('Cookie', cookie)
-      .send(couple());
-    expect(res.status).toBe(409);
+      .send({ ...couple(), weddingDate: '2020-01-01' });
+    expect(res.status).toBe(400);
 
-    const trace = traces.find((entry) => entry.startsWith('POST /api/v1/weddings → 409')) ?? '';
-    expect(trace).toMatch(/WeddingsService\.create\(.*✗ ConflictException 409 OWNER_ACTIVE_LIMIT/);
-    expect(trace).toMatch(/WeddingsController\.create\(.*✗ ConflictException 409/);
-    expect(trace).toContain("response { error: { code: 'OWNER_ACTIVE_LIMIT'");
+    const trace = traces.find((entry) => entry.startsWith('POST /api/v1/weddings → 400')) ?? '';
+    expect(trace).toMatch(/WeddingsService\.create\(.*✗ BadRequestException 400 VALIDATION_ERROR/);
+    expect(trace).toMatch(/WeddingsController\.create\(.*✗ BadRequestException 400/);
+    expect(trace).toContain("response { error: { code: 'VALIDATION_ERROR'");
   });
 
   it('never logs an invitation link token sent in a body', async () => {

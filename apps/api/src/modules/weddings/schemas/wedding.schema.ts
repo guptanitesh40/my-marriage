@@ -21,12 +21,32 @@ export class WeddingQuota {
 }
 const WeddingQuotaSchema = SchemaFactory.createForClass(WeddingQuota);
 
+/** Where the main ceremony is; every part optional (schema document §4.04). */
+@Schema({ _id: false })
+export class WeddingVenue {
+  @Prop({ type: String })
+  name?: string;
+
+  @Prop({ type: String })
+  address?: string;
+
+  /** A link to the place on a map; https only. */
+  @Prop({ type: String })
+  mapsUrl?: string;
+}
+const WeddingVenueSchema = SchemaFactory.createForClass(WeddingVenue);
+
+export const VENUE_NAME_MAX = 120;
+export const VENUE_ADDRESS_MAX = 300;
+export const MAPS_URL_MAX = 500;
+export const DESCRIPTION_MAX = 500;
+
 /**
  * A wedding workspace (schema document §4.04). Never returned from a
  * controller; see WeddingDto.
  *
- * Fields of features not built yet (main venue, description, cover photo,
- * archive metadata) arrive with those features.
+ * The cover photo is the website's (decision 0021): one cover, kept in
+ * `website_configs`, so `coverAssetId` is not stored here.
  */
 @Schema({ collection: 'weddings', timestamps: true })
 export class Wedding {
@@ -50,8 +70,33 @@ export class Wedding {
   @Prop({ type: Date })
   weddingDate?: Date;
 
+  /** Private to the team: the public website does not show it. */
+  @Prop({ type: WeddingVenueSchema })
+  mainVenue?: WeddingVenue;
+
+  /** A short introduction, up to 500 characters; private to the team. */
+  @Prop({ type: String })
+  description?: string;
+
   @Prop({ type: String, enum: WEDDING_STATUSES, required: true })
   status: WeddingStatus;
+
+  /** When an owner archived it, and who; set once (PRD WED-05). */
+  @Prop({ type: Date })
+  archivedAt?: Date;
+
+  @Prop({ type: Types.ObjectId })
+  archivedBy?: Types.ObjectId;
+
+  /**
+   * When the details were last saved, and by whom, for "Last saved by".
+   * Not `updatedAt`, which every write fence raise changes too.
+   */
+  @Prop({ type: Date })
+  lastSavedAt?: Date;
+
+  @Prop({ type: Types.ObjectId })
+  lastSavedBy?: Types.ObjectId;
 
   /** Raised in the same transaction as every archive-sensitive write (schema document §6.3). */
   @Prop({ type: Number, required: true, min: 0 })

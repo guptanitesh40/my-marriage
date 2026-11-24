@@ -67,6 +67,7 @@ export function EventForm({
   const [startDate, setStartDate] = useState(event?.startDate ?? '');
   const [timeZone, setTimeZone] = useState(event?.timeZone ?? INDIA);
   const [state, setState] = useState<EventState>(event?.state ?? 'scheduled');
+  const [streaming, setStreaming] = useState(Boolean(event?.livestream));
   const today = todayInIndia();
   // A day that has passed may be kept; only a new day must be today or later.
   const minDate = event?.startDate && event.startDate < today ? event.startDate : today;
@@ -94,6 +95,7 @@ export function EventForm({
     startTime: string;
     venueName: string;
     venueAddress: string;
+    livestreamUrl?: string;
   }) {
     const venue = {
       ...(input.venueName ? { name: input.venueName } : {}),
@@ -112,6 +114,12 @@ export function EventForm({
           timeZone,
           venue: hasVenue ? venue : null,
           state,
+          // Unticking live streaming takes the video off the website.
+          ...(input.livestreamUrl
+            ? { livestreamUrl: input.livestreamUrl }
+            : event.livestream
+              ? { livestreamUrl: null }
+              : {}),
         },
       });
     }
@@ -124,6 +132,7 @@ export function EventForm({
         ...(startTime ? { startTime } : {}),
         timeZone,
         ...(hasVenue ? { venue } : {}),
+        ...(input.livestreamUrl ? { livestreamUrl: input.livestreamUrl } : {}),
       },
     });
   }
@@ -141,6 +150,7 @@ export function EventForm({
       venueName: text('venueName'),
       venueAddress: text('venueAddress'),
       description,
+      ...(streaming ? { livestreamUrl: String(values.get('livestreamUrl') ?? '').trim() } : {}),
     };
     const problems = eventInputErrors(input);
     setAlert(null);
@@ -336,6 +346,40 @@ export function EventForm({
             className={`${inputClass} border-outline-variant`}
           />
         </FieldFrame>
+
+        <div className="flex flex-col gap-4 rounded-lg bg-surface-container-low p-4">
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={streaming}
+              onChange={(e) => setStreaming(e.target.checked)}
+              className="mt-1 size-4 shrink-0 accent-primary"
+            />
+            <span className="flex flex-col gap-0.5">
+              <span className="text-label-md font-semibold text-on-surface">
+                We’ll live stream this ceremony on YouTube
+              </span>
+              <span className="text-body-sm text-on-surface-variant">
+                Guests who can’t be there can watch it on your wedding website.
+              </span>
+            </span>
+          </label>
+          {streaming && (
+            <TextField
+              id="event-livestream"
+              name="livestreamUrl"
+              type="url"
+              inputMode="url"
+              label="YouTube link"
+              labelAside={<Mark required />}
+              placeholder="https://youtu.be/…"
+              autoComplete="off"
+              defaultValue={event?.livestream?.url}
+              hint="The video or live stream link from YouTube. The website shows the stream only once a link is saved."
+              error={errors.livestreamUrl}
+            />
+          )}
+        </div>
       </div>
 
       <div className="flex gap-3 border-t border-surface-container-highest bg-surface-container-low px-6 py-4">

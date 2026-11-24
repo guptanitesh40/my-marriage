@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useFocusFirstProblem } from '@/components/auth/hooks';
 import { FormAlert } from '@/components/forms/form-alert';
 import { SelectField } from '@/components/forms/select-field';
@@ -12,8 +12,10 @@ import { api } from '@/lib/api/browser';
 import { networkFailure, toFailure } from '@/lib/api/errors';
 import { EXPENSE_CATEGORIES, type Expense } from '@/lib/expenses/directory';
 import { EXPENSE_INPUT_LIMITS, expenseInputErrors } from '@/lib/expenses/input';
+import { RECEIPT_LIMITS } from '@/lib/expenses/files';
 import { formatInr, parseRupees, rupeesInput } from '@/lib/expenses/money';
 import { tidy } from '@/lib/weddings/validation';
+import { ReceiptPicker, useReceipts } from './receipts';
 
 /** What an expense can be linked to: the wedding's events and vendors. */
 export interface ExpenseChoices {
@@ -62,10 +64,36 @@ export function ExpenseForm({
   const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [alert, setAlert] = useState<string | null>(null);
+  const receipts = useReceipts(weddingId);
+  // An edit starts from the expense's files; until they arrive, its files are left as they are.
+  const [savedFiles, setSavedFiles] = useState<string[] | null>(expense ? null : []);
+  const { reset: resetReceipts } = receipts;
+  const expenseId = expense?.id;
+  const hasFiles = (expense?.receiptCount ?? 0) > 0;
+
+  useEffect(() => {
+    if (!expenseId || !hasFiles) return;
+    let live = true;
+    api
+      .GET('/api/v1/weddings/{weddingId}/expenses/{expenseId}', {
+        params: { path: { weddingId, expenseId } },
+      })
+      .then(({ data }) => {
+        if (!live || !data) return;
+        resetReceipts(data.data.receipts);
+        setSavedFiles(data.data.receipts.map((file) => file.id));
+      })
+      .catch(() => undefined);
+    return () => {
+      live = false;
+    };
+  }, [weddingId, expenseId, hasFiles, resetReceipts]);
+  const filesKnown = savedFiles !== null || !hasFiles;
+  const filesChanged = filesKnown && receipts.ids.join(',') !== (savedFiles ?? []).join(',');
 
   async function submit(submitted: FormEvent<HTMLFormElement>) {
     submitted.preventDefault();
-    if (pending) return;
+    if (pending || receipts.busy) return;
     const values = new FormData(submitted.currentTarget);
     const text = (name: string) => String(values.get(name) ?? '');
     const input = {
@@ -101,6 +129,7 @@ export function ExpenseForm({
               vendorId: vendorId || null,
               dueDate: dueDate || null,
               notes: input.notes || null,
+              ...(filesChanged ? { receiptAssetIds: receipts.ids } : {}),
             },
           })
         : await api.POST('/api/v1/weddings/{weddingId}/expenses', {
@@ -113,6 +142,7 @@ export function ExpenseForm({
               ...(vendorId ? { vendorId } : {}),
               ...(dueDate ? { dueDate } : {}),
               ...(input.notes ? { notes: input.notes } : {}),
+              ...(receipts.ids.length > 0 ? { receiptAssetIds: receipts.ids } : {}),
             },
           });
       if (data) {
@@ -319,6 +349,18 @@ export function ExpenseForm({
             className={`${inputClass} border-outline-variant`}
           />
         </FieldFrame>
+        {filesKnown ? (
+          <ReceiptPicker
+            receipts={receipts}
+            limit={RECEIPT_LIMITS.perExpense}
+            hint="The quote, invoice or contract, or a photo of the bill"
+            error={errors.receiptAssetIds}
+          />
+        ) : (
+          <p role="status" className="text-body-sm text-on-surface-variant">
+            Loading the expense’s files…
+          </p>
+        )}
       </div>
 
       <div className="flex gap-3 border-t border-surface-container-highest bg-surface-container-low px-6 py-4">
@@ -330,7 +372,10 @@ export function ExpenseForm({
           Cancel
         </button>
         <div className="flex-1">
-          <SubmitButton pending={pending} pendingLabel="Saving…">
+          <SubmitButton
+            pending={pending || receipts.busy}
+            pendingLabel={receipts.busy ? 'Uploading…' : 'Saving…'}
+          >
             {expense ? 'Save changes' : 'Save expense'}
           </SubmitButton>
         </div>

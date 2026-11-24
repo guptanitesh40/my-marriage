@@ -3,6 +3,7 @@ import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsIn,
   IsInt,
   IsObject,
@@ -106,6 +107,18 @@ export class WebsiteContentInputDto {
   @IsOptional()
   @IsEmpty({ message: 'Upload a photo to set the cover; send null to remove it.' })
   coverImageId?: string | null;
+
+  /** Show the main venue from Settings on the website, once published. */
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsBoolean({ message: 'Choose whether to show the venue.' })
+  showVenue?: boolean;
+
+  /** Show the approved photos as a gallery on the website, once published. Off by default. */
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsBoolean({ message: 'Choose whether to show the photo gallery.' })
+  showGallery?: boolean;
 }
 
 /** A draft edit; never changes the public site until it is published. */

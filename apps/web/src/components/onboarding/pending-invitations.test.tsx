@@ -30,6 +30,7 @@ const invite = {
   weddingDate: '2027-02-14',
   invitedByName: 'Arjun Mehta',
   role: 'owner' as const,
+  handOver: false,
   expiresAt: '2099-01-08T10:00:00.000Z',
 };
 const other = {
@@ -89,7 +90,7 @@ describe('PendingInvitations', () => {
     expect(post).toHaveBeenCalledWith('/api/v1/member-invites/{inviteId}/accept', {
       params: { path: { inviteId: invite.id } },
     });
-    expect(goTo).toHaveBeenCalledWith('/dashboard');
+    expect(goTo).toHaveBeenCalledWith('/weddings/w1');
   });
 
   it('shows the button as busy while joining', async () => {
@@ -133,7 +134,7 @@ describe('PendingInvitations', () => {
     await click('Accept and join');
     expect(screen.getByRole('alert')).toBeTruthy();
     await click('Try again');
-    expect(goTo).toHaveBeenCalledWith('/dashboard');
+    expect(goTo).toHaveBeenCalledWith('/weddings/w1');
   });
 
   it('asks before starting a separate wedding', async () => {
@@ -142,7 +143,7 @@ describe('PendingInvitations', () => {
     await click('Start my own wedding instead');
     const dialog = screen.getByRole('dialog', { name: 'Start a separate wedding?' });
     expect(dialog.textContent).toContain(
-      'If you start your own, you won’t be able to join Ananya & Arjun’s wedding.',
+      'You can plan your own wedding and still join Ananya & Arjun’s: you can switch between weddings at any time.',
     );
     expect(within(dialog).getByRole('button', { name: 'Go back to invitation' })).toBeTruthy();
     expect(
@@ -174,7 +175,7 @@ describe('PendingInvitations', () => {
         .hasAttribute('disabled'),
     ).toBe(true);
     await act(async () => finish(reply(200, { data: { id: 'w2' } })));
-    expect(goTo).toHaveBeenCalledWith('/dashboard');
+    expect(goTo).toHaveBeenCalledWith('/weddings/w2');
   });
 
   it('reads well without an inviter name or a date', () => {

@@ -11,7 +11,7 @@ import { Icon } from '@/components/ui/icon';
 import { api } from '@/lib/api/browser';
 import { networkFailure, toFailure, waitMessage } from '@/lib/api/errors';
 import type { FieldErrors } from '@/lib/auth/validation';
-import { routes } from '@/lib/routes';
+import { onboardingPartnerFor } from '@/lib/routes';
 import { WEDDING_STATES } from '@/lib/weddings/states';
 import {
   tidy,
@@ -73,16 +73,12 @@ export function WeddingDetailsForm({ wedding }: { wedding?: Wedding }) {
         : await api.POST('/api/v1/weddings', {
             body: { ...required, ...(weddingDate ? { weddingDate } : {}) },
           });
-      const failure = data ? null : toFailure(response.status, error);
-      // OWNER_ACTIVE_LIMIT on creating means this account's wedding was
-      // created meanwhile — a repeated submission whose first answer was
-      // lost, or a second tab — since the create form is only shown to
-      // someone without one. Carry on with that wedding rather than report
-      // a conflict.
-      if (!failure || (!wedding && failure.code === 'OWNER_ACTIVE_LIMIT')) {
-        goTo(routes.onboardingPartner);
+      if (data) {
+        // Step 2 for this wedding: someone may own several (decision 0020).
+        goTo(onboardingPartnerFor(data.data.id));
         return;
       }
+      const failure = toFailure(response.status, error);
       setErrors(failure.fields);
       if (Object.keys(failure.fields).length === 0) {
         setAlert(failure.code === 'RATE_LIMITED' ? waitMessage(failure) : failure.message);

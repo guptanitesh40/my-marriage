@@ -10,7 +10,7 @@ import {
 } from '../../platform/storage/object-storage.js';
 import { IMAGE_EXTENSIONS, imageTypeOf } from '../../platform/storage/image-type.js';
 import { Traced } from '../../platform/tracing.js';
-import { FileAsset } from './schemas/file-asset.schema.js';
+import { FileAsset } from '../../platform/storage/file-asset.schema.js';
 import { imageNotFound, uploadRejected } from './website-errors.js';
 import { COVER_MAX_BYTES, UPLOAD_FORM_SECONDS, type CoverType } from './website-policy.js';
 

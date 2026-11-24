@@ -1,7 +1,10 @@
 import { Body, Controller, Get, HttpCode, Ip, Param, Post } from '@nestjs/common';
 import {
   ApiCookieAuth,
+  ApiConflictResponse,
+  ApiForbiddenResponse,
   ApiGoneResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOperation,
   ApiTags,
@@ -17,7 +20,10 @@ import { MyInviteDto } from './dto/my-invite.dto.js';
 import { WeddingDto } from './dto/wedding.dto.js';
 import { MemberInvitesService } from './member-invites.service.js';
 
-/** Inviting your partner to be the wedding's second owner, and accepting. */
+/**
+ * Inviting people to a wedding's team, and accepting or declining
+ * (decision 0020). Owners and admins invite; managers never manage the team.
+ */
 @ApiTags('Team')
 @ApiCookieAuth('mm_session')
 @Controller()
@@ -25,13 +31,18 @@ export class MemberInvitesController {
   constructor(private readonly invites: MemberInvitesService) {}
 
   /**
-   * Invites your partner by email, as an equal owner. Owners only. Replaces
-   * a pending invitation. 409 OWNER_LIMIT when the wedding has two owners.
+   * Invites someone by email. `owner` (your partner): owners only; replaces
+   * a pending partner invitation; 409 OWNER_LIMIT with two owners. `admin`
+   * or `manager`: owners and admins; 409 ALREADY_MEMBER or ALREADY_INVITED.
    */
   @Post('weddings/:weddingId/member-invites')
   @HttpCode(201)
-  @ApiOperation({ summary: 'Invite a manager or second co-owner' })
+  @ApiOperation({ summary: 'Invite an admin, a manager or the second owner' })
   @ApiDataResponse(MemberInviteDto, { status: 201 })
+  @ApiForbiddenResponse({ description: 'ADMIN_REQUIRED or OWNER_REQUIRED.' })
+  @ApiConflictResponse({
+    description: 'ALREADY_MEMBER, ALREADY_INVITED, OWNER_LIMIT or WEDDING_ARCHIVED.',
+  })
   create(
     @CurrentUser() user: AuthenticatedUser,
     @Param('weddingId') weddingId: string,
@@ -40,7 +51,7 @@ export class MemberInvitesController {
     return this.invites.create(user, weddingId, body);
   }
 
-  /** The wedding's invitations, newest first, with whether each email went out. */
+  /** The wedding's invitations, newest first, with whether each email went out. Owners and admins. */
   @Get('weddings/:weddingId/member-invites')
   @ApiOperation({ summary: 'List pending/consumed membership invites' })
   @ApiDataResponse(MemberInviteDto, { isArray: true })
@@ -51,7 +62,7 @@ export class MemberInvitesController {
     return this.invites.list(user, weddingId);
   }
 
-  /** Sends a pending invitation again with a new link; the old link stops working. */
+  /** Sends a pending invitation again with a new link; the old link stops working. Owners and admins. */
   @Post('weddings/:weddingId/member-invites/:inviteId/resend')
   @HttpCode(200)
   @ApiOperation({ summary: 'Resend a pending member invitation' })
@@ -62,6 +73,24 @@ export class MemberInvitesController {
     @Param('inviteId') inviteId: string,
   ): Promise<MemberInviteDto> {
     return this.invites.resend(user, weddingId, inviteId);
+  }
+
+  /**
+   * Withdraws a pending invitation: its links stop working at once. Owners
+   * and admins (the partner's: owners). 409 INVITE_NOT_PENDING once it was
+   * accepted or declined.
+   */
+  @Post('weddings/:weddingId/member-invites/:inviteId/revoke')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Revoke pending member invitation' })
+  @ApiDataResponse(MemberInviteDto)
+  @ApiConflictResponse({ description: 'INVITE_NOT_PENDING or WEDDING_ARCHIVED.' })
+  revoke(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('weddingId') weddingId: string,
+    @Param('inviteId') inviteId: string,
+  ): Promise<MemberInviteDto> {
+    return this.invites.revoke(user, weddingId, inviteId);
   }
 
   /**
@@ -81,7 +110,8 @@ export class MemberInvitesController {
   /**
    * Accepts an invitation as the signed-in, verified account it was sent to,
    * and returns the wedding. 403 INVITE_EMAIL_MISMATCH for another account;
-   * 409 OWNER_LIMIT or OWNER_ACTIVE_LIMIT; 410 INVITE_INVALID.
+   * 409 OWNER_LIMIT; 410 INVITE_INVALID. Joins with the invitation's role;
+   * owning or managing other weddings does not matter.
    */
   @Post('member-invites/accept')
   @HttpCode(200)
@@ -93,6 +123,23 @@ export class MemberInvitesController {
     @Ip() ip: string,
   ): Promise<WeddingDto> {
     return this.invites.accept(user, body.token, { ip });
+  }
+
+  /**
+   * Declines an invitation from its link, as the signed-in, verified account
+   * it was sent to. It stops working; they can be invited again later.
+   */
+  @Post('member-invites/decline')
+  @HttpCode(204)
+  @ApiOperation({ summary: 'Decline an invitation' })
+  @ApiNoContentResponse({ description: 'Declined.' })
+  @ApiGoneResponse({ description: 'INVITE_INVALID: expired, replaced or withdrawn.' })
+  async decline(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: InviteTokenDto,
+    @Ip() ip: string,
+  ): Promise<void> {
+    await this.invites.decline(user, body.token, { ip });
   }
 
   /**
@@ -110,8 +157,8 @@ export class MemberInvitesController {
   /**
    * Accepts one of those invitations without the link: the account's
    * verified address must be the one it was sent to. Returns the wedding.
-   * 404 INVITE_NOT_FOUND for anyone else; 409 OWNER_LIMIT or
-   * OWNER_ACTIVE_LIMIT; 410 INVITE_INVALID once expired or replaced.
+   * 404 INVITE_NOT_FOUND for anyone else; 409 OWNER_LIMIT; 410
+   * INVITE_INVALID once expired or replaced.
    */
   @Post('member-invites/:inviteId/accept')
   @HttpCode(200)
@@ -124,5 +171,19 @@ export class MemberInvitesController {
     @Param('inviteId') inviteId: string,
   ): Promise<WeddingDto> {
     return this.invites.acceptById(user, inviteId);
+  }
+
+  /** Declines an invitation sent to my email address, without the link. */
+  @Post('member-invites/:inviteId/decline')
+  @HttpCode(204)
+  @ApiOperation({ summary: 'Decline an invitation sent to my email address' })
+  @ApiNoContentResponse({ description: 'Declined.' })
+  @ApiNotFoundResponse({ description: 'INVITE_NOT_FOUND: no such invitation for this account.' })
+  @ApiGoneResponse({ description: 'INVITE_INVALID: expired, replaced or withdrawn.' })
+  async declineById(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('inviteId') inviteId: string,
+  ): Promise<void> {
+    await this.invites.declineById(user, inviteId);
   }
 }

@@ -82,7 +82,7 @@ export async function PhotosSection({
           </h1>
           <p className="text-body-lg text-on-surface-variant">
             Collect, review and keep the memories of every celebration. Guest uploads go to your
-            private review before anything appears on your website.
+            private review, and your website shows photos only if you turn on its gallery.
           </p>
         </div>
         {albums.kind === 'ok' && (
@@ -114,9 +114,7 @@ export async function PhotosSection({
         <GalleryCard
           weddingId={weddingId}
           approved={approved}
-          {...(website.kind === 'ok' && website.status === 'published'
-            ? { slug: website.slug }
-            : {})}
+          {...(website.kind === 'ok' && website.galleryLive ? { slug: website.slug } : {})}
         />
       </div>
 
@@ -299,7 +297,7 @@ function GalleryCard({
 }: {
   weddingId: string;
   approved: number;
-  /** Set while the website is published. */
+  /** Set while the published website shows its gallery. */
   slug?: string;
 }) {
   return (
@@ -335,7 +333,8 @@ function GalleryCard({
       ) : (
         <>
           <p className="text-body-sm text-on-surface-variant">
-            Approved photos appear on your website once it is published.
+            Your website doesn’t show photos. To share approved photos with guests, turn on the
+            photo gallery in the website builder and publish.
           </p>
           <Link
             href={websitePath(weddingId)}
