@@ -29,6 +29,22 @@ Open questions waiting on the owner are listed in
 
 ## Log
 
+### Themed 404 and 500 pages, and loading states — 2026-11-24
+
+- A thin progress bar runs across the top of every page while a click on a
+  link (or back and forward) waits for the next page; it appears only after
+  150 ms, so fast pages never flicker, and gives up after 15 seconds.
+- A branded loader replaces the blank screens: opening a wedding's
+  workspace, a public wedding website (`/w/…`) and the dashboard.
+- A missing address, or any `notFound()`, shows "We couldn’t find that page"
+  with the public header and footer, and answers 404.
+- A page that fails to render shows "We couldn’t load this page" with "Try
+  again" and "Back to home"; `global-error` covers a failure in the root
+  layout. Neither shows what failed: only Next's error digest, as a
+  reference that matches the server's log entry.
+- A failure inside a page that has already started streaming still
+  answers 200, with the same page; Next can't change the status by then.
+
 ### Owners can hand over their ownership — 2026-11-23
 
 Decisions in [0025](decisions/0025-ownership-hand-over.md).

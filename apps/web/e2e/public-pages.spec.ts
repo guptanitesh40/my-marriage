@@ -155,3 +155,57 @@ for (const viewport of [PHONE, DESKTOP]) {
     }
   });
 }
+
+for (const viewport of VIEWPORTS) {
+  test(`an unknown address gets the themed 404 page at ${viewport.width}px`, async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    // The 404 itself is the point here, so only it is allowed.
+    const errors = collectErrors(page, ['/no-such-page-here']);
+    const response = await page.goto('/no-such-page-here');
+    expect(response?.status()).toBe(404);
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'We couldn’t find that page' }),
+    ).toBeVisible();
+    await expect(page.getByRole('banner')).toBeVisible();
+    await expect(page.getByRole('contentinfo')).toContainText('My Marriage');
+    await expect(
+      page.getByRole('main').getByRole('link', { name: 'Back to home' }),
+    ).toHaveAttribute('href', '/');
+    await expectNoHorizontalScroll(page);
+    await expectNoSeriousA11yIssues(page);
+    expect(errors).toEqual([]);
+    await testInfo.attach(`not-found-${viewport.width}`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: 'image/png',
+    });
+  });
+}
+
+test('a slow page shows the progress bar until it arrives', async ({ page }) => {
+  const errors = collectErrors(page);
+  // No prefetching, and a slow server, as a cold one can be: the click has
+  // to wait for the page. (A prefetched page opens at once, without the bar.)
+  await page.route('**/*', async (route) => {
+    const headers = route.request().headers();
+    if (headers['next-router-prefetch']) return route.abort('aborted');
+    if (headers['rsc'] === '1') await new Promise((resolve) => setTimeout(resolve, 1500));
+    return route.continue();
+  });
+  await page.goto('/');
+  // Started up in the browser: a click before then is a plain page load,
+  // which the browser shows itself.
+  await page.waitForLoadState('networkidle');
+  await expect(page.locator('[data-phase="idle"]')).toHaveCount(1);
+  await page
+    .getByRole('contentinfo')
+    .getByRole('navigation', { name: 'Footer' })
+    .getByRole('link', { name: 'Privacy' })
+    .click();
+  await expect(page.locator('[data-phase="loading"]')).toHaveCount(1);
+  await expect(page).toHaveURL('/privacy');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(/privacy/i);
+  await expect(page.locator('[data-phase="idle"]')).toHaveCount(1);
+  expect(errors).toEqual([]);
+});

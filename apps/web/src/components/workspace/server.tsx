@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { SignOutButton } from '@/components/auth/sign-out-button';
 import { ButtonLink } from '@/components/ui/button-link';
+import { PageLoader } from '@/components/ui/page-loader';
 import { Wordmark } from '@/components/ui/wordmark';
 import { loginThenReturnTo, routes, workspacePath } from '@/lib/routes';
 import { getMyInvites, getMyWeddings } from '@/lib/weddings/my-weddings';
@@ -62,13 +63,11 @@ export async function Workspace({
   );
 }
 
-/** While the workspace asks the API: announced to screen readers, blank otherwise. */
+/** While the workspace asks the API who is visiting and which wedding this is. */
 export function WorkspaceLoading() {
   return (
     <div className="flex w-full flex-1 bg-surface">
-      <p role="status" className="sr-only">
-        Loading your workspace…
-      </p>
+      <PageLoader label="Opening your wedding…" fill />
     </div>
   );
 }

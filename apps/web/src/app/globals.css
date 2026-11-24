@@ -239,3 +239,33 @@
 [data-rsvp-theme='modern'] {
   --font-manrope: var(--font-jakarta);
 }
+
+/*
+ * The navigation progress bar (components/ui/navigation-progress): runs
+ * quickly to a third, then ever more slowly towards 90%, and finishes only
+ * when the page arrives. Without motion it simply shows.
+ */
+@keyframes navigation-progress {
+  0% {
+    transform: scaleX(0);
+  }
+  10% {
+    transform: scaleX(0.35);
+  }
+  40% {
+    transform: scaleX(0.65);
+  }
+  100% {
+    transform: scaleX(0.9);
+  }
+}
+
+@utility navigation-progress-run {
+  transform: scaleX(0.9);
+  animation: navigation-progress 8s cubic-bezier(0.1, 0.7, 0.3, 1) forwards;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: scaleX(0.6);
+  }
+}
