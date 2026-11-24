@@ -1,3 +1,4 @@
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
@@ -7,7 +8,9 @@ import type { Env } from './config/env.js';
 import { API_PREFIX, configureApp, createOpenApiDocument } from './configure-app.js';
 import { AppLogger } from './platform/logger.js';
 
-async function bootstrap(): Promise<void> {
+type RequestListener = (req: IncomingMessage, res: ServerResponse) => void;
+
+async function bootstrap(): Promise<RequestListener> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: new AppLogger(),
   });
@@ -18,11 +21,25 @@ async function bootstrap(): Promise<void> {
     SwaggerModule.setup(`${API_PREFIX}/docs`, app, createOpenApiDocument(app));
   }
 
-  await app.listen(config.get('PORT', { infer: true }));
+  // Run directly (`node dist/main.js`, `nest start`), this process is the
+  // server. Imported instead — by Vercel's function launcher — the platform
+  // owns the socket and calls the exported handler, so only initialise.
+  if (import.meta.main) {
+    await app.listen(config.get('PORT', { infer: true }));
+  } else {
+    await app.init();
+  }
+  // The Express application is itself a Node request listener.
+  const express: RequestListener = app.getHttpAdapter().getInstance();
+  return express;
 }
 
-// Started the way Vercel's NestJS entrypoint is documented, not with a
-// top-level await, so loading this module never waits for the server to
-// start. A failed start still exits the process: Node treats the unhandled
-// rejection as fatal.
-void bootstrap();
+// Started on load, not awaited: Vercel needs this module's export as soon as
+// it is imported, while start-up (MongoDB, the index check) takes seconds.
+// A failed start is an unhandled rejection, which ends the process.
+const listener = bootstrap();
+
+/** The request handler Vercel invokes; requests wait until start-up is done. */
+export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
+  (await listener)(req, res);
+}
