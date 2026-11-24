@@ -1,14 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import {
-  HealthCheck,
-  HealthCheckService,
-  MongooseHealthIndicator,
-  type HealthCheckResult,
-} from '@nestjs/terminus';
+import { HealthCheck, HealthCheckService, type HealthCheckResult } from '@nestjs/terminus';
 import { Public } from '../modules/auth/auth.decorators.js';
 import { ApiDataResponse } from '../platform/response-envelope.js';
 import { HealthDto } from './health.dto.js';
+import { MongoHealthIndicator } from './mongo.health.js';
 import { RedisHealthIndicator } from './redis.health.js';
 
 // Terminus would document its own response shapes, but what is actually sent
@@ -26,7 +22,7 @@ function toDto(result: HealthCheckResult): HealthDto {
 export class HealthController {
   constructor(
     private readonly health: HealthCheckService,
-    private readonly mongo: MongooseHealthIndicator,
+    private readonly mongo: MongoHealthIndicator,
     private readonly redis: RedisHealthIndicator,
   ) {}
 
@@ -47,7 +43,7 @@ export class HealthController {
   async ready(): Promise<HealthDto> {
     return toDto(
       await this.health.check([
-        () => this.mongo.pingCheck('mongodb', { timeout: 2000 }),
+        () => this.mongo.pingCheck('mongodb', 2000),
         () => this.redis.pingCheck('redis'),
       ]),
     );
