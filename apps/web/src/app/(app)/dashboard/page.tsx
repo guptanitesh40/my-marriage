@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { ButtonLink } from '@/components/ui/button-link';
+import { PageLoader } from '@/components/ui/page-loader';
 import { getCurrentUser } from '@/lib/auth/current-user';
 import { loginThenReturnTo, routes, workspacePath } from '@/lib/routes';
 import { landingWedding } from '@/lib/weddings/choose';
@@ -17,9 +18,7 @@ export const metadata: Metadata = { title: 'Dashboard' };
  */
 export default function DashboardPage() {
   return (
-    <Suspense
-      fallback={<p className="text-body-md text-on-surface-variant">Opening your workspace…</p>}
-    >
+    <Suspense fallback={<PageLoader label="Opening your workspace…" />}>
       <OpenWorkspace />
     </Suspense>
   );

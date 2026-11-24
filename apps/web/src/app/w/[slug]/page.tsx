@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { permanentRedirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { rsvpFonts } from '@/components/rsvp/rsvp-fonts';
+import { PageLoader } from '@/components/ui/page-loader';
 import { ForwardInvitationLink } from '@/components/website/site/forward-invitation';
 import { SiteUnavailable } from '@/components/website/site/unavailable';
 import { WeddingSite } from '@/components/website/site/wedding-site';
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
  */
 export default function PublicWeddingPage({ params }: PageProps<'/w/[slug]'>) {
   return (
-    <Suspense fallback={<p className="sr-only">Opening the wedding website…</p>}>
+    <Suspense fallback={<PageLoader label="Opening the wedding website…" fill />}>
       <PublishedSite params={params} />
     </Suspense>
   );
