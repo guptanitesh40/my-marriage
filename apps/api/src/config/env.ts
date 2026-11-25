@@ -54,11 +54,15 @@ export class Env {
   /**
    * The public origin of the web app, e.g. https://app.example.com. Links in
    * emails point here, and it is the one origin trusted by the CSRF check.
+   * Development and tests fall back to http://localhost:3000; production has
+   * no fallback and must name a public https address, or every emailed link
+   * would point at the sender's own computer.
    */
+  @ValidateIf((env: Env) => env.WEB_ORIGIN !== undefined)
   @Matches(/^https?:\/\/[^/?#\s]+$/, {
     message: 'WEB_ORIGIN must be an origin such as https://example.com, without a path',
   })
-  WEB_ORIGIN: string = 'http://localhost:3000';
+  WEB_ORIGIN: string;
 
   /**
    * How email leaves the worker: `smtp` (Gmail) in production and staging,
@@ -152,6 +156,24 @@ export class Env {
   MEDIA_LOCAL_DIR: string = '.media';
 }
 
+/** Where the web app runs in development (`pnpm dev`). Never used in production. */
+const LOCAL_WEB_ORIGIN = 'http://localhost:3000';
+
+/** An address only this computer (or its network) can reach. */
+function isLocalOrigin(origin: string): boolean {
+  const host = new URL(origin).hostname;
+  return (
+    host === 'localhost' ||
+    host.endsWith('.localhost') ||
+    host === '0.0.0.0' ||
+    host === '[::1]' ||
+    /^127\./.test(host) ||
+    /^10\./.test(host) ||
+    /^192\.168\./.test(host) ||
+    /^172\.(1[6-9]|2\d|3[01])\./.test(host)
+  );
+}
+
 const DEFAULT_TRACE_MODE: Record<string, TraceMode> = {
   development: 'full',
   production: 'errors',
@@ -195,6 +217,16 @@ function crossFieldProblems(env: Env): string[] {
   if (env.NODE_ENV === 'production' && env.S3_BUCKET === undefined) {
     problems.push('S3_BUCKET is required when NODE_ENV is production');
   }
+  // Every emailed link is built from it: guests must reach the live site.
+  if (env.NODE_ENV === 'production') {
+    if (env.WEB_ORIGIN === undefined) {
+      problems.push('WEB_ORIGIN is required when NODE_ENV is production');
+    } else if (!env.WEB_ORIGIN.startsWith('https://') || isLocalOrigin(env.WEB_ORIGIN)) {
+      problems.push(
+        'WEB_ORIGIN must be the public https address of the web app when NODE_ENV is production',
+      );
+    }
+  }
   return problems;
 }
 
@@ -212,6 +244,7 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   );
   const nodeEnv = typeof known.NODE_ENV === 'string' ? known.NODE_ENV : 'development';
   known.LOG_TRACE ??= DEFAULT_TRACE_MODE[nodeEnv] ?? 'off';
+  if (nodeEnv !== 'production') known.WEB_ORIGIN ??= LOCAL_WEB_ORIGIN;
   const env = plainToInstance(Env, known);
   const errors = validateSync(env, { forbidUnknownValues: true });
   const problems = [

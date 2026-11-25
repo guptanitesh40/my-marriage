@@ -1,5 +1,6 @@
 import type { paths } from '@my-marriage/contracts';
 import createClient from 'openapi-fetch';
+import { apiOrigin } from './origin';
 
 // The only request headers passed on to the API. `cookie` carries the
 // visitor's session, so the API — never this app — decides what they may see.
@@ -20,7 +21,7 @@ export function apiClientAsVisitor(incoming: Pick<Headers, 'get'>) {
     if (value) forwarded[name] = value;
   }
   return createClient<paths>({
-    baseUrl: process.env.API_ORIGIN ?? 'http://localhost:4000',
+    baseUrl: apiOrigin(),
     headers: forwarded,
   });
 }

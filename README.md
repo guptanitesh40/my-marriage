@@ -76,7 +76,9 @@ another device) uses Gmail too:
 
 Emails then come from `My Marriage <your Gmail address>`, to any address.
 Gmail allows about 500 a day. Links in them point to `WEB_ORIGIN`
-(`localhost:3000` by default), which works only on this computer.
+(`localhost:3000` by default in development), which works only on this
+computer. Production has no default: it refuses to start unless
+`WEB_ORIGIN` is the live site's `https` address.
 
 **Following a request through the code.** In development the API and the
 worker log every request (and every job) as a tree: the guard, controller,
@@ -141,22 +143,22 @@ on the schema; `pnpm db:migrate` applies it. Deployments run the same step
 
 ## Environment variables
 
-| Variable           | Used by | Purpose                                                                                                  |
-| ------------------ | ------- | -------------------------------------------------------------------------------------------------------- |
-| `NODE_ENV`         | API     | `development`, `test` or `production`                                                                    |
-| `PORT`             | API     | HTTP port (default 4000)                                                                                 |
-| `MONGODB_URI`      | API     | MongoDB connection string (must be a replica set)                                                        |
-| `REDIS_URL`        | API     | Redis connection string                                                                                  |
-| `TRUST_PROXY_HOPS` | API     | Proxies trusted for the client address: 0 locally, 1 behind one load balancer                            |
-| `WEB_ORIGIN`       | API     | The web app's public origin: links in emails, and the one origin the CSRF check trusts                   |
-| `MAIL_TRANSPORT`   | API     | `smtp` (Gmail; required in production), `file` (local development) or `memory` (integration tests)       |
-| `MAIL_FILE_DIR`    | API     | Folder for `MAIL_TRANSPORT=file` (default `.mail`)                                                       |
-| `SMTP_USER`        | API     | The Gmail address that sends, for `MAIL_TRANSPORT=smtp`                                                  |
-| `SMTP_PASSWORD`    | API     | A Google App Password for `SMTP_USER` — a secret, from AWS Secrets Manager                               |
-| `SMTP_HOST`        | API     | SMTP server (default `smtp.gmail.com`)                                                                   |
-| `SMTP_PORT`        | API     | 465 (default, TLS) or 587 (STARTTLS)                                                                     |
-| `MAIL_FROM`        | API     | Sender; defaults to `My Marriage <SMTP_USER>`. Gmail allows only the account's own address or an alias   |
-| `API_ORIGIN`       | Web     | The API's origin: `/api/v1/*` is forwarded there (fixed at build) and server rendering calls it directly |
+| Variable           | Used by | Purpose                                                                                                                                     |
+| ------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NODE_ENV`         | API     | `development`, `test` or `production`                                                                                                       |
+| `PORT`             | API     | HTTP port (default 4000)                                                                                                                    |
+| `MONGODB_URI`      | API     | MongoDB connection string (must be a replica set)                                                                                           |
+| `REDIS_URL`        | API     | Redis connection string                                                                                                                     |
+| `TRUST_PROXY_HOPS` | API     | Proxies trusted for the client address: 0 locally, 1 behind one load balancer                                                               |
+| `WEB_ORIGIN`       | API     | The web app's public origin: links in emails, and the one origin the CSRF check trusts. Required in production, as the live `https` address |
+| `MAIL_TRANSPORT`   | API     | `smtp` (Gmail; required in production), `file` (local development) or `memory` (integration tests)                                          |
+| `MAIL_FILE_DIR`    | API     | Folder for `MAIL_TRANSPORT=file` (default `.mail`)                                                                                          |
+| `SMTP_USER`        | API     | The Gmail address that sends, for `MAIL_TRANSPORT=smtp`                                                                                     |
+| `SMTP_PASSWORD`    | API     | A Google App Password for `SMTP_USER` — a secret, from AWS Secrets Manager                                                                  |
+| `SMTP_HOST`        | API     | SMTP server (default `smtp.gmail.com`)                                                                                                      |
+| `SMTP_PORT`        | API     | 465 (default, TLS) or 587 (STARTTLS)                                                                                                        |
+| `MAIL_FROM`        | API     | Sender; defaults to `My Marriage <SMTP_USER>`. Gmail allows only the account's own address or an alias                                      |
+| `API_ORIGIN`       | Web     | The API's origin: `/api/v1/*` is forwarded there (fixed at build) and server rendering calls it directly. Required on Vercel                |
 
 The API validates its variables at startup and refuses to start if one is
 missing or malformed. Real secrets never go in the repository.
