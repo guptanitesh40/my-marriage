@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { apiOrigin } from './src/lib/api/origin';
 
 // Where the NestJS API listens. The browser never sees this: it always calls
 // the web origin, and Next forwards /api/v1/* here. Same-origin requests are
@@ -7,7 +8,7 @@ import type { NextConfig } from 'next';
 //
 // Rewrites are resolved by `next build`, so for this forwarding API_ORIGIN is
 // a build-time value. Server Components read it at run time (lib/api/server).
-const apiOrigin = process.env.API_ORIGIN ?? 'http://localhost:4000';
+const api = apiOrigin();
 
 // Baseline for every page. A full Content-Security-Policy (script and image
 // sources) is still to be designed; until then this stops the two cheapest
@@ -43,7 +44,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async rewrites() {
-    return [{ source: '/api/v1/:path*', destination: `${apiOrigin}/api/v1/:path*` }];
+    return [{ source: '/api/v1/:path*', destination: `${api}/api/v1/:path*` }];
   },
 };
 

@@ -43,6 +43,7 @@ describe('validateEnv', () => {
       MAIL_TRANSPORT: 'smtp',
       GUEST_LINK_SECRET: 'a'.repeat(48),
       S3_BUCKET: 'my-marriage-app',
+      WEB_ORIGIN: 'https://app.example.com',
     };
     const smtp = { SMTP_USER: 'hello@gmail.com', SMTP_PASSWORD: 'x' };
     expect(validateEnv({ ...production, ...smtp }).LOG_TRACE).toBe('errors');
@@ -131,6 +132,7 @@ describe('validateEnv', () => {
       SMTP_USER: 'hello@gmail.com',
       SMTP_PASSWORD: 'x',
       GUEST_LINK_SECRET: 'a'.repeat(48),
+      WEB_ORIGIN: 'https://app.example.com',
     };
     expect(() => validateEnv(production)).toThrow(/S3_BUCKET is required/);
     expect(validateEnv({ ...production, S3_BUCKET: 'my-marriage-app' }).AWS_REGION).toBe(
@@ -138,5 +140,40 @@ describe('validateEnv', () => {
     );
     expect(() => validateEnv({ ...valid, S3_BUCKET: 'My Bucket!' })).toThrow(/S3_BUCKET/);
     expect(validateEnv(valid).S3_BUCKET).toBeUndefined();
+  });
+
+  it('never sends production links to a local address', () => {
+    const production = {
+      ...valid,
+      NODE_ENV: 'production',
+      MAIL_TRANSPORT: 'smtp',
+      SMTP_USER: 'hello@gmail.com',
+      SMTP_PASSWORD: 'x',
+      GUEST_LINK_SECRET: 'a'.repeat(48),
+      S3_BUCKET: 'my-marriage-app',
+    };
+    // No fallback: production must say where the web app is.
+    expect(() => validateEnv(production)).toThrow(/WEB_ORIGIN is required/);
+    expect(() => validateEnv({ ...production, WEB_ORIGIN: '' })).toThrow(/WEB_ORIGIN is required/);
+    for (const local of [
+      'http://localhost:3000',
+      'https://localhost:3000',
+      'https://app.localhost',
+      'https://127.0.0.1:3000',
+      'https://0.0.0.0',
+      'https://[::1]:3000',
+      'https://192.168.1.20:3000',
+      'https://10.0.0.5',
+      'https://172.20.0.2',
+      'http://app.example.com',
+    ]) {
+      expect(() => validateEnv({ ...production, WEB_ORIGIN: local }), local).toThrow(
+        /WEB_ORIGIN must be the public https address/,
+      );
+    }
+    expect(validateEnv({ ...production, WEB_ORIGIN: 'https://app.example.com' }).WEB_ORIGIN).toBe(
+      'https://app.example.com',
+    );
+    expect(validateEnv({ ...valid, NODE_ENV: 'test' }).WEB_ORIGIN).toBe('http://localhost:3000');
   });
 });
